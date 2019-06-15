@@ -2,19 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct Message {
+pub struct Property {
+    pub code: [u8; 3],
 }
 
-impl Message {
-    pub fn new() -> Message {
-        Message { }
+impl Property {
+    pub fn new() -> Property {
+        Property { code: [0, 0, 0] }
     }
 
-    pub fn parse(&self, mut buf: &[u8]) -> bool {
-        false
+    pub fn get_size(&self) -> u64 {
+        5
     }
-}
-
-#[test]
-fn message_parse_test() {
 }
