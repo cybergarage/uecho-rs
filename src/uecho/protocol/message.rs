@@ -2,12 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct Message {
-}
+pub struct Message {}
 
 impl Message {
     pub fn new() -> Message {
-        Message { }
+        Message {}
     }
 
     pub fn parse(&self, mut buf: &[u8]) -> bool {
@@ -16,5 +15,4 @@ impl Message {
 }
 
 #[test]
-fn message_parse_test() {
-}
+fn message_parse_test() {}
