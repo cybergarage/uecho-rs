@@ -4,6 +4,9 @@
 
 pub struct Message {}
 
+pub const HEADER_EHD1_ECHONET: u8 = 0x10;
+pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
+
 impl Message {
     pub fn new() -> Message {
         Message {}
@@ -15,21 +18,4 @@ impl Message {
         }
         true
     }
-}
-
-#[test]
-fn message_parse_test() {
-    let test_msg_bytes = &[
-        //EHD1Echonet,
-        //EHD2Format1,
-        0xA0, 0xB0, 0xC0, 0xD0, 0xE0,
-        0xF0,
-        //ESVNotification,
-        //byte(opc),
-        //1, 1, 'a',
-        //2, 2, 'b', 'c',
-        //3, 3, 'c', 'd', 'e'
-    ];
-    let msg = Message::new();
-    assert!(msg.parse(test_msg_bytes));
 }
