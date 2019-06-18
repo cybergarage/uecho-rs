@@ -3,6 +3,6 @@
 // license that can be found in the LICENSE file.
 
 pub mod esv;
+pub mod message;
 pub mod object;
 pub mod property;
-pub mod message;
