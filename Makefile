@@ -13,7 +13,7 @@ all: test
 format:
 	cargo fmt
 
-build:
+build: format
 	cargo build
 
 test: build
