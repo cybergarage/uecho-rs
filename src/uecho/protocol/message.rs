@@ -27,13 +27,21 @@ impl Message {
     }
 
     pub fn parse(&self, msg: &[u8]) -> bool {
-        if msg.len() <= 0 {
+        if msg.len() <= FRAME_HEADER_SIZE {
             return false;
         }
 
         if (msg[0] != HEADER_EHD1_ECHONET) || (msg[1] != HEADER_EHD2_FORMAT1) {
             return false;
         }
+
+        if msg.len() <= FORMAT1_MIN_SIZE {
+            return false;
+        }
+
+	self.tid = &[msg[2], msg[3]];
+	//self.tid[0] = msg[2];
+	//self.tid[1] = msg[3];
 
         true
     }
