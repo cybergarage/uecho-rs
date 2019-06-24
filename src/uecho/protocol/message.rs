@@ -28,6 +28,11 @@ impl Message {
         }
     }
 
+    pub fn tid(&self) -> u32 {
+        let tid:u32 = ((self.tid[0] as u32) << 8) + self.tid[1] as u32;
+        tid
+    }
+
     pub fn parse(&mut self, msg: &[u8]) -> bool {
         if msg.len() <= FRAME_HEADER_SIZE {
             return false;
