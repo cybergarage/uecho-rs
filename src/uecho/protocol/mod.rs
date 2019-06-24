@@ -8,3 +8,4 @@ pub mod object;
 pub mod property;
 
 mod message_test;
+mod property_test;
