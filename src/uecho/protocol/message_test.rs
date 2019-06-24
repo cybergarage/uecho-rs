@@ -14,8 +14,8 @@ mod tests {
         let test_msg_bytes = &[
             HEADER_EHD1_ECHONET,
             HEADER_EHD2_FORMAT1,
-            0x00,
-            0x00,
+            0x01,
+            0x01,
             0xA0,
             0xB0,
             0xC0,
@@ -39,6 +39,9 @@ mod tests {
         ];
 
         let mut msg = Message::new();
+
         assert!(msg.parse(test_msg_bytes));
+
+        assert_eq!(msg.tid(), 0x0101);
     }
 }
