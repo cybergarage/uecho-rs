@@ -2,14 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::uecho::protocol::property::*;
+
 pub const HEADER_EHD1_ECHONET: u8 = 0x10;
 pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
 pub const FRAME_HEADER_SIZE: usize = (1 + 1 + 2);
 pub const FORMAT1_HEADER_SIZE: usize = (3 + 3 + 1 + 1);
-pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
-pub const TID_SIZE: usize = 2;
 pub const TID_MAX: usize = 65535;
-pub const EOJ_SIZE: usize = 3;
 
 pub struct Message {
     tid: [u8; 2],
@@ -72,6 +71,16 @@ impl Message {
         self.deoj = [edata[3], edata[4], edata[5]];
         self.esv = edata[6];
         self.opc = edata[7] as usize;
+
+        let mut prop_msg_offset = 8;
+        for _n in 0..self.opc {
+            let prop_msg = &msg[prop_msg_offset..];
+            let mut prop = Property::new();
+            if !prop.parse(prop_msg) {
+                return false
+            }
+            prop_msg_offset += prop.size();
+        }
 
         true
     }
