@@ -16,6 +16,7 @@ pub struct Message {
     tid: [u8; 2],
     seoj: [u8; 3],
     deoj: [u8; 3],
+    esv: u8,
 }
 impl Message {
     pub fn new() -> Message {
@@ -23,10 +24,11 @@ impl Message {
             tid: [0, 0],
             seoj: [0, 0, 0],
             deoj: [0, 0, 0],
+            esv: 0,
         }
     }
 
-    pub fn parse(&self, msg: &[u8]) -> bool {
+    pub fn parse(&mut self, msg: &[u8]) -> bool {
         if msg.len() <= FRAME_HEADER_SIZE {
             return false;
         }
@@ -35,13 +37,15 @@ impl Message {
             return false;
         }
 
+        self.tid = [msg[2], msg[3]];
+
         if msg.len() <= FORMAT1_MIN_SIZE {
             return false;
         }
 
-	self.tid = &[msg[2], msg[3]];
-	//self.tid[0] = msg[2];
-	//self.tid[1] = msg[3];
+        self.seoj = [msg[4], msg[5], msg[6]];
+        self.deoj = [msg[7], msg[8], msg[9]];
+        self.esv = msg[10];
 
         true
     }
