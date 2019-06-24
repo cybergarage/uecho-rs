@@ -38,7 +38,7 @@ mod tests {
             0x66, // f
         ];
 
-        let msg = Message::new();
+        let mut msg = Message::new();
         assert!(msg.parse(test_msg_bytes));
     }
 }
