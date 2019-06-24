@@ -6,7 +6,6 @@ pub const HEADER_EHD1_ECHONET: u8 = 0x10;
 pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
 pub const FRAME_HEADER_SIZE: usize = (1 + 1 + 2);
 pub const FORMAT1_HEADER_SIZE: usize = (3 + 3 + 1 + 1);
-pub const FORMAT1_MIN_SIZE: usize = (FRAME_HEADER_SIZE + FORMAT1_HEADER_SIZE);
 pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 pub const TID_SIZE: usize = 2;
 pub const TID_MAX: usize = 65535;
@@ -17,6 +16,7 @@ pub struct Message {
     seoj: [u8; 3],
     deoj: [u8; 3],
     esv: u8,
+    opc: usize,
 }
 impl Message {
     pub fn new() -> Message {
@@ -25,27 +25,53 @@ impl Message {
             seoj: [0, 0, 0],
             deoj: [0, 0, 0],
             esv: 0,
+            opc: 0,
         }
     }
 
+    fn to_object_code(&self, eoj: &[u8]) -> u32 {
+        ((eoj[0] as u32) << 16) + ((eoj[1] as u32) << 8) + (eoj[2] as u32)
+    }
+
+    pub fn source_object_code(&self) -> u32 {
+        self.to_object_code(&self.seoj)
+    }
+
+    pub fn destination_object_code(&self) -> u32 {
+        self.to_object_code(&self.deoj)
+    }
+
+    pub fn opc(&self) -> usize {
+        return self.opc as usize;
+    }
+
     pub fn parse(&mut self, msg: &[u8]) -> bool {
-        if msg.len() <= FRAME_HEADER_SIZE {
+        // Parser ECHONET Lite Header (EHD)
+
+        let header = &msg[0..];
+
+        if header.len() <= FRAME_HEADER_SIZE {
             return false;
         }
 
-        if (msg[0] != HEADER_EHD1_ECHONET) || (msg[1] != HEADER_EHD2_FORMAT1) {
+        self.tid = [header[2], header[3]];
+
+        if (header[0] != HEADER_EHD1_ECHONET) || (header[1] != HEADER_EHD2_FORMAT1) {
             return false;
         }
 
-        self.tid = [msg[2], msg[3]];
+        // Parse ECHONET Lite Data (EDATA)
 
-        if msg.len() <= FORMAT1_MIN_SIZE {
+        let edata = &msg[4..];
+
+        if edata.len() <= FORMAT1_HEADER_SIZE {
             return false;
         }
 
-        self.seoj = [msg[4], msg[5], msg[6]];
-        self.deoj = [msg[7], msg[8], msg[9]];
-        self.esv = msg[10];
+        self.seoj = [edata[0], edata[1], edata[2]];
+        self.deoj = [edata[3], edata[4], edata[5]];
+        self.esv = edata[6];
+        self.opc = edata[7] as usize;
 
         true
     }
