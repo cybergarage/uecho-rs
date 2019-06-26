@@ -6,6 +6,7 @@ pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 
 pub struct Property {
     code: u8,
+    //data: [u8]
     //data: &'a [u8],
 }
 
@@ -19,6 +20,7 @@ impl Property {
     }
 
     pub fn size(&self) -> usize {
+        //self.data.size()
         0
     }
 
@@ -29,7 +31,9 @@ impl Property {
 
         self.code = msg[0];
         let _data_size = msg[1] as usize;
-        let _data = &msg[2..];
+
+        //let _data = &msg[2..];
+        //self.data = &msg[2..];
 
         true
     }
