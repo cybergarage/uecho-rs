@@ -10,13 +10,13 @@ mod tests {
     #[test]
     fn property_parse_test() {
         let test_msg_bytes = &[
-            1,
-            1,
-            0x61, // a
+            10, 1, 0x61, // a
         ];
 
         let mut prop = Property::new();
 
         assert!(prop.parse(test_msg_bytes));
+        //assert!(prop.code(), 10u8);
+        assert_eq!(prop.size(), 0);
     }
 }
