@@ -43,5 +43,8 @@ mod tests {
         assert!(msg.parse(test_msg_bytes));
 
         assert_eq!(msg.tid(), 0x0101);
+        //assert_eq!(msg.source_object_code(), 0x0A0B0C);
+        //assert_eq!(msg.destination_object_code(), 0x0D0E0F);
+        assert_eq!(msg.opc(), 3)
     }
 }
