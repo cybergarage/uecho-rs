@@ -16,7 +16,7 @@ pub struct Message {
     deoj: [u8; 3],
     esv: u8,
     opc: usize,
-    properties: Vec<Property>,
+    //properties: Vec<Property>,
 }
 impl Message {
     pub fn new() -> Message {
@@ -26,7 +26,7 @@ impl Message {
             deoj: [0, 0, 0],
             esv: 0,
             opc: 0,
-            properties: Vec::new(),
+            //properties: Vec::new(),
         }
     }
 
@@ -83,7 +83,7 @@ impl Message {
             let prop_msg = &msg[prop_msg_offset..];
             let mut prop = Property::new();
             if !prop.parse(prop_msg) {
-                return false
+                return false;
             }
             prop_msg_offset += prop.size();
         }
