@@ -6,20 +6,19 @@ pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 
 pub struct Property {
     code: u8,
-    data: Vec::<u8>,
-    //data: [u8]
-    //data: &'a [u8],
+    data: Vec<u8>,
 }
 
 impl Property {
     pub fn new() -> Property {
-        Property { 
+        Property {
             code: 0,
-            data: Vec::<u8>::new(), }
+            data: Vec::<u8>::new(),
+        }
     }
 
     pub fn code(&self) -> u8 {
-        return self.code
+        return self.code;
     }
 
     pub fn size(&self) -> usize {
