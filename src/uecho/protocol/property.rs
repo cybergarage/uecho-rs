@@ -6,34 +6,41 @@ pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 
 pub struct Property {
     code: u8,
+    data: Vec::<u8>,
     //data: [u8]
     //data: &'a [u8],
 }
 
 impl Property {
     pub fn new() -> Property {
-        Property { code: 0 }
+        Property { 
+            code: 0,
+            data: Vec::<u8>::new(), }
     }
 
     pub fn code(&self) -> u8 {
-        self.code
+        return self.code
     }
 
     pub fn size(&self) -> usize {
-        //self.data.size()
-        0
+        return self.data.len();
     }
 
     pub fn parse(&mut self, msg: &[u8]) -> bool {
-        if msg.len() <= FORMAT1_PROPERTY_HEADER_SIZE {
+        let msg_len = msg.len();
+        if msg_len <= FORMAT1_PROPERTY_HEADER_SIZE {
             return false;
         }
 
         self.code = msg[0];
-        let _data_size = msg[1] as usize;
+        let data_size = msg[1] as usize;
 
-        //let _data = &msg[2..];
-        //self.data = &msg[2..];
+        if msg_len <= (FORMAT1_PROPERTY_HEADER_SIZE + data_size) {
+            return false;
+        }
+
+        self.data.clear();
+        self.data.clone_from_slice(&msg[2..]);
 
         true
     }

@@ -16,7 +16,7 @@ mod tests {
         let mut prop = Property::new();
 
         assert!(prop.parse(test_msg_bytes));
-        //assert!(prop.code(), 10u8);
-        assert_eq!(prop.size(), 0);
+        assert_eq!(prop.code(), 10u8);
+        assert_eq!(prop.size(), 1);
     }
 }
