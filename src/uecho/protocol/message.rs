@@ -16,8 +16,9 @@ pub struct Message {
     deoj: [u8; 3],
     esv: u8,
     opc: usize,
-    //properties: Vec<Property>,
+    properties: Vec<Property>,
 }
+
 impl Message {
     pub fn new() -> Message {
         Message {
@@ -26,7 +27,7 @@ impl Message {
             deoj: [0, 0, 0],
             esv: 0,
             opc: 0,
-            //properties: Vec::new(),
+            properties: Vec::<Property>::new(),
         }
     }
 
