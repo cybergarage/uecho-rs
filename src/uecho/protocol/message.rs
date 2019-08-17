@@ -54,15 +54,7 @@ impl Message {
     pub fn parse(&mut self, msg: &[u8]) -> bool {
         // Parser ECHONET Lite Header (EHD)
 
-        let header = &msg[0..];
-
-        if header.len() <= FRAME_HEADER_SIZE {
-            return false;
-        }
-
-        self.tid = [header[2], header[3]];
-
-        if (header[0] != HEADER_EHD1_ECHONET) || (header[1] != HEADER_EHD2_FORMAT1) {
+        if self.parse_header(msg) {
             return false;
         }
 
@@ -91,4 +83,21 @@ impl Message {
 
         true
     }
+
+    pub fn parse_header(&mut self, msg: &[u8]) -> bool {
+        let header = &msg[0..];
+
+        if header.len() <= FRAME_HEADER_SIZE {
+            return false;
+        }
+
+        self.tid = [header[2], header[3]];
+
+        if (header[0] != HEADER_EHD1_ECHONET) || (header[1] != HEADER_EHD2_FORMAT1) {
+            return false;
+        }
+
+        true
+    }
+
 }
