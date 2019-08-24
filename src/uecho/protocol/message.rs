@@ -11,6 +11,7 @@ pub const FORMAT1_HEADER_SIZE: usize = (3 + 3 + 1 + 1);
 pub const TID_MAX: usize = 65535;
 
 pub struct Message {
+    ehd: [u8; 2],
     tid: [u8; 2],
     seoj: [u8; 3],
     deoj: [u8; 3],
@@ -22,9 +23,10 @@ pub struct Message {
 impl Message {
     pub fn new() -> Message {
         Message {
-            tid: [0, 0],
-            seoj: [0, 0, 0],
-            deoj: [0, 0, 0],
+            ehd: [0; 2],
+            tid: [0; 2],
+            seoj: [0; 3],
+            deoj: [0; 3],
             esv: 0,
             opc: 0,
             properties: Vec::<Property>::new(),
@@ -51,50 +53,60 @@ impl Message {
         self.opc as usize
     }
 
-    pub fn parse(&mut self, msg: &[u8]) -> bool {
-        // Parser ECHONET Lite Header (EHD)
-
-        if self.parse_header(msg) {
+    pub fn is_format1(&mut self) -> bool {
+        if (self.ehd[0] != HEADER_EHD1_ECHONET) || (self.ehd[1] != HEADER_EHD2_FORMAT1) {
             return false;
-        }
-
-        // Parse ECHONET Lite Data (EDATA)
-
-        let edata = &msg[4..];
-
-        if edata.len() <= FORMAT1_HEADER_SIZE {
-            return false;
-        }
-
-        self.seoj = [edata[0], edata[1], edata[2]];
-        self.deoj = [edata[3], edata[4], edata[5]];
-        self.esv = edata[6];
-        self.opc = edata[7] as usize;
-
-        let mut prop_msg_offset = 8;
-        for _n in 0..self.opc {
-            let prop_msg = &msg[prop_msg_offset..];
-            let mut prop = Property::new();
-            if !prop.parse(prop_msg) {
-                return false;
-            }
-            prop_msg_offset += prop.size();
         }
 
         true
     }
 
-    pub fn parse_header(&mut self, msg: &[u8]) -> bool {
-        let header = &msg[0..];
+    pub fn parse(&mut self, msg: &[u8]) -> bool {
+        if !self.parse_header(msg) {
+            return false
+        }
 
+        if !self.is_format1(){
+            return false
+        }
+
+        let format1_msg = &(*msg)[4..];
+        if !self.parse_format1_data(format1_msg) {
+            return false
+        }
+
+        true
+    }
+
+    fn parse_header(&mut self, header: &[u8]) -> bool {
         if header.len() <= FRAME_HEADER_SIZE {
             return false;
         }
 
+        self.ehd = [header[0], header[1]];
         self.tid = [header[2], header[3]];
 
-        if (header[0] != HEADER_EHD1_ECHONET) || (header[1] != HEADER_EHD2_FORMAT1) {
+        true
+    }
+
+    fn parse_format1_data(&mut self, msg: &[u8]) -> bool {
+        if msg.len() <= FORMAT1_HEADER_SIZE {
             return false;
+        }
+
+        self.seoj = [msg[0], msg[1], msg[2]];
+        self.deoj = [msg[3], msg[4], msg[5]];
+        self.esv = msg[6];
+        self.opc = msg[7] as usize;
+
+        let mut prop_msg_offset = FORMAT1_HEADER_SIZE;
+        for _n in 0..self.opc {
+            let prop_msg = &(*msg)[prop_msg_offset..];
+            let mut prop = Property::new();
+            if !prop.parse(prop_msg) {
+                return false;
+            }
+            prop_msg_offset += prop.size();
         }
 
         true

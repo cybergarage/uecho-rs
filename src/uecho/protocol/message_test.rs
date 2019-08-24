@@ -40,8 +40,7 @@ mod tests {
 
         let mut msg = Message::new();
 
-        assert!(msg.parse_header(test_msg_bytes));
-        //assert!(msg.parse(test_msg_bytes));
+        assert!(msg.parse(test_msg_bytes));
 
         msg.source_object_code();
         assert_eq!(msg.tid(), 0x0101);
