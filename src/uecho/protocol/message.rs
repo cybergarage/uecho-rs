@@ -53,6 +53,14 @@ impl Message {
         self.opc as usize
     }
 
+    pub fn properties(&self) -> &Vec<Property> {
+        &self.properties
+    }
+
+    pub fn property(&self, n: usize) -> &Property {
+        &self.properties[n]
+    }
+
     pub fn is_format1(&mut self) -> bool {
         if (self.ehd[0] != HEADER_EHD1_ECHONET) || (self.ehd[1] != HEADER_EHD2_FORMAT1) {
             return false;
@@ -106,7 +114,8 @@ impl Message {
             if !prop.parse(prop_msg) {
                 return false;
             }
-            prop_msg_offset += prop.size();
+            prop_msg_offset += FORMAT1_PROPERTY_HEADER_SIZE + prop.size();
+            self.properties.push(prop);
         }
 
         true
