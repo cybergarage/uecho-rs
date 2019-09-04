@@ -71,16 +71,16 @@ impl Message {
 
     pub fn parse(&mut self, msg: &[u8]) -> bool {
         if !self.parse_header(msg) {
-            return false
+            return false;
         }
 
-        if !self.is_format1(){
-            return false
+        if !self.is_format1() {
+            return false;
         }
 
         let format1_msg = &(*msg)[4..];
         if !self.parse_format1_data(format1_msg) {
-            return false
+            return false;
         }
 
         true
@@ -120,5 +120,4 @@ impl Message {
 
         true
     }
-
 }
