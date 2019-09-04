@@ -53,11 +53,11 @@ mod tests {
         for i in 0..opc {
             let prop = msg.property(i);
             let prop_size = prop.size();
-            assert_eq!(prop_size, (i+1));
+            assert_eq!(prop_size, (i + 1));
             let prop_data = prop.data();
-            assert_eq!(prop_data.len(), (i+1));
+            assert_eq!(prop_data.len(), (i + 1));
             for j in 0..prop_size {
-                let prop_val =  (0x61 + i + j) as u8;
+                let prop_val = (0x61 + i + j) as u8;
                 assert_eq!(prop_data[j], prop_val)
             }
         }
