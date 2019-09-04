@@ -25,7 +25,7 @@ impl Property {
         self.data.len()
     }
 
-    pub fn data(&self) -> &Vec<u8>{
+    pub fn data(&self) -> &Vec<u8> {
         &self.data
     }
 
@@ -39,9 +39,8 @@ impl Property {
         let data_size = msg[1] as usize;
 
         if msg_len < (FORMAT1_PROPERTY_HEADER_SIZE + data_size) {
-            return false
+            return false;
         }
-
 
         self.data.clear();
 
