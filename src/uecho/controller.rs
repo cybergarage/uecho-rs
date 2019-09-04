@@ -2,15 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct Controller {
-}
+pub struct Controller {}
 
 impl Controller {
     pub fn new() -> Controller {
-        Controller { }
+        Controller {}
     }
 }
 
 #[test]
-fn controller_test() {
-}
+fn controller_test() {}

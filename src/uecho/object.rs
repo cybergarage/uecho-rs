@@ -2,11 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct Object {
-}
+pub struct Object {}
 
 impl Object {
     pub fn new() -> Object {
-        Object { }
+        Object {}
     }
 }
