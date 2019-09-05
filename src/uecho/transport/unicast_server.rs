@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct Server {}
+pub struct UnicastServer {}
 
-impl Server {
-    pub fn new() -> Server {
-        Server {}
+impl UnicastServer {
+    pub fn new() -> UnicastServer {
+        UnicastServer {}
     }
 
     pub fn start(&self) -> bool {
