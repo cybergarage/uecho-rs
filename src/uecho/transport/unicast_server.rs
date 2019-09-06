@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::uecho::transport::server::Server;
 use std::net::UdpSocket;
 use std::ptr;
 
@@ -13,12 +14,14 @@ impl UnicastServer {
     pub fn new() -> UnicastServer {
         UnicastServer {}
     }
+}
 
-    pub fn start(&self) -> bool {
+impl Server for UnicastServer {
+    fn start(&self) -> bool {
         true
     }
 
-    pub fn stop(&self) -> bool {
+    fn stop(&self) -> bool {
         true
     }
 }

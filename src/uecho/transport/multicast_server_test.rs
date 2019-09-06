@@ -6,6 +6,7 @@
 mod tests {
 
     use crate::uecho::transport::multicast_server::*;
+    use crate::uecho::transport::server::Server;
 
     #[test]
     fn multicast_server_test() {
