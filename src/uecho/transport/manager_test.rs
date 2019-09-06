@@ -5,12 +5,12 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::uecho::transport::server::*;
+    use crate::uecho::transport::manager::*;
 
     #[test]
-    fn server_test() {
-        let server = Server::new();
-        assert!(server.start());
-        assert!(server.stop());
+    fn manager_test() {
+        let mgr = Manager::new();
+        assert!(mgr.start());
+        assert!(mgr.stop());
     }
 }
