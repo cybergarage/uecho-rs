@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct Server {}
+pub struct Manager {}
 
-impl Server {
-    pub fn new() -> Server {
-        Server {}
+impl Manager {
+    pub fn new() -> Manager {
+        Manager {}
     }
 
     pub fn start(&self) -> bool {
