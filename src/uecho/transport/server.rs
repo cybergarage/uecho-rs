@@ -4,7 +4,9 @@
 
 pub trait Server {
     //fn address(self) -> String;
-    //fn port(self) -> u16;
+    //fn port(&self) -> u16 {
+    //    PORT
+    //}
     fn start(&self) -> bool;
     fn stop(&self) -> bool;
 }
