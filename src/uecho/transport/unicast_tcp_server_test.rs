@@ -6,11 +6,11 @@
 mod tests {
 
     use crate::uecho::transport::server::Server;
-    use crate::uecho::transport::unicast_server::*;
+    use crate::uecho::transport::unicast_tcp_server::*;
 
     #[test]
-    fn unicast_server_test() {
-        let server = UnicastServer::new();
+    fn unicast_tcp_server_test() {
+        let server = UnicastTcpServer::new();
         assert!(server.start());
         assert!(server.stop());
     }

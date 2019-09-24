@@ -6,17 +6,16 @@ use crate::uecho::transport::server::Server;
 use std::net::UdpSocket;
 use std::ptr;
 
-pub struct UnicastServer {
-    //sock: &'a UdpSocket,
+pub struct UnicastTcpServer {
 }
 
-impl UnicastServer {
-    pub fn new() -> UnicastServer {
-        UnicastServer {}
+impl UnicastTcpServer {
+    pub fn new() -> UnicastTcpServer {
+        UnicastTcpServer {}
     }
 }
 
-impl Server for UnicastServer {
+impl Server for UnicastTcpServer {
     fn start(&self) -> bool {
         true
     }
