@@ -6,18 +6,22 @@ use crate::uecho::transport::server::Server;
 use std::net::UdpSocket;
 use std::ptr;
 
-pub struct UnicastServer {
-    //sock: &'a UdpSocket,
+pub struct UnicastUdpServer {
 }
 
-impl UnicastServer {
-    pub fn new() -> UnicastServer {
-        UnicastServer {}
+impl UnicastUdpServer {
+    pub fn new() -> UnicastUdpServer {
+        UnicastUdpServer {}
     }
 }
 
-impl Server for UnicastServer {
+impl Server for UnicastUdpServer {
     fn start(&self) -> bool {
+        /*
+        let mut socket = UdpSocket::bind("127.0.0.1:34254");
+        let mut buf = [0; 10];
+        let (amt, src) = socket.recv_from(&mut buf)?;
+        */
         true
     }
 
