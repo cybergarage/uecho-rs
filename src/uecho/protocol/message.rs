@@ -49,6 +49,10 @@ impl Message {
         self.to_object_code(&self.deoj)
     }
 
+    pub fn esv(&self) -> u8 {
+        self.esv
+    }
+
     pub fn opc(&self) -> usize {
         self.opc as usize
     }
