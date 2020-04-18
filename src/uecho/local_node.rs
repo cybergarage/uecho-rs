@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::uecho::local_node::*;
+use crate::uecho::server::*;
 
-pub struct Controller {
-    node: LocalNode
+pub struct LocalNode {
+    server: Server
 }
 
-impl Controller {
-    pub fn new() -> Controller {
-        Controller {
-            node: LocalNode::new()
+impl LocalNode {
+    pub fn new() -> LocalNode {
+        LocalNode {
+            server: Server::new()
         }
     }
 }

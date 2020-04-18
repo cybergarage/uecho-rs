@@ -11,7 +11,7 @@ mod tests {
 
     #[test]
     fn message_parse_test() {
-        let test_msg_bytes = &[
+        let test_msg_bytes = [
             HEADER_EHD1_ECHONET,
             HEADER_EHD2_FORMAT1,
             0x01,
@@ -40,12 +40,12 @@ mod tests {
 
         let mut msg = Message::new();
 
-        assert!(msg.parse(test_msg_bytes));
+        assert!(msg.parse(&test_msg_bytes));
 
-        msg.source_object_code();
         assert_eq!(msg.tid(), 0x0101);
         assert_eq!(msg.source_object_code(), 0x0A0B0C0);
         assert_eq!(msg.destination_object_code(), 0x0D0E0F0);
+        assert_eq!(msg.esv(), ESV_NOTIFICATION);
 
         let opc = msg.opc();
         assert_eq!(opc, 3);
