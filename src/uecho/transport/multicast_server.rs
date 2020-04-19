@@ -10,14 +10,12 @@ impl MulticastServer {
     pub fn new() -> MulticastServer {
         MulticastServer {}
     }
-}
 
-impl Server for MulticastServer {
-    fn start(&self) -> bool {
+    pub fn start(&self) -> bool {
         true
     }
 
-    fn stop(&self) -> bool {
+    pub fn stop(&self) -> bool {
         true
     }
 }
