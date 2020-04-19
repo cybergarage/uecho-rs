@@ -14,4 +14,18 @@ impl Controller {
             node: LocalNode::new()
         }
     }
+
+    pub fn start(&self) -> bool {
+        if !self.node.start() {
+            return false
+        }
+        true
+    }
+
+    pub fn stop(&self) -> bool {
+        if !self.node.stop() {
+            return false
+        }
+        true
+    }
 }

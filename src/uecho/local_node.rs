@@ -14,4 +14,18 @@ impl LocalNode {
             server: Server::new()
         }
     }
+
+    pub fn start(&self) -> bool {
+        if !self.server.start() {
+            return false
+        }
+        true
+    }
+
+    pub fn stop(&self) -> bool {
+        if !self.server.stop() {
+            return false
+        }
+        true
+    }
 }

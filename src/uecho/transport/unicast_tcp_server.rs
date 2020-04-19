@@ -13,14 +13,12 @@ impl UnicastTcpServer {
     pub fn new() -> UnicastTcpServer {
         UnicastTcpServer {}
     }
-}
 
-impl Server for UnicastTcpServer {
-    fn start(&self) -> bool {
+    pub fn start(&self) -> bool {
         true
     }
 
-    fn stop(&self) -> bool {
+    pub fn stop(&self) -> bool {
         true
     }
 }
