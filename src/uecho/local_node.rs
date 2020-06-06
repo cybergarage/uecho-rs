@@ -5,26 +5,26 @@
 use crate::uecho::server::*;
 
 pub struct LocalNode {
-    server: Server
+    server: Server,
 }
 
 impl LocalNode {
     pub fn new() -> LocalNode {
         LocalNode {
-            server: Server::new()
+            server: Server::new(),
         }
     }
 
     pub fn start(&self) -> bool {
         if !self.server.start() {
-            return false
+            return false;
         }
         true
     }
 
     pub fn stop(&self) -> bool {
         if !self.server.stop() {
-            return false
+            return false;
         }
         true
     }

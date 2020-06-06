@@ -17,14 +17,14 @@ impl Server {
 
     pub fn start(&self) -> bool {
         if !self.transportMgr.start() {
-            return false
+            return false;
         }
         true
     }
 
     pub fn stop(&self) -> bool {
         if !self.transportMgr.stop() {
-            return false
+            return false;
         }
         true
     }

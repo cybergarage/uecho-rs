@@ -8,7 +8,7 @@ pub mod transport;
 pub mod class;
 pub mod controller;
 pub mod device;
+pub mod local_node;
 pub mod node;
 pub mod object;
 pub mod server;
-pub mod local_node;
