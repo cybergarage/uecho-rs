@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct UnicastManager {
+pub struct MulticastManager {
 }
 
-impl UnicastManager {
-    pub fn new() -> UnicastManager {
-        UnicastManager {}
+impl MulticastManager {
+    pub fn new() -> MulticastManager {
+        MulticastManager {}
     }
 
     pub fn start(&self) -> bool {
