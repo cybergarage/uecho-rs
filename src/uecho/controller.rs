@@ -5,26 +5,26 @@
 use crate::uecho::local_node::*;
 
 pub struct Controller {
-    node: LocalNode
+    node: LocalNode,
 }
 
 impl Controller {
     pub fn new() -> Controller {
         Controller {
-            node: LocalNode::new()
+            node: LocalNode::new(),
         }
     }
 
     pub fn start(&self) -> bool {
         if !self.node.start() {
-            return false
+            return false;
         }
         true
     }
 
     pub fn stop(&self) -> bool {
         if !self.node.stop() {
-            return false
+            return false;
         }
         true
     }
