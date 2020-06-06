@@ -6,8 +6,7 @@ use crate::uecho::transport::server::Server;
 use std::net::UdpSocket;
 use std::ptr;
 
-pub struct UnicastUdpServer {
-}
+pub struct UnicastUdpServer {}
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {

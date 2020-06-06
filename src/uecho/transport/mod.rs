@@ -9,13 +9,13 @@ pub mod multicast_manager;
 pub mod multicast_server;
 pub mod server;
 pub mod unicast_manager;
-pub mod unicast_udp_server;
 pub mod unicast_tcp_server;
+pub mod unicast_udp_server;
 
 mod manager_test;
 mod message_manager_test;
 mod multicast_manager_test;
 mod multicast_server_test;
 mod unicast_manager_test;
-mod unicast_udp_server_test;
 mod unicast_tcp_server_test;
+mod unicast_udp_server_test;
