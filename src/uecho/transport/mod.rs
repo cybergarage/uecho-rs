@@ -6,7 +6,6 @@ pub mod default;
 pub mod manager;
 pub mod multicast_manager;
 pub mod multicast_server;
-pub mod server;
 pub mod unicast_manager;
 pub mod unicast_tcp_server;
 pub mod unicast_udp_server;
