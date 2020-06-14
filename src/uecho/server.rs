@@ -5,25 +5,25 @@
 use crate::uecho::transport::manager::*;
 
 pub struct Server {
-    transportMgr: Manager,
+    transport_mgr: Manager,
 }
 
 impl Server {
     pub fn new() -> Server {
         Server {
-            transportMgr: Manager::new(),
+            transport_mgr: Manager::new(),
         }
     }
 
     pub fn start(&self) -> bool {
-        if !self.transportMgr.start() {
+        if !self.transport_mgr.start() {
             return false;
         }
         true
     }
 
     pub fn stop(&self) -> bool {
-        if !self.transportMgr.stop() {
+        if !self.transport_mgr.stop() {
             return false;
         }
         true
