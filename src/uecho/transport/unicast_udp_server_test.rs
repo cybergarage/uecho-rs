@@ -5,7 +5,6 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::uecho::transport::server::Server;
     use crate::uecho::transport::unicast_udp_server::*;
 
     #[test]
