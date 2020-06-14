@@ -8,7 +8,7 @@ mod tests {
     use crate::uecho::transport::manager::*;
 
     #[test]
-    fn manager_test() {
+    fn message_manager_test() {
         let mgr = Manager::new();
         assert!(mgr.start());
         assert!(mgr.stop());

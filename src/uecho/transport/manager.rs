@@ -2,34 +2,37 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::uecho::transport::server::Server;
+use crate::uecho::transport::unicast_manager::UnicastManager;
+use crate::uecho::transport::multicast_manager::MulticastManager;
 
 pub struct Manager {
-    servers: Vec<Box<Server>>,
+    ucast_mgr: UnicastManager,
+    mcast_mgr: MulticastManager,
 }
 
 impl Manager {
     pub fn new() -> Manager {
         Manager {
-            servers: Vec::new(),
+            ucast_mgr: UnicastManager::new(),
+            mcast_mgr: MulticastManager::new(),
         }
     }
 
     pub fn start(&self) -> bool {
-        for n in 0..self.servers.len() {
-            if !self.servers[n].start() {
-                return false;
-            }
+        if !self.ucast_mgr.start() {
+            self.stop();
+            return false;
+        }
+        if !self.mcast_mgr.start() {
+            self.stop();
+            return false;
         }
         true
     }
 
     pub fn stop(&self) -> bool {
-        for n in 0..self.servers.len() {
-            if !self.servers[n].stop() {
-                return false;
-            }
-        }
-        true
+        let mut ret = self.ucast_mgr.start();
+        ret |= self.mcast_mgr.start();
+        ret
     }
 }
