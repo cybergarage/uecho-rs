@@ -31,8 +31,8 @@ impl Manager {
     }
 
     pub fn stop(&self) -> bool {
-        let mut ret = self.ucast_mgr.start();
-        ret |= self.mcast_mgr.start();
+        let mut ret = self.ucast_mgr.stop();
+        ret |= self.mcast_mgr.stop();
         ret
     }
 }
