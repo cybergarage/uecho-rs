@@ -2,18 +2,24 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct MulticastManager {}
+use crate::uecho::transport::multicast_server::MulticastServer;
+
+pub struct MulticastManager {
+    mcast_server: MulticastServer,
+}
 
 impl MulticastManager {
     pub fn new() -> MulticastManager {
-        MulticastManager {}
+        MulticastManager {
+            mcast_server: MulticastServer::new(),
+        }
     }
 
     pub fn start(&self) -> bool {
-        true
+        self.mcast_server.start()
     }
 
     pub fn stop(&self) -> bool {
-        true
+        self.mcast_server.stop()
     }
 }
