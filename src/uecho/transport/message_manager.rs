@@ -2,18 +2,37 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub struct MessageManager {}
+use crate::uecho::transport::unicast_manager::UnicastManager;
+use crate::uecho::transport::multicast_manager::MulticastManager;
+
+pub struct MessageManager {
+    ucast_mgr: UnicastManager,
+    mcast_mgr: MulticastManager,
+}
 
 impl MessageManager {
     pub fn new() -> MessageManager {
-        MessageManager {}
+        MessageManager {
+            ucast_mgr: UnicastManager::new(),
+            mcast_mgr: MulticastManager::new(),
+        }
     }
 
     pub fn start(&self) -> bool {
+        if !self.ucast_mgr.start() {
+            self.stop();
+            return false;
+        }
+        if !self.mcast_mgr.start() {
+            self.stop();
+            return false;
+        }
         true
     }
 
     pub fn stop(&self) -> bool {
-        true
+        let mut ret = self.ucast_mgr.start();
+        ret |= self.mcast_mgr.start();
+        ret
     }
 }
