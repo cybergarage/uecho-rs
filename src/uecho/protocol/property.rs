@@ -51,4 +51,21 @@ impl Property {
 
         true
     }
+
+    pub fn equals(&self, prop: &Property) -> bool {
+        if self.code() != prop.code() {
+            return false;
+        }
+        if self.size() != prop.size() {
+            return false;
+        }
+
+        for n in 0..self.size() {
+            if self.data[n] != prop.data[n] {
+                return false;
+            }
+        }
+
+        true
+    }
 }
