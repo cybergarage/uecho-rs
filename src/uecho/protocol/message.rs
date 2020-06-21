@@ -22,7 +22,7 @@ pub struct Message {
 impl Message {
     pub fn new() -> Message {
         Message {
-            ehd: [0; 2],
+            ehd: [HEADER_EHD1_ECHONET, HEADER_EHD2_FORMAT1],
             tid: [0; 2],
             seoj: [0; 3],
             deoj: [0; 3],
