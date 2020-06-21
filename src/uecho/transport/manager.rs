@@ -2,8 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::uecho::transport::unicast_manager::UnicastManager;
+use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::multicast_manager::MulticastManager;
+use crate::uecho::transport::unicast_manager::UnicastManager;
+use std::net::ToSocketAddrs;
 
 pub struct Manager {
     ucast_mgr: UnicastManager,
@@ -16,6 +18,10 @@ impl Manager {
             ucast_mgr: UnicastManager::new(),
             mcast_mgr: MulticastManager::new(),
         }
+    }
+
+    pub fn send_messagee<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
+        self.ucast_mgr.send_message(msg, addr)
     }
 
     pub fn start(&self) -> bool {
