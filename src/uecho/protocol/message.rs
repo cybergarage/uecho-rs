@@ -124,4 +124,32 @@ impl Message {
 
         true
     }
+
+    pub fn equals(&self, msg: &Message) -> bool {
+        if self.tid() != msg.tid() {
+            return false;
+        }
+        if self.source_object_code() != msg.source_object_code() {
+            return false;
+        }
+        if self.destination_object_code() != msg.destination_object_code() {
+            return false;
+        }
+        if self.esv() != msg.esv() {
+            return false;
+        }
+        if self.opc() != msg.opc() {
+            return false;
+        }
+
+        let opc = msg.opc();
+        for n in 0..opc {
+            let prop = self.property(n);
+            if !prop.equals(msg.property(n)) {
+                return false;
+            }
+        }
+
+        true
+    }
 }
