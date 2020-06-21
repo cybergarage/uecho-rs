@@ -150,4 +150,34 @@ impl Message {
 
         true
     }
+
+    pub fn bytes(&self) -> Vec<u8> {
+        let mut msg_bytes: Vec<u8> = Vec::new();
+
+        msg_bytes.push(self.ehd[0]);
+        msg_bytes.push(self.ehd[1]);
+        msg_bytes.push(self.tid[0]);
+        msg_bytes.push(self.tid[1]);
+        msg_bytes.push(self.seoj[0]);
+        msg_bytes.push(self.seoj[1]);
+        msg_bytes.push(self.seoj[2]);
+        msg_bytes.push(self.deoj[0]);
+        msg_bytes.push(self.deoj[1]);
+        msg_bytes.push(self.deoj[2]);
+        msg_bytes.push(self.esv);
+
+        let opc = self.opc();
+        msg_bytes.push(opc as u8);
+        for i in 0..opc {
+            let prop = self.property(i);
+            msg_bytes.push(prop.code());
+            let pdc = prop.size();
+            msg_bytes.push(pdc as u8);
+            let prop_data = prop.data();
+            for j in 0..pdc {
+                msg_bytes.push(prop_data[j]);
+            }
+        }
+        msg_bytes
+    }
 }

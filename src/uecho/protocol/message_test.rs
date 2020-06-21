@@ -38,6 +38,8 @@ mod tests {
             0x65, // f
         ];
 
+        // Checks parsed result
+
         let mut msg = Message::new();
 
         assert!(msg.parse(&test_msg_bytes));
@@ -61,5 +63,11 @@ mod tests {
                 assert_eq!(prop_data[j], prop_val)
             }
         }
+
+        // Exports and Checks reparsed result
+
+        let msg_bytes = msg.bytes();
+        let mut parsed_msg = Message::new();
+        assert!(parsed_msg.parse(&msg_bytes));
     }
 }
