@@ -16,7 +16,6 @@ pub struct Message {
     seoj: [u8; 3],
     deoj: [u8; 3],
     esv: u8,
-    opc: usize,
     properties: Vec<Property>,
 }
 
@@ -28,7 +27,6 @@ impl Message {
             seoj: [0; 3],
             deoj: [0; 3],
             esv: 0,
-            opc: 0,
             properties: Vec::<Property>::new(),
         }
     }
@@ -54,7 +52,7 @@ impl Message {
     }
 
     pub fn opc(&self) -> usize {
-        self.opc as usize
+        self.properties.len()
     }
 
     pub fn properties(&self) -> &Vec<Property> {
@@ -109,10 +107,10 @@ impl Message {
         self.seoj = [msg[0], msg[1], msg[2]];
         self.deoj = [msg[3], msg[4], msg[5]];
         self.esv = msg[6];
-        self.opc = msg[7] as usize;
 
+        let opc = msg[7] as usize;
         let mut prop_msg_offset = FORMAT1_HEADER_SIZE;
-        for _n in 0..self.opc {
+        for _n in 0..opc {
             let prop_msg = &(*msg)[prop_msg_offset..];
             let mut prop = Property::new();
             if !prop.parse(prop_msg) {
