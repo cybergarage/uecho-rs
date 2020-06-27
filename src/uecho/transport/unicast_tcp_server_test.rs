@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn unicast_tcp_server_test() {
-        let server = UnicastTcpServer::new();
+        let mut server = UnicastTcpServer::new();
         assert!(server.start());
         assert!(server.stop());
     }

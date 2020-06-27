@@ -15,11 +15,11 @@ impl MulticastManager {
         }
     }
 
-    pub fn start(&self) -> bool {
+    pub fn start(&mut self) -> bool {
         self.mcast_server.start()
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn stop(&mut self) -> bool {
         self.mcast_server.stop()
     }
 }

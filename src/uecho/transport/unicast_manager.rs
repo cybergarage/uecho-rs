@@ -24,7 +24,7 @@ impl UnicastManager {
         self.udp_server.send_message(msg, addr)
     }
 
-    pub fn start(&self) -> bool {
+    pub fn start(&mut self) -> bool {
         if !self.udp_server.start() {
             self.stop();
             return false;
@@ -36,7 +36,7 @@ impl UnicastManager {
         true
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn stop(&mut self) -> bool {
         let mut ret = self.udp_server.stop();
         ret |= self.tcp_server.stop();
         ret

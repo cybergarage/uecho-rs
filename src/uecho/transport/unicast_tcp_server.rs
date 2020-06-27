@@ -12,11 +12,11 @@ impl UnicastTcpServer {
         UnicastTcpServer {}
     }
 
-    pub fn start(&self) -> bool {
+    pub fn start(&mut self) -> bool {
         true
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn stop(&mut self) -> bool {
         true
     }
 }

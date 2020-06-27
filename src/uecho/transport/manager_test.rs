@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn message_manager_test() {
-        let mgr = Manager::new();
+        let mut mgr = Manager::new();
         assert!(mgr.start());
         assert!(mgr.stop());
     }
