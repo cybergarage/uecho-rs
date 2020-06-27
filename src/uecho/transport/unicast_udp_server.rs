@@ -2,26 +2,43 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::uecho::protocol::message::Message;
+use std::net::ToSocketAddrs;
 use std::net::UdpSocket;
-use std::ptr;
+//use std::ptr;
 
-pub struct UnicastUdpServer {}
+pub struct UnicastUdpServer {
+    socket: Option<UdpSocket>,
+}
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
-        UnicastUdpServer {}
+        UnicastUdpServer { socket: None }
     }
 
-    pub fn start(&self) -> bool {
-        /*
-        let mut socket = UdpSocket::bind("127.0.0.1:34254");
-        let mut buf = [0; 10];
-        let (amt, src) = socket.recv_from(&mut buf)?;
-        */
+    pub fn send_message<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
+        // https://doc.rust-lang.org/beta/std/net/struct.UdpSocket.html
+        let msg_bytes = msg.bytes();
         true
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn start(&mut self) -> bool {
+        let addr = format!("127.0.0.1:{}", 3690);
+        let socket = UdpSocket::bind(addr);
+        if socket.is_err() {
+            return false;
+        }
+
+        self.socket = Some(socket.unwrap());
+
+        true
+    }
+
+    pub fn stop(&mut self) -> bool {
+        if self.socket.is_none() {
+            return true;
+        }
+        self.socket = None;
         true
     }
 }

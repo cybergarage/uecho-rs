@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn unicast_udp_server_test() {
-        let server = UnicastUdpServer::new();
+        let mut server = UnicastUdpServer::new();
         assert!(server.start());
         assert!(server.stop());
     }
