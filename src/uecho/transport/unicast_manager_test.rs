@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn unicast_manager_test() {
-        let mgr = UnicastManager::new();
+        let mut mgr = UnicastManager::new();
         assert!(mgr.start());
         assert!(mgr.stop());
     }

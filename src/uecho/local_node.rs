@@ -15,14 +15,14 @@ impl LocalNode {
         }
     }
 
-    pub fn start(&self) -> bool {
+    pub fn start(&mut self) -> bool {
         if !self.server.start() {
             return false;
         }
         true
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn stop(&mut self) -> bool {
         if !self.server.stop() {
             return false;
         }
