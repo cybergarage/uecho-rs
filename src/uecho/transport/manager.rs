@@ -24,7 +24,7 @@ impl Manager {
         self.ucast_mgr.send_message(msg, addr)
     }
 
-    pub fn start(&self) -> bool {
+    pub fn start(&mut self) -> bool {
         if !self.ucast_mgr.start() {
             self.stop();
             return false;
@@ -36,7 +36,7 @@ impl Manager {
         true
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn stop(&mut self) -> bool {
         let mut ret = self.ucast_mgr.stop();
         ret |= self.mcast_mgr.stop();
         ret

@@ -15,14 +15,14 @@ impl Server {
         }
     }
 
-    pub fn start(&self) -> bool {
+    pub fn start(&mut self) -> bool {
         if !self.transport_mgr.start() {
             return false;
         }
         true
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn stop(&mut self) -> bool {
         if !self.transport_mgr.stop() {
             return false;
         }

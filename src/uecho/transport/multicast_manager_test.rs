@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn multicast_manager_test() {
-        let mgr = MulticastManager::new();
+        let mut mgr = MulticastManager::new();
         assert!(mgr.start());
         assert!(mgr.stop());
     }

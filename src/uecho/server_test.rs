@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn local_node_test() {
-        let server = Server::new();
+        let mut server = Server::new();
         assert!(server.start());
         assert!(server.stop());
     }

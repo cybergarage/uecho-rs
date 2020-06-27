@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn multicast_server_test() {
-        let server = MulticastServer::new();
+        let mut server = MulticastServer::new();
         assert!(server.start());
         assert!(server.stop());
     }
