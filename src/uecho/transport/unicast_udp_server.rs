@@ -15,22 +15,26 @@ impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
         UnicastUdpServer { socket: None }
     }
-
     pub fn send_message<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
-        // https://doc.rust-lang.org/beta/std/net/struct.UdpSocket.html
-        let msg_bytes = msg.bytes();
+        match &self.socket {
+            Some(socket) => {
+                let msg_bytes = msg.bytes();
+                if socket.send_to(&msg_bytes, addr).is_err() {
+                    return false
+                }
+            },
+            None => {return false}
+        }
         true
     }
 
     pub fn start(&mut self) -> bool {
-        let addr = format!("127.0.0.1:{}", 3690);
+        let addr = format!("localhost:{}", 3690);
         let socket = UdpSocket::bind(addr);
         if socket.is_err() {
             return false;
         }
-
-        self.socket = Some(socket.unwrap());
-
+        self.socket = socket.ok();
         true
     }
 
