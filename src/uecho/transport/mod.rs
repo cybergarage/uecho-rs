@@ -9,6 +9,7 @@ pub mod multicast_server;
 pub mod unicast_manager;
 pub mod unicast_tcp_server;
 pub mod unicast_udp_server;
+pub mod unicast_udp_worker;
 
 mod manager_test;
 mod multicast_manager_test;
