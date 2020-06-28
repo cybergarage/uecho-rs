@@ -5,6 +5,8 @@
 use crate::uecho::protocol::message::Message;
 use std::net::ToSocketAddrs;
 use std::net::UdpSocket;
+use std::thread;
+use std::thread::Builder;
 //use std::ptr;
 
 pub struct UnicastUdpServer {
@@ -13,17 +15,19 @@ pub struct UnicastUdpServer {
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
-        UnicastUdpServer { socket: None }
+        UnicastUdpServer {
+            socket: None,
+        }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
         match &self.socket {
             Some(socket) => {
                 let msg_bytes = msg.bytes();
                 if socket.send_to(&msg_bytes, addr).is_err() {
-                    return false
+                    return false;
                 }
-            },
-            None => {return false}
+            }
+            None => return false,
         }
         true
     }
@@ -34,7 +38,7 @@ impl UnicastUdpServer {
         if socket.is_err() {
             return false;
         }
-        self.socket = socket.ok();
+        self.socket = socket.ok();        
         true
     }
 
