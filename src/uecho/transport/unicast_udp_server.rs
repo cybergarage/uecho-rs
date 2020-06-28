@@ -3,20 +3,22 @@
 // license that can be found in the LICENSE file.
 
 use crate::uecho::protocol::message::Message;
+use crate::uecho::transport::unicast_udp_worker::UnicastUdpWorker;
 use std::net::ToSocketAddrs;
 use std::net::UdpSocket;
-use std::thread;
-use std::thread::Builder;
+
 //use std::ptr;
 
 pub struct UnicastUdpServer {
     socket: Option<UdpSocket>,
+    worker: Option<UnicastUdpWorker>,
 }
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
+            worker: None,
         }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
@@ -38,15 +40,20 @@ impl UnicastUdpServer {
         if socket.is_err() {
             return false;
         }
-        self.socket = socket.ok();        
+        self.socket = socket.ok();
+        self.worker = Some(UnicastUdpWorker::new());
         true
     }
 
     pub fn stop(&mut self) -> bool {
-        if self.socket.is_none() {
+        if self.socket.is_some() {
+            self.socket = None;
             return true;
         }
-        self.socket = None;
+        if self.worker.is_some() {
+            self.worker = None;
+            return true;
+        }
         true
     }
 }
