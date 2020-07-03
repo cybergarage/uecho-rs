@@ -4,6 +4,8 @@
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::unicast_udp_worker::UnicastUdpWorker;
+use std::io;
+use std::net::SocketAddr;
 use std::net::ToSocketAddrs;
 use std::net::UdpSocket;
 
@@ -21,7 +23,7 @@ impl UnicastUdpServer {
             worker: None,
         }
     }
-    pub fn send_message<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
+    pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
         match &self.socket {
             Some(socket) => {
                 let msg_bytes = msg.bytes();
@@ -32,6 +34,15 @@ impl UnicastUdpServer {
             None => return false,
         }
         true
+    }
+
+    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+        match &self.socket {
+            Some(socket) => {
+                return socket.local_addr();
+            }
+            None => return Err(io::Error::new(io::ErrorKind::NotConnected, "")),
+        }
     }
 
     pub fn start(&mut self) -> bool {
