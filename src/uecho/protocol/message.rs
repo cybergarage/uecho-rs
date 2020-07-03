@@ -31,6 +31,11 @@ impl Message {
         }
     }
 
+    pub fn set_tid(&mut self, tid: u32) {
+        self.tid[0] = ((tid & 0xFF00) >> 8) as u8;
+        self.tid[1] = (tid & 0x00FF) as u8;
+    }
+
     pub fn tid(&self) -> u32 {
         ((self.tid[0] as u32) << 8) + (self.tid[1] as u32)
     }
