@@ -64,10 +64,11 @@ mod tests {
             }
         }
 
-        // Exports and Checks reparsed result
+        // Checks exported message
 
         let msg_bytes = msg.bytes();
         let mut parsed_msg = Message::new();
         assert!(parsed_msg.parse(&msg_bytes));
+        assert!(msg.equals(&parsed_msg));
     }
 }
