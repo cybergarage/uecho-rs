@@ -85,5 +85,9 @@ mod tests {
         let test_tid = 0x1234 as u32;
         msg.set_tid(test_tid);
         assert_eq!(msg.tid(), test_tid);
+
+        let test_seoj = 0x2345 as u32;
+        msg.set_source_object_code(test_seoj);
+        assert_eq!(msg.source_object_code(), test_seoj);
     }
 }

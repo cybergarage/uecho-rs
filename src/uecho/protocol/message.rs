@@ -44,6 +44,12 @@ impl Message {
         ((eoj[0] as u32) << 16) + ((eoj[1] as u32) << 8) + (eoj[2] as u32)
     }
 
+    pub fn set_source_object_code(&mut self, code: u32) {
+        self.seoj[0] = ((code & 0xFF00) >> 16) as u8;
+        self.seoj[1] = ((code & 0xFF00) >> 8) as u8;
+        self.seoj[2] = (code & 0x00FF) as u8;
+    }
+
     pub fn source_object_code(&self) -> u32 {
         self.to_object_code(&self.seoj)
     }
