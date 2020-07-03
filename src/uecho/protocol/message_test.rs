@@ -93,5 +93,9 @@ mod tests {
         let test_deoj = 0x3456 as u32;
         msg.set_destination_object_code(test_deoj);
         assert_eq!(msg.destination_object_code(), test_deoj);
+
+        let test_esv = ESV_WRITE_REQUEST as u8;
+        msg.set_esv(test_esv);
+        assert_eq!(msg.esv(), test_esv);
     }
 }
