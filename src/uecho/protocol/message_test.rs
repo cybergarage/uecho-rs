@@ -10,6 +10,12 @@ mod tests {
     use crate::uecho::protocol::message::*;
 
     #[test]
+    fn new_message_test() {
+        let mut msg = Message::new();
+        assert!(msg.is_format1());
+    }
+
+    #[test]
     fn message_parse_test() {
         let test_msg_bytes = [
             HEADER_EHD1_ECHONET,
