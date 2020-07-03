@@ -20,8 +20,8 @@ impl Manager {
         }
     }
 
-    pub fn send_messagee<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
-        self.ucast_mgr.send_message(msg, addr)
+    pub fn send_messagee<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
+        self.ucast_mgr.send_message(addr, msg)
     }
 
     pub fn start(&mut self) -> bool {

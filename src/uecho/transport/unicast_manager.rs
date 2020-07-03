@@ -20,8 +20,8 @@ impl UnicastManager {
         }
     }
 
-    pub fn send_message<A: ToSocketAddrs>(&self, msg: &Message, addr: A) -> bool {
-        self.udp_server.send_message(msg, addr)
+    pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
+        self.udp_server.send_message(addr, msg)
     }
 
     pub fn start(&mut self) -> bool {
