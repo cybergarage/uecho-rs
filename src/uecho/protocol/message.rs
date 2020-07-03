@@ -64,6 +64,10 @@ impl Message {
         self.to_object_code(&self.deoj)
     }
 
+    pub fn set_esv(&mut self, code: u8) {
+        self.esv = code
+    }
+
     pub fn esv(&self) -> u8 {
         self.esv
     }
