@@ -54,6 +54,12 @@ impl Message {
         self.to_object_code(&self.seoj)
     }
 
+    pub fn set_destination_object_code(&mut self, code: u32) {
+        self.deoj[0] = ((code & 0xFF00) >> 16) as u8;
+        self.deoj[1] = ((code & 0xFF00) >> 8) as u8;
+        self.deoj[2] = (code & 0x00FF) as u8;
+    }
+
     pub fn destination_object_code(&self) -> u32 {
         self.to_object_code(&self.deoj)
     }
