@@ -7,7 +7,7 @@ use std::net::ToSocketAddrs;
 use std::net::UdpSocket;
 use std::thread;
 use std::thread::Builder;
-//use std::ptr;
+use std::thread::JoinHandle;
 
 pub struct UnicastUdpWorker {
     socket: Option<UdpSocket>,
@@ -20,7 +20,12 @@ impl UnicastUdpWorker {
 
     pub fn start(&mut self, socket: UdpSocket) -> bool {
         let thread = thread::spawn(move || {
+            let mut buf = [0 as u8; 1500];
             loop {
+                match socket.recv_from(&mut buf) {
+                    Ok((n_bytes, remote_addr)) => {}
+                    Err(_) => break,
+                }
             }
         });
         true
