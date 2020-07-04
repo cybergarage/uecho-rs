@@ -8,6 +8,9 @@ use std::io;
 use std::net::SocketAddr;
 use std::net::ToSocketAddrs;
 use std::net::UdpSocket;
+use std::thread;
+use std::thread::Builder;
+use std::thread::JoinHandle;
 
 //use std::ptr;
 
@@ -46,13 +49,32 @@ impl UnicastUdpServer {
     }
 
     pub fn start(&mut self) -> bool {
-        let addr = format!("localhost:{}", 3690);
-        let socket = UdpSocket::bind(addr);
-        if socket.is_err() {
-            return false;
-        }
-        self.socket = socket.ok();
-        self.worker = Some(UnicastUdpWorker::new());
+        let thread = thread::spawn(move || {
+            let addr = format!("localhost:{}", 3690);
+            let socket = UdpSocket::bind(addr);
+            if socket.is_err() {
+                return;
+            }
+            let mut buf = [0 as u8; 1500];
+            let socket_ref = &socket.ok();
+            loop {
+                let mut runnable = true;
+                match socket_ref {
+                    Some(socket) => match socket.recv_from(&mut buf) {
+                        Ok((n_bytes, remote_addr)) => {}
+                        Err(_) => {
+                            runnable = false;
+                        }
+                    },
+                    None => {
+                        runnable = false;
+                    }
+                }
+                if !runnable {
+                    break;
+                }
+            }
+        });
         true
     }
 
