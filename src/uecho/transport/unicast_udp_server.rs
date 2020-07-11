@@ -11,12 +11,15 @@ use std::net::UdpSocket;
 use std::thread;
 use std::thread::Builder;
 use std::thread::JoinHandle;
+use crate::uecho::protocol::message::*;
+
 
 //use std::ptr;
 
 pub struct UnicastUdpServer {
     socket: Option<UdpSocket>,
     worker: Option<UnicastUdpWorker>,
+    runnable: bool,
 }
 
 impl UnicastUdpServer {
@@ -24,6 +27,7 @@ impl UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
             worker: None,
+            runnable: false,
         }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
@@ -49,7 +53,8 @@ impl UnicastUdpServer {
     }
 
     pub fn start(&mut self) -> bool {
-        let thread = thread::spawn(move || {
+        self.runnable = true;
+        let thread = thread::spawn(|| {
             let addr = format!("localhost:{}", 3690);
             let socket = UdpSocket::bind(addr);
             if socket.is_err() {
@@ -58,20 +63,21 @@ impl UnicastUdpServer {
             let mut buf = [0 as u8; 1500];
             let socket_ref = &socket.ok();
             loop {
-                let mut runnable = true;
                 match socket_ref {
                     Some(socket) => match socket.recv_from(&mut buf) {
-                        Ok((n_bytes, remote_addr)) => {}
+                        Ok((n_bytes, remote_addr)) => {
+                            let mut msg = Message::new();
+                            if !msg.parse(&buf[0..n_bytes]) {
+                                continue;
+                            }
+                        }
                         Err(_) => {
-                            runnable = false;
+                            break;
                         }
                     },
                     None => {
-                        runnable = false;
+                        break;
                     }
-                }
-                if !runnable {
-                    break;
                 }
             }
         });
@@ -79,6 +85,7 @@ impl UnicastUdpServer {
     }
 
     pub fn stop(&mut self) -> bool {
+        self.runnable = false;
         if self.socket.is_some() {
             self.socket = None;
             return true;
