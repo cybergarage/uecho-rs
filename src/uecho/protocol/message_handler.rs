@@ -5,5 +5,5 @@
 use crate::uecho::protocol::message::Message;
 
 pub trait MessageHandler {
-    fn message_received(&self, msg: &Message) -> Result<Message, String>;
+    fn message_received(msg: &Message) -> Result<Message, String>;
 }
