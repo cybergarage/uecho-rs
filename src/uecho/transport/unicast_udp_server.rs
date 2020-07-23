@@ -7,9 +7,7 @@ use crate::uecho::protocol::message::*;
 use crate::uecho::protocol::message_handler::MessageHandler;
 use crate::uecho::transport::unicast_udp_worker::UnicastUdpWorker;
 use std::io;
-use std::net::SocketAddr;
-use std::net::ToSocketAddrs;
-use std::net::UdpSocket;
+use std::net::{IpAddr, Ipv4Addr, SocketAddr, ToSocketAddrs, UdpSocket};
 use std::rc::Weak;
 use std::thread;
 use std::thread::Builder;
@@ -46,20 +44,15 @@ impl UnicastUdpServer {
         true
     }
 
-    pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        match &self.socket {
-            Some(socket) => {
-                return socket.local_addr();
-            }
-            None => return Err(io::Error::new(io::ErrorKind::NotConnected, "")),
-        }
+    pub fn local_addr(&self) -> SocketAddr {
+        return SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 3690);
     }
 
     pub fn start(&mut self) -> bool {
         self.runnable = true;
-        let thread = thread::spawn(|| {
-            let addr = format!("localhost:{}", 3690);
-            let socket = UdpSocket::bind(addr);
+        let local_addr = self.local_addr();
+        let thread = thread::spawn(move || {
+            let socket = UdpSocket::bind(local_addr);
             if socket.is_err() {
                 return;
             }
