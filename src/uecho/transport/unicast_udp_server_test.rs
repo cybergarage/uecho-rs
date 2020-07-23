@@ -14,11 +14,10 @@ mod tests {
         let mut server = UnicastUdpServer::new();
         assert!(server.start());
         let server_addr = server.local_addr();
-        assert!(server_addr.is_ok());
 
         let mut msg = Message::new();
         msg.set_esv(ESV_READ_REQUEST);
-        assert!(server.send_message(server_addr.unwrap(), &msg));
+        assert!(server.send_message(server_addr, &msg));
 
         assert!(server.stop());
     }
