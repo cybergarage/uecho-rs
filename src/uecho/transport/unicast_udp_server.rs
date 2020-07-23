@@ -44,15 +44,20 @@ impl UnicastUdpServer {
         true
     }
 
-    pub fn local_addr(&self) -> SocketAddr {
-        return SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 3690);
+    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+        match &self.socket {
+            Some(socket) => {
+                return socket.local_addr();
+            }
+            None => return Err(io::Error::new(io::ErrorKind::NotConnected, "")),
+        }
     }
 
     pub fn start(&mut self) -> bool {
         self.runnable = true;
-        let local_addr = self.local_addr();
-        let thread = thread::spawn(move || {
-            let socket = UdpSocket::bind(local_addr);
+        let thread = thread::spawn(|| {
+            let addr = format!("localhost:{}", 3690);
+            let socket = UdpSocket::bind(addr);
             if socket.is_err() {
                 return;
             }
