@@ -12,6 +12,7 @@ use std::rc::Weak;
 use std::thread;
 use std::thread::Builder;
 use std::thread::JoinHandle;
+use std::time::Duration;
 
 pub struct UnicastUdpServer {
     socket: Option<UdpSocket>,
@@ -55,7 +56,7 @@ impl UnicastUdpServer {
 
     pub fn start(&mut self) -> bool {
         self.runnable = true;
-        let thread = thread::spawn(|| {
+        thread::spawn(|| {
             let addr = format!("localhost:{}", 3690);
             let socket = UdpSocket::bind(addr);
             if socket.is_err() {
