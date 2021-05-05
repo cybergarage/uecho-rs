@@ -2,11 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::uecho::protocol::message::Message;
 use std::io;
 use std::net::{SocketAddr, ToSocketAddrs, UdpSocket};
 use std::thread;
 use std::sync::Arc;
+
+use crate::uecho::protocol::message::Message;
+use crate::uecho::transport::default::{PORT, MAX_PACKET_SIZE};
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
@@ -48,7 +50,7 @@ impl UnicastUdpServer {
 
     pub fn start(&mut self) -> bool {
         self.runnable = true;
-        let addr = format!("localhost:{}", 3690);
+        let addr = format!("localhost:{}", PORT);
         let socket_res = UdpSocket::bind(addr);
         if socket_res.is_err() {
             return false;
@@ -56,12 +58,12 @@ impl UnicastUdpServer {
         self.socket = Some(Arc::new(socket_res.ok().unwrap()));
         let socket = self.socket.clone();
         thread::spawn(move || {
-            let mut buf = [0 as u8; 1500];
+            let mut buf = [0 as u8; MAX_PACKET_SIZE];
             let socket = socket.unwrap();
             loop {
                 let recv_res = socket.recv_from(&mut buf);
                 match &recv_res {
-                    Ok((n_bytes, remote_addr)) => {
+                    Ok((n_bytes, _remote_addr)) => {
                         let mut msg = Message::new();
                         if !msg.parse(&buf[0..*n_bytes]) {
                             continue;

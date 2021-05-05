@@ -2,6 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//const MULTICAST_ADDRESS: &str = "224.0.23.0";
-const PORT: u16 = 3610;
-const MAX_PACKET_SIZE: usize = 1024;
+pub const MULTICAST_ADDRESS: &str = "224.0.23.0";
+pub const PORT: u16 = 3610;
+pub const MAX_PACKET_SIZE: usize = 1024;
