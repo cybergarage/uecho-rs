@@ -3,20 +3,13 @@
 // license that can be found in the LICENSE file.
 
 use crate::uecho::protocol::message::Message;
-use crate::uecho::protocol::message::*;
-use crate::uecho::protocol::message_handler::MessageHandler;
-use crate::uecho::transport::unicast_udp_worker::UnicastUdpWorker;
 use std::io;
-use std::net::{IpAddr, Ipv4Addr, SocketAddr, ToSocketAddrs, UdpSocket};
-use std::rc::Weak;
+use std::net::{SocketAddr, ToSocketAddrs, UdpSocket};
 use std::thread;
-use std::thread::Builder;
-use std::thread::JoinHandle;
-use std::time::Duration;
+use std::sync::Arc;
 
 pub struct UnicastUdpServer {
-    socket: Option<UdpSocket>,
-    worker: Option<UnicastUdpWorker>,
+    socket: Option<Arc<UdpSocket>>,
     runnable: bool,
     //msg_handler: Option<MessageHandler>,
     //msg_handler: Option<MessageHandler>,
@@ -26,7 +19,6 @@ impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
-            worker: None,
             runnable: false,
             //msg_handler: None,
             // Weak::new(),
@@ -56,30 +48,28 @@ impl UnicastUdpServer {
 
     pub fn start(&mut self) -> bool {
         self.runnable = true;
-        thread::spawn(|| {
-            let addr = format!("localhost:{}", 3690);
-            let socket = UdpSocket::bind(addr);
-            if socket.is_err() {
-                return;
-            }
+        let addr = format!("localhost:{}", 3690);
+        let socket_res = UdpSocket::bind(addr);
+        if socket_res.is_err() {
+            return false;
+        }
+        self.socket = Some(Arc::new(socket_res.ok().unwrap()));
+        let socket = self.socket.clone();
+        thread::spawn(move || {
             let mut buf = [0 as u8; 1500];
-            let socket_ref = &socket.ok();
+            let socket = socket.unwrap();
             loop {
-                match socket_ref {
-                    Some(socket) => match socket.recv_from(&mut buf) {
-                        Ok((n_bytes, remote_addr)) => {
-                            let mut msg = Message::new();
-                            if !msg.parse(&buf[0..n_bytes]) {
-                                continue;
-                            }
+                let recv_res = socket.recv_from(&mut buf);
+                match &recv_res {
+                    Ok((n_bytes, remote_addr)) => {
+                        let mut msg = Message::new();
+                        if !msg.parse(&buf[0..*n_bytes]) {
+                            continue;
                         }
-                        Err(_) => {
-                            break;
-                        }
-                    },
-                    None => {
-                        break;
                     }
+                    Err(_) => {
+                        break;
+                    },
                 }
             }
         });
@@ -90,10 +80,6 @@ impl UnicastUdpServer {
         self.runnable = false;
         if self.socket.is_some() {
             self.socket = None;
-            return true;
-        }
-        if self.worker.is_some() {
-            self.worker = None;
             return true;
         }
         true
