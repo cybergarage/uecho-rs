@@ -6,8 +6,8 @@ use crate::uecho::protocol::property::*;
 
 pub const HEADER_EHD1_ECHONET: u8 = 0x10;
 pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
-pub const FRAME_HEADER_SIZE: usize = (1 + 1 + 2);
-pub const FORMAT1_HEADER_SIZE: usize = (3 + 3 + 1 + 1);
+pub const FRAME_HEADER_SIZE: usize = 1 + 1 + 2;
+pub const FORMAT1_HEADER_SIZE: usize = 3 + 3 + 1 + 1;
 pub const TID_MAX: usize = 65535;
 
 pub struct Message {
