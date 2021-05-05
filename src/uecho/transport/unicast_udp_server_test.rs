@@ -4,19 +4,19 @@
 
 #[cfg(test)]
 mod tests {
+    use std::thread;
+    use std::time::Duration;
 
     use crate::uecho::protocol::esv::*;
     use crate::uecho::protocol::message::*;
     use crate::uecho::transport::unicast_udp_server::*;
-
-    use std::thread;
-    use std::time::Duration;
 
     #[test]
     fn unicast_udp_server_test() {
         let mut server = UnicastUdpServer::new();
         assert!(server.start());
         thread::sleep(Duration::from_secs(1));
+
         let server_addr = server.local_addr();
         assert!(server_addr.is_ok());
 
