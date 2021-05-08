@@ -12,7 +12,6 @@ use crate::uecho::transport::default::{PORT, MAX_PACKET_SIZE};
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
-    runnable: bool,
     //msg_handler: Option<MessageHandler>,
     //msg_handler: Option<MessageHandler>,
 }
@@ -21,7 +20,6 @@ impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
-            runnable: false,
             //msg_handler: None,
             // Weak::new(),
         }
@@ -49,7 +47,6 @@ impl UnicastUdpServer {
     }
 
     pub fn start(&mut self) -> bool {
-        self.runnable = true;
         let addr = format!("localhost:{}", PORT);
         let socket_res = UdpSocket::bind(addr);
         if socket_res.is_err() {
@@ -79,7 +76,6 @@ impl UnicastUdpServer {
     }
 
     pub fn stop(&mut self) -> bool {
-        self.runnable = false;
         if self.socket.is_some() {
             self.socket = None;
             return true;
