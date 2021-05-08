@@ -9,19 +9,16 @@ use std::sync::Arc;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{PORT, MAX_PACKET_SIZE};
+use crate::uecho::transport::observer::Observer;
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
-    //msg_handler: Option<MessageHandler>,
-    //msg_handler: Option<MessageHandler>,
 }
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
-            //msg_handler: None,
-            // Weak::new(),
         }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
