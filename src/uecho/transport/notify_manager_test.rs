@@ -8,7 +8,7 @@ mod tests {
     use crate::uecho::transport::notify_manager::*;
 
     #[test]
-    fn notify_manager_test() {
+    fn notiry_manager_test() {
         let mut mgr = NotifytManager::new();
         assert!(mgr.start());
         assert!(mgr.stop());
