@@ -5,13 +5,13 @@
 use crate::uecho::transport::observer::Observer;
 
 pub struct NotifytManager {
-    observers: Box<dyn Observer>,
+    observers: Vec<Box<Observer>>,
 }
 
 impl NotifytManager {
     pub fn new() -> NotifytManager {
         NotifytManager {
-            observers:Box::<dyn Observer>::new(),
+            observers:Vec::new(),
         }
     }
 
