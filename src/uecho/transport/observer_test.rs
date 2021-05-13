@@ -8,6 +8,5 @@ mod tests {
     use crate::uecho::transport::observer::*;
 
     #[test]
-    fn message_manager_test() {
-    }
+    fn message_manager_test() {}
 }
