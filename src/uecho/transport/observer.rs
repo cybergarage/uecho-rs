@@ -5,5 +5,5 @@
 use crate::uecho::protocol::message::Message;
 
 pub trait Observer {
-    fn on_notify(&mut self, msg: &Message) -> bool;
+    fn on_notify(&self, msg: &Message) -> bool;
 }
