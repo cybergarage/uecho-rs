@@ -4,11 +4,11 @@
 
 use std::io;
 use std::net::{SocketAddr, ToSocketAddrs, UdpSocket};
-use std::thread;
 use std::sync::Arc;
+use std::thread;
 
 use crate::uecho::protocol::message::Message;
-use crate::uecho::transport::default::{PORT, MAX_PACKET_SIZE};
+use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
 use crate::uecho::transport::observer::Observer;
 
 pub struct UnicastUdpServer {
@@ -17,9 +17,7 @@ pub struct UnicastUdpServer {
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
-        UnicastUdpServer {
-            socket: None,
-        }
+        UnicastUdpServer { socket: None }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
         match &self.socket {
@@ -65,7 +63,7 @@ impl UnicastUdpServer {
                     }
                     Err(_) => {
                         break;
-                    },
+                    }
                 }
             }
         });
