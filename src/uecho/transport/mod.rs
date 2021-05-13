@@ -3,20 +3,20 @@
 // license that can be found in the LICENSE file.
 
 pub mod default;
-pub mod observer;
-pub mod notify_manager;
 pub mod manager;
 pub mod multicast_manager;
 pub mod multicast_server;
+pub mod notify_manager;
+pub mod observer;
 pub mod unicast_manager;
 pub mod unicast_tcp_server;
 pub mod unicast_udp_server;
 
-mod observer_test;
-mod notify_manager_test;
 mod manager_test;
 mod multicast_manager_test;
 mod multicast_server_test;
+mod notify_manager_test;
+mod observer_test;
 mod unicast_manager_test;
 mod unicast_tcp_server_test;
 mod unicast_udp_server_test;
