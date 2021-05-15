@@ -7,17 +7,20 @@ mod tests {
 
     use crate::uecho::protocol::message::Message;
     use crate::uecho::transport::notify_manager::*;
+    use crate::uecho::transport::observer::Observer;
 
     struct NotifytCounter {
-        count: i32,
+        pub count: i32,
     }
 
     impl NotifytCounter {
         pub fn new() -> NotifytCounter {
-            NotifytCounter { count: 1 }
+            NotifytCounter { count: 0 }
         }
+    }
 
-        pub fn on_notify(&mut self, msg: &Message) -> bool {
+    impl Observer for NotifytCounter {
+        fn on_notify(&self, msg: &Message) -> bool {
             self.count = self.count + 1;
             true
         }
@@ -25,12 +28,23 @@ mod tests {
 
     #[test]
     fn notify_manager_test() {
+        const TEST_OBSERVER_COUNT: i32 = 10;
+
         let mut mgr = NotifytManager::new();
         assert!(mgr.start());
 
+        for _ in 1..TEST_OBSERVER_COUNT {
+            let observer = NotifytCounter::new();
+            assert!(mgr.add_observer(Box::new(observer)));
+        }
+
         let msg = Message::new();
 
-        assert!(mgr.notify(&msg));
+        for _ in 1..TEST_OBSERVER_COUNT {
+            assert!(mgr.notify(&msg));
+        }
+
+        //assert_eq!(a, b);
 
         assert!(mgr.stop());
     }
