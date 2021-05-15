@@ -18,9 +18,9 @@ impl NotifytManager {
 
     pub fn notify(&mut self, msg: &Message) -> bool {
         for observer in &self.observers {
-            //     if !o.on_notify(msg) {
-            //         return false;
-            //     }
+            if !observer.on_notify(msg) {
+                return false;
+            }
         }
         true
     }
