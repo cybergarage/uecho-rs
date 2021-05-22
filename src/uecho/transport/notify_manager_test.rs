@@ -20,7 +20,7 @@ mod tests {
     }
 
     impl Observer for NotifytCounter {
-        fn on_notify(&self, msg: &Message) -> bool {
+        fn on_notify(&mut self, msg: &Message) -> bool {
             self.count = self.count + 1;
             true
         }
