@@ -44,7 +44,7 @@ mod tests {
             assert!(mgr.notify(&msg));
         }
 
-        //assert_eq!(a, b);
+        //assert_eq!(observer.count, TEST_OBSERVER_COUNT);
 
         assert!(mgr.stop());
     }
