@@ -5,23 +5,26 @@
 #[cfg(test)]
 mod tests {
 
+    use std::sync::Arc;
+    use std::sync::Mutex;
+
     use crate::uecho::protocol::message::Message;
     use crate::uecho::transport::notify_manager::*;
     use crate::uecho::transport::observer::Observer;
 
     struct NotifytCounter {
-        pub count: i32,
+        pub counter: Arc<Mutex<i32>>,
     }
 
     impl NotifytCounter {
-        pub fn new() -> NotifytCounter {
-            NotifytCounter { count: 0 }
+        pub fn new(counter: Arc<Mutex<i32>>) -> NotifytCounter {
+            NotifytCounter { counter: counter }
         }
     }
 
     impl Observer for NotifytCounter {
         fn on_notify(&mut self, msg: &Message) -> bool {
-            self.count = self.count + 1;
+            *self.counter.lock().unwrap() = *self.counter.lock().unwrap() + 1;
             true
         }
     }
@@ -29,12 +32,13 @@ mod tests {
     #[test]
     fn notify_manager_test() {
         const TEST_OBSERVER_COUNT: i32 = 10;
+        let counter = Arc::new(Mutex::new(0));
 
         let mut mgr = NotifytManager::new();
         assert!(mgr.start());
 
         for _ in 1..TEST_OBSERVER_COUNT {
-            let observer = NotifytCounter::new();
+            let observer = NotifytCounter::new(counter.clone());
             assert!(mgr.add_observer(Box::new(observer)));
         }
 
@@ -44,7 +48,7 @@ mod tests {
             assert!(mgr.notify(&msg));
         }
 
-        //assert_eq!(observer.count, TEST_OBSERVER_COUNT);
+        assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
 
         assert!(mgr.stop());
     }
