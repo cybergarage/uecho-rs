@@ -24,7 +24,8 @@ mod tests {
 
     impl Observer for NotifytCounter {
         fn on_notify(&mut self, msg: &Message) -> bool {
-            *self.counter.lock().unwrap() = *self.counter.lock().unwrap() + 1;
+            let mut counter = self.counter.lock().unwrap();
+            *counter += 1;
             true
         }
     }
@@ -37,17 +38,13 @@ mod tests {
         let mut mgr = NotifytManager::new();
         assert!(mgr.start());
 
-        for _ in 1..TEST_OBSERVER_COUNT {
+        for _ in 0..TEST_OBSERVER_COUNT {
             let observer = NotifytCounter::new(counter.clone());
             assert!(mgr.add_observer(Box::new(observer)));
         }
 
         let msg = Message::new();
-
-        for _ in 1..TEST_OBSERVER_COUNT {
-            assert!(mgr.notify(&msg));
-        }
-
+        assert!(mgr.notify(&msg));
         assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
 
         assert!(mgr.stop());
