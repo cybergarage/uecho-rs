@@ -19,7 +19,7 @@ impl NotifytManager {
     }
 
     pub fn notify(&mut self, msg: &Message) -> bool {
-        for observer in &self.observers {
+        for (_, observer) in self.observers.iter().enumerate() {
             if !observer.borrow_mut().on_notify(msg) {
                 return false;
             }
