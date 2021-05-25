@@ -35,7 +35,7 @@ mod tests {
         const TEST_OBSERVER_COUNT: i32 = 10;
         let counter = Arc::new(Mutex::new(0));
 
-        let mut mgr = NotifytManager::new();
+        let mut mgr = DefaultNotifytManager::new();
         assert!(mgr.start());
 
         for _ in 0..TEST_OBSERVER_COUNT {
