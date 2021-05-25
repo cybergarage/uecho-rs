@@ -9,7 +9,7 @@ mod tests {
 
     #[test]
     fn notify_manager_test() {
-        let mut mgr = NotifytManager::new();
+        let mut mgr = DefaultNotifytManager::new();
         assert!(mgr.start());
         assert!(mgr.stop());
     }
