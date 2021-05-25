@@ -5,10 +5,10 @@
 use std::cell::RefCell;
 
 use crate::uecho::protocol::message::Message;
-use crate::uecho::transport::observer::Observer;
+use crate::uecho::transport::observer::{Observer, Observers};
 
 pub struct NotifytManager {
-    observers: Vec<RefCell<Box<dyn Observer>>>,
+    observers: Observers,
 }
 
 impl NotifytManager {

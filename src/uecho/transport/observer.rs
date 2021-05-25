@@ -2,8 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::cell::RefCell;
+
 use crate::uecho::protocol::message::Message;
 
 pub trait Observer {
     fn on_notify(&mut self, msg: &Message) -> bool;
 }
+
+pub type Observers = Vec<RefCell<Box<dyn Observer>>>;
