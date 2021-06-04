@@ -3,16 +3,21 @@
 // license that can be found in the LICENSE file.
 
 use std::cell::RefCell;
+use std::cell::RefMut;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::observer::{Observer, Observers};
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &Observers;
-    fn add_observer(&mut self, observer: Box<dyn Observer>) -> bool;
+    fn add_observer(&mut self, observer: Box<dyn Observer>) -> bool {
+        self.observers().borrow_mut().push(RefCell::new(observer));
+        true
+    }
 
     fn notify(&mut self, msg: &Message) -> bool {
-        for (_, observer) in self.observers().iter().enumerate() {
+        let observers = self.observers().borrow_mut();
+        for (_, observer) in observers.iter().enumerate() {
             if !observer.borrow_mut().on_notify(msg) {
                 return false;
             }
@@ -36,18 +41,13 @@ pub struct DefaultNotifytManager {
 impl DefaultNotifytManager {
     pub fn new() -> DefaultNotifytManager {
         DefaultNotifytManager {
-            observers: Vec::new(),
+            observers: RefCell::new(Vec::new()),
         }
     }
 }
 
 impl NotifytManager for DefaultNotifytManager {
     fn observers(&mut self) -> &Observers {
-        &self.observers
-    }
-
-    fn add_observer(&mut self, observer: Box<dyn Observer>) -> bool {
-        self.observers.push(RefCell::new(observer));
-        true
+        return &self.observers;
     }
 }

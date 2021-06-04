@@ -10,4 +10,4 @@ pub trait Observer {
     fn on_notify(&mut self, msg: &Message) -> bool;
 }
 
-pub type Observers = Vec<RefCell<Box<dyn Observer>>>;
+pub type Observers = RefCell<Vec<RefCell<Box<dyn Observer>>>>;
