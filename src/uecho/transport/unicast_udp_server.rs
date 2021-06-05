@@ -68,7 +68,8 @@ impl UnicastUdpServer {
                     }
                     Err(_) => {
                         break;
-                    }
+                    } // FIXME:
+                      // self.notify(&msg);
                 }
             }
         });
