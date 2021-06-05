@@ -40,7 +40,6 @@ pub struct DefaultNotifytManager {
 impl DefaultNotifytManager {
     pub fn new() -> DefaultNotifytManager {
         DefaultNotifytManager {
-            //observers: ,
             observers: observer_new(),
         }
     }
