@@ -9,15 +9,20 @@ use std::thread;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
-use crate::uecho::transport::observer::Observer;
+use crate::uecho::transport::notify_manager::*;
+use crate::uecho::transport::observer::*;
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
+    observers: Observers,
 }
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
-        UnicastUdpServer { socket: None }
+        UnicastUdpServer {
+            socket: None,
+            observers: observer_new(),
+        }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
         match &self.socket {
@@ -76,5 +81,11 @@ impl UnicastUdpServer {
             return true;
         }
         true
+    }
+}
+
+impl NotifytManager for UnicastUdpServer {
+    fn observers(&mut self) -> &Observers {
+        return &self.observers;
     }
 }
