@@ -3,10 +3,9 @@
 // license that can be found in the LICENSE file.
 
 use std::cell::RefCell;
-use std::cell::RefMut;
 
 use crate::uecho::protocol::message::Message;
-use crate::uecho::transport::observer::{Observer, Observers};
+use crate::uecho::transport::observer::*;
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &Observers;
@@ -41,7 +40,8 @@ pub struct DefaultNotifytManager {
 impl DefaultNotifytManager {
     pub fn new() -> DefaultNotifytManager {
         DefaultNotifytManager {
-            observers: RefCell::new(Vec::new()),
+            //observers: ,
+            observers: observer_new(),
         }
     }
 }
