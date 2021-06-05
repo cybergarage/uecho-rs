@@ -11,3 +11,13 @@ pub trait Observer {
 }
 
 pub type Observers = RefCell<Vec<RefCell<Box<dyn Observer>>>>;
+
+trait ObserverMethods {
+    fn new() -> Observers;
+}
+
+impl ObserverMethods for Observers {
+    fn new() -> Observers {
+        RefCell::new(Vec::new())
+    }
+}
