@@ -12,12 +12,17 @@ pub trait Observer {
 
 pub type Observers = RefCell<Vec<RefCell<Box<dyn Observer>>>>;
 
-trait ObserverMethods {
-    fn new() -> Observers;
-}
+// NOTE: Could not override new() for alias type
+// trait ObserverMethods {
+//     fn new() -> Observers;
+// }
+//
+// impl ObserverMethods for Observers {
+//     fn new() -> Observers {
+//         RefCell::new(Vec::new())
+//     }
+// }
 
-impl ObserverMethods for Observers {
-    fn new() -> Observers {
-        RefCell::new(Vec::new())
-    }
+pub fn observer_new() -> Observers {
+    RefCell::new(Vec::new())
 }
