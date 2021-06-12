@@ -13,3 +13,7 @@ pub trait Observer {
 
 pub type ObserverEntity = Box<dyn Observer + Send>;
 pub type Observers = Vec<Arc<Mutex<ObserverEntity>>>;
+
+pub fn observers_new() -> Observers {
+    Vec::new()
+}

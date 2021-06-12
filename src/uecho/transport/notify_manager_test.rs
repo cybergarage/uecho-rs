@@ -2,33 +2,36 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::sync::Arc;
+use std::sync::Mutex;
+
+use crate::uecho::protocol::message::Message;
+use crate::uecho::transport::observer::Observer;
+
+pub struct TestNotifyCounter {
+    pub counter: Arc<Mutex<i32>>,
+}
+
+impl TestNotifyCounter {
+    pub fn new(counter: Arc<Mutex<i32>>) -> TestNotifyCounter {
+        TestNotifyCounter { counter: counter }
+    }
+}
+
+impl Observer for TestNotifyCounter {
+    fn on_notify(&mut self, msg: &Message) -> bool {
+        let mut counter = self.counter.lock().unwrap();
+        *counter += 1;
+        true
+    }
+}
+
 #[cfg(test)]
 mod tests {
 
-    use std::sync::Arc;
-    use std::sync::Mutex;
-
     use crate::uecho::protocol::message::Message;
     use crate::uecho::transport::notify_manager::*;
-    use crate::uecho::transport::observer::Observer;
-
-    struct NotifytCounter {
-        pub counter: Arc<Mutex<i32>>,
-    }
-
-    impl NotifytCounter {
-        pub fn new(counter: Arc<Mutex<i32>>) -> NotifytCounter {
-            NotifytCounter { counter: counter }
-        }
-    }
-
-    impl Observer for NotifytCounter {
-        fn on_notify(&mut self, msg: &Message) -> bool {
-            let mut counter = self.counter.lock().unwrap();
-            *counter += 1;
-            true
-        }
-    }
+    use crate::uecho::transport::notify_manager_test::*;
 
     #[test]
     fn notify_manager_test() {
@@ -39,7 +42,7 @@ mod tests {
         assert!(mgr.start());
 
         for _ in 0..TEST_OBSERVER_COUNT {
-            let observer = NotifytCounter::new(counter.clone());
+            let observer = TestNotifyCounter::new(counter.clone());
             assert!(mgr.add_observer(Box::new(observer)));
         }
 
