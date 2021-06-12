@@ -5,19 +5,24 @@
 use std::io;
 use std::net::{SocketAddr, ToSocketAddrs, UdpSocket};
 use std::sync::Arc;
+use std::sync::Mutex;
 use std::thread;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
-use crate::uecho::transport::observer::Observer;
+use crate::uecho::transport::notify_manager::*;
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
+    notifier: Arc<Mutex<DefaultNotifytManager>>,
 }
 
 impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
-        UnicastUdpServer { socket: None }
+        UnicastUdpServer {
+            socket: None,
+            notifier: Arc::new(Mutex::new(DefaultNotifytManager::new())),
+        }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
         match &self.socket {
@@ -49,6 +54,7 @@ impl UnicastUdpServer {
         }
         self.socket = Some(Arc::new(socket_res.ok().unwrap()));
         let socket = self.socket.clone();
+        let notifier = self.notifier.clone();
         thread::spawn(move || {
             let mut buf = [0 as u8; MAX_PACKET_SIZE];
             let socket = socket.unwrap();
@@ -60,6 +66,7 @@ impl UnicastUdpServer {
                         if !msg.parse(&buf[0..*n_bytes]) {
                             continue;
                         }
+                        notifier.lock().unwrap().notify(&msg);
                     }
                     Err(_) => {
                         break;
