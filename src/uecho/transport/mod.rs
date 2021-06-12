@@ -7,6 +7,7 @@ pub mod manager;
 pub mod multicast_manager;
 pub mod multicast_server;
 pub mod notify_manager;
+pub mod notifier;
 pub mod observer;
 pub mod unicast_manager;
 pub mod unicast_tcp_server;

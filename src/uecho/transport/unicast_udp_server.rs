@@ -10,6 +10,7 @@ use std::thread;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
+use crate::uecho::transport::notifier::*;
 use crate::uecho::transport::notify_manager::*;
 
 pub struct UnicastUdpServer {
@@ -21,7 +22,7 @@ impl UnicastUdpServer {
     pub fn new() -> UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
-            notifier: Arc::new(Mutex::new(DefaultNotifytManager::new())),
+            notifier: notifier_new(),
         }
     }
     pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
