@@ -2,12 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use std::cell::RefCell;
 use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::uecho::protocol::message::Message;
-use crate::uecho::transport::observer::{ObserverEntity, Observers};
+use crate::uecho::transport::observer::*;
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &Observers;
@@ -38,7 +37,7 @@ pub struct DefaultNotifytManager {
 impl DefaultNotifytManager {
     pub fn new() -> DefaultNotifytManager {
         DefaultNotifytManager {
-            observers: Vec::new(),
+            observers: observers_new(),
         }
     }
 }
