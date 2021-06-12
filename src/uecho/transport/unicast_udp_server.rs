@@ -12,6 +12,7 @@ use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
 use crate::uecho::transport::notifier::*;
 use crate::uecho::transport::notify_manager::*;
+use crate::uecho::transport::observer::*;
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
