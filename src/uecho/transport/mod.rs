@@ -16,7 +16,6 @@ mod manager_test;
 mod multicast_manager_test;
 mod multicast_server_test;
 mod notify_manager_test;
-mod observer_test;
 mod unicast_manager_test;
 mod unicast_tcp_server_test;
 mod unicast_udp_server_test;
