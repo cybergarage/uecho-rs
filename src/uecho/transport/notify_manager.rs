@@ -13,7 +13,7 @@ pub trait NotifytManager {
     fn add_observer(&mut self, observer: ObserverEntity) -> bool;
 
     fn notify(&mut self, msg: &Message) -> bool {
-        for (_, observer) in self.observers().iter().enumerate() {
+        for (_, observer) in self.observers().lock().unwrap().iter().enumerate() {
             if !observer.lock().unwrap().on_notify(msg) {
                 return false;
             }
@@ -48,7 +48,10 @@ impl NotifytManager for DefaultNotifytManager {
     }
 
     fn add_observer(&mut self, observer: ObserverEntity) -> bool {
-        self.observers.push(Arc::new(Mutex::new(observer)));
+        self.observers
+            .lock()
+            .unwrap()
+            .push(Arc::new(Mutex::new(observer)));
         true
     }
 }
