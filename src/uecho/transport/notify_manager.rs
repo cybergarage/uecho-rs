@@ -2,15 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::cell::RefCell;
 use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::uecho::protocol::message::Message;
-use crate::uecho::transport::observer::{Observer, Observers};
+use crate::uecho::transport::observer::{ObserverEntity, Observers};
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &Observers;
-    fn add_observer(&mut self, observer: Box<dyn Observer>) -> bool;
+    fn add_observer(&mut self, observer: ObserverEntity) -> bool;
 
     fn notify(&mut self, msg: &Message) -> bool {
         for (_, observer) in self.observers().iter().enumerate() {
@@ -47,7 +48,7 @@ impl NotifytManager for DefaultNotifytManager {
         &self.observers
     }
 
-    fn add_observer(&mut self, observer: Box<dyn Observer>) -> bool {
+    fn add_observer(&mut self, observer: ObserverEntity) -> bool {
         self.observers.push(Arc::new(Mutex::new(observer)));
         true
     }
