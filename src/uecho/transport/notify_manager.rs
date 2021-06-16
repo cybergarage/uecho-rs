@@ -10,7 +10,13 @@ use crate::uecho::transport::observer::*;
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &Observers;
-    fn add_observer(&mut self, observer: ObserverEntity) -> bool;
+    fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+        self.observers()
+            .lock()
+            .unwrap()
+            .push(Arc::new(Mutex::new(observer)));
+        true
+    }
 
     fn notify(&mut self, msg: &Message) -> bool {
         for (_, observer) in self.observers().lock().unwrap().iter().enumerate() {
@@ -45,13 +51,5 @@ impl DefaultNotifytManager {
 impl NotifytManager for DefaultNotifytManager {
     fn observers(&mut self) -> &Observers {
         &self.observers
-    }
-
-    fn add_observer(&mut self, observer: ObserverEntity) -> bool {
-        self.observers
-            .lock()
-            .unwrap()
-            .push(Arc::new(Mutex::new(observer)));
-        true
     }
 }
