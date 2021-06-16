@@ -24,7 +24,7 @@ mod tests {
 
         for _ in 0..TEST_OBSERVER_COUNT {
             let observer = TestNotifyCounter::new(counter.clone());
-            //assert!(server.add_observer(Box::new(observer)));
+            assert!(server.add_observer(Box::new(observer)));
         }
 
         assert!(server.start());
@@ -37,7 +37,7 @@ mod tests {
         msg.set_esv(ESV_READ_REQUEST);
         assert!(server.send_message(server_addr.unwrap(), &msg));
 
-        // assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
+        assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
 
         assert!(server.stop());
     }
