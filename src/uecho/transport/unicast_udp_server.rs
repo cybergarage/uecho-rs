@@ -5,7 +5,6 @@
 use std::io;
 use std::net::{SocketAddr, ToSocketAddrs, UdpSocket};
 use std::sync::Arc;
-use std::sync::Mutex;
 use std::thread;
 
 use crate::uecho::protocol::message::Message;
@@ -16,7 +15,7 @@ use crate::uecho::transport::observer::*;
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
-    notifier: Arc<Mutex<DefaultNotifytManager>>,
+    notifier: Notifier,
 }
 
 impl UnicastUdpServer {
@@ -26,6 +25,11 @@ impl UnicastUdpServer {
             notifier: notifier_new(),
         }
     }
+
+    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+        self.notifier.lock().unwrap().add_observer(observer)
+    }
+
     pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
         match &self.socket {
             Some(socket) => {
