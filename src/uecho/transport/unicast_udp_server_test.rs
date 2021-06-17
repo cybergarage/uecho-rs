@@ -22,21 +22,21 @@ mod tests {
 
         let mut server = UnicastUdpServer::new();
 
-        for _ in 0..TEST_OBSERVER_COUNT {
-            let observer = TestNotifyCounter::new(counter.clone());
-            assert!(server.add_observer(Box::new(observer)));
-        }
+        let observer = TestNotifyCounter::new(counter.clone());
+        assert!(server.add_observer(Box::new(observer)));
 
         assert!(server.start());
         thread::sleep(Duration::from_secs(1));
 
-        let server_addr = server.local_addr();
-        assert!(server_addr.is_ok());
-
         let mut msg = Message::new();
         msg.set_esv(ESV_READ_REQUEST);
-        assert!(server.send_message(server_addr.unwrap(), &msg));
+        for _ in 0..TEST_OBSERVER_COUNT {
+            let server_addr = server.local_addr();
+            assert!(server_addr.is_ok());
+            assert!(server.send_message(server_addr.unwrap(), &msg));
+        }
 
+        thread::sleep(Duration::from_secs(10));
         assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
 
         assert!(server.stop());
