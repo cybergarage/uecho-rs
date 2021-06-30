@@ -30,15 +30,19 @@ impl UnicastUdpServer {
         self.notifier.lock().unwrap().add_observer(observer)
     }
 
-    pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
-        match &self.socket {
-            Some(socket) => {
-                let msg_bytes = msg.bytes();
-                if socket.send_to(&msg_bytes, addr).is_err() {
-                    return false;
-                }
-            }
-            None => return false,
+    pub fn send_message<A: ToSocketAddrs>(&self, to_addr: A, msg: &Message) -> bool {
+        let msg_bytes = msg.bytes();
+        // match &self.socket {
+        //     Some(socket) => {
+        //         if socket.send_to(&msg_bytes, "localhost:3610").is_err() {
+        //             return false;
+        //         }
+        //     }
+        //     None => return false,
+        // }
+        let socket = UdpSocket::bind("0.0.0.0:0").expect("failed to bind host socket");
+        if socket.send_to(&msg_bytes, to_addr).is_err() {
+            return false;
         }
         true
     }
