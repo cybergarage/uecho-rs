@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use std::io;
-use std::net::{SocketAddr, ToSocketAddrs, UdpSocket};
+use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
 
@@ -30,7 +30,7 @@ impl UnicastUdpServer {
         self.notifier.lock().unwrap().add_observer(observer)
     }
 
-    pub fn send_message<A: ToSocketAddrs>(&self, to_addr: A, msg: &Message) -> bool {
+    pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         let msg_bytes = msg.bytes();
         // match &self.socket {
         //     Some(socket) => {
