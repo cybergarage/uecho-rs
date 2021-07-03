@@ -2,10 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::net::SocketAddr;
+
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::unicast_tcp_server::UnicastTcpServer;
 use crate::uecho::transport::unicast_udp_server::UnicastUdpServer;
-use std::net::ToSocketAddrs;
 
 pub struct UnicastManager {
     udp_server: UnicastUdpServer,
@@ -20,8 +21,8 @@ impl UnicastManager {
         }
     }
 
-    pub fn send_message<A: ToSocketAddrs>(&self, addr: A, msg: &Message) -> bool {
-        self.udp_server.send_message(addr, msg)
+    pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+        self.udp_server.send_message(to_addr, msg)
     }
 
     pub fn start(&mut self) -> bool {
