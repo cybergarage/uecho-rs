@@ -2,14 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-pub mod log;
-pub mod protocol;
-pub mod transport;
+pub mod logger;
 
-pub mod class;
-pub mod controller;
-pub mod device;
-pub mod local_node;
-pub mod node;
-pub mod object;
-pub mod server;
+mod logger_test;
