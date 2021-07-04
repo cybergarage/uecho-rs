@@ -2,9 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use chrono::{Local, SecondsFormat};
+use std::sync::Once;
 
+use chrono::{Local, SecondsFormat};
 use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
+
+static INIT: Once = Once::new();
 
 struct DefaultLogger;
 
@@ -30,6 +33,8 @@ impl log::Log for DefaultLogger {
 
 static LOGGER: DefaultLogger = DefaultLogger;
 
-pub fn init() -> Result<(), SetLoggerError> {
-    log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Info))
+pub fn init() {
+    INIT.call_once(|| {
+        log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Info)).expect("Couldn't initialize logger");
+    });
 }
