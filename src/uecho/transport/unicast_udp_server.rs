@@ -2,11 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use log::*;
 use std::io;
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
 
+use crate::uecho::log::logger;
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
 use crate::uecho::transport::notifier::*;
@@ -42,6 +44,9 @@ impl UnicastUdpServer {
         // }
         let socket = UdpSocket::bind("0.0.0.0:0").expect("failed to bind host socket");
         if socket.send_to(&msg_bytes, to_addr).is_err() {
+            let addr = to_addr.ip();
+            let port = to_addr.port();
+            info!("couldn't send message to {} {}", addr, port);
             return false;
         }
         true
