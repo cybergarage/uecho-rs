@@ -5,3 +5,5 @@ authors = ["Satoshi Konno <skonno@cybergarage.org>"]
 edition = "2018"
 
 [dependencies]
+log = "0.4"
+chrono = "0.4"
