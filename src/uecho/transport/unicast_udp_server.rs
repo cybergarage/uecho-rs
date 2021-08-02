@@ -62,7 +62,7 @@ impl UnicastUdpServer {
     }
 
     pub fn start(&mut self) -> bool {
-        let addr = format!("localhost:{}", PORT);
+        let addr = format!("127.0.0.1:{}", PORT);
         let socket_res = UdpSocket::bind(addr);
         if socket_res.is_err() {
             return false;
