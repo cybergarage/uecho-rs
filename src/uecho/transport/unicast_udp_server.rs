@@ -46,7 +46,7 @@ impl UnicastUdpServer {
         if socket.send_to(&msg_bytes, to_addr).is_err() {
             let addr = to_addr.ip();
             let port = to_addr.port();
-            info!("couldn't send message to {} {}", addr, port);
+            warn!("couldn't send message to {} {}", addr, port);
             return false;
         }
         true
