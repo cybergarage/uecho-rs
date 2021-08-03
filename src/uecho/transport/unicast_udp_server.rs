@@ -7,6 +7,7 @@ use std::io;
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
+use hex::*;
 
 use crate::uecho::log::logger;
 use crate::uecho::protocol::message::Message;
@@ -46,7 +47,7 @@ impl UnicastUdpServer {
         if socket.send_to(&msg_bytes, to_addr).is_err() {
             let addr = to_addr.ip();
             let port = to_addr.port();
-            warn!("couldn't send message to {} {}", addr, port);
+            warn!("Couldn't send message to {} {}", addr, port);
             return false;
         }
         true
@@ -76,9 +77,11 @@ impl UnicastUdpServer {
             loop {
                 let recv_res = socket.recv_from(&mut buf);
                 match &recv_res {
-                    Ok((n_bytes, _remote_addr)) => {
+                    Ok((n_bytes, remote_addr)) => {
+                        let recv_msg = &buf[0..*n_bytes];
                         let mut msg = Message::new();
-                        if !msg.parse(&buf[0..*n_bytes]) {
+                        if !msg.parse(recv_msg) {
+                            warn!("Couldn't parse message {} [{}] {}", remote_addr, n_bytes, hex::encode_upper(recv_msg));
                             continue;
                         }
                         notifier.lock().unwrap().notify(&msg);
