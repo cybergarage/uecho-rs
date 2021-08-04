@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use hex::*;
 use log::*;
 use std::io;
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
-use hex::*;
 
 use crate::uecho::log::logger;
 use crate::uecho::protocol::message::Message;
@@ -81,7 +81,12 @@ impl UnicastUdpServer {
                         let recv_msg = &buf[0..*n_bytes];
                         let mut msg = Message::new();
                         if !msg.parse(recv_msg) {
-                            warn!("Couldn't parse message {} [{}] {}", remote_addr, n_bytes, hex::encode_upper(recv_msg));
+                            warn!(
+                                "Couldn't parse message {} [{}] {}",
+                                remote_addr,
+                                n_bytes,
+                                hex::encode_upper(recv_msg)
+                            );
                             continue;
                         }
                         notifier.lock().unwrap().notify(&msg);
