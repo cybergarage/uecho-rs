@@ -39,8 +39,9 @@ mod tests {
             assert!(server.send_message(server_addr.unwrap(), &msg));
         }
 
-        thread::sleep(Duration::from_secs(10));
-        //assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
+        let wait_time = (TEST_OBSERVER_COUNT as u64) / 4;
+        thread::sleep(Duration::from_secs(wait_time));
+        assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
 
         assert!(server.stop());
     }
