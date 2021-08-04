@@ -121,7 +121,7 @@ impl Message {
     }
 
     fn parse_format1_data(&mut self, msg: &[u8]) -> bool {
-        if msg.len() <= FORMAT1_HEADER_SIZE {
+        if msg.len() < FORMAT1_HEADER_SIZE {
             return false;
         }
 
