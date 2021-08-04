@@ -35,6 +35,8 @@ static LOGGER: DefaultLogger = DefaultLogger;
 
 pub fn init() {
     INIT.call_once(|| {
-        log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Info)).expect("Couldn't initialize logger");
+        log::set_logger(&LOGGER)
+            .map(|()| log::set_max_level(LevelFilter::Info))
+            .expect("Couldn't initialize logger");
     });
 }
