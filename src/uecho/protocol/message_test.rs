@@ -5,7 +5,6 @@
 #[cfg(test)]
 mod tests {
 
-    // use super::*;
     use crate::uecho::protocol::esv::*;
     use crate::uecho::protocol::message::*;
 
@@ -43,16 +42,13 @@ mod tests {
 
             let mut msg = Message::new();
 
-            assert!(msg.parse(msg_bytes));
-
+            assert!(msg.parse(msg_bytes), "{}", hex::encode_upper(msg_bytes));
             assert_eq!(msg.tid(), 0x0101);
             assert_eq!(msg.source_object_code(), 0x0A0B0C0);
             assert_eq!(msg.destination_object_code(), 0x0D0E0F0);
             assert_eq!(msg.esv(), ESV_NOTIFICATION);
 
             let opc = msg.opc();
-            assert_eq!(opc, 3);
-
             for i in 0..opc {
                 let prop = msg.property(i);
                 let prop_size = prop.size();
@@ -73,7 +69,7 @@ mod tests {
             assert!(msg.equals(&parsed_msg));
         }
 
-        let test_msgs = [[
+        let mut test_msg = [
             HEADER_EHD1_ECHONET,
             HEADER_EHD2_FORMAT1,
             0x01,
@@ -98,10 +94,15 @@ mod tests {
             0x63, // d
             0x64, // e
             0x65, // f
-        ]];
+        ];
 
-        for n in 0..test_msgs.len() {
-            message_parse(&test_msgs[n]);
+        let mut prop_data_size = 0;
+        for n in 0..3 {
+            let opc_idx = FRAME_HEADER_SIZE + FORMAT1_HEADER_SIZE - 1;
+            let test_msg_size = FRAME_HEADER_SIZE + FORMAT1_HEADER_SIZE + prop_data_size;
+            test_msg[opc_idx] = n;
+            message_parse(&test_msg[..test_msg_size]);
+            prop_data_size += (1 + 1 + (n + 1)) as usize;
         }
     }
 }
