@@ -5,7 +5,7 @@
 use std::sync::Once;
 
 use chrono::{Local, SecondsFormat};
-use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
+use log::{Level, LevelFilter, Metadata, Record};
 
 static INIT: Once = Once::new();
 
