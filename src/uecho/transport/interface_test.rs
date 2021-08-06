@@ -22,4 +22,12 @@ mod tests {
             assert!(ifaddr.is_ipv6())
         }
     }
+
+    #[test]
+    fn all_interface_test() {
+        let ifaddrs = get_all_interfaces();
+        for ifaddr in ifaddrs {
+            assert!(ifaddr.is_ipv6() || ifaddr.is_ipv4())
+        }
+    }
 }
