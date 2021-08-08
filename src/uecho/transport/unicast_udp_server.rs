@@ -7,6 +7,7 @@ use std::io;
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
+use std::net::{IpAddr, Ipv4Addr};
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
@@ -17,6 +18,7 @@ use crate::uecho::transport::observer::*;
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
     notifier: Notifier,
+    interface: IpAddr,
 }
 
 impl UnicastUdpServer {
@@ -24,6 +26,7 @@ impl UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
             notifier: notifier_new(),
+            interface: IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
         }
     }
 
