@@ -4,7 +4,7 @@
 
 use pnet::datalink;
 use pnet::ipnetwork;
-use std::net::{IpAddr};
+use std::net::IpAddr;
 
 type EnableInterface = fn(ipnetwork::IpNetwork) -> bool;
 
