@@ -5,33 +5,48 @@
 use std::net::SocketAddr;
 
 use crate::uecho::protocol::message::Message;
+use crate::uecho::transport::interface::*;
 use crate::uecho::transport::unicast_udp_server::UnicastUdpServer;
 
 pub struct UnicastManager {
-    udp_server: UnicastUdpServer,
+    udp_servers: Vec<UnicastUdpServer>,
 }
 
 impl UnicastManager {
     pub fn new() -> UnicastManager {
         UnicastManager {
-            udp_server: UnicastUdpServer::new(),
+            udp_servers: Vec::new(),
         }
     }
 
     pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
-        self.udp_server.send_message(to_addr, msg)
+        true
     }
 
     pub fn start(&mut self) -> bool {
-        if !self.udp_server.start() {
-            self.stop();
-            return false;
+        for ifaddr in get_v4_interfaces() {
+            let mut udp_server = UnicastUdpServer::new();
+            if udp_server.bind(ifaddr) {
+                self.stop();
+                return false;
+            }
+            if udp_server.start() {
+                self.stop();
+                return false;
+            }
+            self.udp_servers.push(udp_server);
         }
         true
     }
 
     pub fn stop(&mut self) -> bool {
-        let mut ret = self.udp_server.stop();
-        ret
+        let mut is_all_server_stopped = true;
+        for udp_server in self.udp_servers.iter_mut() {
+            if !&udp_server.stop() {
+                is_all_server_stopped = false;
+            }
+        }
+        self.udp_servers.clear();
+        is_all_server_stopped
     }
 }
