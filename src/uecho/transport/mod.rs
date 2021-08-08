@@ -11,7 +11,6 @@ pub mod notifier;
 pub mod notify_manager;
 pub mod observer;
 pub mod unicast_manager;
-pub mod unicast_tcp_server;
 pub mod unicast_udp_server;
 
 mod interface_test;
@@ -20,5 +19,4 @@ mod multicast_manager_test;
 mod multicast_server_test;
 mod notify_manager_test;
 mod unicast_manager_test;
-mod unicast_tcp_server_test;
 mod unicast_udp_server_test;
