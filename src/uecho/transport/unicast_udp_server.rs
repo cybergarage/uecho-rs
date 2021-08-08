@@ -4,6 +4,7 @@
 
 use log::*;
 use std::io;
+use std::net::IpAddr;
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
@@ -62,13 +63,21 @@ impl UnicastUdpServer {
         }
     }
 
-    pub fn start(&mut self) -> bool {
-        let addr = format!("127.0.0.1:{}", PORT);
+    pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
+        let addr = format!("{}:{}", ifaddr, PORT);
         let socket_res = UdpSocket::bind(addr);
         if socket_res.is_err() {
+            self.socket = None;
             return false;
         }
         self.socket = Some(Arc::new(socket_res.ok().unwrap()));
+        true
+    }
+
+    pub fn start(&mut self) -> bool {
+        if self.socket.is_none() {
+            return false;
+        }
         let socket = self.socket.clone();
         let notifier = self.notifier.clone();
         thread::spawn(move || {
