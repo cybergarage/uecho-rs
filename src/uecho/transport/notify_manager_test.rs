@@ -19,7 +19,7 @@ impl TestNotifyCounter {
 }
 
 impl Observer for TestNotifyCounter {
-    fn on_notify(&mut self, msg: &Message) -> bool {
+    fn on_notify(&mut self, _msg: &Message) -> bool {
         let mut counter = self.counter.lock().unwrap();
         *counter += 1;
         true
