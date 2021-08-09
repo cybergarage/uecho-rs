@@ -74,6 +74,13 @@ impl UnicastUdpServer {
         true
     }
 
+    pub fn close(&mut self) -> bool {
+        if self.socket.is_some() {
+            self.socket = None;
+        }
+        true
+    }
+
     pub fn start(&mut self) -> bool {
         if self.socket.is_none() {
             return false;
@@ -110,9 +117,8 @@ impl UnicastUdpServer {
     }
 
     pub fn stop(&mut self) -> bool {
-        if self.socket.is_some() {
-            self.socket = None;
-            return true;
+        if !self.close() {
+            return false
         }
         true
     }
