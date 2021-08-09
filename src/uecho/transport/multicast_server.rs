@@ -132,9 +132,8 @@ impl MulticastServer {
     }
 
     pub fn stop(&mut self) -> bool {
-        if self.socket.is_some() {
-            self.socket = None;
-            return true;
+        if !self.close() {
+            return false;
         }
         true
     }
