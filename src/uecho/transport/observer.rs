@@ -11,8 +11,8 @@ pub trait Observer {
     fn on_notify(&mut self, msg: &Message) -> bool;
 }
 
-pub type ObserverEntity = Box<dyn Observer + Send>;
-pub type Observers = Arc<Mutex<Vec<Arc<Mutex<ObserverEntity>>>>>;
+pub type ObserverEntity = Arc<Mutex<dyn Observer + Send>>;
+pub type Observers = Arc<Mutex<Vec<ObserverEntity>>>;
 
 pub fn observers_new() -> Observers {
     Arc::new(Mutex::new(Vec::new()))
