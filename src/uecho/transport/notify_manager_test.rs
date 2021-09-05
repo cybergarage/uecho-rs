@@ -43,7 +43,7 @@ mod tests {
 
         for _ in 0..TEST_OBSERVER_COUNT {
             let observer = TestNotifyCounter::new(counter.clone());
-            assert!(mgr.add_observer(Box::new(observer)));
+            assert!(mgr.add_observer(Arc::new(Mutex::new(observer))));
         }
 
         let msg = Message::new();

@@ -31,7 +31,7 @@ mod tests {
             let mut server = UnicastUdpServer::new();
 
             let observer = TestNotifyCounter::new(counter.clone());
-            assert!(server.add_observer(Box::new(observer)));
+            assert!(server.add_observer(Arc::new(Mutex::new(observer))));
 
             assert!(server.bind(ifaddr));
             assert!(server.start());

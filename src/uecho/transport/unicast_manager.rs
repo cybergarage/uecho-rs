@@ -6,8 +6,8 @@ use std::net::SocketAddr;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::interface::*;
-use crate::uecho::transport::unicast_udp_server::UnicastUdpServer;
 use crate::uecho::transport::observer::*;
+use crate::uecho::transport::unicast_udp_server::UnicastUdpServer;
 
 pub struct UnicastManager {
     udp_servers: Vec<UnicastUdpServer>,
@@ -22,9 +22,9 @@ impl UnicastManager {
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
         for udp_server in self.udp_servers.iter_mut() {
-            // if udp_server.add_observer(observer) {
-            //     return false
-            // }
+            if udp_server.add_observer(observer.clone()) {
+                return false;
+            }
         }
         true
     }
@@ -32,7 +32,7 @@ impl UnicastManager {
     pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         for udp_server in self.udp_servers.iter() {
             if udp_server.send_message(to_addr, msg) {
-                return true
+                return true;
             }
         }
         false

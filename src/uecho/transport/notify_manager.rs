@@ -2,19 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use std::sync::Arc;
-use std::sync::Mutex;
-
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::observer::*;
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &Observers;
     fn add_observer(&mut self, observer: ObserverEntity) -> bool {
-        self.observers()
-            .lock()
-            .unwrap()
-            .push(Arc::new(Mutex::new(observer)));
+        self.observers().lock().unwrap().push(observer.clone());
         true
     }
 
