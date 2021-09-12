@@ -5,15 +5,21 @@
 use std::sync::Once;
 
 use chrono::{Local, SecondsFormat};
-use log::{Level, LevelFilter, Metadata, Record};
+use log::{LevelFilter, Metadata, Record};
 
 static INIT: Once = Once::new();
 
-struct DefaultLogger;
+struct DefaultLogger {
+    level: LevelFilter,
+}
+
+impl DefaultLogger {
+    pub fn set_level(&self, _: LevelFilter) {}
+}
 
 impl log::Log for DefaultLogger {
     fn enabled(&self, metadata: &Metadata) -> bool {
-        metadata.level() <= Level::Info
+        metadata.level() <= self.level
     }
 
     fn log(&self, record: &Record) {
@@ -31,12 +37,26 @@ impl log::Log for DefaultLogger {
     fn flush(&self) {}
 }
 
-static LOGGER: DefaultLogger = DefaultLogger;
+static LOGGER: DefaultLogger = DefaultLogger {
+    level: LevelFilter::Trace,
+};
 
 pub fn init() {
     INIT.call_once(|| {
         log::set_logger(&LOGGER)
-            .map(|()| log::set_max_level(LevelFilter::Info))
+            .map(|()| log::set_max_level(LevelFilter::Trace))
             .expect("Couldn't initialize logger");
     });
+}
+
+pub fn set_level(level: LevelFilter) {
+    LOGGER.set_level(level);
+}
+
+pub fn enable_debug() {
+    set_level(LevelFilter::Debug);
+}
+
+pub fn enable_trace() {
+    set_level(LevelFilter::Trace);
 }
