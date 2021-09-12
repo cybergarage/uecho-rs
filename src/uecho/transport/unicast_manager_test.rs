@@ -5,11 +5,11 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::uecho::transport::notify_manager::*;
+    use crate::uecho::transport::unicast_manager::*;
 
     #[test]
-    fn notify_manager_test() {
-        let mut mgr = DefaultNotifytManager::new();
+    fn unicast_manager_test() {
+        let mut mgr = UnicastManager::new();
         assert!(mgr.start());
         assert!(mgr.stop());
     }
