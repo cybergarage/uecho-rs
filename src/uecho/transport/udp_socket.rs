@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use net2::UdpBuilder;
 use std::thread;
 use std::time::Duration;
 use std::{io, net::ToSocketAddrs};
