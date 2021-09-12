@@ -18,7 +18,6 @@ use crate::uecho::transport::udp_socket::*;
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
     notifier: Notifier,
-    interface: IpAddr,
 }
 
 impl UnicastUdpServer {
@@ -26,7 +25,6 @@ impl UnicastUdpServer {
         UnicastUdpServer {
             socket: None,
             notifier: notifier_new(),
-            interface: IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
         }
     }
 
