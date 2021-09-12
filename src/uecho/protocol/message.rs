@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::fmt;
+
 use crate::uecho::protocol::property::*;
 
 pub const HEADER_EHD1_ECHONET: u8 = 0x10;
@@ -200,5 +202,17 @@ impl Message {
             }
         }
         msg_bytes
+    }
+}
+
+impl fmt::Display for Message {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for b in self.bytes() {
+            let res = f.write_fmt(format_args!("{:X}", b));
+            if res.is_err() {
+                return res;
+            }
+        }
+        Ok(())
     }
 }
