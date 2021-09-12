@@ -8,6 +8,7 @@ use std::net::{IpAddr, Ipv4Addr};
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
+use std::time::Duration;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::*;
@@ -16,7 +17,7 @@ use crate::uecho::transport::notify_manager::*;
 use crate::uecho::transport::observer::*;
 use crate::uecho::transport::udp_socket::*;
 
-const ADDR_ANY: Ipv4Addr = Ipv4Addr::new(0, 0, 0, 0);
+const ANY_ADDR: Ipv4Addr = Ipv4Addr::new(0, 0, 0, 0);
 
 pub struct MulticastServer {
     socket: Option<Arc<UdpSocket>>,
@@ -87,7 +88,7 @@ impl MulticastServer {
 
         // FIXME: UdpSocket which binds an interface could not receive any message
         //let addr = format!("{}:{}", ifaddr, PORT);
-        let addr = format!("{}:{}", ADDR_ANY, PORT);
+        let addr = format!("{}:{}", ANY_ADDR, PORT);
         debug!("BIND {}", addr);
 
         // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
@@ -122,6 +123,7 @@ impl MulticastServer {
         if self.socket.is_some() {
             self.socket = None;
         }
+        thread::sleep(Duration::from_secs(1));
         true
     }
 

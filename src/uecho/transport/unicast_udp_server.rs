@@ -8,6 +8,7 @@ use std::net::{IpAddr, Ipv4Addr};
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
+use std::time::Duration;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
@@ -100,6 +101,7 @@ impl UnicastUdpServer {
         if self.socket.is_some() {
             self.socket = None;
         }
+        thread::sleep(Duration::from_secs(1));
         true
     }
 
