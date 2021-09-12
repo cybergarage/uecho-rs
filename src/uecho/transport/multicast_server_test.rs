@@ -20,8 +20,6 @@ mod tests {
 
     #[test]
     fn multicast_server_test() {
-        logger::init();
-
         fn test_multicast_server(ifaddr: IpAddr) {
             logger::init();
 
