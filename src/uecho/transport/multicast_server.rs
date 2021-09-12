@@ -69,6 +69,7 @@ impl MulticastServer {
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
         self.socket = None;
         let addr = format!("{}:{}", ifaddr, PORT);
+        debug!("BIND {}", addr);
         let socket_res = UdpSocket::bind(addr);
         if socket_res.is_err() {
             return false;
@@ -124,7 +125,8 @@ impl MulticastServer {
                         info!("{} -> {}", remote_addr, msg);
                         notifier.lock().unwrap().notify(&msg);
                     }
-                    Err(_) => {
+                    Err(e) => {
+                        error!("{}", e);
                         break;
                     }
                 }

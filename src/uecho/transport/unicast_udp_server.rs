@@ -4,11 +4,10 @@
 
 use log::*;
 use std::io;
-use std::net::IpAddr;
+use std::net::{IpAddr, Ipv4Addr};
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
-use std::net::{IpAddr, Ipv4Addr};
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
@@ -69,6 +68,7 @@ impl UnicastUdpServer {
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
         let addr = format!("{}:{}", ifaddr, PORT);
+        debug!("BIND {}", addr);
         let socket_res = UdpSocket::bind(addr);
         if socket_res.is_err() {
             self.socket = None;
@@ -112,7 +112,8 @@ impl UnicastUdpServer {
                         info!("{} -> {}", remote_addr, msg);
                         notifier.lock().unwrap().notify(&msg);
                     }
-                    Err(_) => {
+                    Err(e) => {
+                        error!("{}", e);
                         break;
                     }
                 }
