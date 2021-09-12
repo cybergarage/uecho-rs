@@ -14,6 +14,7 @@ use crate::uecho::transport::default::{MAX_PACKET_SIZE, PORT};
 use crate::uecho::transport::notifier::*;
 use crate::uecho::transport::notify_manager::*;
 use crate::uecho::transport::observer::*;
+use crate::uecho::transport::udp_socket::*;
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
@@ -82,12 +83,16 @@ impl UnicastUdpServer {
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
         let addr = format!("{}:{}", ifaddr, PORT);
         debug!("BIND {}", addr);
-        let socket_res = UdpSocket::bind(addr);
+
+        // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
+        //let socket_res = UdpSocket::bind(addr);
+        let socket_res = create_udp_socket(addr);
+
         if socket_res.is_err() {
             self.socket = None;
             return false;
         }
-        self.socket = Some(Arc::new(socket_res.ok().unwrap()));
+        self.socket = Some(Arc::new(UdpSocket::from(socket_res.ok().unwrap())));
         true
     }
 
