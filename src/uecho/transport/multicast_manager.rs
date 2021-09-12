@@ -48,11 +48,6 @@ impl MulticastManager {
                 return false;
             }
             self.mcast_servers.push(mcast_server);
-
-            // FIXME: Adds only a MulticastServer which binds ANY_ADDR because UdpSocket which binds an interface could not receive any message
-            if 0 < self.mcast_servers.len() {
-                break;
-            }
         }
         true
     }
