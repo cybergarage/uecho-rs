@@ -38,17 +38,18 @@ impl MulticastServer {
         let msg_bytes = msg.bytes();
         let addr = to_addr.ip();
         let port = to_addr.port();
+        info!("{} -> {}:{}", msg, addr, port);
         match &self.socket {
             Some(socket) => {
                 if socket.send_to(&msg_bytes, to_addr).is_err() {
-                    warn!("Couldn't send message to {} {}", addr, port);
+                    warn!("Couldn't notify message to {} {}", addr, port);
                     return false;
                 }
             }
             None => {
                 let socket = UdpSocket::bind("0.0.0.0:0").expect("failed to bind host socket");
                 if socket.send_to(&msg_bytes, to_addr).is_err() {
-                    warn!("Couldn't send message to {} {}", addr, port);
+                    warn!("Couldn't notify message to {} {}", addr, port);
                     return false;
                 }
             }
@@ -120,6 +121,7 @@ impl MulticastServer {
                             );
                             continue;
                         }
+                        info!("{} -> {}", remote_addr, msg);
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(_) => {

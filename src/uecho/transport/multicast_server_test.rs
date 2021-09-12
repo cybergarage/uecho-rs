@@ -47,7 +47,7 @@ mod tests {
 
             let wait_time = (TEST_OBSERVER_COUNT as u64) / 4;
             thread::sleep(Duration::from_secs(wait_time));
-            //assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
+            assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
 
             assert!(server.stop());
         }
