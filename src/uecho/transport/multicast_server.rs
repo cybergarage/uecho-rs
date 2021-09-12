@@ -42,11 +42,11 @@ impl MulticastServer {
         match &self.socket {
             Some(socket) => {
                 info!(
-                    "{} -> {} -> {}:{}",
+                    "MCST {} -> {}:{} ({})",
                     socket.local_addr().unwrap(),
-                    msg,
                     addr,
-                    port
+                    port,
+                    msg,
                 );
                 if socket.send_to(&msg_bytes, to_addr).is_err() {
                     warn!("Couldn't notify message to {} {}", addr, port);
@@ -56,11 +56,11 @@ impl MulticastServer {
             None => {
                 let socket = UdpSocket::bind("0.0.0.0:0").expect("failed to bind host socket");
                 info!(
-                    "{} -> {} -> {}:{}",
+                    "MCST {} -> {}:{} ({})",
                     socket.local_addr().unwrap(),
-                    msg,
                     addr,
-                    port
+                    port,
+                    msg,
                 );
                 if socket.send_to(&msg_bytes, to_addr).is_err() {
                     warn!("Couldn't notify message to {} {}", addr, port);
@@ -144,11 +144,16 @@ impl MulticastServer {
                             );
                             continue;
                         }
-                        info!("{} -> {}", remote_addr, msg);
+                        info!(
+                            "RECV {} -> {} ({})",
+                            remote_addr,
+                            socket.local_addr().ok().unwrap(),
+                            msg
+                        );
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(e) => {
-                        error!("{}", e);
+                        error!("RECV {} -> {}", socket.local_addr().ok().unwrap(), e);
                         break;
                     }
                 }
