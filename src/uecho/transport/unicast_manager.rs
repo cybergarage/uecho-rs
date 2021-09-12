@@ -41,11 +41,11 @@ impl UnicastManager {
     pub fn start(&mut self) -> bool {
         for ifaddr in get_v4_interfaces() {
             let mut udp_server = UnicastUdpServer::new();
-            if udp_server.bind(ifaddr) {
+            if !udp_server.bind(ifaddr) {
                 self.stop();
                 return false;
             }
-            if udp_server.start() {
+            if !udp_server.start() {
                 self.stop();
                 return false;
             }
