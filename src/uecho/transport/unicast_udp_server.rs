@@ -4,7 +4,6 @@
 
 use log::*;
 use std::io;
-use std::net::IpAddr;
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
