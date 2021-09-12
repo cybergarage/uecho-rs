@@ -9,8 +9,8 @@ mod tests {
 
     #[test]
     fn manager_test() {
-        // let mut mgr = Manager::new();
-        // assert!(mgr.start());
-        // assert!(mgr.stop());
+        let mut mgr = Manager::new();
+        assert!(mgr.start());
+        assert!(mgr.stop());
     }
 }

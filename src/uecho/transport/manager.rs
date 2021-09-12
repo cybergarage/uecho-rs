@@ -6,6 +6,7 @@ use std::net::SocketAddr;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::multicast_manager::MulticastManager;
+use crate::uecho::transport::observer::*;
 use crate::uecho::transport::unicast_manager::UnicastManager;
 
 pub struct Manager {
@@ -21,8 +22,22 @@ impl Manager {
         }
     }
 
+    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+        if !self.ucast_mgr.add_observer(observer.clone()) {
+            return false;
+        }
+        if !self.mcast_mgr.add_observer(observer.clone()) {
+            return false;
+        }
+        true
+    }
+
     pub fn send_messagee(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         self.ucast_mgr.send_message(to_addr, msg)
+    }
+
+    pub fn notify(&self, msg: &Message) -> bool {
+        self.mcast_mgr.notify(msg)
     }
 
     pub fn start(&mut self) -> bool {
