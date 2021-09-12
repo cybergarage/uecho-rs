@@ -14,6 +14,7 @@ use crate::uecho::transport::default::*;
 use crate::uecho::transport::notifier::*;
 use crate::uecho::transport::notify_manager::*;
 use crate::uecho::transport::observer::*;
+use crate::uecho::transport::udp_socket::*;
 
 pub struct MulticastServer {
     socket: Option<Arc<UdpSocket>>,
@@ -83,13 +84,21 @@ impl MulticastServer {
         self.socket = None;
         let addr = format!("{}:{}", ifaddr, PORT);
         debug!("BIND {}", addr);
-        let socket_res = UdpSocket::bind(addr);
+
+        // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
+        //let socket_res = UdpSocket::bind(addr);
+        let socket_res = create_udp_socket(addr);
+
         if socket_res.is_err() {
             return false;
         }
         let socket = socket_res.ok().unwrap();
         match ifaddr {
             IpAddr::V4(ip4) => {
+                if socket.set_multicast_loop_v4(true).is_err() {
+                    self.close();
+                    return false;
+                }
                 if socket
                     .join_multicast_v4(&MULTICAST_V4_ADDRESS, &ip4)
                     .is_err()
@@ -100,7 +109,7 @@ impl MulticastServer {
             }
             IpAddr::V6(_) => return false,
         }
-        self.socket = Some(Arc::new(socket));
+        self.socket = Some(Arc::new(UdpSocket::from(socket)));
         true
     }
 

@@ -10,6 +10,7 @@ pub mod multicast_server;
 pub mod notifier;
 pub mod notify_manager;
 pub mod observer;
+pub mod udp_socket;
 pub mod unicast_manager;
 pub mod unicast_udp_server;
 
