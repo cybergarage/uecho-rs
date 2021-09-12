@@ -8,7 +8,6 @@ use std::net::{IpAddr, Ipv4Addr};
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
-use std::time::Duration;
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::default::*;
@@ -93,7 +92,7 @@ impl MulticastServer {
 
         // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
         //let socket_res = UdpSocket::bind(addr);
-        let socket_res = create_udp_socket(addr);
+        let socket_res = udp_socket_create(addr);
 
         if socket_res.is_err() {
             return false;
@@ -123,7 +122,7 @@ impl MulticastServer {
         if self.socket.is_some() {
             self.socket = None;
         }
-        thread::sleep(Duration::from_secs(1));
+        udp_socket_closewait();
         true
     }
 

@@ -3,13 +3,15 @@
 // license that can be found in the LICENSE file.
 
 use net2::UdpBuilder;
+use std::thread;
+use std::time::Duration;
 use std::{io, net::ToSocketAddrs};
 
 #[cfg(not(target_os = "windows"))]
 use net2::unix::UnixUdpBuilderExt;
 
 #[cfg(not(target_os = "windows"))]
-pub fn create_udp_socket<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
+pub fn udp_socket_create<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v4()?
         .reuse_address(true)?
         .reuse_port(true)?
@@ -17,8 +19,12 @@ pub fn create_udp_socket<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpS
 }
 
 #[cfg(target_os = "windows")]
-pub fn create_udp_socket<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
+pub fn udp_socket_create<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v4()?
         .reuse_address(true)?
         .bind((addr))
+}
+
+pub fn udp_socket_closewait() {
+    thread::sleep(Duration::from_secs(5));
 }
