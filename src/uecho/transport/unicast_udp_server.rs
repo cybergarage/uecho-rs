@@ -36,6 +36,7 @@ impl UnicastUdpServer {
         let msg_bytes = msg.bytes();
         let addr = to_addr.ip();
         let port = to_addr.port();
+        info!("{} -> {}:{}", msg, addr, port);
         match &self.socket {
             Some(socket) => {
                 if socket.send_to(&msg_bytes, to_addr).is_err() {
@@ -105,6 +106,7 @@ impl UnicastUdpServer {
                             );
                             continue;
                         }
+                        info!("{} -> {}", remote_addr, msg);
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(_) => {
