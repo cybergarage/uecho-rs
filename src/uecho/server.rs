@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::io;
+use std::net::SocketAddr;
+
 use crate::uecho::transport::manager::*;
 
 pub struct Server {
@@ -13,6 +16,10 @@ impl Server {
         Server {
             transport_mgr: Manager::new(),
         }
+    }
+
+    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+        self.transport_mgr.local_addr()
     }
 
     pub fn start(&mut self) -> bool {
