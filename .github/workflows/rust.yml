@@ -23,7 +23,7 @@ jobs:
 
   doc:
     runs-on: ubuntu-latest
-    needs: test
+    needs: build
     if:  github.event_name == 'push' || github.event.pull_request.merged == true
 
     steps:
