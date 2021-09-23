@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::io;
 use std::net::SocketAddr;
 
 use crate::uecho::protocol::message::Message;
@@ -38,6 +39,10 @@ impl Manager {
 
     pub fn notify(&self, msg: &Message) -> bool {
         self.mcast_mgr.notify(msg)
+    }
+
+    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+        self.ucast_mgr.local_addr()
     }
 
     pub fn start(&mut self) -> bool {
