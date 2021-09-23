@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::io;
 use std::net::SocketAddr;
 
 use crate::uecho::protocol::message::Message;
@@ -36,6 +37,16 @@ impl UnicastManager {
             }
         }
         false
+    }
+
+    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+        for udp_server in self.udp_servers.iter() {
+            let udp_server_addr = udp_server.local_addr();
+            if udp_server_addr.is_ok() {
+                return udp_server_addr;
+            }
+        }
+        return Err(io::Error::new(io::ErrorKind::NotConnected, ""));
     }
 
     pub fn start(&mut self) -> bool {
