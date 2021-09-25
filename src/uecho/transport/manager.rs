@@ -33,7 +33,7 @@ impl Manager {
         true
     }
 
-    pub fn send_messagee(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+    pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         self.ucast_mgr.send_message(to_addr, msg)
     }
 
