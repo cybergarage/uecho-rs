@@ -4,6 +4,7 @@
 
 use crate::uecho::local_node::*;
 use crate::uecho::protocol::esv::*;
+use crate::uecho::protocol::message::*;
 
 pub struct Controller {
     node: LocalNode,
@@ -22,6 +23,10 @@ impl Controller {
 
     pub fn search(&mut self) -> bool {
         self.searchwithesv(Esv::ReadRequest)
+    }
+
+    pub fn on_notify(&mut self, _msg: &Message) -> bool {
+        true
     }
 
     pub fn start(&mut self) -> bool {
