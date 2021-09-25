@@ -12,4 +12,3 @@ pub mod device;
 pub mod local_node;
 pub mod node;
 pub mod object;
-pub mod server;
