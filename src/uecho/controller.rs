@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use crate::uecho::local_node::*;
+use crate::uecho::protocol::esv::*;
 
 pub struct Controller {
     node: LocalNode,
@@ -13,6 +14,14 @@ impl Controller {
         Controller {
             node: LocalNode::new(),
         }
+    }
+
+    pub fn searchwithesv(&mut self, esv: Esv) -> bool {
+        true
+    }
+
+    pub fn search(&mut self) -> bool {
+        self.searchwithesv(Esv::ReadRequest)
     }
 
     pub fn start(&mut self) -> bool {
