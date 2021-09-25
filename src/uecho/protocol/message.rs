@@ -4,6 +4,7 @@
 
 use std::fmt;
 
+use crate::uecho::protocol::esv::*;
 use crate::uecho::protocol::property::*;
 
 pub const HEADER_EHD1_ECHONET: u8 = 0x10;
@@ -66,12 +67,12 @@ impl Message {
         self.to_object_code(&self.deoj)
     }
 
-    pub fn set_esv(&mut self, code: u8) {
-        self.esv = code
+    pub fn set_esv(&mut self, code: Esv) {
+        self.esv = code as u8
     }
 
-    pub fn esv(&self) -> u8 {
-        self.esv
+    pub fn esv(&self) -> Esv {
+        Esv::from_u8(self.esv)
     }
 
     pub fn opc(&self) -> usize {

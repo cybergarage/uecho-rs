@@ -30,7 +30,7 @@ mod tests {
         msg.set_destination_object_code(test_deoj);
         assert_eq!(msg.destination_object_code(), test_deoj);
 
-        let test_esv = ESV_WRITE_REQUEST as u8;
+        let test_esv = Esv::WriteRequest;
         msg.set_esv(test_esv);
         assert_eq!(msg.esv(), test_esv);
     }
@@ -46,7 +46,7 @@ mod tests {
             assert_eq!(msg.tid(), 0x0101);
             assert_eq!(msg.source_object_code(), 0x0A0B0C0);
             assert_eq!(msg.destination_object_code(), 0x0D0E0F0);
-            assert_eq!(msg.esv(), ESV_NOTIFICATION);
+            assert_eq!(msg.esv(), Esv::Notification);
 
             let opc = msg.opc();
             for i in 0..opc {
@@ -80,7 +80,7 @@ mod tests {
             0xD0,
             0xE0,
             0xF0,
-            ESV_NOTIFICATION,
+            Esv::to_u8(Esv::Notification),
             3,
             1,
             1,
