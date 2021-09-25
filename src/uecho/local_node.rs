@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use std::io;
-use std::net::SocketAddr;
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::manager::*;
@@ -20,8 +19,11 @@ impl LocalNode {
         }
     }
 
-    pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        self.transport_mgr.local_addr()
+    pub fn addr(&self) -> IpAddr {
+        match self.transport_mgr.local_addr() {
+            Ok(local_addr) => return local_addr.ip(),
+            Err(_) => return IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
+        }
     }
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
