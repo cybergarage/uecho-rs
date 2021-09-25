@@ -10,7 +10,7 @@ mod tests {
     use std::thread;
     use std::time::Duration;
 
-    use crate::uecho::protocol::esv::*;
+    use crate::uecho::protocol::esv::Esv;
     use crate::uecho::protocol::message::*;
     use crate::uecho::transport::interface::*;
     use crate::uecho::transport::multicast_server::*;
@@ -36,7 +36,7 @@ mod tests {
             thread::sleep(Duration::from_secs(1));
 
             let mut msg = Message::new();
-            msg.set_esv(ESV_READ_REQUEST);
+            msg.set_esv(Esv::Notification);
             for _ in 0..TEST_OBSERVER_COUNT {
                 let server_addr = server.local_addr();
                 assert!(server_addr.is_ok());
