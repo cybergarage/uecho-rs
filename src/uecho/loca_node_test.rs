@@ -5,12 +5,12 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::uecho::server::*;
+    use crate::uecho::local_node::*;
 
     #[test]
     fn local_node_test() {
-        let mut server = Server::new();
-        assert!(server.start());
-        assert!(server.stop());
+        let mut node = LocalNode::new();
+        assert!(node.start());
+        assert!(node.stop());
     }
 }
