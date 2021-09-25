@@ -10,5 +10,8 @@ mod tests {
     #[test]
     fn local_node_test() {
         let mut ctrl = Controller::new();
+        ctrl.add_observer(Arc::new(Mutex::new(ctrl));
+        ctrl.start();
+        ctrl.stop();
     }
 }
