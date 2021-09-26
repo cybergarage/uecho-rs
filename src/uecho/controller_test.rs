@@ -6,12 +6,16 @@
 mod tests {
 
     use crate::uecho::controller::*;
+    use crate::uecho::log::logger;
 
     #[test]
-    fn local_node_test() {
+    fn controller_test() {
+        logger::init();
+
         let mut ctrl = Controller::new();
         ctrl.add_observer(Arc::new(Mutex::new(ctrl));
-        ctrl.start();
-        ctrl.stop();
+        assert(ctrl.start());
+        assert(ctrl.search_all());
+        assert(ctrl.stop());
     }
 }

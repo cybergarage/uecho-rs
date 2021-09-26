@@ -11,8 +11,8 @@ pub fn message_serarch_new() -> Message {
     let mut msg = Message::new();
 
     msg.set_esv(Esv::ReadRequest);
-	msg.set_source_object_code(NodeProfileObject);
-	msg.set_destination_object_code(NodeProfileObject);
+    msg.set_source_object_code(NodeProfileObject);
+    msg.set_destination_object_code(NodeProfileObject);
 
     let mut prop = Property::new();
     prop.set_code(NodeProfileClassSelfNodeInstanceListS);

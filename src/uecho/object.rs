@@ -4,6 +4,8 @@
 
 pub struct Object {}
 
+pub type ObjectCode = u32;
+
 impl Object {
     pub fn new() -> Object {
         Object {}
