@@ -17,6 +17,10 @@ impl Property {
         }
     }
 
+    pub fn set_code(&mut self, code: u8) {
+        self.code = code
+    }
+
     pub fn code(&self) -> u8 {
         self.code
     }
