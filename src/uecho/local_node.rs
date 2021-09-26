@@ -31,7 +31,7 @@ impl LocalNode {
     }
 
     pub fn send_messagee(&self, to_addr: SocketAddr, msg: &Message) -> bool {
-        self.transport_mgr.send_message(to_addr, msg)
+        self.transport_mgr.send(to_addr, msg)
     }
 
     pub fn notify(&self, msg: &Message) -> bool {
