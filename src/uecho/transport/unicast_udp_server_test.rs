@@ -42,7 +42,7 @@ mod tests {
             for _ in 0..TEST_OBSERVER_COUNT {
                 let server_addr = server.local_addr();
                 assert!(server_addr.is_ok());
-                assert!(server.send_message(server_addr.unwrap(), &msg));
+                assert!(server.send(server_addr.unwrap(), &msg));
             }
 
             let wait_time = (TEST_OBSERVER_COUNT as u64) / 2;
