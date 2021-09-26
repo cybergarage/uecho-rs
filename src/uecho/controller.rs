@@ -9,24 +9,36 @@ use crate::uecho::local_node::*;
 use crate::uecho::message::*;
 use crate::uecho::node_profile::*;
 use crate::uecho::object::*;
-use crate::uecho::object::*;
 use crate::uecho::protocol::esv::*;
 use crate::uecho::protocol::message::*;
+use crate::uecho::remote_node::*;
 use crate::uecho::transport::observer::*;
 
 pub struct Controller {
     node: LocalNode,
+    remote_nodes: Vec<RemoteNode>,
 }
 
 impl Controller {
     pub fn new() -> Controller {
         Controller {
             node: LocalNode::new(),
+            remote_nodes: Vec::new(),
         }
     }
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
         self.node.add_observer(observer.clone())
+    }
+
+    pub fn add_remote_node(&mut self, node: RemoteNode) -> bool {
+        for found_node in self.remote_nodes.iter() {
+            if found_node == &node {
+                return false;
+            }
+        }
+        self.remote_nodes.push(node);
+        true
     }
 
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
