@@ -4,6 +4,8 @@
 
 use std::net::{IpAddr, Ipv4Addr};
 
+use crate::uecho::protocol::message::Message;
+
 pub struct RemoteNode {
     addr: IpAddr,
 }
@@ -21,5 +23,11 @@ impl RemoteNode {
 
     pub fn addr(&self) -> IpAddr {
         self.addr
+    }
+}
+
+impl PartialEq for RemoteNode {
+    fn eq(&self, other: &Self) -> bool {
+        self.addr == other.addr
     }
 }
