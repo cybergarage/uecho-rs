@@ -14,7 +14,7 @@ pub trait NotifytManager {
 
     fn notify(&mut self, msg: &Message) -> bool {
         for (_, observer) in self.observers().lock().unwrap().iter().enumerate() {
-            observer.lock().unwrap().on_notify(msg)
+            observer.lock().unwrap().message_received(msg)
         }
         true
     }

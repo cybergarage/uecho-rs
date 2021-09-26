@@ -55,5 +55,5 @@ impl Controller {
 }
 
 impl Observer for Controller {
-    fn on_notify(&mut self, _msg: &Message) {}
+    fn message_received(&mut self, _msg: &Message) {}
 }
