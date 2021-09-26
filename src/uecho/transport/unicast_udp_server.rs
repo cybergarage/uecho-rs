@@ -32,7 +32,7 @@ impl UnicastUdpServer {
         self.notifier.lock().unwrap().add_observer(observer)
     }
 
-    pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+    pub fn send(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         let msg_bytes = msg.bytes();
         let addr = to_addr.ip();
         let port = to_addr.port();

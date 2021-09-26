@@ -30,9 +30,9 @@ impl UnicastManager {
         true
     }
 
-    pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+    pub fn send(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         for udp_server in self.udp_servers.iter() {
-            if udp_server.send_message(to_addr, msg) {
+            if udp_server.send(to_addr, msg) {
                 return true;
             }
         }
