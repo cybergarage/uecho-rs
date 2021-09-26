@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use std::fmt;
+use std::net::{IpAddr, Ipv4Addr};
 
 use crate::uecho::protocol::esv::*;
 use crate::uecho::protocol::property::*;
@@ -20,6 +21,7 @@ pub struct Message {
     deoj: [u8; 3],
     esv: u8,
     properties: Vec<Property>,
+    addr: IpAddr,
 }
 
 impl Message {
@@ -31,6 +33,7 @@ impl Message {
             deoj: [0; 3],
             esv: 0,
             properties: Vec::<Property>::new(),
+            addr: IpAddr::V4(Ipv4Addr::UNSPECIFIED),
         }
     }
 
@@ -89,6 +92,14 @@ impl Message {
 
     pub fn property(&self, n: usize) -> &Property {
         &self.properties[n]
+    }
+
+    pub fn set_addr(&mut self, addr: IpAddr) {
+        self.addr = addr
+    }
+
+    pub fn addr(&self) -> IpAddr {
+        self.addr
     }
 
     pub fn is_format1(&mut self) -> bool {
