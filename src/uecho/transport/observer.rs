@@ -8,7 +8,7 @@ use std::sync::Mutex;
 use crate::uecho::protocol::message::Message;
 
 pub trait Observer {
-    fn on_notify(&mut self, msg: &Message);
+    fn message_received(&mut self, msg: &Message);
 }
 
 pub type ObserverEntity = Arc<Mutex<dyn Observer + Send>>;
