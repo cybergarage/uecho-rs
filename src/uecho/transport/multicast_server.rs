@@ -156,6 +156,7 @@ impl MulticastServer {
                             socket.local_addr().ok().unwrap(),
                             msg
                         );
+                        msg.set_addr(remote_addr.ip());
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(e) => {
