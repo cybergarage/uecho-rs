@@ -79,6 +79,10 @@ impl Message {
         self.properties.len()
     }
 
+    pub fn add_property(&mut self, prop: Property) {
+        self.properties.push(prop);
+    }
+
     pub fn properties(&self) -> &Vec<Property> {
         &self.properties
     }
