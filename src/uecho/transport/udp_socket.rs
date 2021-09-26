@@ -25,5 +25,5 @@ pub fn udp_socket_create<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpS
 }
 
 pub fn udp_socket_closewait() {
-    thread::sleep(Duration::from_secs(1));
+    thread::sleep(Duration::from_secs(2));
 }
