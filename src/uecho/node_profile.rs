@@ -4,8 +4,8 @@
 
 use crate::uecho::super_object::*;
 
-pub const NodeProfileObject: i32 = 0x0EF001;
-pub const NodeProfileObjectReadOnly: i32 = 0x0EF002;
+pub const NodeProfileObject: u32 = 0x0EF001;
+pub const NodeProfileObjectReadOnly: u32 = 0x0EF002;
 pub const NodeProfileClassCode: u8 = 0xF0;
 pub const NodeProfileInstanceGeneralCode: u8 = 0x01;
 pub const NodeProfileInstanceTransmissionOnlyCode: u8 = 0x02;
