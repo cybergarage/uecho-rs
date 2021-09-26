@@ -18,9 +18,7 @@ impl RemoteNode {
     }
 
     pub fn from_message(msg: &Message) -> RemoteNode {
-        RemoteNode {
-            addr: msg.addr(),
-        }
+        RemoteNode { addr: msg.addr() }
     }
 
     pub fn set_addr(&mut self, addr: IpAddr) {
