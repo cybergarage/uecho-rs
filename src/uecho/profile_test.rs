@@ -2,14 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::uecho::node_profile::*;
+#[test]
 
-pub struct Object {}
+#[cfg(test)]
+mod tests {
 
-pub type ObjectCode = u32;
+    use crate::uecho::profile::*;
 
-impl Object {
-    pub fn new() -> Object {
-        Object {}
+    #[test]
+    fn profile_test() {
+        Profile::new();
     }
 }

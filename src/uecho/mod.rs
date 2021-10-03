@@ -14,5 +14,6 @@ pub mod message;
 pub mod node;
 pub mod node_profile;
 pub mod object;
+pub mod profile;
 pub mod remote_node;
 pub mod super_object;
