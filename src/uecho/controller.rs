@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use std::sync::Arc;
-use std::sync::Mutex;
-
 use crate::uecho::local_node::*;
 use crate::uecho::message::*;
 use crate::uecho::node_profile::*;
@@ -67,5 +64,27 @@ impl Controller {
 }
 
 impl Observer for Controller {
-    fn message_received(&mut self, _msg: &Message) {}
+    fn message_received(&mut self, msg: &Message) {
+        let remote_node = RemoteNode::from_message(msg);
+
+        if self.node.addr() == remote_node.addr() {
+            return;
+        }
+
+        fn is_node_profile_message(msg: &Message) -> bool {
+            let esv = msg.esv();
+            if esv != Esv::Notification && esv != Esv::ReadResponse {
+                return false;
+            }
+            let dst_obj = msg.destination_object_code();
+            if dst_obj != NodeProfileObject && dst_obj != NodeProfileObjectReadOnly {
+                return false;
+            }
+            true
+        }
+
+        if is_node_profile_message(msg) {
+            self.add_remote_node(remote_node);
+        }
+    }
 }
