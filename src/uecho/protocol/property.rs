@@ -4,8 +4,10 @@
 
 pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 
+type PropertyCode = u8;
+
 pub struct Property {
-    code: u8,
+    code: PropertyCode,
     data: Vec<u8>,
 }
 
@@ -17,11 +19,11 @@ impl Property {
         }
     }
 
-    pub fn set_code(&mut self, code: u8) {
+    pub fn set_code(&mut self, code: PropertyCode) {
         self.code = code
     }
 
-    pub fn code(&self) -> u8 {
+    pub fn code(&self) -> PropertyCode {
         self.code
     }
 
