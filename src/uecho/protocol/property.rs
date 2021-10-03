@@ -4,7 +4,7 @@
 
 pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 
-type PropertyCode = u8;
+pub type PropertyCode = u8;
 
 pub struct Property {
     code: PropertyCode,
