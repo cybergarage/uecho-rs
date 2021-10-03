@@ -2,14 +2,26 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::uecho::node_profile::*;
+use std::collections::HashMap;
 
-pub struct Object {}
+use crate::uecho::property::*;
+
+pub struct Object {
+    properties: HashMap<PropertyCode, Property>,
+}
 
 pub type ObjectCode = u32;
 
 impl Object {
     pub fn new() -> Object {
-        Object {}
+        Object {
+            properties: HashMap::new(),
+        }
+    }
+
+    pub fn add_property(&mut self, prop: Property) -> bool {
+        let code = prop.code();
+        self.properties.insert(code, prop);
+        true
     }
 }
