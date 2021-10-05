@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::uecho::object::*;
 use crate::uecho::super_object::*;
 
 pub const ProfileClassGroupCode: u8 = 0x0E;
@@ -30,7 +31,7 @@ pub const ProfileManufacturerUnknown: i32 = ObjectManufacturerUnknown;
 pub struct Profile {}
 
 impl Profile {
-    pub fn new() -> Profile {
-        Profile {}
+    pub fn new() -> Object {
+        Object::new()
     }
 }
