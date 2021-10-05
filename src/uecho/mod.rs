@@ -9,6 +9,7 @@ pub mod transport;
 pub mod class;
 pub mod controller;
 pub mod device;
+pub mod error;
 pub mod local_node;
 pub mod message;
 pub mod node;

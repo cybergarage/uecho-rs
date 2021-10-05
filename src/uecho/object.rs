@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 
 use crate::uecho::property::*;
@@ -23,5 +24,9 @@ impl Object {
         let code = prop.code();
         self.properties.insert(code, prop);
         true
+    }
+
+    pub fn property(&mut self, code: PropertyCode) -> Entry<'_, PropertyCode, Property> {
+        self.properties.entry(code)
     }
 }
