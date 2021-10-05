@@ -27,10 +27,14 @@ pub struct Property {
 
 impl Property {
     pub fn new() -> Property {
+        Property::new_with(0, PropertyAttributeNone)
+    }
+
+    pub fn new_with(code: PropertyCode, attr: PropertyAttribute) -> Property {
         Property {
-            code: 0,
+            code: code,
             data: Vec::new(),
-            attr: PropertyAttributeNone,
+            attr: attr,
         }
     }
 
