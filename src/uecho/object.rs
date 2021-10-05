@@ -26,6 +26,10 @@ impl Object {
         true
     }
 
+    pub fn set_property(&mut self, code: PropertyCode, attr: PropertyAttribute) -> bool {
+        self.add_property(Property::new_with(code, attr))
+    }
+
     pub fn property(&mut self, code: PropertyCode) -> Entry<'_, PropertyCode, Property> {
         self.properties.entry(code)
     }
