@@ -2,12 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::uecho::object::Object;
+#[test]
 
-pub struct Device {}
+#[cfg(test)]
+mod tests {
 
-impl Device {
-    pub fn new() -> Object {
-        Object::new()
+    use crate::uecho::device::*;
+
+    #[test]
+    fn device_new_test() {
+        Device::new();
     }
 }
