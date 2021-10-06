@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use crate::uecho::object::Object;
+use crate::uecho::property::*;
 use crate::uecho::super_object::*;
 
 pub const DeviceOperatingStatus: u8 = ObjectOperatingStatus;
@@ -75,6 +76,15 @@ pub struct Device {}
 impl Device {
     pub fn new() -> Object {
         let mut obj = Object::new();
+        add_mandatory_properties(&mut obj);
         obj
     }
+}
+
+fn add_mandatory_properties(obj: &mut Object) {
+    obj.set_property(ObjectOperatingStatus, PropertyAttributeReadAnno);
+    obj.set_property(DeviceInstallationLocation, PropertyAttributeReadAnno);
+    obj.set_property(DeviceStandardVersion, PropertyAttributeRead);
+    obj.set_property(DeviceFaultStatus, PropertyAttributeReadAnno);
+    obj.set_property(DeviceManufacturerCode, PropertyAttributeRead);
 }
