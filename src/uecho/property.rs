@@ -99,6 +99,10 @@ impl Property {
         self.data.len()
     }
 
+    pub fn set_data(&mut self, data: &[u8]) {
+        self.data = data.to_vec()
+    }
+
     pub fn data(&self) -> &Vec<u8> {
         &self.data
     }
