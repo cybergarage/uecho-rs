@@ -81,8 +81,23 @@ impl Device {
     }
 }
 
+impl Object {
+    pub fn set_operating_status(&mut self, status: bool) -> bool {
+        let statusByte: u8 = if status {
+            ObjectOperatingStatusOn
+        } else {
+            ObjectOperatingStatusOff
+        };
+        let statusBytes: &[u8] = &[statusByte];
+        self.set_property_data(DeviceOperatingStatus, statusBytes);
+        true
+    }
+}
+
 fn add_mandatory_properties(obj: &mut Object) {
     obj.set_property(ObjectOperatingStatus, PropertyAttributeReadAnno);
+    obj.set_operating_status(true);
+
     obj.set_property(DeviceInstallationLocation, PropertyAttributeReadAnno);
     obj.set_property(DeviceStandardVersion, PropertyAttributeRead);
     obj.set_property(DeviceFaultStatus, PropertyAttributeReadAnno);
