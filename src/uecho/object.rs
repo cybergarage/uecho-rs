@@ -4,8 +4,11 @@
 
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
+use std::vec;
 
+use crate::uecho::device::*;
 use crate::uecho::property::*;
+use crate::uecho::super_object::*;
 
 pub struct Object {
     properties: HashMap<PropertyCode, Property>,
@@ -30,7 +33,17 @@ impl Object {
         self.add_property(Property::new_with(code, attr))
     }
 
-    pub fn property(&mut self, code: PropertyCode) -> Entry<'_, PropertyCode, Property> {
-        self.properties.entry(code)
+    pub fn set_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
+        match self.property(code).as_mut() {
+            Some(prop) => {
+                prop.set_data(data);
+                true
+            }
+            None => false,
+        }
+    }
+
+    pub fn property(&mut self, code: PropertyCode) -> Option<&mut Property> {
+        self.properties.get_mut(&code)
     }
 }
