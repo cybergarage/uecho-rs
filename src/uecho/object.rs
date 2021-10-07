@@ -43,6 +43,15 @@ impl Object {
         }
     }
 
+    pub fn set_property_byte(&mut self, code: PropertyCode, v: u8) -> bool {
+        let data: &[u8] = &[v];
+        self.set_property_data(code, data)
+    }
+
+    pub fn set_property_bytes(&mut self, code: PropertyCode, data: &[u8]) -> bool {
+        self.set_property_data(code, data)
+    }
+
     pub fn property(&mut self, code: PropertyCode) -> Option<&mut Property> {
         self.properties.get_mut(&code)
     }

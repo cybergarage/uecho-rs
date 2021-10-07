@@ -83,14 +83,12 @@ impl Device {
 
 impl Object {
     pub fn set_operating_status(&mut self, status: bool) -> bool {
-        let statusByte: u8 = if status {
+        let status_byte: u8 = if status {
             ObjectOperatingStatusOn
         } else {
             ObjectOperatingStatusOff
         };
-        let statusBytes: &[u8] = &[statusByte];
-        self.set_property_data(DeviceOperatingStatus, statusBytes);
-        true
+        self.set_property_byte(DeviceOperatingStatus, status_byte)
     }
 }
 
