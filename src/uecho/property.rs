@@ -18,10 +18,11 @@ pub const PropertyAttributeReadAnno: u32 = PropertyAttributeRead | PropertyAttri
 
 pub type PropertyCode = u8;
 pub type PropertyAttribute = u32;
+pub type PropertyData = Vec<u8>;
 
 pub struct Property {
     code: PropertyCode,
-    data: Vec<u8>,
+    data: PropertyData,
     attr: PropertyAttribute,
 }
 
@@ -107,7 +108,7 @@ impl Property {
         self.data.append(&mut data.to_vec())
     }
 
-    pub fn data(&self) -> &Vec<u8> {
+    pub fn data(&self) -> &PropertyData {
         &self.data
     }
 }
