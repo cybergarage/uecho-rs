@@ -11,6 +11,7 @@ mod tests {
 
     #[test]
     fn device_new_test() {
-        Device::new();
+        let dev = Device::new();
+        assert_eq!(dev.operating_status().byte_data(), ObjectOperatingStatusOn);
     }
 }
