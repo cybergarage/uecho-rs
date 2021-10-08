@@ -90,6 +90,10 @@ impl Object {
         };
         self.set_property_byte(DeviceOperatingStatus, status_byte)
     }
+
+    pub fn operating_status(&mut self) -> &mut Property {
+        self.property(DeviceOperatingStatus).unwrap()
+    }
 }
 
 fn add_mandatory_properties(obj: &mut Object) {
