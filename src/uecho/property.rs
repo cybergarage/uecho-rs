@@ -111,4 +111,16 @@ impl Property {
     pub fn data(&self) -> &PropertyData {
         &self.data
     }
+
+    pub fn equals_data(&self, data: &[u8]) -> bool {
+        if self.data.len() != data.len() {
+            return false;
+        }
+        for n in 0..data.len() {
+            if self.data[n] != data[n] {
+                return false;
+            }
+        }
+        true
+    }
 }
