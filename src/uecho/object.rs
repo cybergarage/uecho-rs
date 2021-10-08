@@ -62,4 +62,11 @@ impl Object {
             None => return None,
         }
     }
+
+    pub fn property_data(&mut self, code: PropertyCode) -> Option<&PropertyData> {
+        match self.property(code) {
+            Some(prop) => return Some(prop.data()),
+            None => return None,
+        }
+    }
 }
