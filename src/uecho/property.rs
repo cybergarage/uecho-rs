@@ -112,6 +112,13 @@ impl Property {
         &self.data
     }
 
+    pub fn byte_data(&self) -> u8 {
+        if self.data.len() <= 0 {
+            return 0;
+        }
+        return self.data[0];
+    }
+
     pub fn equals_data(&self, data: &[u8]) -> bool {
         if self.data.len() != data.len() {
             return false;
