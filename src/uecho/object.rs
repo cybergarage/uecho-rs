@@ -33,6 +33,17 @@ impl Object {
         self.add_property(Property::new_with(code, attr))
     }
 
+    pub fn property(&mut self, code: PropertyCode) -> Option<&mut Property> {
+        self.properties.get_mut(&code)
+    }
+
+    pub fn property_attribute(&mut self, code: PropertyCode) -> Option<PropertyAttribute> {
+        match self.property(code) {
+            Some(prop) => return Some(prop.attribute()),
+            None => return None,
+        }
+    }
+
     pub fn set_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
         match self.property(code).as_mut() {
             Some(prop) => {
@@ -52,21 +63,17 @@ impl Object {
         self.set_property_data(code, data)
     }
 
-    pub fn property(&mut self, code: PropertyCode) -> Option<&mut Property> {
-        self.properties.get_mut(&code)
-    }
-
-    pub fn property_attribute(&mut self, code: PropertyCode) -> Option<PropertyAttribute> {
-        match self.property(code) {
-            Some(prop) => return Some(prop.attribute()),
-            None => return None,
-        }
-    }
-
     pub fn property_data(&mut self, code: PropertyCode) -> Option<&PropertyData> {
         match self.property(code) {
             Some(prop) => return Some(prop.data()),
             None => return None,
+        }
+    }
+
+    pub fn equals_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
+        match self.property(code) {
+            Some(prop) => prop.equals_data(data),
+            None => false,
         }
     }
 }
