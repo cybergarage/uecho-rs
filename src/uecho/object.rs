@@ -58,9 +58,7 @@ impl Object {
 
     pub fn property_attribute(&mut self, code: PropertyCode) -> Option<PropertyAttribute> {
         match self.property(code) {
-            Some(prop) => {
-                return Some(prop.attribute())
-            }
+            Some(prop) => return Some(prop.attribute()),
             None => return None,
         }
     }
