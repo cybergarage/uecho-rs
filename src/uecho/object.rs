@@ -44,6 +44,16 @@ impl Object {
         }
     }
 
+    pub fn set_property_attribute(&mut self, code: PropertyCode, attr: PropertyAttribute) -> bool {
+        match self.property(code).as_mut() {
+            Some(prop) => {
+                prop.set_attribute(attr);
+                true
+            }
+            None => false,
+        }
+    }
+
     pub fn set_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
         match self.property(code).as_mut() {
             Some(prop) => {
