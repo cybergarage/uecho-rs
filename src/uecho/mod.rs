@@ -5,6 +5,7 @@
 pub mod log;
 pub mod protocol;
 pub mod transport;
+pub mod util;
 
 pub mod class;
 pub mod controller;
