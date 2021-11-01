@@ -76,7 +76,7 @@ pub struct Device {}
 impl Device {
     pub fn new() -> Object {
         let mut obj = Object::new();
-        add_mandatory_properties(&mut obj);
+        obj.add_mandatory_properties();
         obj
     }
 }
@@ -127,18 +127,20 @@ impl Object {
     }
 }
 
-fn add_mandatory_properties(obj: &mut Object) {
-    obj.set_property(ObjectOperatingStatus, PropertyAttributeReadAnno);
-    obj.set_operating_status(true);
+impl Object {
+    fn add_mandatory_properties(&mut self) {
+        self.set_property(ObjectOperatingStatus, PropertyAttributeReadAnno);
+        self.set_operating_status(true);
 
-    obj.set_property(DeviceInstallationLocation, PropertyAttributeReadAnno);
-    obj.set_installation_location(DeviceInstallationLocationUnknown);
+        self.set_property(DeviceInstallationLocation, PropertyAttributeReadAnno);
+        self.set_installation_location(DeviceInstallationLocationUnknown);
 
-    obj.set_property(DeviceStandardVersion, PropertyAttributeRead);
-    obj.set_standard_version(DeviceStandardVersion);
+        self.set_property(DeviceStandardVersion, PropertyAttributeRead);
+        self.set_standard_version(DeviceStandardVersion);
 
-    obj.set_property(DeviceFaultStatus, PropertyAttributeReadAnno);
-    obj.set_fault_status(false);
+        self.set_property(DeviceFaultStatus, PropertyAttributeReadAnno);
+        self.set_fault_status(false);
 
-    obj.set_property(DeviceManufacturerCode, PropertyAttributeRead);
+        self.set_property(DeviceManufacturerCode, PropertyAttributeRead);
+    }
 }
