@@ -112,6 +112,19 @@ impl Object {
     pub fn standard_version(&mut self) -> &mut Property {
         self.property(DeviceStandardVersion).unwrap()
     }
+
+    pub fn set_fault_status(&mut self, status: bool) -> bool {
+        let status_byte: u8 = if status {
+            DeviceFaultOccurred
+        } else {
+            DeviceNoFaultOccurred
+        };
+        self.set_property_byte(DeviceFaultStatus, status_byte)
+    }
+
+    pub fn fault_status(&mut self) -> &mut Property {
+        self.property(DeviceFaultStatus).unwrap()
+    }
 }
 
 fn add_mandatory_properties(obj: &mut Object) {
@@ -125,5 +138,7 @@ fn add_mandatory_properties(obj: &mut Object) {
     obj.set_standard_version(DeviceStandardVersion);
 
     obj.set_property(DeviceFaultStatus, PropertyAttributeReadAnno);
+    obj.set_fault_status(false);
+
     obj.set_property(DeviceManufacturerCode, PropertyAttributeRead);
 }
