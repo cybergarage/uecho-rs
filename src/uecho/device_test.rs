@@ -13,5 +13,6 @@ mod tests {
     fn device_new_test() {
         let dev = Device::new();
         assert_eq!(dev.operating_status().byte_data(), ObjectOperatingStatusOn);
+        assert_eq!(dev.installation_location().byte_data(), DeviceInstallationLocationUnknown);
     }
 }
