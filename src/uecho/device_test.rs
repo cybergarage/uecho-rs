@@ -18,3 +18,4 @@ mod tests {
         assert_eq!(dev.operating_status().byte_data(), DeviceNoFaultOccurred);
         }
 }
+

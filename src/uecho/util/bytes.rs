@@ -5,7 +5,7 @@
 pub struct Bytes {}
 
 impl Bytes {
-    pub fn from_i32(val: u32, bytes: &mut [u8]) {
+    pub fn from_u32(val: u32, bytes: &mut [u8]) {
         let bytes_size = bytes.len();
         for n in 0..bytes_size {
             let idx = (bytes_size - 1) - n;
