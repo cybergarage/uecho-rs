@@ -94,6 +94,14 @@ impl Object {
     pub fn operating_status(&mut self) -> &mut Property {
         self.property(DeviceOperatingStatus).unwrap()
     }
+
+    pub fn set_installation_location(&mut self, loc: u8) -> bool {
+        self.set_property_byte(DeviceInstallationLocationUnknown, loc)
+    }
+
+    pub fn installation_location(&mut self) -> &mut Property {
+        self.property(DeviceInstallationLocation).unwrap()
+    }
 }
 
 fn add_mandatory_properties(obj: &mut Object) {
@@ -101,6 +109,8 @@ fn add_mandatory_properties(obj: &mut Object) {
     obj.set_operating_status(true);
 
     obj.set_property(DeviceInstallationLocation, PropertyAttributeReadAnno);
+    obj.set_installation_location(DeviceInstallationLocationUnknown);
+
     obj.set_property(DeviceStandardVersion, PropertyAttributeRead);
     obj.set_property(DeviceFaultStatus, PropertyAttributeReadAnno);
     obj.set_property(DeviceManufacturerCode, PropertyAttributeRead);
