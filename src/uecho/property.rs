@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::uecho::util::bytes::Bytes;
+
 pub const PropertyCodeMin: u8 = 0x80;
 pub const PropertyCodeMax: u8 = 0xFF;
 
@@ -117,6 +119,13 @@ impl Property {
             return 0;
         }
         return self.data[0];
+    }
+
+    pub fn integer_data(&self) -> u32 {
+        if self.data.len() <= 0 {
+            return 0;
+        }
+        return Bytes::to_u32(&self.data);
     }
 
     pub fn equals_data(&self, data: &[u8]) -> bool {
