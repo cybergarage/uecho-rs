@@ -96,11 +96,21 @@ impl Object {
     }
 
     pub fn set_installation_location(&mut self, loc: u8) -> bool {
-        self.set_property_byte(DeviceInstallationLocationUnknown, loc)
+        self.set_property_byte(DeviceInstallationLocation, loc)
     }
 
     pub fn installation_location(&mut self) -> &mut Property {
         self.property(DeviceInstallationLocation).unwrap()
+    }
+
+    pub fn set_standard_version(&mut self, ver: u8) -> bool {
+        let mut vers: [u8; 4] = [0; 4];
+        vers[2] = ver;
+        self.set_property_bytes(DeviceStandardVersion, &vers)
+    }
+
+    pub fn standard_version(&mut self) -> &mut Property {
+        self.property(DeviceStandardVersion).unwrap()
     }
 }
 
@@ -112,6 +122,8 @@ fn add_mandatory_properties(obj: &mut Object) {
     obj.set_installation_location(DeviceInstallationLocationUnknown);
 
     obj.set_property(DeviceStandardVersion, PropertyAttributeRead);
+    obj.set_standard_version(DeviceStandardVersion);
+
     obj.set_property(DeviceFaultStatus, PropertyAttributeReadAnno);
     obj.set_property(DeviceManufacturerCode, PropertyAttributeRead);
 }
