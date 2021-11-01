@@ -9,6 +9,7 @@ use std::vec;
 use crate::uecho::device::*;
 use crate::uecho::property::*;
 use crate::uecho::super_object::*;
+use crate::uecho::util::bytes::Bytes;
 
 pub struct Object {
     properties: HashMap<PropertyCode, Property>,
@@ -71,6 +72,12 @@ impl Object {
 
     pub fn set_property_bytes(&mut self, code: PropertyCode, data: &[u8]) -> bool {
         self.set_property_data(code, data)
+    }
+
+    pub fn set_property_integer(&mut self, code: PropertyCode, val: u32, byte_size: usize) -> bool {
+        let mut buf = Vec::<u8>::with_capacity(byte_size);
+        Bytes::from_u32(val, &mut buf);
+        self.set_property_data(code, &buf)
     }
 
     pub fn property_data(&mut self, code: PropertyCode) -> Option<&PropertyData> {
