@@ -12,10 +12,11 @@ mod tests {
     #[test]
     fn device_new_test() {
         let dev = Device::new();
-        assert_eq!(dev.operating_status().byte_data(), ObjectOperatingStatusOn);
-        assert_eq!(dev.installation_location().byte_data(), DeviceInstallationLocationUnknown);
-        assert_eq!(dev.standard_version().byte_data(), [0x01, 0x00, DeviceStandardVersion, 0x00]);
-        assert_eq!(dev.operating_status().byte_data(), DeviceNoFaultOccurred);
+        assert_eq!(dev.operating_status().byte_data(), OBJECT_OPERATING_STATUS_ON);
+        assert_eq!(dev.installation_location().byte_data(), DEVICE_INSTALLATION_LOCATION_UNKNOWN);
+        assert_eq!(dev.standard_version().byte_data(), [0x01, 0x00, DEVICE_STANDARD_VERSION, 0x00]);
+        assert_eq!(dev.operating_status().byte_data(), DEVICE_NO_FAULT_OCCURRED);
         }
 }
+
 

@@ -4,19 +4,19 @@
 
 use crate::uecho::util::bytes::Bytes;
 
-pub const PropertyCodeMin: u8 = 0x80;
-pub const PropertyCodeMax: u8 = 0xFF;
+pub const PROPERTY_CODE_MIN: u8 = 0x80;
+pub const PROPERTY_CODE_MAX: u8 = 0xFF;
 
-pub const PropertyMapFormat1MaxSize: i32 = 15;
-pub const PropertyMapFormat2Size: i32 = 18;
-pub const PropertyMapFormatMaxSize: i32 = PropertyMapFormat2Size;
+pub const PROPERTY_MAP_FORMAT1_MAX_SIZE: i32 = 15;
+pub const PROPERTY_MAP_FORMAT2_SIZE: i32 = 18;
+pub const PROPERTY_MAP_FORMAT_MAX_SIZE: i32 = PROPERTY_MAP_FORMAT2_SIZE;
 
-pub const PropertyAttributeNone: u32 = 0x00;
-pub const PropertyAttributeRead: u32 = 0x01;
-pub const PropertyAttributeWrite: u32 = 0x02;
-pub const PropertyAttributeAnno: u32 = 0x10;
-pub const PropertyAttributeReadWrite: u32 = PropertyAttributeRead | PropertyAttributeWrite;
-pub const PropertyAttributeReadAnno: u32 = PropertyAttributeRead | PropertyAttributeAnno;
+pub const PROPERTY_ATTRIBUTE_NONE: u32 = 0x00;
+pub const PROPERTY_ATTRIBUTE_READ: u32 = 0x01;
+pub const PROPERTY_ATTRIBUTE_WRITE: u32 = 0x02;
+pub const PROPERTY_ATTRIBUTE_ANNO: u32 = 0x10;
+pub const PROPERTY_ATTRIBUTE_READ_WRITE: u32 = PROPERTY_ATTRIBUTE_READ | PROPERTY_ATTRIBUTE_WRITE;
+pub const PROPERTY_ATTRIBUTE_READ_ANNO: u32 = PROPERTY_ATTRIBUTE_READ | PROPERTY_ATTRIBUTE_ANNO;
 
 pub type PropertyCode = u8;
 pub type PropertyAttribute = u32;
@@ -30,7 +30,7 @@ pub struct Property {
 
 impl Property {
     pub fn new() -> Property {
-        Property::new_with(0, PropertyAttributeNone)
+        Property::new_with(0, PROPERTY_ATTRIBUTE_NONE)
     }
 
     pub fn new_with(code: PropertyCode, attr: PropertyAttribute) -> Property {
@@ -58,41 +58,41 @@ impl Property {
     }
 
     pub fn is_readable(&self) -> bool {
-        if (self.attr & PropertyAttributeRead) == 0 {
+        if (self.attr & PROPERTY_ATTRIBUTE_READ) == 0 {
             return false;
         }
         true
     }
 
     pub fn is_writable(&self) -> bool {
-        if (self.attr & PropertyAttributeWrite) == 0 {
+        if (self.attr & PROPERTY_ATTRIBUTE_WRITE) == 0 {
             return false;
         }
         true
     }
 
     pub fn is_readonly(&self) -> bool {
-        if (self.attr & PropertyAttributeRead) == 0 {
+        if (self.attr & PROPERTY_ATTRIBUTE_READ) == 0 {
             return false;
         }
-        if (self.attr & PropertyAttributeWrite) != 0 {
+        if (self.attr & PROPERTY_ATTRIBUTE_WRITE) != 0 {
             return false;
         }
         true
     }
 
     pub fn is_writeonly(&self) -> bool {
-        if (self.attr & PropertyAttributeWrite) == 0 {
+        if (self.attr & PROPERTY_ATTRIBUTE_WRITE) == 0 {
             return false;
         }
-        if (self.attr & PropertyAttributeRead) != 0 {
+        if (self.attr & PROPERTY_ATTRIBUTE_READ) != 0 {
             return false;
         }
         true
     }
 
     pub fn is_announceable(&self) -> bool {
-        if (self.attr & PropertyAttributeAnno) == 0 {
+        if (self.attr & PROPERTY_ATTRIBUTE_ANNO) == 0 {
             return false;
         }
         true

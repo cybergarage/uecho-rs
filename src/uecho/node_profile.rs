@@ -10,7 +10,7 @@ pub const NodeProfileClassCode: u8 = 0xF0;
 pub const NodeProfileInstanceGeneralCode: u8 = 0x01;
 pub const NodeProfileInstanceTransmissionOnlyCode: u8 = 0x02;
 
-pub const NodeProfileClassOperatingStatus: u8 = ObjectOperatingStatus;
+pub const NodeProfileClassOperatingStatus: u8 = OBJECT_OPERATING_STATUS;
 pub const NodeProfileClassVersionInformation: u8 = 0x82;
 pub const NodeProfileClassIdentificationNumber: u8 = 0x83;
 pub const NodeProfileClassFaultContent: u8 = 0x89;
@@ -37,8 +37,8 @@ pub const NodeProfileClassSelfNodeClassListSMax: i32 = 0xFF;
 pub const NodeProfileClassInstanceListNotificationMax: i32 =
     NodeProfileClassSelfNodeInstanceListSMax;
 
-pub const NodeProfileClassOperatingStatusOn: u8 = ObjectOperatingStatusOn;
-pub const NodeProfileClassOperatingStatusOff: u8 = ObjectOperatingStatusOff;
+pub const NodeProfileClassOperatingStatusOn: u8 = OBJECT_OPERATING_STATUS_ON;
+pub const NodeProfileClassOperatingStatusOff: u8 = OBJECT_OPERATING_STATUS_OFF;
 pub const NodeProfileClassBooting: u8 = 0x30;
 pub const NodeProfileClassNotBooting: u8 = 0x31;
 pub const LowerCommunicationLayerProtocolType: u8 = 0xFE;
