@@ -102,12 +102,19 @@ impl Property {
         self.data.len()
     }
 
-    pub fn set_data(&mut self, data: &[u8]) {
-        self.data = data.to_vec()
+    pub fn set_data(&mut self, data: &[u8]) -> bool {
+        self.data = data.to_vec();
+        true
     }
 
-    pub fn add_data(&mut self, data: &[u8]) {
-        self.data.append(&mut data.to_vec())
+    pub fn set_byte_data(&mut self, v: u8) -> bool {
+        let data: &[u8] = &[v];
+        self.set_data(data)
+    }
+
+    pub fn add_data(&mut self, data: &[u8]) -> bool {
+        self.data.append(&mut data.to_vec());
+        true
     }
 
     pub fn data(&self) -> &PropertyData {
