@@ -40,7 +40,7 @@ pub const DeviceManufacturerFaultCodeSize: i32 = 255;
 pub const DeviceCurrentLimitSettingSize: i32 = 1;
 pub const DeviceFaultStatusSize: i32 = 1;
 pub const DeviceFaultDescriptionSize: i32 = 2;
-pub const DeviceManufacturerCodeSize: i32 = ObjectManufacturerCodeSize;
+pub const DeviceManufacturerCodeSize: usize = ObjectManufacturerCodeSize;
 pub const DeviceBusinessFacilityCodeSize: i32 = 3;
 pub const DeviceProductCodeSize: i32 = 12;
 pub const DeviceProductionNumberSize: i32 = 12;
@@ -69,7 +69,7 @@ pub const DeviceDefaultVersionAppendix: u8 = DeviceVersionAppendixG;
 pub const DeviceFaultOccurred: u8 = 0x41;
 pub const DeviceNoFaultOccurred: u8 = 0x42;
 pub const DeviceInstallationLocationUnknown: u8 = 0x00;
-pub const DeviceManufacturerUnknown: i32 = ObjectManufacturerUnknown;
+pub const DeviceManufacturerUnknown: u32 = ObjectManufacturerUnknown;
 
 pub struct Device {}
 
