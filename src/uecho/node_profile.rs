@@ -4,41 +4,41 @@
 
 use crate::uecho::super_object::*;
 
-pub const NodeProfileObject: u32 = 0x0EF001;
-pub const NodeProfileObjectReadOnly: u32 = 0x0EF002;
-pub const NodeProfileClassCode: u8 = 0xF0;
-pub const NodeProfileInstanceGeneralCode: u8 = 0x01;
-pub const NodeProfileInstanceTransmissionOnlyCode: u8 = 0x02;
+pub const NODE_PROFILE_OBJECT: u32 = 0x0EF001;
+pub const NODE_PROFILE_OBJECT_READ_ONLY: u32 = 0x0EF002;
+pub const NODE_PROFILE_CLASS_CODE: u8 = 0xF0;
+pub const NODE_PROFILE_INSTANCE_GENERAL_CODE: u8 = 0x01;
+pub const NODE_PROFILE_INSTANCE_TRANSMISSION_ONLY_CODE: u8 = 0x02;
 
-pub const NodeProfileClassOperatingStatus: u8 = OBJECT_OPERATING_STATUS;
-pub const NodeProfileClassVersionInformation: u8 = 0x82;
-pub const NodeProfileClassIdentificationNumber: u8 = 0x83;
-pub const NodeProfileClassFaultContent: u8 = 0x89;
-pub const NodeProfileClassUniqueIdentifierData: u8 = 0xBF;
-pub const NodeProfileClassNumberOfSelfNodeInstances: u8 = 0xD3;
-pub const NodeProfileClassNumberOfSelfNodeClasses: u8 = 0xD4;
-pub const NodeProfileClassInstanceListNotification: u8 = 0xD5;
-pub const NodeProfileClassSelfNodeInstanceListS: u8 = 0xD6;
-pub const NodeProfileClassSelfNodeClassListS: u8 = 0xD7;
+pub const NODE_PROFILE_CLASS_OPERATING_STATUS: u8 = OBJECT_OPERATING_STATUS;
+pub const NODE_PROFILE_CLASS_VERSION_INFORMATION: u8 = 0x82;
+pub const NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER: u8 = 0x83;
+pub const NODE_PROFILE_CLASS_FAULT_CONTENT: u8 = 0x89;
+pub const NODE_PROFILE_CLASS_UNIQUE_IDENTIFIER_DATA: u8 = 0xBF;
+pub const NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES: u8 = 0xD3;
+pub const NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES: u8 = 0xD4;
+pub const NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION: u8 = 0xD5;
+pub const NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S: u8 = 0xD6;
+pub const NODE_PROFILE_CLASS_SELF_NODE_CLASS_LIST_S: u8 = 0xD7;
 
-pub const NodeProfileClassOperatingStatusSize: i32 = 1;
-pub const NodeProfileClassVersionInformationSize: i32 = 4;
-pub const NodeProfileClassIdentificationManufacturerCodeSize: i32 = 3;
-pub const NodeProfileClassIdentificationUniqueIdSize: i32 = 13;
-pub const NodeProfileClassIdentificationNumberSize: i32 = 1
-    + NodeProfileClassIdentificationManufacturerCodeSize
-    + NodeProfileClassIdentificationUniqueIdSize;
-pub const NodeProfileClassFaultContentSize: i32 = 2;
-pub const NodeProfileClassUniqueIdentifierDataSize: i32 = 2;
-pub const NodeProfileClassNumberOfSelfNodeInstancesSize: i32 = 3;
-pub const NodeProfileClassNumberOfSelfNodeClassesSize: i32 = 2;
-pub const NodeProfileClassSelfNodeInstanceListSMax: i32 = 0xFF;
-pub const NodeProfileClassSelfNodeClassListSMax: i32 = 0xFF;
-pub const NodeProfileClassInstanceListNotificationMax: i32 =
-    NodeProfileClassSelfNodeInstanceListSMax;
+pub const NODE_PROFILE_CLASS_OPERATING_STATUS_SIZE: i32 = 1;
+pub const NODE_PROFILE_CLASS_VERSION_INFORMATION_SIZE: i32 = 4;
+pub const NODE_PROFILE_CLASS_IDENTIFICATION_MANUFACTURER_CODE_SIZE: i32 = 3;
+pub const NODE_PROFILE_CLASS_IDENTIFICATION_UNIQUE_ID_SIZE: i32 = 13;
+pub const NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER_SIZE: i32 = 1
+    + NODE_PROFILE_CLASS_IDENTIFICATION_MANUFACTURER_CODE_SIZE
+    + NODE_PROFILE_CLASS_IDENTIFICATION_UNIQUE_ID_SIZE;
+pub const NODE_PROFILE_CLASS_FAULT_CONTENT_SIZE: i32 = 2;
+pub const NODE_PROFILE_CLASS_UNIQUE_IDENTIFIER_DATA_SIZE: i32 = 2;
+pub const NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES_SIZE: i32 = 3;
+pub const NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES_SIZE: i32 = 2;
+pub const NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S_MAX: i32 = 0xFF;
+pub const NODE_PROFILE_CLASS_SELF_NODE_CLASS_LIST_S_MAX: i32 = 0xFF;
+pub const NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION_MAX: i32 =
+    NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S_MAX;
 
-pub const NodeProfileClassOperatingStatusOn: u8 = OBJECT_OPERATING_STATUS_ON;
-pub const NodeProfileClassOperatingStatusOff: u8 = OBJECT_OPERATING_STATUS_OFF;
-pub const NodeProfileClassBooting: u8 = 0x30;
-pub const NodeProfileClassNotBooting: u8 = 0x31;
-pub const LowerCommunicationLayerProtocolType: u8 = 0xFE;
+pub const NODE_PROFILE_CLASS_OPERATING_STATUS_ON: u8 = OBJECT_OPERATING_STATUS_ON;
+pub const NODE_PROFILE_CLASS_OPERATING_STATUS_OFF: u8 = OBJECT_OPERATING_STATUS_OFF;
+pub const NODE_PROFILE_CLASS_BOOTING: u8 = 0x30;
+pub const NODE_PROFILE_CLASS_NOT_BOOTING: u8 = 0x31;
+pub const LOWER_COMMUNICATION_LAYER_PROTOCOL_TYPE: u8 = 0xFE;
