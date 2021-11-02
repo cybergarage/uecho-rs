@@ -18,7 +18,7 @@ pub const ProfileSetPropertyMap: u8 = ObjectSetPropertyMap;
 pub const ProfileGetPropertyMap: u8 = ObjectGetPropertyMap;
 
 pub const ProfileFaultStatusLen: i32 = 1;
-pub const ProfileManufacturerCodeLen: i32 = ObjectManufacturerCodeSize;
+pub const ProfileManufacturerCodeLen: usize = ObjectManufacturerCodeSize;
 pub const ProfilePlaceOfBusinessCodeLen: i32 = 3;
 pub const ProfileProductCodeLen: i32 = 12;
 pub const ProfileSerialNumberLen: i32 = 12;
@@ -26,7 +26,7 @@ pub const ProfileDateOfManufactureLen: i32 = 4;
 
 pub const ProfileFaultEncountered: u8 = 0x41;
 pub const ProfileNoFaultEncountered: u8 = 0x42;
-pub const ProfileManufacturerUnknown: i32 = ObjectManufacturerUnknown;
+pub const ProfileManufacturerUnknown: u32 = ObjectManufacturerUnknown;
 
 pub struct Profile {}
 
