@@ -14,7 +14,7 @@ mod tests {
         let mut prop = Property::new();
         for n in 1..10 {
             let data = vec![0; n];
-            prop.set_data(data);
+            assert!(prop.set_data(data));
             assert_eq!(prop.size(), n);
         }
     }
