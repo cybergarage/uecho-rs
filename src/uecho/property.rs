@@ -112,6 +112,16 @@ impl Property {
         self.set_data(data)
     }
 
+    pub fn set_bytes_data(&mut self, data: &[u8]) -> bool {
+        self.set_data(data)
+    }
+
+    pub fn set_integer_data(&mut self, val: u32, byte_size: usize) -> bool {
+        let mut buf = Vec::<u8>::with_capacity(byte_size);
+        Bytes::from_u32(val, &mut buf);
+        self.set_data(&buf)
+    }
+
     pub fn add_data(&mut self, data: &[u8]) -> bool {
         self.data.append(&mut data.to_vec());
         true
