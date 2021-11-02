@@ -2,13 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use std::collections::hash_map::Entry;
 use std::collections::HashMap;
-use std::vec;
 
-use crate::uecho::device::*;
 use crate::uecho::property::*;
-use crate::uecho::super_object::*;
 use crate::uecho::util::bytes::Bytes;
 
 pub struct Object {
