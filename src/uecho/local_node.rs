@@ -4,10 +4,10 @@
 
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
+use crate::uecho::object::Object;
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::manager::*;
 use crate::uecho::transport::observer::*;
-use crate::uecho::object::Object;
 
 pub struct LocalNode {
     transport_mgr: Manager,
@@ -18,7 +18,7 @@ impl LocalNode {
     pub fn new() -> LocalNode {
         LocalNode {
             transport_mgr: Manager::new(),
-            objects: Vec::new()
+            objects: Vec::new(),
         }
     }
 
