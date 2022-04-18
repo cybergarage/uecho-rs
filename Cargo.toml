@@ -2,7 +2,7 @@
 name = "uecho"
 version = "0.1.0"
 authors = ["The uecho-rs Authors <skonno@cybergarage.org>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 log = "0.4"
