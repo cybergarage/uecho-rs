@@ -30,7 +30,7 @@ impl LocalNode {
         self.transport_mgr.add_observer(observer.clone())
     }
 
-    pub fn send_messagee(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+    pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         self.transport_mgr.send(to_addr, msg)
     }
 
