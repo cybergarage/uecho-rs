@@ -9,18 +9,48 @@ use std::sync::Mutex;
 use crate::uecho::property::*;
 use crate::uecho::util::bytes::Bytes;
 
+pub type ObjectCode = u32;
+
 pub struct Object {
+    codes: [u8; 3],
     properties: HashMap<PropertyCode, Property>,
 }
 
-pub type ObjectCode = u32;
 pub type Objects = Arc<Mutex<Vec<Object>>>;
 
 impl Object {
     pub fn new() -> Object {
         Object {
+            codes: [0, 0, 0],
             properties: HashMap::new(),
         }
+    }
+
+    pub fn set_code(&mut self, code: ObjectCode) -> bool {
+        self.codes[0] = ((code & 0xFF0000) >> 16) as u8;
+        self.codes[1] = ((code & 0x00FF00) >> 8) as u8;
+        self.codes[2] = (code & 0x0000FF) as u8;
+        true
+    }
+
+    pub fn code(&self) -> ObjectCode {
+        let mut code = 0 as ObjectCode;
+        code |= ((self.codes[0] as ObjectCode) << 16) & 0xFF0000;
+        code |= ((self.codes[1] as ObjectCode) << 8) & 0x00FF00;
+        code |= (self.codes[2] as ObjectCode) & 0x0000FF;
+        code
+    }
+
+    pub fn class_group_code(&self) -> u8 {
+        self.codes[0]
+    }
+
+    pub fn class_code(&self) -> u8 {
+        self.codes[1]
+    }
+
+    pub fn instance_code(&self) -> u8 {
+        self.codes[2]
     }
 
     pub fn add_property(&mut self, prop: Property) -> bool {

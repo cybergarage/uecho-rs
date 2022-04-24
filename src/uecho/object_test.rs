@@ -11,7 +11,16 @@ mod tests {
     use crate::uecho::property::*;
 
     #[test]
-    fn object_new_test() {
+    fn object_code_test() {
+        let obj = Object::new();
+        obj.set_code(0x0EF001);
+        equals!(obj.code(), 0x0EF001);
+        equals!(obj.group_code(), 0x0E);
+        equals!(obj.class_code(),0xF0);
+        equals!(obj.instance_code(),0x01 );
+
+    #[test]
+    fn object_property_test() {
         let obj = Object::new();
 
         for n in 1..10 {
