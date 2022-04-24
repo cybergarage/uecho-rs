@@ -4,6 +4,7 @@
 
 use crate::uecho::local_node::*;
 use crate::uecho::message::*;
+use crate::uecho::node::Node;
 use crate::uecho::node_profile::*;
 use crate::uecho::object::*;
 use crate::uecho::protocol::esv::*;
