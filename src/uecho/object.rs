@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 use std::collections::HashMap;
+use std::sync::Arc;
+use std::sync::Mutex;
 
 use crate::uecho::property::*;
 use crate::uecho::util::bytes::Bytes;
@@ -12,6 +14,7 @@ pub struct Object {
 }
 
 pub type ObjectCode = u32;
+pub type Objects = Arc<Mutex<Vec<Object>>>;
 
 impl Object {
     pub fn new() -> Object {
