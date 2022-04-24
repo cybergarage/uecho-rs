@@ -5,10 +5,19 @@
 #[cfg(test)]
 mod tests {
 
+    use crate::uecho::node::*;
     use crate::uecho::remote_node::*;
 
     #[test]
     fn remote_node_test() {
         let mut node = RemoteNode::new();
+        for n in 1..10 {
+            let obj = Object::new();
+            assert!(obj.set_code(n));
+            assert!(obj.add_object(obj));
+        }
+
+        for n in 1..10 {
+        }
     }
 }
