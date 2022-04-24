@@ -5,6 +5,11 @@
 use crate::uecho::object::*;
 
 trait Node {
-    fn objects(self) -> Vec<Object>;
+    fn objects(&mut self) -> &Objects;
     fn address(self) -> String;
+
+    fn add_object(&mut self, obj: Object) -> bool {
+        self.objects().lock().unwrap().push(obj);
+        true
+    }
 }
