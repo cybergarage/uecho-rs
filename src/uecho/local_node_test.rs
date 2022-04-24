@@ -6,6 +6,20 @@
 mod tests {
 
     use crate::uecho::local_node::*;
+    use crate::uecho::node::*;
+
+    #[test]
+    fn local_node_object_test() {
+        let mut node = LocalNode::new();
+        for n in 1..10 {
+            let obj = Object::new();
+            assert!(obj.set_code(n));
+            assert!(obj.add_object(obj));
+        }
+
+        for n in 1..10 {
+        }
+    }
 
     #[test]
     fn local_node_test() {
