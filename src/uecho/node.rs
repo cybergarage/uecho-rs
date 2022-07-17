@@ -14,4 +14,13 @@ pub trait Node {
         self.objects().lock().unwrap().push(obj);
         true
     }
+
+    fn get_object(&mut self, code: ObjectCode) -> Option<&Object> {
+        for (_, obj) in self.objects().lock().unwrap().iter().enumerate() {
+            if obj.code() == code {
+                return Some(&*obj);
+            }
+        }
+        None
+    }
 }
