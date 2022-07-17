@@ -5,7 +5,6 @@
 pub mod esv;
 pub mod message;
 pub mod message_handler;
-pub mod object;
 pub mod property;
 
 mod message_test;
