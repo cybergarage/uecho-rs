@@ -16,8 +16,8 @@ pub struct LocalNode {
 }
 
 impl Node for LocalNode {
-    fn objects(&mut self) -> &Objects {
-        &self.objects
+    fn objects(&mut self) -> Objects {
+        self.objects.clone()
     }
 
     fn addr(&self) -> IpAddr {

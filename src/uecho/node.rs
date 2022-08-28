@@ -7,7 +7,7 @@ use std::net::IpAddr;
 use crate::uecho::object::*;
 
 pub trait Node {
-    fn objects(&mut self) -> &Objects;
+    fn objects(&mut self) -> Objects;
     fn addr(&self) -> IpAddr;
 
     fn add_object(&mut self, obj: Object) -> bool {
