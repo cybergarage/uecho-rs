@@ -14,8 +14,8 @@ pub struct RemoteNode {
 }
 
 impl Node for RemoteNode {
-    fn objects(&mut self) -> &Objects {
-        &self.objects
+    fn objects(&mut self) -> Objects {
+        self.objects.clone()
     }
 
     fn addr(&self) -> IpAddr {
