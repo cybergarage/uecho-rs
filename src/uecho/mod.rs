@@ -8,12 +8,11 @@ pub mod transport;
 pub mod util;
 
 pub mod class;
-// pub mod controller;
+pub mod controller;
 pub mod device;
 pub mod error;
 pub mod local_node;
 pub mod message;
-// pub mod node;
 pub mod node_profile;
 pub mod object;
 pub mod profile;
