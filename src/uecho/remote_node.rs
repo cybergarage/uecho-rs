@@ -27,7 +27,7 @@ impl RemoteNode {
         }
     }
 
-    fn addr(&self) -> IpAddr {
+    pub fn addr(&self) -> IpAddr {
         self.addr
     }
 
@@ -35,12 +35,12 @@ impl RemoteNode {
         self.addr = addr
     }
 
-    fn add_object(&mut self, obj: Object) -> bool {
+    pub fn add_object(&mut self, obj: Object) -> bool {
         self.objects.push(obj);
         true
     }
 
-    fn get_object(&self, code: ObjectCode) -> Option<&Object> {
+    pub fn get_object(&self, code: ObjectCode) -> Option<&Object> {
         for n in 0..self.objects.len() {
             if self.objects[n].code() == code {
                 return Some(&self.objects[n]);
