@@ -4,46 +4,53 @@
 
 use std::net::{IpAddr, Ipv4Addr};
 
-use crate::uecho::node::Node;
 use crate::uecho::object::*;
 use crate::uecho::protocol::message::Message;
 
 pub struct RemoteNode {
     addr: IpAddr,
-    objects: Objects,
-}
-
-impl Node for RemoteNode {
-    fn objects(&mut self) -> Objects {
-        self.objects.clone()
-    }
-
-    fn addr(&self) -> IpAddr {
-        self.addr
-    }
+    objects: Vec<Object>,
 }
 
 impl RemoteNode {
     pub fn new() -> RemoteNode {
         RemoteNode {
             addr: IpAddr::V4(Ipv4Addr::UNSPECIFIED),
-            objects: objects_new(),
+            objects: Vec::new(),
         }
     }
 
     pub fn from_message(msg: &Message) -> RemoteNode {
         RemoteNode {
             addr: msg.addr(),
-            objects: objects_new(),
+            objects: Vec::new(),
         }
+    }
+
+    fn addr(&self) -> IpAddr {
+        self.addr
     }
 
     pub fn set_addr(&mut self, addr: IpAddr) {
         self.addr = addr
     }
+
+    fn add_object(&mut self, obj: Object) -> bool {
+        self.objects.push(obj);
+        true
+    }
+
+    fn get_object(&self, code: ObjectCode) -> Option<&Object> {
+        for n in 0..self.objects.len() {
+            if self.objects[n].code() == code {
+                return Some(&self.objects[n]);
+            }
+        }
+        None
+    }
 }
 
-impl PartialEq for RemoteNode {
+impl<'a> PartialEq for RemoteNode {
     fn eq(&self, other: &Self) -> bool {
         self.addr == other.addr
     }
