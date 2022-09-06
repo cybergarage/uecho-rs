@@ -4,7 +4,6 @@
 
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
-use crate::uecho::node::Node;
 use crate::uecho::object::*;
 use crate::uecho::protocol::message::Message;
 use crate::uecho::transport::manager::*;
@@ -12,12 +11,15 @@ use crate::uecho::transport::observer::*;
 
 pub struct LocalNode {
     transport_mgr: Manager,
-    objects: Objects,
+    objects: Vec<Object>,
 }
 
-impl Node for LocalNode {
-    fn objects(&mut self) -> Objects {
-        self.objects.clone()
+impl LocalNode {
+    pub fn new() -> LocalNode {
+        LocalNode {
+            transport_mgr: Manager::new(),
+            objects: Vec::new(),
+        }
     }
 
     fn addr(&self) -> IpAddr {
@@ -26,14 +28,19 @@ impl Node for LocalNode {
             Err(_) => return IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
         }
     }
-}
 
-impl LocalNode {
-    pub fn new() -> LocalNode {
-        LocalNode {
-            transport_mgr: Manager::new(),
-            objects: objects_new(),
+    fn add_object(&mut self, obj: Object) -> bool {
+        self.objects.push(obj);
+        true
+    }
+
+    fn get_object(&self, code: ObjectCode) -> Option<&Object> {
+        for n in 0..self.objects.len() {
+            if self.objects[n].code() == code {
+                return Some(&self.objects[n]);
+            }
         }
+        None
     }
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
