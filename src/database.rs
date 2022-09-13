@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::database_manufacturers::*;
+use crate::database_mra_objects::*;
 use crate::manufacture::*;
 use crate::object::*;
 
@@ -12,10 +14,13 @@ pub struct StandardDatabase {
 
 impl StandardDatabase {
     pub fn new() -> StandardDatabase {
-        StandardDatabase {
+        let mut db = StandardDatabase {
             manufactures: Vec::new(),
             objects: Vec::new(),
-        }
+        };
+        db.init_manufactures();
+        db.init_objects();
+        db
     }
 
     pub fn add_manufacture(&mut self, man: Manufacture) -> bool {
