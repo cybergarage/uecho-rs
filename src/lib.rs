@@ -9,6 +9,7 @@ pub mod util;
 
 pub mod class;
 pub mod controller;
+pub mod database;
 pub mod device;
 pub mod error;
 pub mod local_node;
