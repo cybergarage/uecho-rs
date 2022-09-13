@@ -12,7 +12,3 @@ pnet = "0.28.0"
 net2 = "0.2"
 strum = "0.21"
 strum_macros = "0.21"
-
-[[bin]]
-name = "uechosearch"
-path = "bin/uechosearch.rs"
