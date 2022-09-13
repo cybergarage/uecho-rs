@@ -21,3 +21,6 @@ pub mod profile;
 pub mod property;
 pub mod remote_node;
 pub mod super_object;
+
+mod database_manufacturers;
+mod database_mra_objects;
