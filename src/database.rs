@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::database_manufacturers::*;
-use crate::database_mra_objects::*;
 use crate::manufacture::*;
 use crate::object::*;
 
