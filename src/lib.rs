@@ -12,6 +12,7 @@ pub mod controller;
 pub mod device;
 pub mod error;
 pub mod local_node;
+pub mod manufacture;
 pub mod message;
 pub mod node_profile;
 pub mod object;
