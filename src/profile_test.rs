@@ -2,14 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use uecho::controller::*;
-use uecho::log::*;
+#[test]
 
-fn main() {
-    logger::init();
+#[cfg(test)]
+mod tests {
 
-    let mut ctrl = Controller::new();
-    ctrl.start();
-    ctrl.search_all();
-    ctrl.stop();
+    use crate::profile::*;
+
+    #[test]
+    fn profile_test() {
+        Profile::new();
+    }
 }
