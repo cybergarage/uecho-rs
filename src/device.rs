@@ -80,8 +80,6 @@ impl Device {
         obj.add_standard_properties(code);
         obj
     }
-
-    fn add_mandatory_properties(obj: &mut Object) {}
 }
 
 impl Object {

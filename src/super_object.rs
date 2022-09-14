@@ -25,12 +25,6 @@ pub const OBJECT_GET_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_MAX_SIZE
 pub const OBJECT_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_EVALUATION_CODE_MIN;
 
 impl Object {
-    pub fn add_mandatory_properties(obj: &mut Object) {
-        obj.add_standard_properties(0x000000);
-    }
-}
-
-impl Object {
     pub fn set_manufacturer_code(&mut self, code: u32) -> bool {
         self.set_property_integer(
             OBJECT_MANUFACTURER_CODE,
