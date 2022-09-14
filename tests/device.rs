@@ -11,6 +11,8 @@ pub struct TestDevice {
 
 impl TestDevice {
     pub fn new() -> TestDevice {
-        TestDevice { obj: Device::new() }
+        TestDevice {
+            obj: Device::new(0x029101),
+        }
     }
 }
