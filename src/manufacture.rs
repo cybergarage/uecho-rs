@@ -26,18 +26,16 @@ impl Manufacture {
         }
     }
 
-    pub fn set_code(&mut self, code: ManufactureCode) -> &Manufacture {
+    pub fn set_code(&mut self, code: ManufactureCode) {
         self.code = code;
-        self
     }
 
     pub fn code(&self) -> ManufactureCode {
         self.code
     }
 
-    pub fn set_name(&mut self, name: String) -> &Manufacture {
+    pub fn set_name(&mut self, name: String) {
         self.name = name;
-        self
     }
 
     pub fn name(&self) -> &String {
