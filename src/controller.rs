@@ -45,7 +45,7 @@ impl Controller {
     }
 
     pub fn search_all(&mut self) -> bool {
-        self.search_object(NODE_PROFILE_OBJECT)
+        self.search_object(NODE_PROFILE_OBJECT_CODE)
     }
 
     pub fn start(&mut self) -> bool {
@@ -77,7 +77,7 @@ impl Observer for Controller {
                 return false;
             }
             let dst_obj = msg.destination_object_code();
-            if dst_obj != NODE_PROFILE_OBJECT && dst_obj != NODE_PROFILE_OBJECT_READ_ONLY {
+            if dst_obj != NODE_PROFILE_OBJECT_CODE && dst_obj != NODE_PROFILE_OBJECT_READ_ONLY {
                 return false;
             }
             true
