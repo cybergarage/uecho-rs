@@ -39,6 +39,7 @@ impl Object {
         self.codes[0] = ((code & 0xFF0000) >> 16) as u8;
         self.codes[1] = ((code & 0x00FF00) >> 8) as u8;
         self.codes[2] = (code & 0x0000FF) as u8;
+        self.add_standard_properties(self.code());
     }
 
     pub fn set_class_group_code(&mut self, code: u8) {
