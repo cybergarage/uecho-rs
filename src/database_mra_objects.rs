@@ -18,6 +18,7 @@ impl Object {
         anno_rule: String,
     ) {
         let mut prop = Property::new();
+        prop.set_name(name);
         self.add_property(prop);
     }
 }

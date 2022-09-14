@@ -25,6 +25,7 @@ use crate::property::*;
 impl Object {
     fn add_standard_property(&mut self, code: PropertyCode, name: String, data_type: String, data_size: usize, get_rule: String, set_rule: String, anno_rule: String) {
         let mut prop = Property::new();
+        prop.set_name(name);
         self.add_property(prop);
     }
 }
