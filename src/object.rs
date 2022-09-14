@@ -34,11 +34,22 @@ impl Object {
         }
     }
 
-    pub fn set_code(&mut self, code: ObjectCode) -> bool {
+    pub fn set_code(&mut self, code: ObjectCode) {
         self.codes[0] = ((code & 0xFF0000) >> 16) as u8;
         self.codes[1] = ((code & 0x00FF00) >> 8) as u8;
         self.codes[2] = (code & 0x0000FF) as u8;
-        true
+    }
+
+    pub fn set_class_group_code(&mut self, code: u8) {
+        self.codes[0] = code;
+    }
+
+    pub fn set_class_code(&mut self, code: u8) {
+        self.codes[1] = code;
+    }
+
+    pub fn set_instance_code(&mut self, code: u8) {
+        self.codes[2] = code;
     }
 
     pub fn code(&self) -> ObjectCode {
