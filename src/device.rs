@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use crate::object::Object;
+use crate::object::*;
 use crate::property::*;
 use crate::super_object::*;
 
@@ -74,9 +74,10 @@ pub const DEVICE_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_UNKNOWN;
 pub struct Device {}
 
 impl Device {
-    pub fn new() -> Object {
+    pub fn new(code: ObjectCode) -> Object {
         let mut obj = Object::new();
-        Device::add_mandatory_properties(&mut obj);
+        obj.add_standard_properties(0x000000);
+        obj.add_standard_properties(code);
         obj
     }
 
