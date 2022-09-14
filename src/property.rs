@@ -32,12 +32,8 @@ pub struct Property {
 
 impl Property {
     pub fn new() -> Property {
-        Property::new_with(0)
-    }
-
-    pub fn new_with(code: PropertyCode) -> Property {
         Property {
-            code: code,
+            code: 0,
             data: Vec::new(),
             name: String::from(""),
             read_attr: PropertyAttr::Prohibited,
