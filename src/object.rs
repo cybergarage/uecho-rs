@@ -27,12 +27,14 @@ pub fn objects_new() -> Objects {
 
 impl Object {
     pub fn new() -> Object {
-        Object {
+        let mut obj = Object {
             codes: [0, 0, 0],
             name: String::from(""),
             class_name: String::from(""),
             properties: HashMap::new(),
-        }
+        };
+        obj.add_standard_properties(obj.code());
+        obj
     }
 
     pub fn set_code(&mut self, code: ObjectCode) {
