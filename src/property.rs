@@ -11,35 +11,38 @@ pub const PROPERTY_MAP_FORMAT1_MAX_SIZE: i32 = 15;
 pub const PROPERTY_MAP_FORMAT2_SIZE: i32 = 18;
 pub const PROPERTY_MAP_FORMAT_MAX_SIZE: i32 = PROPERTY_MAP_FORMAT2_SIZE;
 
-pub const PROPERTY_ATTRIBUTE_NONE: u32 = 0x00;
-pub const PROPERTY_ATTRIBUTE_READ: u32 = 0x01;
-pub const PROPERTY_ATTRIBUTE_WRITE: u32 = 0x02;
-pub const PROPERTY_ATTRIBUTE_ANNO: u32 = 0x10;
-pub const PROPERTY_ATTRIBUTE_READ_WRITE: u32 = PROPERTY_ATTRIBUTE_READ | PROPERTY_ATTRIBUTE_WRITE;
-pub const PROPERTY_ATTRIBUTE_READ_ANNO: u32 = PROPERTY_ATTRIBUTE_READ | PROPERTY_ATTRIBUTE_ANNO;
-
 pub type PropertyCode = u8;
-pub type PropertyAttr = u32;
 pub type PropertyData = Vec<u8>;
+
+#[derive(Copy, Clone)]
+pub enum PropertyAttr {
+    Prohibited = 0,
+    Required = 1,
+    Optional = 2,
+}
 
 pub struct Property {
     code: PropertyCode,
     data: PropertyData,
     name: String,
-    attr: PropertyAttr,
+    read_attr: PropertyAttr,
+    write_attr: PropertyAttr,
+    anno_attr: PropertyAttr,
 }
 
 impl Property {
     pub fn new() -> Property {
-        Property::new_with(0, PROPERTY_ATTRIBUTE_NONE)
+        Property::new_with(0)
     }
 
-    pub fn new_with(code: PropertyCode, attr: PropertyAttr) -> Property {
+    pub fn new_with(code: PropertyCode) -> Property {
         Property {
             code: code,
             data: Vec::new(),
             name: String::from(""),
-            attr: attr,
+            read_attr: PropertyAttr::Prohibited,
+            write_attr: PropertyAttr::Prohibited,
+            anno_attr: PropertyAttr::Prohibited,
         }
     }
 
@@ -59,50 +62,71 @@ impl Property {
         &self.name
     }
 
-    pub fn set_attribute(&mut self, attr: PropertyAttr) {
-        self.attr = attr
+    pub fn set_read_attribute(&mut self, attr: PropertyAttr) {
+        self.read_attr = attr
     }
 
-    pub fn attribute(&self) -> PropertyAttr {
-        self.attr
+    pub fn read_attribute(&self) -> PropertyAttr {
+        self.read_attr
+    }
+
+    pub fn set_write_attribute(&mut self, attr: PropertyAttr) {
+        self.write_attr = attr
+    }
+
+    pub fn write_attribute(&self) -> PropertyAttr {
+        self.write_attr
+    }
+    pub fn set_anno_attribute(&mut self, attr: PropertyAttr) {
+        self.anno_attr = attr
+    }
+
+    pub fn anno_attribute(&self) -> PropertyAttr {
+        self.anno_attr
     }
 
     pub fn is_readable(&self) -> bool {
-        if (self.attr & PROPERTY_ATTRIBUTE_READ) == 0 {
-            return false;
-        }
-        true
+        match self.read_attr {
+            PropertyAttr::Prohibited => false,
+            PropertyAttr::Required => true,
+            PropertyAttr::Optional => true,
+        };
+        false
     }
 
     pub fn is_writable(&self) -> bool {
-        if (self.attr & PROPERTY_ATTRIBUTE_WRITE) == 0 {
-            return false;
-        }
-        true
+        match self.write_attr {
+            PropertyAttr::Prohibited => false,
+            PropertyAttr::Required => true,
+            PropertyAttr::Optional => true,
+        };
+        false
+    }
+
+    pub fn is_announceable(&self) -> bool {
+        match self.anno_attr {
+            PropertyAttr::Prohibited => false,
+            PropertyAttr::Required => true,
+            PropertyAttr::Optional => true,
+        };
+        false
     }
 
     pub fn is_readonly(&self) -> bool {
-        if (self.attr & PROPERTY_ATTRIBUTE_READ) == 0 {
+        if !self.is_readable() {
             return false;
         }
-        if (self.attr & PROPERTY_ATTRIBUTE_WRITE) != 0 {
+        if self.is_writable() {
             return false;
         }
         true
     }
 
     pub fn is_writeonly(&self) -> bool {
-        if (self.attr & PROPERTY_ATTRIBUTE_WRITE) == 0 {
+        if !self.is_writable() {
             return false;
         }
-        if (self.attr & PROPERTY_ATTRIBUTE_READ) != 0 {
-            return false;
-        }
-        true
-    }
-
-    pub fn is_announceable(&self) -> bool {
-        if (self.attr & PROPERTY_ATTRIBUTE_ANNO) == 0 {
+        if self.is_readable() {
             return false;
         }
         true
