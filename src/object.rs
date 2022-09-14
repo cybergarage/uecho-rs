@@ -13,6 +13,7 @@ pub type ObjectCode = u32;
 
 pub struct Object {
     codes: [u8; 3],
+    name: String,
     properties: HashMap<PropertyCode, Property>,
 }
 
@@ -26,6 +27,7 @@ impl Object {
     pub fn new() -> Object {
         Object {
             codes: [0, 0, 0],
+            name: String::from(""),
             properties: HashMap::new(),
         }
     }
@@ -43,6 +45,14 @@ impl Object {
         code |= ((self.codes[1] as ObjectCode) << 8) & 0x00FF00;
         code |= (self.codes[2] as ObjectCode) & 0x0000FF;
         code
+    }
+
+    pub fn set_name(&mut self, name: String) {
+        self.name = name;
+    }
+
+    pub fn name(&self) -> &String {
+        &self.name
     }
 
     pub fn class_group_code(&self) -> u8 {
