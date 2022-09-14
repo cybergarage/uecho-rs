@@ -4,12 +4,9 @@
 
 SHELL := bash
 
-# SOURCE_FILES= \
-# 	../database_manufacturers.rs \
-# 	../database_mra_objects.rs
-
 SOURCE_FILES= \
-	../database_manufacturers.rs
+	../database_manufacturers.rs \
+	../database_mra_objects.rs
 
 .PHONY: all ${SOURCE_FILES} clean
 
