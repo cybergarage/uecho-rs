@@ -94,7 +94,7 @@ impl Object {
         true
     }
 
-    pub fn set_property(&mut self, code: PropertyCode, attr: PropertyAttribute) -> bool {
+    pub fn set_property(&mut self, code: PropertyCode, attr: PropertyAttr) -> bool {
         self.add_property(Property::new_with(code, attr))
     }
 
@@ -102,14 +102,14 @@ impl Object {
         self.properties.get_mut(&code)
     }
 
-    pub fn property_attribute(&mut self, code: PropertyCode) -> Option<PropertyAttribute> {
+    pub fn property_attribute(&mut self, code: PropertyCode) -> Option<PropertyAttr> {
         match self.property(code) {
             Some(prop) => return Some(prop.attribute()),
             None => return None,
         }
     }
 
-    pub fn set_property_attribute(&mut self, code: PropertyCode, attr: PropertyAttribute) -> bool {
+    pub fn set_property_attribute(&mut self, code: PropertyCode, attr: PropertyAttr) -> bool {
         match self.property(code).as_mut() {
             Some(prop) => {
                 prop.set_attribute(attr);
