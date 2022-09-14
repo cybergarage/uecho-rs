@@ -6,6 +6,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use crate::database::*;
 use crate::property::*;
 use crate::util::bytes::Bytes;
 
@@ -127,6 +128,20 @@ impl Object {
         match self.property(code) {
             Some(prop) => return Some(prop.data()),
             None => return None,
+        }
+    }
+
+    pub fn add_standard_properties(&mut self, code: ObjectCode) -> bool {
+        let db = get_shared_standard_database();
+        let std_obj = db.get_object(code & 0xFFFF00);
+        match std_obj {
+            Some(obj) => {
+                for (_prop_code, prop) in &obj.properties {
+                    self.add_property(prop.clone());
+                }
+                true
+            }
+            None => false,
         }
     }
 
