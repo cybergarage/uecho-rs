@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::object::*;
 use crate::super_object::*;
 
-pub const NODE_PROFILE_OBJECT: u32 = 0x0EF001;
+pub const NODE_PROFILE_OBJECT_CODE: u32 = 0x0EF001;
 pub const NODE_PROFILE_OBJECT_READ_ONLY: u32 = 0x0EF002;
 pub const NODE_PROFILE_CLASS_CODE: u8 = 0xF0;
 pub const NODE_PROFILE_INSTANCE_GENERAL_CODE: u8 = 0x01;
@@ -42,3 +43,14 @@ pub const NODE_PROFILE_CLASS_OPERATING_STATUS_OFF: u8 = OBJECT_OPERATING_STATUS_
 pub const NODE_PROFILE_CLASS_BOOTING: u8 = 0x30;
 pub const NODE_PROFILE_CLASS_NOT_BOOTING: u8 = 0x31;
 pub const LOWER_COMMUNICATION_LAYER_PROTOCOL_TYPE: u8 = 0xFE;
+
+pub struct NodeProfile {}
+
+impl NodeProfile {
+    pub fn new() -> Object {
+        let mut obj = Object::new();
+        obj.add_standard_properties(0x000000);
+        obj.add_standard_properties(NODE_PROFILE_OBJECT_CODE);
+        obj
+    }
+}
