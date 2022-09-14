@@ -25,8 +25,9 @@ impl Object {
 impl StandardDatabase {
     fn create_standard_object(&mut self, cls_name: String, grp_code: u8, cls_code: u8) -> Object {
         let mut obj = Object::new();
-        // obj.set_code(code);
-        // obj.set_name(name);
+        obj.set_class_group_code(grp_code);
+        obj.set_class_code(cls_code);
+        obj.set_class_name(cls_name);
         obj
     }
 
