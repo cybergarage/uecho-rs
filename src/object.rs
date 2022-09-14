@@ -32,7 +32,7 @@ impl Object {
             name: String::from(""),
             class_name: String::from(""),
             properties: HashMap::new(),
-        };
+        }
     }
 
     pub fn set_code(&mut self, code: ObjectCode) {
