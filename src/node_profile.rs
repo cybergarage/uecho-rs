@@ -49,7 +49,7 @@ pub struct NodeProfile {}
 impl NodeProfile {
     pub fn new() -> Object {
         let mut obj = Object::new();
-        obj.add_standard_properties(0x000000);
+        obj.add_standard_properties(SUPER_OBJECT_CODE);
         obj.add_standard_properties(NODE_PROFILE_OBJECT_CODE);
         obj
     }
