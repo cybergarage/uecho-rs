@@ -19,14 +19,14 @@ pub const PROPERTY_ATTRIBUTE_READ_WRITE: u32 = PROPERTY_ATTRIBUTE_READ | PROPERT
 pub const PROPERTY_ATTRIBUTE_READ_ANNO: u32 = PROPERTY_ATTRIBUTE_READ | PROPERTY_ATTRIBUTE_ANNO;
 
 pub type PropertyCode = u8;
-pub type PropertyAttribute = u32;
+pub type PropertyAttr = u32;
 pub type PropertyData = Vec<u8>;
 
 pub struct Property {
     code: PropertyCode,
     data: PropertyData,
     name: String,
-    attr: PropertyAttribute,
+    attr: PropertyAttr,
 }
 
 impl Property {
@@ -34,7 +34,7 @@ impl Property {
         Property::new_with(0, PROPERTY_ATTRIBUTE_NONE)
     }
 
-    pub fn new_with(code: PropertyCode, attr: PropertyAttribute) -> Property {
+    pub fn new_with(code: PropertyCode, attr: PropertyAttr) -> Property {
         Property {
             code: code,
             data: Vec::new(),
@@ -59,11 +59,11 @@ impl Property {
         &self.name
     }
 
-    pub fn set_attribute(&mut self, attr: PropertyAttribute) {
+    pub fn set_attribute(&mut self, attr: PropertyAttr) {
         self.attr = attr
     }
 
-    pub fn attribute(&self) -> PropertyAttribute {
+    pub fn attribute(&self) -> PropertyAttr {
         self.attr
     }
 
