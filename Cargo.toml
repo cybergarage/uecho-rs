@@ -12,6 +12,7 @@ pnet = "0.28.0"
 net2 = "0.2"
 strum = "0.21"
 strum_macros = "0.21"
+once_cell = "1.14.0"
 
 [[bin]]
 name = "uechosearch"
