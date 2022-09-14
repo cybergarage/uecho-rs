@@ -76,7 +76,7 @@ pub struct Device {}
 impl Device {
     pub fn new(code: ObjectCode) -> Object {
         let mut obj = Object::new();
-        obj.add_standard_properties(0x000000);
+        obj.add_standard_properties(SUPER_OBJECT_CODE);
         obj.add_standard_properties(code);
         obj
     }
