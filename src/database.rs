@@ -4,6 +4,13 @@
 
 use crate::manufacture::*;
 use crate::object::*;
+use once_cell::sync::Lazy;
+
+static SHARED_STANDARD_DATABASE: Lazy<StandardDatabase> = Lazy::new(|| StandardDatabase::new());
+
+pub fn get_shared_standard_database() -> &'static Lazy<StandardDatabase> {
+    &SHARED_STANDARD_DATABASE
+}
 
 pub struct StandardDatabase {
     manufactures: Vec<Manufacture>,
