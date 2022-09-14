@@ -5,6 +5,7 @@
 use crate::object::Object;
 use crate::property::*;
 
+pub const SUPER_OBJECT_CODE: u32 = 0x000000;
 pub const OBJECT_OPERATING_STATUS: u8 = 0x80;
 pub const OBJECT_MANUFACTURER_CODE: u8 = 0x8A;
 pub const OBJECT_ANNO_PROPERTY_MAP: u8 = 0x9D;
