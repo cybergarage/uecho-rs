@@ -80,21 +80,7 @@ impl Device {
         obj
     }
 
-    fn add_mandatory_properties(obj: &mut Object) {
-        obj.set_property(OBJECT_OPERATING_STATUS, PROPERTY_ATTRIBUTE_READ_ANNO);
-        obj.set_operating_status(true);
-
-        obj.set_property(DEVICE_INSTALLATION_LOCATION, PROPERTY_ATTRIBUTE_READ_ANNO);
-        obj.set_installation_location(DEVICE_INSTALLATION_LOCATION_UNKNOWN);
-
-        obj.set_property(DEVICE_STANDARD_VERSION, PROPERTY_ATTRIBUTE_READ);
-        obj.set_standard_version(DEVICE_STANDARD_VERSION);
-
-        obj.set_property(DEVICE_FAULT_STATUS, PROPERTY_ATTRIBUTE_READ_ANNO);
-        obj.set_fault_status(false);
-
-        obj.set_property(DEVICE_MANUFACTURER_CODE, PROPERTY_ATTRIBUTE_READ);
-    }
+    fn add_mandatory_properties(obj: &mut Object) {}
 }
 
 impl Object {
