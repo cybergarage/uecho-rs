@@ -186,4 +186,15 @@ impl Property {
         }
         true
     }
+
+    pub fn copy(&self) -> Property {
+        Property {
+            code: self.code(),
+            data: Vec::new(),
+            name: self.name.clone(),
+            read_attr: self.read_attr,
+            write_attr: self.write_attr,
+            anno_attr: self.anno_attr,
+        }
+    }
 }
