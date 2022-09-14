@@ -33,7 +33,7 @@ impl Object {
     }
 }
 
-fn to_attribute(attr: &str) -> PropertyAttr {
+fn property_string_to_attribute(attr: &str) -> PropertyAttr {
     if attr == "required" {
         return PropertyAttr::Required;
     }
@@ -97,7 +97,7 @@ foreach my $device_json_file(@device_json_files){
     my $set_rule = %{$rules}{'set'};
     my $anno_rule = %{$rules}{'inf'};
     my $data_type = "";
-    printf("        obj.add_standard_property(%s, \"%s\".to_string(), \"%s\".to_string(), %d, to_attribute(\"%s\"), to_attribute(\"%s\"), to_attribute(\"%s\"));\n",
+    printf("        obj.add_standard_property(%s, \"%s\".to_string(), \"%s\".to_string(), %d, property_string_to_attribute(\"%s\"), property_string_to_attribute(\"%s\"), property_string_to_attribute(\"%s\"));\n",
       $epc,
       $name,
       $data_type,
