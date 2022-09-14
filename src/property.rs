@@ -186,8 +186,10 @@ impl Property {
         }
         true
     }
+}
 
-    pub fn copy(&self) -> Property {
+impl Clone for Property {
+    fn clone(&self) -> Property {
         Property {
             code: self.code(),
             data: Vec::new(),
