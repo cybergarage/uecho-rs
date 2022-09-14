@@ -25,6 +25,7 @@ pub type PropertyData = Vec<u8>;
 pub struct Property {
     code: PropertyCode,
     data: PropertyData,
+    name: String,
     attr: PropertyAttribute,
 }
 
@@ -37,6 +38,7 @@ impl Property {
         Property {
             code: code,
             data: Vec::new(),
+            name: String::from(""),
             attr: attr,
         }
     }
@@ -47,6 +49,14 @@ impl Property {
 
     pub fn code(&self) -> PropertyCode {
         self.code
+    }
+
+    pub fn set_name(&mut self, name: String) {
+        self.name = name;
+    }
+
+    pub fn name(&self) -> &String {
+        &self.name
     }
 
     pub fn set_attribute(&mut self, attr: PropertyAttribute) {
