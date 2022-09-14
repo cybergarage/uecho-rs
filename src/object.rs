@@ -137,6 +137,7 @@ impl Object {
         let std_obj = db.get_object(code & 0xFFFF00);
         match std_obj {
             Some(obj) => {
+                self.set_class_name(obj.class_name().clone());
                 for (_prop_code, prop) in &obj.properties {
                     self.add_property(prop.clone());
                 }
