@@ -6,14 +6,14 @@ use crate::protocol::message::Message;
 use crate::transport::observer::*;
 
 pub trait NotifytManager {
-    fn observers(&mut self) -> &Observers;
+    fn observers(&mut self) -> &mut Observers;
     fn add_observer(&mut self, observer: ObserverEntity) -> bool {
-        self.observers().lock().unwrap().push(observer.clone());
+        self.observers().push(observer.clone());
         true
     }
 
     fn notify(&mut self, msg: &Message) -> bool {
-        for (_, observer) in self.observers().lock().unwrap().iter().enumerate() {
+        for (_, observer) in self.observers().iter().enumerate() {
             observer.lock().unwrap().message_received(msg)
         }
         true
@@ -41,7 +41,7 @@ impl DefaultNotifytManager {
 }
 
 impl NotifytManager for DefaultNotifytManager {
-    fn observers(&mut self) -> &Observers {
-        &self.observers
+    fn observers(&mut self) -> &mut Observers {
+        &mut self.observers
     }
 }
