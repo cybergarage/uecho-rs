@@ -133,7 +133,7 @@ impl Object {
 
     pub fn add_standard_properties(&mut self, code: ObjectCode) -> bool {
         let db = get_shared_standard_database();
-        let std_obj = db.get_object(code & 0xFFFF00);
+        let std_obj = db.find_object(code & 0xFFFF00);
         match std_obj {
             Some(obj) => {
                 self.set_class_name(obj.class_name().clone());
