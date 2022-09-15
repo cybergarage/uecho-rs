@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::sync::Arc;
+use std::sync::Mutex;
+
 use crate::local_node::*;
 use crate::message::*;
 use crate::node_profile::*;
@@ -18,10 +21,11 @@ pub struct Controller {
 
 impl Controller {
     pub fn new() -> Controller {
-        Controller {
+        let ctrl = Controller {
             node: LocalNode::new(),
             remote_nodes: Vec::new(),
-        }
+        };
+        ctrl
     }
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
