@@ -33,7 +33,7 @@ impl StandardDatabase {
         true
     }
 
-    pub fn get_manufacture(&self, code: ManufactureCode) -> Option<&Manufacture> {
+    pub fn find_manufacture(&self, code: ManufactureCode) -> Option<&Manufacture> {
         for n in 0..self.manufactures.len() {
             if self.manufactures[n].code() == code {
                 return Some(&self.manufactures[n]);
@@ -47,7 +47,7 @@ impl StandardDatabase {
         true
     }
 
-    pub fn get_object(&self, code: ObjectCode) -> Option<&Object> {
+    pub fn find_object(&self, code: ObjectCode) -> Option<&Object> {
         for n in 0..self.objects.len() {
             if self.objects[n].code() == code {
                 return Some(&self.objects[n]);
