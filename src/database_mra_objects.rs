@@ -11,13 +11,14 @@ impl Object {
         &mut self,
         code: PropertyCode,
         name: String,
-        data_type: String,
-        data_size: usize,
+        _data_type: String,
+        _data_size: usize,
         get_rule: PropertyAttr,
         set_rule: PropertyAttr,
         anno_rule: PropertyAttr,
     ) {
         let mut prop = Property::new();
+        prop.set_code(code);
         prop.set_name(name);
         prop.set_read_attribute(get_rule);
         prop.set_write_attribute(set_rule);
