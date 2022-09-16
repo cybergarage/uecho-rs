@@ -7,13 +7,14 @@ use crate::transport::observer::*;
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &mut Observers;
+
     fn add_observer(&mut self, observer: ObserverEntity) -> bool {
         self.observers().push(observer);
         true
     }
 
     fn notify(&mut self, msg: &Message) -> bool {
-        for (_, observer) in self.observers().iter().enumerate() {
+        for observer in self.observers().iter() {
             observer.lock().unwrap().message_received(msg)
         }
         true
