@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::sync::Arc;
+use std::sync::Mutex;
+
 use uecho::controller::Controller;
 use uecho::log::logger;
 
@@ -10,7 +13,7 @@ fn controller_test() {
     logger::init();
 
     let mut ctrl = Controller::new();
-    assert!(ctrl.start());
+    // ctrl.add_observer(Arc::new(Mutex::new(ctrl)));
     assert!(ctrl.start());
     assert!(ctrl.search_all());
     assert!(ctrl.stop());
