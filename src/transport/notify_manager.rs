@@ -8,7 +8,7 @@ use crate::transport::observer::*;
 pub trait NotifytManager {
     fn observers(&mut self) -> &mut Observers;
     fn add_observer(&mut self, observer: ObserverEntity) -> bool {
-        self.observers().push(observer.clone());
+        self.observers().push(observer);
         true
     }
 
