@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::sync::Arc;
+use std::sync::Mutex;
+
 use uecho::controller::Controller;
 use uecho::log::*;
 use uecho::property::Property;
@@ -10,9 +13,11 @@ use uecho::protocol::message::Message;
 fn main() {
     logger::init();
 
+    // let mut ctrl = Arc::new(Mutex::new(Controller::new()));
+    // ctrl.add_observer(ctrl.clone());
     let mut ctrl = Controller::new();
+    // ctrl.add_observer(ctrl);
     ctrl.start();
-    ctrl.search_all();
 
     for node in ctrl.nodes() {
         for obj in node.objects() {
@@ -26,5 +31,6 @@ fn main() {
         }
     }
 
+    ctrl.search_all();
     ctrl.stop();
 }
