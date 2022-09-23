@@ -40,6 +40,10 @@ impl RemoteNode {
         true
     }
 
+    pub fn objects(&self) -> &Vec<Object> {
+        return &self.objects;
+    }
+
     pub fn get_object(&self, code: ObjectCode) -> Option<&Object> {
         for n in 0..self.objects.len() {
             if self.objects[n].code() == code {
