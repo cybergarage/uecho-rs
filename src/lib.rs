@@ -24,3 +24,4 @@ pub mod super_object;
 
 mod database_manufacturers;
 mod database_mra_objects;
+mod local_node_observer;
