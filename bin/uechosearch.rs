@@ -13,10 +13,7 @@ use uecho::protocol::message::Message;
 fn main() {
     logger::init();
 
-    // let mut ctrl = Arc::new(Mutex::new(Controller::new()));
-    // ctrl.add_observer(ctrl.clone());
     let mut ctrl = Controller::new();
-    // ctrl.add_observer(ctrl);
     ctrl.start();
 
     for node in ctrl.nodes() {
