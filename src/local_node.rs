@@ -3,7 +3,10 @@
 // license that can be found in the LICENSE file.
 
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use std::sync::Arc;
+use std::sync::Mutex;
 
+use crate::local_node_observer::LocalNodeObserver;
 use crate::object::*;
 use crate::protocol::message::Message;
 use crate::transport::manager::*;
@@ -16,10 +19,12 @@ pub struct LocalNode {
 
 impl LocalNode {
     pub fn new() -> LocalNode {
-        LocalNode {
+        let mut node = LocalNode {
             transport_mgr: Manager::new(),
             objects: Vec::new(),
-        }
+        };
+        node.add_observer(Arc::new(Mutex::new(LocalNodeObserver::new())));
+        node
     }
 
     pub fn addr(&self) -> IpAddr {
@@ -52,6 +57,10 @@ impl LocalNode {
     }
 
     pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+        self.transport_mgr.send(to_addr, msg)
+    }
+
+    pub fn post_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
         self.transport_mgr.send(to_addr, msg)
     }
 
