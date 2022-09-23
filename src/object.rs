@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::collections::hash_map::Values;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::sync::Mutex;
@@ -93,6 +94,10 @@ impl Object {
         let code = prop.code();
         self.properties.insert(code, prop);
         true
+    }
+
+    pub fn properties(&self) -> Values<'_, PropertyCode, Property> {
+        self.properties.values()
     }
 
     pub fn property(&mut self, code: PropertyCode) -> Option<&mut Property> {
