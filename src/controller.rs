@@ -42,6 +42,10 @@ impl Controller {
         true
     }
 
+    pub fn nodes(&self) -> &Vec<RemoteNode> {
+        return &self.remote_nodes;
+    }
+
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
         let mut msg = message_serarch_new();
         msg.set_destination_object_code(obj_code);
