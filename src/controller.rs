@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::net::SocketAddr;
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -12,6 +13,7 @@ use crate::object::*;
 use crate::protocol::esv::*;
 use crate::protocol::message::*;
 use crate::remote_node::*;
+use crate::transport::default::PORT;
 use crate::transport::observer::*;
 
 pub struct Controller {
@@ -54,6 +56,11 @@ impl Controller {
 
     pub fn search_all(&mut self) -> bool {
         self.search_object(NODE_PROFILE_OBJECT_CODE)
+    }
+
+    pub fn send_message(&self, node: &RemoteNode, msg: &Message) -> bool {
+        self.node
+            .send_message(SocketAddr::new(node.addr(), PORT), msg)
     }
 
     pub fn start(&mut self) -> bool {
