@@ -29,11 +29,11 @@ impl MulticastManager {
 
     pub fn notify(&self, msg: &Message) -> bool {
         for mcast_server in self.mcast_servers.iter() {
-            if mcast_server.notify(msg) {
-                return true;
+            if !mcast_server.notify(msg) {
+                return false;
             }
         }
-        false
+        true
     }
 
     pub fn start(&mut self) -> bool {
