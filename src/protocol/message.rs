@@ -224,6 +224,14 @@ impl Message {
     }
 }
 
+impl Clone for Message {
+    fn clone(&self) -> Message {
+        let mut msg = Message::new();
+        msg.parse(&self.bytes());
+        msg
+    }
+}
+
 impl fmt::Display for Message {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for b in self.bytes() {
