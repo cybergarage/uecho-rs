@@ -18,7 +18,7 @@ use crate::transport::observer::*;
 
 pub struct ControllerObserver {
     node: Arc<Mutex<LocalNode>>,
-    remote_nodes: Vec<RemoteNode>,
+    pub remote_nodes: Vec<RemoteNode>,
 }
 
 impl ControllerObserver {
