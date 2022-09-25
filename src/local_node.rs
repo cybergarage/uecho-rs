@@ -87,8 +87,8 @@ impl LocalNode {
 
 impl Observer for Arc<Mutex<LocalNode>> {
     fn message_received(&mut self, _msg: &Message) {
-        let mut node = self.lock().unwrap();
-        let obj = Object::new();
-        node.add_object(obj);
+        // let mut node = self.lock().unwrap();
+        // let obj = Object::new();
+        // node.add_object(obj);
     }
 }
