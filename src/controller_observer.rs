@@ -55,8 +55,8 @@ impl ControllerObserver {
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
         let mut msg = message_serarch_new();
         msg.set_destination_object_code(obj_code);
-        let node = self.node.lock().unwrap();
-        node.notify(&msg)
+        let mut node = self.node.lock().unwrap();
+        node.notify(&mut msg)
     }
 
     pub fn search_all(&mut self) -> bool {

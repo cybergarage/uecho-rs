@@ -7,6 +7,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 // use crate::local_node_observer::LocalNodeObserver;
+use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::message::*;
 use crate::transport::manager::*;
@@ -61,7 +62,7 @@ impl LocalNode {
     }
 
     pub fn send_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> bool {
-        msg.set_tid(self.next_tid());
+        self.update_message_header(msg);
         self.transport_mgr.send(to_addr, msg)
     }
 
@@ -69,7 +70,8 @@ impl LocalNode {
         self.transport_mgr.send(to_addr, msg)
     }
 
-    pub fn notify(&self, msg: &Message) -> bool {
+    pub fn notify(&mut self, msg: &mut Message) -> bool {
+        self.update_message_header(msg);
         self.transport_mgr.notify(msg)
     }
 
@@ -85,6 +87,11 @@ impl LocalNode {
             return false;
         }
         true
+    }
+
+    fn update_message_header(&mut self, msg: &mut Message) {
+        msg.set_tid(self.next_tid());
+        msg.set_source_object_code(NODE_PROFILE_OBJECT_CODE);
     }
 
     fn next_tid(&mut self) -> TID {
