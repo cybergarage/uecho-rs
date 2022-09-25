@@ -6,6 +6,7 @@ use std::time::Duration;
 use uecho::controller::Controller;
 use uecho::log::*;
 use uecho::property::Property;
+use uecho::protocol::esv::Esv;
 use uecho::protocol::message::Message;
 
 fn main() {
@@ -18,6 +19,7 @@ fn main() {
         for obj in node.objects() {
             for obj_prop in obj.properties() {
                 let mut msg = Message::new();
+                msg.set_esv(Esv::ReadRequest);
                 msg.set_deoj(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
