@@ -94,7 +94,6 @@ impl ControllerObserver {
 impl Observer for Arc<Mutex<ControllerObserver>> {
     fn message_received(&mut self, msg: &Message) {
         let mut ctrl = self.lock().unwrap();
-        let remote_node = RemoteNode::from_message(msg);
 
         fn is_node_profile_message(msg: &Message) -> bool {
             let esv = msg.esv();
@@ -109,6 +108,7 @@ impl Observer for Arc<Mutex<ControllerObserver>> {
         }
 
         if is_node_profile_message(msg) {
+            let remote_node = RemoteNode::from_message(msg);
             ctrl.add_remote_node(remote_node);
         }
     }
