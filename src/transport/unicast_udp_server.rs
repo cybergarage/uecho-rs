@@ -83,7 +83,7 @@ impl UnicastUdpServer {
 
         // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
         //let socket_res = UdpSocket::bind(addr);
-        let socket_res = udp_socket_create(addr);
+        let socket_res = udp_socket_bind(addr);
 
         if socket_res.is_err() {
             self.socket = None;
