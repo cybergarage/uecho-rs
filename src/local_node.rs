@@ -6,7 +6,7 @@ use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::local_node_observer::LocalNodeObserver;
+// use crate::local_node_observer::LocalNodeObserver;
 use crate::object::*;
 use crate::protocol::message::Message;
 use crate::transport::manager::*;
@@ -18,12 +18,14 @@ pub struct LocalNode {
 }
 
 impl LocalNode {
-    pub fn new() -> LocalNode {
-        let mut node = LocalNode {
+    pub fn new() -> Arc<Mutex<LocalNode>> {
+        let node = Arc::new(Mutex::new(LocalNode {
             transport_mgr: Manager::new(),
             objects: Vec::new(),
-        };
-        node.add_observer(Arc::new(Mutex::new(LocalNodeObserver::new())));
+        }));
+        node.lock()
+            .unwrap()
+            .add_observer(Arc::new(Mutex::new(node.clone())));
         node
     }
 
@@ -80,5 +82,13 @@ impl LocalNode {
             return false;
         }
         true
+    }
+}
+
+impl Observer for Arc<Mutex<LocalNode>> {
+    fn message_received(&mut self, _msg: &Message) {
+        let mut node = self.lock().unwrap();
+        let obj = Object::new();
+        node.add_object(obj);
     }
 }
