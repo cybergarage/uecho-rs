@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use std::time::Duration;
 use uecho::controller::Controller;
 use uecho::log::*;
 use uecho::property::Property;
@@ -20,7 +21,8 @@ fn main() {
                 msg.set_destination_object_code(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
-                ctrl.send_message(node, &mut msg);
+                let rx = ctrl.post_message(node, &mut msg);
+                let _r = rx.recv_timeout(Duration::from_secs(1));
             }
         }
     }
