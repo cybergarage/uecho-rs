@@ -88,11 +88,10 @@ impl MulticastServer {
         // FIXME: UdpSocket which binds an interface could not receive any message
         //let addr = format!("{}:{}", ANY_ADDR, PORT);
         let addr = format!("{}:{}", ifaddr, PORT);
-        debug!("BIND {}", addr);
 
         // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
         //let socket_res = UdpSocket::bind(addr);
-        let socket_res = udp_socket_bind(addr);
+        let socket_res = udp_socket_bind(addr.clone());
 
         if socket_res.is_err() {
             return false;
@@ -111,6 +110,7 @@ impl MulticastServer {
                     self.close();
                     return false;
                 }
+                debug!("BIND {} ({}:{})", addr, MULTICAST_V4_ADDRESS, ip4);
             }
             IpAddr::V6(_) => return false,
         }
