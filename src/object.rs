@@ -158,3 +158,13 @@ impl Object {
         }
     }
 }
+
+impl Clone for Object {
+    fn clone(&self) -> Object {
+        let mut obj = Object::new();
+        for prop in self.properties() {
+            obj.add_property(prop.clone());
+        }
+        obj
+    }
+}
