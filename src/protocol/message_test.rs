@@ -18,7 +18,7 @@ mod tests {
     fn message_setter_test() {
         let mut msg = Message::new();
 
-        let test_tid = 0x1234 as u32;
+        let test_tid = 0x1234 as TID;
         msg.set_tid(test_tid);
         assert_eq!(msg.tid(), test_tid);
 
