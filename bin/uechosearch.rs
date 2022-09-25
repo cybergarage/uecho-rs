@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use std::sync::Arc;
-use std::sync::Mutex;
-
 use uecho::controller::Controller;
 use uecho::log::*;
 use uecho::property::Property;
