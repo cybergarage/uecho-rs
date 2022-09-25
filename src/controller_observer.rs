@@ -63,13 +63,17 @@ impl ControllerObserver {
         self.search_object(NODE_PROFILE_OBJECT_CODE)
     }
 
-    pub fn send_message(&self, remote_node: &RemoteNode, msg: &Message) -> bool {
-        let node = self.node.lock().unwrap();
+    pub fn send_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> bool {
+        let mut node = self.node.lock().unwrap();
         node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
-    pub fn post_message(&self, remote_node: &RemoteNode, msg: &Message) -> Result<Message, String> {
-        let node = self.node.lock().unwrap();
+    pub fn post_message(
+        &self,
+        remote_node: &RemoteNode,
+        msg: &mut Message,
+    ) -> Result<Message, String> {
+        let mut node = self.node.lock().unwrap();
         node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg);
         Ok(Message::new())
     }

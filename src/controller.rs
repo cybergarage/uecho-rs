@@ -45,12 +45,16 @@ impl Controller {
         self.search_object(NODE_PROFILE_OBJECT_CODE)
     }
 
-    pub fn send_message(&self, remote_node: &RemoteNode, msg: &Message) -> bool {
+    pub fn send_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> bool {
         let ctrl = self.observer.lock().unwrap();
         ctrl.send_message(remote_node, msg)
     }
 
-    pub fn post_message(&self, remote_node: &RemoteNode, msg: &Message) -> Result<Message, String> {
+    pub fn post_message(
+        &self,
+        remote_node: &RemoteNode,
+        msg: &mut Message,
+    ) -> Result<Message, String> {
         let ctrl = self.observer.lock().unwrap();
         ctrl.post_message(remote_node, msg)
     }

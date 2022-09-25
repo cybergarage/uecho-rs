@@ -8,13 +8,9 @@ use std::sync::Mutex;
 
 // use crate::local_node_observer::LocalNodeObserver;
 use crate::object::*;
-use crate::protocol::message::Message;
+use crate::protocol::message::*;
 use crate::transport::manager::*;
 use crate::transport::observer::*;
-
-pub type TID = u16;
-const TID_MIN: TID = 0;
-const TID_MAX: TID = 65535;
 
 pub struct LocalNode {
     transport_mgr: Manager,
@@ -64,11 +60,12 @@ impl LocalNode {
         self.transport_mgr.add_observer(observer.clone())
     }
 
-    pub fn send_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+    pub fn send_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> bool {
+        msg.set_tid(self.next_tid());
         self.transport_mgr.send(to_addr, msg)
     }
 
-    pub fn post_message(&self, to_addr: SocketAddr, msg: &Message) -> bool {
+    pub fn post_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> bool {
         self.transport_mgr.send(to_addr, msg)
     }
 

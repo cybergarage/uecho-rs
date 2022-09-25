@@ -20,7 +20,7 @@ fn main() {
                 msg.set_destination_object_code(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
-                ctrl.send_message(node, &msg);
+                ctrl.send_message(node, &mut msg);
             }
         }
     }
