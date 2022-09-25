@@ -10,7 +10,7 @@ use std::{io, net::ToSocketAddrs};
 use net2::unix::UnixUdpBuilderExt;
 
 #[cfg(not(target_os = "windows"))]
-pub fn udp_socket_create<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
+pub fn udp_socket_bind<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v4()?
         .reuse_address(true)?
         .reuse_port(true)?
@@ -18,7 +18,7 @@ pub fn udp_socket_create<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpS
 }
 
 #[cfg(target_os = "windows")]
-pub fn udp_socket_create<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
+pub fn udp_socket_bind<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v4()?
         .reuse_address(true)?
         .bind((addr))
