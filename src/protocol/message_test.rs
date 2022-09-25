@@ -23,7 +23,7 @@ mod tests {
         assert_eq!(msg.tid(), test_tid);
 
         let test_seoj = 0x2345 as u32;
-        msg.set_source_object_code(test_seoj);
+        msg.set_seoj(test_seoj);
         assert_eq!(msg.source_object_code(), test_seoj);
 
         let test_deoj = 0x3456 as u32;

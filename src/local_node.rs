@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use log::warn;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
@@ -99,7 +100,7 @@ impl LocalNode {
 
     fn update_message_header(&mut self, msg: &mut Message) {
         msg.set_tid(self.next_tid());
-        msg.set_source_object_code(NODE_PROFILE_OBJECT_CODE);
+        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
     }
 
     fn next_tid(&mut self) -> TID {
@@ -119,7 +120,12 @@ impl LocalNode {
     }
 
     fn send_post_reopnse(&self, msg: Message) {
-        self.post_sender.send(msg).unwrap();
+        match self.post_sender.send(msg) {
+            Ok(()) => {}
+            Err(err) => {
+                warn!("{}", err);
+            }
+        }
     }
 }
 
