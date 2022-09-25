@@ -50,6 +50,11 @@ impl Controller {
         ctrl.send_message(remote_node, msg)
     }
 
+    pub fn post_message(&self, remote_node: &RemoteNode, msg: &Message) -> Result<Message, String> {
+        let ctrl = self.observer.lock().unwrap();
+        ctrl.post_message(remote_node, msg)
+    }
+
     pub fn start(&mut self) -> bool {
         let mut ctrl = self.observer.lock().unwrap();
         ctrl.start()
