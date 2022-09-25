@@ -27,7 +27,7 @@ mod tests {
         assert_eq!(msg.seoj(), test_seoj);
 
         let test_deoj = 0x3456 as u32;
-        msg.set_destination_object_code(test_deoj);
+        msg.set_deoj(test_deoj);
         assert_eq!(msg.destination_object_code(), test_deoj);
 
         let test_esv = Esv::WriteRequest;
