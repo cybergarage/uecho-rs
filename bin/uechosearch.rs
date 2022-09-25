@@ -22,7 +22,14 @@ fn main() {
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
                 let rx = ctrl.post_message(node, &mut msg);
-                let _r = rx.recv_timeout(Duration::from_secs(1));
+                match rx.recv_timeout(Duration::from_secs(1)) {
+                    Ok(msg) => {
+                        println!("[{} {}]", prop.code(), hex::encode(msg.bytes()));
+                    }
+                    Err(_e) => {
+                        println!("[{}]", prop.code());
+                    }
+                };
             }
         }
     }
