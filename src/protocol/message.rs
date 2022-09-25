@@ -59,7 +59,7 @@ impl Message {
         self.seoj[2] = (code & 0x00FF) as u8;
     }
 
-    pub fn source_object_code(&self) -> u32 {
+    pub fn seoj(&self) -> u32 {
         self.to_object_code(&self.seoj)
     }
 
@@ -169,7 +169,7 @@ impl Message {
         if self.tid() != msg.tid() {
             return false;
         }
-        if self.source_object_code() != msg.source_object_code() {
+        if self.seoj() != msg.seoj() {
             return false;
         }
         if self.destination_object_code() != msg.destination_object_code() {
