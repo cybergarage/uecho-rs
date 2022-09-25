@@ -68,6 +68,12 @@ impl ControllerObserver {
         node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
+    pub fn post_message(&self, remote_node: &RemoteNode, msg: &Message) -> Result<Message, String> {
+        let node = self.node.lock().unwrap();
+        node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg);
+        Ok(Message::new())
+    }
+
     pub fn start(&mut self) -> bool {
         let mut node = self.node.lock().unwrap();
         if !node.start() {
