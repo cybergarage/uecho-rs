@@ -28,7 +28,7 @@ mod tests {
 
         let test_deoj = 0x3456 as u32;
         msg.set_deoj(test_deoj);
-        assert_eq!(msg.destination_object_code(), test_deoj);
+        assert_eq!(msg.deoj(), test_deoj);
 
         let test_esv = Esv::WriteRequest;
         msg.set_esv(test_esv);
@@ -45,7 +45,7 @@ mod tests {
             assert!(msg.parse(msg_bytes), "{}", hex::encode_upper(msg_bytes));
             assert_eq!(msg.tid(), 0x0101);
             assert_eq!(msg.seoj(), 0x0A0B0C0);
-            assert_eq!(msg.destination_object_code(), 0x0D0E0F0);
+            assert_eq!(msg.deoj(), 0x0D0E0F0);
             assert_eq!(msg.esv(), Esv::Notification);
 
             let opc = msg.opc();

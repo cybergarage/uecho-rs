@@ -101,7 +101,7 @@ impl Observer for Arc<Mutex<ControllerObserver>> {
             if esv != Esv::Notification && esv != Esv::ReadResponse {
                 return false;
             }
-            let dst_obj = msg.destination_object_code();
+            let dst_obj = msg.deoj();
             if dst_obj != NODE_PROFILE_OBJECT_CODE && dst_obj != NODE_PROFILE_OBJECT_READ_ONLY {
                 return false;
             }
