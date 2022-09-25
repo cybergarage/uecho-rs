@@ -17,7 +17,7 @@ use crate::transport::default::PORT;
 use crate::transport::observer::*;
 
 pub struct Controller {
-    node: LocalNode,
+    node: Arc<Mutex<LocalNode>>,
     remote_nodes: Vec<RemoteNode>,
 }
 
@@ -31,7 +31,8 @@ impl Controller {
     }
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
-        self.node.add_observer(observer.clone())
+        let mut node = self.node.lock().unwrap();
+        node.add_observer(observer.clone())
     }
 
     pub fn add_remote_node(&mut self, node: RemoteNode) -> bool {
@@ -51,27 +52,30 @@ impl Controller {
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
         let mut msg = message_serarch_new();
         msg.set_destination_object_code(obj_code);
-        self.node.notify(&msg)
+        let node = self.node.lock().unwrap();
+        node.notify(&msg)
     }
 
     pub fn search_all(&mut self) -> bool {
         self.search_object(NODE_PROFILE_OBJECT_CODE)
     }
 
-    pub fn send_message(&self, node: &RemoteNode, msg: &Message) -> bool {
-        self.node
-            .send_message(SocketAddr::new(node.addr(), PORT), msg)
+    pub fn send_message(&self, remote_node: &RemoteNode, msg: &Message) -> bool {
+        let node = self.node.lock().unwrap();
+        node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
     pub fn start(&mut self) -> bool {
-        if !self.node.start() {
+        let mut node = self.node.lock().unwrap();
+        if !node.start() {
             return false;
         }
         true
     }
 
     pub fn stop(&mut self) -> bool {
-        if !self.node.stop() {
+        let mut node = self.node.lock().unwrap();
+        if !node.stop() {
             return false;
         }
         true
@@ -80,11 +84,12 @@ impl Controller {
 
 impl Observer for Controller {
     fn message_received(&mut self, msg: &Message) {
+        // let node = self.node.lock().unwrap();
         let remote_node = RemoteNode::from_message(msg);
 
-        if self.node.addr() == remote_node.addr() {
-            return;
-        }
+        // if node.addr() == remote_node.addr() {
+        //     return;
+        // }
 
         fn is_node_profile_message(msg: &Message) -> bool {
             let esv = msg.esv();
