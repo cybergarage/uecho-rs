@@ -119,7 +119,7 @@ impl LocalNode {
     }
 
     fn send_post_reopnse(&self, msg: Message) {
-        self.post_sender.send(msg);
+        self.post_sender.send(msg).unwrap();
     }
 }
 
