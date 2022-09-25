@@ -19,14 +19,17 @@ pub struct LocalNode {
     transport_mgr: Manager,
     objects: Vec<Object>,
     last_tid: TID,
+    post_sender: Sender<Message>,
 }
 
 impl LocalNode {
     pub fn new() -> Arc<Mutex<LocalNode>> {
+        let (tx, _): (Sender<Message>, Receiver<Message>) = mpsc::channel();
         let node = Arc::new(Mutex::new(LocalNode {
             transport_mgr: Manager::new(),
             objects: Vec::new(),
             last_tid: TID_MIN,
+            post_sender: tx,
         }));
         node.lock()
             .unwrap()
@@ -70,6 +73,7 @@ impl LocalNode {
 
     pub fn post_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> Receiver<Message> {
         let (tx, rx): (Sender<Message>, Receiver<Message>) = mpsc::channel();
+        self.post_sender = tx;
         self.transport_mgr.send(to_addr, msg);
         rx
     }
@@ -106,12 +110,24 @@ impl LocalNode {
         }
         self.last_tid
     }
+
+    fn is_last_message_response(&self, msg: &Message) -> bool {
+        if msg.tid() != self.last_tid {
+            return false;
+        }
+        true
+    }
+
+    fn send_post_reopnse(&self, msg: Message) {
+        self.post_sender.send(msg);
+    }
 }
 
 impl Observer for Arc<Mutex<LocalNode>> {
-    fn message_received(&mut self, _msg: &Message) {
-        // let mut node = self.lock().unwrap();
-        // let obj = Object::new();
-        // node.add_object(obj);
+    fn message_received(&mut self, msg: &Message) {
+        let node = self.lock().unwrap();
+        if node.is_last_message_response(msg) {
+            node.send_post_reopnse(msg.clone());
+        }
     }
 }
