@@ -69,7 +69,7 @@ impl Message {
         self.deoj[2] = (code & 0x00FF) as u8;
     }
 
-    pub fn destination_object_code(&self) -> u32 {
+    pub fn deoj(&self) -> u32 {
         self.to_object_code(&self.deoj)
     }
 
@@ -172,7 +172,7 @@ impl Message {
         if self.seoj() != msg.seoj() {
             return false;
         }
-        if self.destination_object_code() != msg.destination_object_code() {
+        if self.deoj() != msg.deoj() {
             return false;
         }
         if self.esv() != msg.esv() {
