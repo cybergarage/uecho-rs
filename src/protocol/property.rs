@@ -37,7 +37,7 @@ impl Property {
 
     pub fn parse(&mut self, msg: &[u8]) -> bool {
         let msg_len = msg.len();
-        if msg_len <= FORMAT1_PROPERTY_HEADER_SIZE {
+        if msg_len < FORMAT1_PROPERTY_HEADER_SIZE {
             return false;
         }
 

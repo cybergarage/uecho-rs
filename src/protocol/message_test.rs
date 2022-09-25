@@ -105,4 +105,15 @@ mod tests {
             prop_data_size += (1 + 1 + (n + 1)) as usize;
         }
     }
+
+    #[test]
+    fn message_parse_requests_test() {
+        let mut test_msgs = Vec::new();
+        test_msgs.push(hex::decode("1081000100F00100F0016201D600").ok().unwrap());
+
+        for test_msg_bytes in test_msgs {
+            let mut msg = Message::new();
+            assert!(msg.parse(&test_msg_bytes), "{}", hex::encode_upper(&test_msg_bytes));
+        }
+    }
 }
