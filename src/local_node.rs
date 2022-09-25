@@ -12,9 +12,14 @@ use crate::protocol::message::Message;
 use crate::transport::manager::*;
 use crate::transport::observer::*;
 
+pub type TID = u16;
+const TID_MIN: TID = 0;
+const TID_MAX: TID = 65535;
+
 pub struct LocalNode {
     transport_mgr: Manager,
     objects: Vec<Object>,
+    last_tid: TID,
 }
 
 impl LocalNode {
@@ -22,6 +27,7 @@ impl LocalNode {
         let node = Arc::new(Mutex::new(LocalNode {
             transport_mgr: Manager::new(),
             objects: Vec::new(),
+            last_tid: TID_MIN,
         }));
         node.lock()
             .unwrap()
@@ -82,6 +88,15 @@ impl LocalNode {
             return false;
         }
         true
+    }
+
+    fn next_tid(&mut self) -> TID {
+        if TID_MAX <= self.last_tid {
+            self.last_tid = TID_MIN;
+        } else {
+            self.last_tid += 1;
+        }
+        self.last_tid
     }
 }
 
