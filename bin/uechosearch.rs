@@ -18,7 +18,7 @@ fn main() {
         for obj in node.objects() {
             for obj_prop in obj.properties() {
                 let mut msg = Message::new();
-                msg.set_destination_object_code(obj.code());
+                msg.set_deoj(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
                 let rx = ctrl.post_message(&node, &mut msg);
