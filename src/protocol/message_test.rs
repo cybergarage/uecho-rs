@@ -113,7 +113,11 @@ mod tests {
 
         for test_msg_bytes in test_msgs {
             let mut msg = Message::new();
-            assert!(msg.parse(&test_msg_bytes), "{}", hex::encode_upper(&test_msg_bytes));
+            assert!(
+                msg.parse(&test_msg_bytes),
+                "{}",
+                hex::encode_upper(&test_msg_bytes)
+            );
         }
     }
 }
