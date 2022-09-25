@@ -54,6 +54,19 @@ impl RemoteNode {
     }
 }
 
+impl Clone for RemoteNode {
+    fn clone(&self) -> RemoteNode {
+        let mut node = RemoteNode {
+            addr: self.addr().clone(),
+            objects: Vec::new(),
+        };
+        for obj in self.objects() {
+            node.add_object(obj.clone());
+        }
+        node
+    }
+}
+
 impl<'a> PartialEq for RemoteNode {
     fn eq(&self, other: &Self) -> bool {
         self.addr == other.addr
