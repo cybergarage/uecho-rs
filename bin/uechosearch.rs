@@ -21,7 +21,7 @@ fn main() {
                 msg.set_destination_object_code(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
-                let rx = ctrl.post_message(node, &mut msg);
+                let rx = ctrl.post_message(&node, &mut msg);
                 match rx.recv_timeout(Duration::from_secs(1)) {
                     Ok(msg) => {
                         println!("[{} {}]", prop.code(), hex::encode(msg.bytes()));
