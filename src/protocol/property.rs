@@ -44,11 +44,14 @@ impl Property {
         self.code = msg[0];
         let data_size = msg[1] as usize;
 
+        self.data.clear();
+        if data_size == 0 {
+            return true;
+        }
+
         if msg_len < (FORMAT1_PROPERTY_HEADER_SIZE + data_size) {
             return false;
         }
-
-        self.data.clear();
 
         let prop_data = &(*msg)[2..];
         for n in 0..data_size {
