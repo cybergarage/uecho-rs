@@ -190,13 +190,16 @@ impl Property {
 
 impl Clone for Property {
     fn clone(&self) -> Property {
-        Property {
+        let mut prop = Property {
             code: self.code(),
             data: Vec::new(),
             name: self.name.clone(),
             read_attr: self.read_attr,
             write_attr: self.write_attr,
             anno_attr: self.anno_attr,
-        }
+        };
+        prop.data.resize(self.data.len(), 0);
+        prop.data.copy_from_slice(self.data.as_slice());
+        prop
     }
 }
