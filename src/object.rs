@@ -161,7 +161,12 @@ impl Object {
 
 impl Clone for Object {
     fn clone(&self) -> Object {
-        let mut obj = Object::new();
+        let mut obj = Object {
+            codes: [self.codes[0], self.codes[1], self.codes[2]],
+            name: self.name().clone(),
+            class_name: self.class_name().clone(),
+            properties: HashMap::new(),
+        };
         for prop in self.properties() {
             obj.add_property(prop.clone());
         }
