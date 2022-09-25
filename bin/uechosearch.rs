@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 use std::time::Duration;
+use std::{thread, time};
+
 use uecho::controller::Controller;
 use uecho::log::*;
 use uecho::property::Property;
@@ -15,8 +17,12 @@ fn main() {
     let mut ctrl = Controller::new();
     ctrl.start();
 
-    for node in ctrl.nodes() {
-        for obj in node.objects() {
+    thread::sleep(time::Duration::from_secs(2));
+
+    for (i, node) in ctrl.nodes().iter().enumerate() {
+        println!("[{}] {}", i, node.addr());
+        for (j, obj) in node.objects().iter().enumerate() {
+            println!("    [{}] {}", j, obj.code());
             for obj_prop in obj.properties() {
                 let mut msg = Message::new();
                 msg.set_esv(Esv::ReadRequest);
@@ -26,10 +32,10 @@ fn main() {
                 let rx = ctrl.post_message(&node, &mut msg);
                 match rx.recv_timeout(Duration::from_secs(1)) {
                     Ok(msg) => {
-                        println!("[{} {}]", prop.code(), hex::encode(msg.bytes()));
+                        println!("        [{} {}]", prop.code(), hex::encode(msg.bytes()));
                     }
                     Err(_e) => {
-                        println!("[{}]", prop.code());
+                        println!("        [{}]", prop.code());
                     }
                 };
             }
