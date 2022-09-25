@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use std::sync::mpsc;
+use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -66,8 +68,10 @@ impl LocalNode {
         self.transport_mgr.send(to_addr, msg)
     }
 
-    pub fn post_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> bool {
-        self.transport_mgr.send(to_addr, msg)
+    pub fn post_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> Receiver<Message> {
+        let (tx, rx): (Sender<Message>, Receiver<Message>) = mpsc::channel();
+        self.transport_mgr.send(to_addr, msg);
+        rx
     }
 
     pub fn notify(&mut self, msg: &mut Message) -> bool {

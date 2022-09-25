@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use std::net::SocketAddr;
+use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -68,14 +69,9 @@ impl ControllerObserver {
         node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
-    pub fn post_message(
-        &self,
-        remote_node: &RemoteNode,
-        msg: &mut Message,
-    ) -> Result<Message, String> {
+    pub fn post_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> Receiver<Message> {
         let mut node = self.node.lock().unwrap();
-        node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg);
-        Ok(Message::new())
+        node.post_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
     pub fn start(&mut self) -> bool {

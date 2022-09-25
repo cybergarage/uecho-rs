@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use std::net::SocketAddr;
+use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::Mutex;
 use std::vec::IntoIter;
@@ -50,11 +51,7 @@ impl Controller {
         ctrl.send_message(remote_node, msg)
     }
 
-    pub fn post_message(
-        &self,
-        remote_node: &RemoteNode,
-        msg: &mut Message,
-    ) -> Result<Message, String> {
+    pub fn post_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> Receiver<Message> {
         let ctrl = self.observer.lock().unwrap();
         ctrl.post_message(remote_node, msg)
     }
