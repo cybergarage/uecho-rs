@@ -84,25 +84,21 @@ impl MulticastServer {
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
         self.socket = None;
-
-        // FIXME: UdpSocket which binds an interface could not receive any message
-        //let addr = format!("{}:{}", ANY_ADDR, PORT);
-        let addr = format!("{}:{}", ifaddr, PORT);
-
-        // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
-        //let socket_res = UdpSocket::bind(addr);
-        let socket_res = udp_socket_bind(addr.clone());
-
+        let socket_res = udp_socket_create();
         if socket_res.is_err() {
+            self.socket = None;
             return false;
         }
         let socket = socket_res.ok().unwrap();
+        let addr = format!("{}:{}", ifaddr, PORT);
+        let addr: SocketAddr = addr.parse().unwrap();
+        debug!("BIND MCT {}", addr);
+        if socket.bind(&addr.into()).is_err() {
+            self.socket = None;
+            return false;
+        }
         match ifaddr {
             IpAddr::V4(ip4) => {
-                if socket.set_multicast_loop_v4(true).is_err() {
-                    self.close();
-                    return false;
-                }
                 if socket
                     .join_multicast_v4(&MULTICAST_V4_ADDRESS, &ip4)
                     .is_err()
@@ -110,7 +106,7 @@ impl MulticastServer {
                     self.close();
                     return false;
                 }
-                debug!("BIND {} ({}:{})", addr, MULTICAST_V4_ADDRESS, ip4);
+                debug!("BIND MCT {} ({}:{})", ifaddr, MULTICAST_V4_ADDRESS, ip4);
             }
             IpAddr::V6(_) => return false,
         }
