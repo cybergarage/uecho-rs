@@ -78,18 +78,20 @@ impl UnicastUdpServer {
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
-        let addr = format!("{}:{}", ifaddr, PORT);
-        debug!("BIND {}", addr);
-
-        // FIXME: std::net::UdpSocket does not support some socket options such as SO_REUSEADDR and SO_REUSEPORT.
-        //let socket_res = UdpSocket::bind(addr);
-        let socket_res = udp_socket_bind(addr);
-
+        self.socket = None;
+        let socket_res = udp_socket_create();
         if socket_res.is_err() {
             self.socket = None;
             return false;
         }
-        self.socket = Some(Arc::new(UdpSocket::from(socket_res.ok().unwrap())));
+        let socket = socket_res.ok().unwrap();
+        let addr: SocketAddr = format!("{}:{}", ifaddr, PORT).parse().unwrap();
+        debug!("BIND UDP {}", addr);
+        if socket.bind(&addr.into()).is_err() {
+            self.socket = None;
+            return false;
+        }
+        self.socket = Some(Arc::new(UdpSocket::from(socket)));
         true
     }
 
