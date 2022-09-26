@@ -2,26 +2,22 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use socket2::{Domain, Socket, Type};
+use std::io;
 use std::thread;
 use std::time::Duration;
-use std::{io, net::ToSocketAddrs};
 
-#[cfg(not(target_os = "windows"))]
-use net2::unix::UnixUdpBuilderExt;
-
-#[cfg(not(target_os = "windows"))]
-pub fn udp_socket_bind<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
-    net2::UdpBuilder::new_v4()?
-        .reuse_address(true)?
-        .reuse_port(true)?
-        .bind(addr)
-}
-
-#[cfg(target_os = "windows")]
-pub fn udp_socket_bind<A: ToSocketAddrs>(addr: A) -> io::Result<std::net::UdpSocket> {
-    net2::UdpBuilder::new_v4()?
-        .reuse_address(true)?
-        .bind((addr))
+pub fn udp_socket_create() -> io::Result<Socket> {
+    let socket = Socket::new(Domain::IPV4, Type::DGRAM, None);
+    match socket {
+        Ok(ref sock) => {
+            sock.set_reuse_address(true);
+            // sock.set_only_v6(false);
+            // sock.set_reuse_port(true);
+        }
+        Err(ref _err) => {}
+    }
+    socket
 }
 
 pub fn udp_socket_closewait() {
