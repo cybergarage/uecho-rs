@@ -12,6 +12,7 @@ use nix::Result;
 use socket2::{Domain, Socket, Type};
 use std::io;
 use std::net::Ipv4Addr;
+use std::net::SocketAddr;
 use std::os::unix::io::RawFd;
 use std::thread;
 use std::time::Duration;
@@ -39,6 +40,7 @@ pub fn udp_socket_closewait() {
 
 pub struct UdpSocket {
     sock: RawFd,
+    ifaddr: Option<SocketAddr>,
 }
 
 impl UdpSocket {
@@ -58,7 +60,20 @@ impl UdpSocket {
             warn!("SO_REUSEPORT is not supported");
         }
 
-        UdpSocket { sock: sock }
+        UdpSocket {
+            sock: sock,
+            ifaddr: None,
+        }
+    }
+
+    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+        if self.ifaddr.is_some() {
+            return Ok(self.ifaddr.unwrap());
+        }
+        Err(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            "socket is not bound",
+        ))
     }
 
     pub fn close(&self) -> Result<()> {
@@ -76,7 +91,7 @@ impl UdpSocket {
         sendto(self.sock, buf, addr, flags)
     }
 
-    pub fn recvfrom<T: SockaddrLike>(&self, buf: &mut [u8]) -> Result<(usize, Option<T>)> {
+    pub fn recv_from<T: SockaddrLike>(&self, buf: &mut [u8]) -> Result<(usize, Option<T>)> {
         recvfrom(self.sock, buf)
     }
 
