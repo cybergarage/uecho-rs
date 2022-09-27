@@ -6,14 +6,16 @@ use log::warn;
 use nix::sys::socket::sockopt::{IpAddMembership, ReuseAddr, ReusePort};
 use nix::sys::socket::{bind, recvfrom, sendto, setsockopt, shutdown, socket};
 use nix::sys::socket::{
-    AddressFamily, IpMembershipRequest, MsgFlags, Shutdown, SockFlag, SockType, SockaddrLike,
+    AddressFamily, IpMembershipRequest, MsgFlags, Shutdown, SockFlag, SockType, SockaddrIn,
+    SockaddrLike,
 };
 use nix::Result;
 use socket2::{Domain, Socket, Type};
 use std::io;
 use std::net::Ipv4Addr;
-use std::net::SocketAddr;
+use std::net::{SocketAddr, SocketAddrV4};
 use std::os::unix::io::RawFd;
+use std::str::FromStr;
 use std::thread;
 use std::time::Duration;
 
@@ -41,6 +43,13 @@ pub fn udp_socket_closewait() {
 pub struct UdpSocket {
     sock: RawFd,
     ifaddr: Option<SocketAddr>,
+}
+
+fn stdaddr_to_nixaddr(ifaddr: SocketAddr) -> SockaddrIn {
+    let addr = ifaddr.ip();
+    let port = ifaddr.port();
+    let std_sa = SocketAddrV4::from_str(&format!("{}:{}", addr, port)).unwrap();
+    SockaddrIn::from(std_sa)
 }
 
 impl UdpSocket {
@@ -82,13 +91,19 @@ impl UdpSocket {
         res
     }
 
-    pub fn bind(&self, addr: &dyn SockaddrLike) -> Result<()> {
-        bind(self.sock, addr)
+    pub fn bind(&self, ifaddr: SocketAddr) -> Result<()> {
+        let sock_addr = stdaddr_to_nixaddr(ifaddr);
+        let res = bind(self.sock, &sock_addr);
+        if res.is_ok() {
+            self.ifaddr = Some(ifaddr);
+        }
+        res
     }
 
-    pub fn send_to(&self, buf: &[u8], addr: &dyn SockaddrLike) -> Result<usize> {
+    pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
         let flags = MsgFlags::empty();
-        sendto(self.sock, buf, addr, flags)
+        let sock_addr = stdaddr_to_nixaddr(to_addr);
+        sendto(self.sock, buf, &sock_addr, flags)
     }
 
     pub fn recv_from<T: SockaddrLike>(&self, buf: &mut [u8]) -> Result<(usize, Option<T>)> {
