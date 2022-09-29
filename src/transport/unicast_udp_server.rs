@@ -4,7 +4,8 @@
 
 use log::*;
 use std::io;
-use std::net::{IpAddr, SocketAddr, UdpSocket};
+// use std::net::{IpAddr, SocketAddr, UdpSocket};
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::Arc;
 use std::thread;
 
@@ -13,7 +14,8 @@ use crate::transport::default::{MAX_PACKET_SIZE, PORT};
 use crate::transport::notifier::*;
 use crate::transport::notify_manager::*;
 use crate::transport::observer::*;
-use crate::transport::udp_socket::*;
+// use crate::transport::udp_socket::*;
+use crate::transport::udp_socket::UdpSocket;
 
 pub struct UnicastUdpServer {
     socket: Option<Arc<UdpSocket>>,
@@ -51,7 +53,9 @@ impl UnicastUdpServer {
                 }
             }
             None => {
-                let socket = UdpSocket::bind("0.0.0.0:0").expect("failed to bind host socket");
+                let any = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
+                let mut socket = UdpSocket::new();
+                socket.bind(any).expect("failed to bind host socket");
                 info!(
                     "SEND {} -> {}:{} ({})",
                     socket.local_addr().unwrap(),
@@ -78,16 +82,18 @@ impl UnicastUdpServer {
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
-        self.socket = None;
-        let socket_res = udp_socket_create();
-        if socket_res.is_err() {
-            self.socket = None;
-            return false;
-        }
-        let socket = socket_res.ok().unwrap();
+        // self.socket = None;
+        // let socket_res = udp_socket_create();
+        // if socket_res.is_err() {
+        //     self.socket = None;
+        //     return false;
+        // }
+        // let socket = socket_res.ok().unwrap();
+        let mut socket = UdpSocket::new();
         let addr: SocketAddr = format!("{}:{}", ifaddr, PORT).parse().unwrap();
         debug!("BIND UDP {}", addr);
-        if socket.bind(&addr.into()).is_err() {
+        // if socket.bind(&addr.into()).is_err() {
+        if socket.bind(addr).is_err() {
             self.socket = None;
             return false;
         }
@@ -97,9 +103,10 @@ impl UnicastUdpServer {
 
     pub fn close(&mut self) -> bool {
         if self.socket.is_some() {
+            let socket = self.socket.clone();
+            socket.unwrap().close();
             self.socket = None;
         }
-        udp_socket_closewait();
         true
     }
 
@@ -116,12 +123,14 @@ impl UnicastUdpServer {
                 let recv_res = socket.recv_from(&mut buf);
                 match &recv_res {
                     Ok((n_bytes, remote_addr)) => {
+                        let remote_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
+                        //remote_addr.to_addr();
                         let recv_msg = &buf[0..*n_bytes];
                         let mut msg = Message::new();
                         if !msg.parse(recv_msg) {
                             warn!(
                                 "Couldn't parse message {} [{}] {}",
-                                remote_addr,
+                                remote_addr.ip(),
                                 n_bytes,
                                 hex::encode_upper(recv_msg)
                             );
@@ -129,7 +138,7 @@ impl UnicastUdpServer {
                         }
                         info!(
                             "RECV {} -> {} ({})",
-                            remote_addr,
+                            remote_addr.ip(),
                             socket.local_addr().ok().unwrap(),
                             msg
                         );
