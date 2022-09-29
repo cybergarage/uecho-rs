@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use log::warn;
+use nix::sys::socket;
 use nix::sys::socket::sockopt::{IpAddMembership, ReuseAddr, ReusePort};
 use nix::sys::socket::{bind, recvfrom, sendto, setsockopt, shutdown, socket};
 use nix::sys::socket::{
@@ -91,7 +92,7 @@ impl UdpSocket {
         res
     }
 
-    pub fn bind(&self, ifaddr: SocketAddr) -> Result<()> {
+    pub fn bind(&mut self, ifaddr: SocketAddr) -> Result<()> {
         let sock_addr = stdaddr_to_nixaddr(ifaddr);
         let res = bind(self.sock, &sock_addr);
         if res.is_ok() {
@@ -106,8 +107,12 @@ impl UdpSocket {
         sendto(self.sock, buf, &sock_addr, flags)
     }
 
-    pub fn recv_from<T: SockaddrLike>(&self, buf: &mut [u8]) -> Result<(usize, Option<T>)> {
-        recvfrom(self.sock, buf)
+    // pub fn recv_from<T: SockaddrLike>(&self, buf: &mut [u8]) -> Result<(usize, Option<T>)> {
+    //     recvfrom(self.sock, buf)
+    // }
+
+    pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, Option<socket::SockAddr>)> {
+        recvfrom::<socket::SockAddr>(self.sock, buf)
     }
 
     pub fn join_multicast_v4(&self, multiaddr: Ipv4Addr, interface: Ipv4Addr) -> Result<()> {
