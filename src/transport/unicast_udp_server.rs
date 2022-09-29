@@ -123,8 +123,8 @@ impl UnicastUdpServer {
                 let recv_res = socket.recv_from(&mut buf);
                 match &recv_res {
                     Ok((n_bytes, remote_addr)) => {
+                        // let remote_addr = remote_addr.unwrap();
                         let remote_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
-                        //remote_addr.to_addr();
                         let recv_msg = &buf[0..*n_bytes];
                         let mut msg = Message::new();
                         if !msg.parse(recv_msg) {

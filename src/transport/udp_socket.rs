@@ -111,8 +111,8 @@ impl UdpSocket {
     //     recvfrom(self.sock, buf)
     // }
 
-    pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, Option<socket::SockAddr>)> {
-        recvfrom::<socket::SockAddr>(self.sock, buf)
+    pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, Option<socket::SockaddrIn>)> {
+        recvfrom::<socket::SockaddrIn>(self.sock, buf)
     }
 
     pub fn join_multicast_v4(&self, multiaddr: Ipv4Addr, interface: Ipv4Addr) -> Result<()> {
