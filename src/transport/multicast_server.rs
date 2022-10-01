@@ -4,8 +4,8 @@
 
 use log::*;
 use std::io;
+use std::net::SocketAddr;
 use std::net::{IpAddr, Ipv4Addr};
-use std::net::{SocketAddr, UdpSocket};
 use std::sync::Arc;
 use std::thread;
 
@@ -14,7 +14,8 @@ use crate::transport::default::*;
 use crate::transport::notifier::*;
 use crate::transport::notify_manager::*;
 use crate::transport::observer::*;
-use crate::transport::udp_socket::*;
+//use crate::transport::udp_socket::*;
+use crate::transport::udp_socket::UdpSocket;
 
 const ANY_ADDR: Ipv4Addr = Ipv4Addr::new(0, 0, 0, 0);
 
@@ -56,7 +57,9 @@ impl MulticastServer {
                 }
             }
             None => {
-                let socket = UdpSocket::bind("0.0.0.0:0").expect("failed to bind host socket");
+                let any = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
+                let mut socket = UdpSocket::new();
+                socket.bind(any).expect("failed to bind host socket");
                 info!(
                     "MCST {} -> {}:{} ({})",
                     socket.local_addr().unwrap(),
@@ -83,26 +86,24 @@ impl MulticastServer {
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
-        self.socket = None;
-        let socket_res = udp_socket_create();
-        if socket_res.is_err() {
-            self.socket = None;
-            return false;
-        }
-        let socket = socket_res.ok().unwrap();
+        // self.socket = None;
+        // let socket_res = udp_socket_create();
+        // if socket_res.is_err() {
+        //     self.socket = None;
+        //     return false;
+        // }
+        // let socket = socket_res.ok().unwrap();
+        let mut socket = UdpSocket::new();
         let addr = format!("{}:{}", ifaddr, PORT);
         let addr: SocketAddr = addr.parse().unwrap();
         debug!("BIND MCT {}", addr);
-        if socket.bind(&addr.into()).is_err() {
+        if socket.bind(addr).is_err() {
             self.socket = None;
             return false;
         }
         match ifaddr {
             IpAddr::V4(ip4) => {
-                if socket
-                    .join_multicast_v4(&MULTICAST_V4_ADDRESS, &ip4)
-                    .is_err()
-                {
+                if socket.join_multicast_v4(MULTICAST_V4_ADDRESS, ip4).is_err() {
                     self.close();
                     return false;
                 }
@@ -116,9 +117,10 @@ impl MulticastServer {
 
     pub fn close(&mut self) -> bool {
         if self.socket.is_some() {
+            let socket = self.socket.clone();
+            socket.unwrap().close();
             self.socket = None;
         }
-        udp_socket_closewait();
         true
     }
 
@@ -135,6 +137,7 @@ impl MulticastServer {
                 let recv_res = socket.recv_from(&mut buf);
                 match &recv_res {
                     Ok((n_bytes, remote_addr)) => {
+                        let remote_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
                         let recv_msg = &buf[0..*n_bytes];
                         let mut msg = Message::new();
                         if !msg.parse(recv_msg) {
