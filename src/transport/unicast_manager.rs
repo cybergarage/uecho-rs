@@ -8,10 +8,10 @@ use std::net::SocketAddr;
 use crate::protocol::message::Message;
 use crate::transport::interface::*;
 use crate::transport::observer::*;
-use crate::transport::unicast_udp_server::UnicastUdpServer;
+use crate::transport::unicast_server::UnicastServer;
 
 pub struct UnicastManager {
-    udp_servers: Vec<UnicastUdpServer>,
+    udp_servers: Vec<UnicastServer>,
 }
 
 impl UnicastManager {
@@ -51,7 +51,7 @@ impl UnicastManager {
 
     pub fn start(&mut self) -> bool {
         for ifaddr in get_v4_interfaces() {
-            let mut udp_server = UnicastUdpServer::new();
+            let mut udp_server = UnicastServer::new();
             if !udp_server.bind(ifaddr) {
                 self.stop();
                 return false;
