@@ -13,13 +13,13 @@ mod tests {
     use crate::protocol::esv::Esv;
     use crate::protocol::message::*;
     use crate::transport::interface::*;
-    use crate::transport::unicast_udp_server::*;
+    use crate::transport::unicast_server::*;
 
     use crate::log::logger;
     use crate::transport::notify_manager_test::*;
 
     #[test]
-    fn unicast_udp_server_test() {
+    fn unicast_server_test() {
         logger::init();
 
         fn test_udp_server(ifaddr: IpAddr) {
@@ -28,7 +28,7 @@ mod tests {
             const TEST_OBSERVER_COUNT: i32 = 10;
             let counter = Arc::new(Mutex::new(0));
 
-            let mut server = UnicastUdpServer::new();
+            let mut server = UnicastServer::new();
 
             let observer = TestNotifyCounter::new(counter.clone());
             assert!(server.add_observer(Arc::new(Mutex::new(observer))));
