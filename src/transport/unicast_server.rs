@@ -17,14 +17,14 @@ use crate::transport::observer::*;
 // use crate::transport::udp_socket::*;
 use crate::transport::udp_socket::UdpSocket;
 
-pub struct UnicastUdpServer {
+pub struct UnicastServer {
     socket: Option<Arc<UdpSocket>>,
     notifier: Notifier,
 }
 
-impl UnicastUdpServer {
-    pub fn new() -> UnicastUdpServer {
-        UnicastUdpServer {
+impl UnicastServer {
+    pub fn new() -> UnicastServer {
+        UnicastServer {
             socket: None,
             notifier: notifier_new(),
         }
