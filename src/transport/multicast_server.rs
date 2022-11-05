@@ -86,13 +86,6 @@ impl MulticastServer {
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
-        // self.socket = None;
-        // let socket_res = udp_socket_create();
-        // if socket_res.is_err() {
-        //     self.socket = None;
-        //     return false;
-        // }
-        // let socket = socket_res.ok().unwrap();
         let mut socket = UdpSocket::new();
         let addr = format!("{}:{}", ifaddr, PORT);
         let addr: SocketAddr = addr.parse().unwrap();
