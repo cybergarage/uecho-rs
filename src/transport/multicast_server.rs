@@ -100,7 +100,10 @@ impl MulticastServer {
                     self.close();
                     return false;
                 }
-                debug!("BIND MCT {}:{} -> {}:{}", ifaddr, PORT, MULTICAST_V4_ADDRESS, ip4);
+                debug!(
+                    "BIND MCT {}:{} -> {}:{}",
+                    ifaddr, PORT, MULTICAST_V4_ADDRESS, ip4
+                );
             }
             IpAddr::V6(_) => return false,
         }
