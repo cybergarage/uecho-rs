@@ -102,7 +102,16 @@ impl MulticastServer {
                     ifaddr, PORT, MULTICAST_V4_ADDRESS, ip4
                 );
             }
-            IpAddr::V6(_) => return false,
+            IpAddr::V6(ip6) => {
+                if socket.join_multicast_v6(MULTICAST_V6_ADDRESS, ip6).is_err() {
+                    self.close();
+                    return false;
+                }
+                debug!(
+                    "BIND MCT {}:{} -> {}:{}",
+                    ifaddr, PORT, MULTICAST_V6_ADDRESS, ip6
+                );
+            }
         }
         self.socket = Some(Arc::new(UdpSocket::from(socket)));
         true
