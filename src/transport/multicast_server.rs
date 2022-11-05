@@ -14,10 +14,7 @@ use crate::transport::default::*;
 use crate::transport::notifier::*;
 use crate::transport::notify_manager::*;
 use crate::transport::observer::*;
-//use crate::transport::udp_socket::*;
 use crate::transport::udp_socket::UdpSocket;
-
-const ANY_ADDR: Ipv4Addr = Ipv4Addr::new(0, 0, 0, 0);
 
 pub struct MulticastServer {
     socket: Option<Arc<UdpSocket>>,
