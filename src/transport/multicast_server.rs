@@ -121,11 +121,10 @@ impl MulticastServer {
         if self.socket.is_none() {
             return false;
         }
-        let socket = self.socket.clone();
+        let socket = self.socket.clone().unwrap();
         let notifier = self.notifier.clone();
         thread::spawn(move || {
             let mut buf = [0 as u8; MAX_PACKET_SIZE];
-            let socket = socket.unwrap();
             loop {
                 let recv_res = socket.recv_from(&mut buf);
                 match &recv_res {
