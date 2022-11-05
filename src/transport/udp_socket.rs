@@ -29,12 +29,9 @@ fn stdaddr_to_nixaddrin(saddr: SocketAddr) -> SockaddrIn {
     SockaddrIn::from_str(&format!("{}:{}", addr, port)).unwrap()
 }
 
-// fn nixdaddr_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
-//     let saddr = match SocketAddr::parse_ascii(addrin.to_string().as_bytes()) {
-//         Ok(saddr) => return saddr,
-//         Err(e) => return SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), addrin.port()),
-//     };
-// }
+fn nixdaddr_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
+    FromStr::from_str(&addrin.to_string()).unwrap()
+}
 
 impl UdpSocket {
     pub fn new() -> UdpSocket {
