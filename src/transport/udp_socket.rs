@@ -4,15 +4,15 @@
 
 use log::warn;
 use nix::sys::socket;
-use nix::sys::socket::sockopt::{IpAddMembership, ReuseAddr, ReusePort};
+use nix::sys::socket::sockopt::{IpAddMembership, Ipv6AddMembership, ReuseAddr, ReusePort};
 use nix::sys::socket::{bind, recvfrom, sendto, setsockopt, shutdown, socket};
 use nix::sys::socket::{
-    AddressFamily, IpMembershipRequest, MsgFlags, Shutdown, SockFlag, SockType, SockaddrIn,
+    AddressFamily, IpMembershipRequest, Ipv6MembershipRequest, MsgFlags, Shutdown, SockFlag,
+    SockType, SockaddrIn,
 };
 use nix::Result;
 use std::io;
-use std::net::{IpAddr, Ipv4Addr};
-use std::net::{SocketAddr, SocketAddrV4};
+use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::os::unix::io::RawFd;
 use std::str::FromStr;
 use std::thread;
@@ -94,5 +94,10 @@ impl UdpSocket {
     pub fn join_multicast_v4(&self, multiaddr: Ipv4Addr, interface: Ipv4Addr) -> Result<()> {
         let opt = IpMembershipRequest::new(multiaddr, Some(interface));
         setsockopt(self.sock, IpAddMembership, &opt)
+    }
+
+    pub fn join_multicast_v6(&self, multiaddr: Ipv6Addr, interface: Ipv6Addr) -> Result<()> {
+        let opt = Ipv6MembershipRequest::new(multiaddr);
+        setsockopt(self.sock, Ipv6AddMembership, &opt)
     }
 }
