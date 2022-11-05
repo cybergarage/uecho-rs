@@ -87,8 +87,18 @@ impl UdpSocket {
         sendto(self.sock, buf, &sock_addr, flags)
     }
 
-    pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, Option<socket::SockaddrIn>)> {
-        recvfrom::<socket::SockaddrIn>(self.sock, buf)
+    pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, Option<SocketAddr>)> {
+        match recvfrom::<socket::SockaddrIn>(self.sock, buf) {
+            Ok((n_bytes, remote_addr)) => {
+                if remote_addr.is_some() {
+                    return Ok((n_bytes, Some(nixdaddrin_to_ipaddr(remote_addr.unwrap()))));
+                }
+                return Ok((n_bytes, None));
+            }
+            Err(e) => {
+                return Err(e);
+            }
+        }
     }
 
     pub fn join_multicast_v4(&self, multiaddr: Ipv4Addr, interface: Ipv4Addr) -> Result<()> {
