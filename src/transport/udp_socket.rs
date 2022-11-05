@@ -23,11 +23,10 @@ pub struct UdpSocket {
     ifaddr: Option<SocketAddr>,
 }
 
-fn stdaddr_to_nixaddr(saddr: SocketAddr) -> SockaddrIn {
+fn stdaddr_to_nixaddrin(saddr: SocketAddr) -> SockaddrIn {
     let addr = saddr.ip();
     let port = saddr.port();
-    let std_sa = SocketAddrV4::from_str(&format!("{}:{}", addr, port)).unwrap();
-    SockaddrIn::from(std_sa)
+    SockaddrIn::from_str(&format!("{}:{}", addr, port)).unwrap()
 }
 
 // fn nixdaddr_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
@@ -77,7 +76,7 @@ impl UdpSocket {
     }
 
     pub fn bind(&mut self, ifaddr: SocketAddr) -> Result<()> {
-        let sock_addr = stdaddr_to_nixaddr(ifaddr);
+        let sock_addr = stdaddr_to_nixaddrin(ifaddr);
         let res = bind(self.sock, &sock_addr);
         if res.is_ok() {
             self.ifaddr = Some(ifaddr);
@@ -87,7 +86,7 @@ impl UdpSocket {
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
         let flags = MsgFlags::empty();
-        let sock_addr = stdaddr_to_nixaddr(to_addr);
+        let sock_addr = stdaddr_to_nixaddrin(to_addr);
         sendto(self.sock, buf, &sock_addr, flags)
     }
 
