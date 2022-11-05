@@ -5,7 +5,7 @@
 use log::warn;
 use nix::sys::socket;
 use nix::sys::socket::sockopt::{IpAddMembership, ReuseAddr, ReusePort};
-use nix::sys::socket::{bind, recvfrom, sendto, setsockopt, shutdown, socket};
+use nix::sys::socket::{bind, listen, recvfrom, sendto, setsockopt, shutdown, socket};
 use nix::sys::socket::{
     AddressFamily, IpMembershipRequest, MsgFlags, Shutdown, SockFlag, SockType, SockaddrIn,
     SockaddrLike,
@@ -101,15 +101,15 @@ impl UdpSocket {
         res
     }
 
+    pub fn listen(&mut self) -> Result<()> {
+        listen(self.sock, 10)
+    }
+
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
         let flags = MsgFlags::empty();
         let sock_addr = stdaddr_to_nixaddr(to_addr);
         sendto(self.sock, buf, &sock_addr, flags)
     }
-
-    // pub fn recv_from<T: SockaddrLike>(&self, buf: &mut [u8]) -> Result<(usize, Option<T>)> {
-    //     recvfrom(self.sock, buf)
-    // }
 
     pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, Option<socket::SockaddrIn>)> {
         recvfrom::<socket::SockaddrIn>(self.sock, buf)
