@@ -101,7 +101,7 @@ impl UdpSocket {
         res
     }
 
-    pub fn listen(&mut self) -> Result<()> {
+    pub fn listen(&self) -> Result<()> {
         listen(self.sock, 10)
     }
 
