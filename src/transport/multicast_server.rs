@@ -129,13 +129,19 @@ impl MulticastServer {
                 let recv_res = socket.recv_from(&mut buf);
                 match &recv_res {
                     Ok((n_bytes, remote_addr)) => {
-                        let remote_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
+                        let msg_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
+                        if remote_addr.is_some() {
+                            // let sock_addr: Result<SocketAddr, ()> = remote_addr.unwrap().try_into();
+                            // if sock_addr.is_ok() {
+                            //     msg_addr = sock_addr.unwrap()
+                            // }
+                        }
                         let recv_msg = &buf[0..*n_bytes];
                         let mut msg = Message::new();
                         if !msg.parse(recv_msg) {
                             warn!(
                                 "Couldn't parse message {} [{}] {}",
-                                remote_addr,
+                                msg_addr,
                                 n_bytes,
                                 hex::encode_upper(recv_msg)
                             );
@@ -143,11 +149,11 @@ impl MulticastServer {
                         }
                         info!(
                             "RECV {} -> {} ({})",
-                            remote_addr,
+                            msg_addr,
                             socket.local_addr().ok().unwrap(),
                             msg
                         );
-                        msg.set_addr(remote_addr.ip());
+                        msg.set_addr(msg_addr.ip());
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(e) => {

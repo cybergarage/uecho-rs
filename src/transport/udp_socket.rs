@@ -11,7 +11,7 @@ use nix::sys::socket::{
 };
 use nix::Result;
 use std::io;
-use std::net::Ipv4Addr;
+use std::net::{IpAddr, Ipv4Addr};
 use std::net::{SocketAddr, SocketAddrV4};
 use std::os::unix::io::RawFd;
 use std::str::FromStr;
@@ -23,12 +23,19 @@ pub struct UdpSocket {
     ifaddr: Option<SocketAddr>,
 }
 
-fn stdaddr_to_nixaddr(ifaddr: SocketAddr) -> SockaddrIn {
-    let addr = ifaddr.ip();
-    let port = ifaddr.port();
+fn stdaddr_to_nixaddr(saddr: SocketAddr) -> SockaddrIn {
+    let addr = saddr.ip();
+    let port = saddr.port();
     let std_sa = SocketAddrV4::from_str(&format!("{}:{}", addr, port)).unwrap();
     SockaddrIn::from(std_sa)
 }
+
+// fn nixdaddr_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
+//     let saddr = match SocketAddr::parse_ascii(addrin.to_string().as_bytes()) {
+//         Ok(saddr) => return saddr,
+//         Err(e) => return SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), addrin.port()),
+//     };
+// }
 
 impl UdpSocket {
     pub fn new() -> UdpSocket {
