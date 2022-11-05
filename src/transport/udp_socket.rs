@@ -5,10 +5,9 @@
 use log::warn;
 use nix::sys::socket;
 use nix::sys::socket::sockopt::{IpAddMembership, ReuseAddr, ReusePort};
-use nix::sys::socket::{bind, listen, recvfrom, sendto, setsockopt, shutdown, socket};
+use nix::sys::socket::{bind, recvfrom, sendto, setsockopt, shutdown, socket};
 use nix::sys::socket::{
     AddressFamily, IpMembershipRequest, MsgFlags, Shutdown, SockFlag, SockType, SockaddrIn,
-    SockaddrLike,
 };
 use nix::Result;
 use socket2::{Domain, Socket, Type};
@@ -99,10 +98,6 @@ impl UdpSocket {
             self.ifaddr = Some(ifaddr);
         }
         res
-    }
-
-    pub fn listen(&self) -> Result<()> {
-        listen(self.sock, 10)
     }
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
