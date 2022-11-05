@@ -106,7 +106,7 @@ impl UdpSocket {
         setsockopt(self.sock, IpAddMembership, &opt)
     }
 
-    pub fn join_multicast_v6(&self, multiaddr: Ipv6Addr, interface: Ipv6Addr) -> Result<()> {
+    pub fn join_multicast_v6(&self, multiaddr: Ipv6Addr, _interface: Ipv6Addr) -> Result<()> {
         let opt = Ipv6MembershipRequest::new(multiaddr);
         setsockopt(self.sock, Ipv6AddMembership, &opt)
     }
