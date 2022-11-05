@@ -29,7 +29,7 @@ fn stdaddr_to_nixaddrin(saddr: SocketAddr) -> SockaddrIn {
     SockaddrIn::from_str(&format!("{}:{}", addr, port)).unwrap()
 }
 
-fn nixdaddr_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
+fn nixdaddrin_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
     FromStr::from_str(&addrin.to_string()).unwrap()
 }
 
