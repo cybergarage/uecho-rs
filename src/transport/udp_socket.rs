@@ -4,7 +4,9 @@
 
 use log::warn;
 use nix::sys::socket;
-use nix::sys::socket::sockopt::{IpAddMembership, Ipv6AddMembership, ReuseAddr, ReusePort};
+use nix::sys::socket::sockopt::{
+    IpAddMembership, IpMulticastLoop, Ipv6AddMembership, ReuseAddr, ReusePort,
+};
 use nix::sys::socket::{bind, recvfrom, sendto, setsockopt, shutdown, socket};
 use nix::sys::socket::{
     AddressFamily, IpMembershipRequest, Ipv6MembershipRequest, MsgFlags, Shutdown, SockFlag,
@@ -48,6 +50,9 @@ impl UdpSocket {
         }
         if setsockopt(sock, ReusePort, &true).is_err() {
             warn!("SO_REUSEPORT is not supported");
+        }
+        if setsockopt(sock, IpMulticastLoop, &true).is_err() {
+            warn!("IP_MULTICAST_LOOP is not supported");
         }
 
         UdpSocket {
