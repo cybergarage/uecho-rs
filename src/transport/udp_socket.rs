@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+use crate::transport::error::{BindError, ScoketError};
+use crate::transport::result::Result;
 use log::warn;
 use nix::sys::socket;
 use nix::sys::socket::sockopt::{
@@ -12,16 +14,15 @@ use nix::sys::socket::{
     AddressFamily, IpMembershipRequest, Ipv6MembershipRequest, MsgFlags, Shutdown, SockFlag,
     SockType, SockaddrIn,
 };
-use nix::Result;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
-use std::os::unix::io::RawFd;
+use std::os::unix::io::{AsRawFd, RawFd};
 use std::str::FromStr;
 use std::thread;
 use std::time::Duration;
 
 pub struct UdpSocket {
-    sock: RawFd,
+    sock: Option<std::net::UdpSocket>,
     ifaddr: Option<SocketAddr>,
 }
 
@@ -37,26 +38,8 @@ fn nixdaddrin_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
 
 impl UdpSocket {
     pub fn new() -> UdpSocket {
-        let sock = socket(
-            AddressFamily::Inet,
-            SockType::Datagram,
-            SockFlag::empty(),
-            None,
-        )
-        .unwrap();
-
-        if setsockopt(sock, ReuseAddr, &true).is_err() {
-            warn!("SO_REUSEADDR is not supported");
-        }
-        if setsockopt(sock, ReusePort, &true).is_err() {
-            warn!("SO_REUSEPORT is not supported");
-        }
-        if setsockopt(sock, IpMulticastLoop, &true).is_err() {
-            warn!("IP_MULTICAST_LOOP is not supported");
-        }
-
         UdpSocket {
-            sock: sock,
+            sock: None,
             ifaddr: None,
         }
     }
@@ -71,48 +54,70 @@ impl UdpSocket {
         ))
     }
 
-    pub fn close(&self) -> Result<()> {
-        let res = shutdown(self.sock, Shutdown::Both);
+    pub fn close(&mut self) {
+        if self.sock.is_none() {
+            return;
+        }
+        let fd = self.sock.as_ref().unwrap().as_raw_fd();
+        let res = shutdown(fd, Shutdown::Both);
+        if res.is_err() {
+            warn!("close {:?}", res.err());
+        }
+        self.sock = None;
         thread::sleep(Duration::from_secs(1));
-        res
     }
 
     pub fn bind(&mut self, ifaddr: SocketAddr) -> Result<()> {
-        let sock_addr = stdaddr_to_nixaddrin(ifaddr);
-        let res = bind(self.sock, &sock_addr);
-        if res.is_ok() {
-            self.ifaddr = Some(ifaddr);
+        if self.sock.is_some() {
+            self.close();
         }
-        res
+        let sock = std::net::UdpSocket::bind(ifaddr.to_string());
+        if sock.is_err() {
+            return Err(ScoketError::new(&format!("could not bind to {}", ifaddr)));
+        }
+        let fd = self.sock.as_ref().unwrap().as_raw_fd();
+        if setsockopt(fd, ReuseAddr, &true).is_err() {
+            warn!("SO_REUSEADDR is not supported");
+        }
+        if setsockopt(fd, ReusePort, &true).is_err() {
+            warn!("SO_REUSEPORT is not supported");
+        }
+        self.sock = Some(sock.unwrap());
+        Ok(())
     }
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
-        let flags = MsgFlags::empty();
-        let sock_addr = stdaddr_to_nixaddrin(to_addr);
-        sendto(self.sock, buf, &sock_addr, flags)
-    }
-
-    pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, Option<SocketAddr>)> {
-        match recvfrom::<socket::SockaddrIn>(self.sock, buf) {
-            Ok((n_bytes, remote_addr)) => {
-                if remote_addr.is_some() {
-                    return Ok((n_bytes, Some(nixdaddrin_to_ipaddr(remote_addr.unwrap()))));
-                }
-                return Ok((n_bytes, None));
-            }
-            Err(e) => {
-                return Err(e);
-            }
+        if self.sock.is_none() {
+            return Err(BindError::new());
         }
+        let res = self.sock.as_ref().unwrap().send_to(buf, to_addr);
+        if res.is_err() {
+            return Err(ScoketError::new(&format!("{:?}", res.err())));
+        }
+        Ok(res.unwrap())
     }
 
-    pub fn join_multicast_v4(&self, multiaddr: Ipv4Addr, interface: Ipv4Addr) -> Result<()> {
-        let opt = IpMembershipRequest::new(multiaddr, Some(interface));
-        setsockopt(self.sock, IpAddMembership, &opt)
+    pub fn recv_from(&self, buf: &mut [u8]) -> Result<(usize, SocketAddr)> {
+        if self.sock.is_none() {
+            return Err(BindError::new());
+        }
+        self.sock.as_ref().unwrap().recv_from(buf)
     }
 
-    pub fn join_multicast_v6(&self, multiaddr: Ipv6Addr, _interface: Ipv6Addr) -> Result<()> {
-        let opt = Ipv6MembershipRequest::new(multiaddr);
-        setsockopt(self.sock, Ipv6AddMembership, &opt)
+    pub fn join_multicast_v4(&self, multiaddr: &Ipv4Addr, interface: &Ipv4Addr) -> Result<()> {
+        if self.sock.is_none() {
+            return Err(BindError::new());
+        }
+        self.sock
+            .as_ref()
+            .unwrap()
+            .join_multicast_v4(multiaddr, interface)
+    }
+
+    pub fn join_multicast_v6(&self, multiaddr: &Ipv6Addr, _interface: &Ipv6Addr) -> Result<()> {
+        if self.sock.is_none() {
+            return Err(BindError::new());
+        }
+        self.sock.as_ref().unwrap().join_multicast_v6(multiaddr, 0)
     }
 }
