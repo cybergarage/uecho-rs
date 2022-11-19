@@ -6,7 +6,7 @@ use log::*;
 use std::io;
 use std::net::SocketAddr;
 use std::net::{IpAddr, Ipv4Addr};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, RwLock};
 use std::thread;
 
 use crate::protocol::message::Message;
@@ -17,14 +17,14 @@ use crate::transport::observer::*;
 use crate::transport::udp_socket::UdpSocket;
 
 pub struct MulticastServer {
-    socket: Arc<Mutex<UdpSocket>>,
+    socket: Arc<RwLock<UdpSocket>>,
     notifier: Notifier,
 }
 
 impl MulticastServer {
     pub fn new() -> MulticastServer {
         MulticastServer {
-            socket: Arc::new(Mutex::new(UdpSocket::new())),
+            socket: Arc::new(RwLock::new(UdpSocket::new())),
             notifier: notifier_new(),
         }
     }
@@ -41,14 +41,14 @@ impl MulticastServer {
         let port = to_addr.port();
         info!(
             "MCST {} -> {}:{} ({})",
-            self.socket.lock().unwrap().local_addr().unwrap(),
+            self.socket.read().unwrap().local_addr().unwrap(),
             addr,
             port,
             msg,
         );
         if self
             .socket
-            .lock()
+            .read()
             .unwrap()
             .send_to(&msg_bytes, to_addr)
             .is_err()
@@ -60,21 +60,21 @@ impl MulticastServer {
     }
 
     pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        self.socket.lock().unwrap().local_addr()
+        self.socket.read().unwrap().local_addr()
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
         let addr = format!("{}:{}", ifaddr, PORT);
         let addr: SocketAddr = addr.parse().unwrap();
         debug!("BIND MCT {}", addr);
-        if self.socket.lock().unwrap().bind(addr).is_err() {
+        if self.socket.write().unwrap().bind(addr).is_err() {
             return false;
         }
         match ifaddr {
             IpAddr::V4(ip4) => {
                 if self
                     .socket
-                    .lock()
+                    .read()
                     .unwrap()
                     .join_multicast_v4(&MULTICAST_V4_ADDRESS, &ip4)
                     .is_err()
@@ -90,7 +90,7 @@ impl MulticastServer {
             IpAddr::V6(ip6) => {
                 if self
                     .socket
-                    .lock()
+                    .read()
                     .unwrap()
                     .join_multicast_v6(&MULTICAST_V6_ADDRESS, &ip6)
                     .is_err()
@@ -108,7 +108,7 @@ impl MulticastServer {
     }
 
     pub fn close(&mut self) -> bool {
-        self.socket.lock().unwrap().close();
+        self.socket.write().unwrap().close();
         true
     }
 
@@ -118,7 +118,7 @@ impl MulticastServer {
         thread::spawn(move || {
             let mut buf = [0 as u8; MAX_PACKET_SIZE];
             loop {
-                let recv_res = socket.lock().unwrap().recv_from(&mut buf);
+                let recv_res = socket.read().unwrap().recv_from(&mut buf);
                 match &recv_res {
                     Ok((n_bytes, remote_addr)) => {
                         let recv_msg = &buf[0..*n_bytes];
@@ -135,7 +135,7 @@ impl MulticastServer {
                         info!(
                             "RECV {} -> {} ({})",
                             remote_addr,
-                            socket.lock().unwrap().local_addr().ok().unwrap(),
+                            socket.read().unwrap().local_addr().ok().unwrap(),
                             msg
                         );
                         msg.set_addr(remote_addr.ip());
@@ -144,7 +144,7 @@ impl MulticastServer {
                     Err(e) => {
                         error!(
                             "RECV {} -> {}",
-                            socket.lock().unwrap().local_addr().ok().unwrap(),
+                            socket.read().unwrap().local_addr().ok().unwrap(),
                             e
                         );
                         break;
