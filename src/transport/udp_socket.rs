@@ -75,7 +75,7 @@ impl UdpSocket {
         if sock.is_err() {
             return Err(ScoketError::new(&format!("could not bind to {}", ifaddr)));
         }
-        let fd = self.sock.as_ref().unwrap().as_raw_fd();
+        let fd = sock.as_ref().unwrap().as_raw_fd();
         if setsockopt(fd, ReuseAddr, &true).is_err() {
             warn!("SO_REUSEADDR is not supported");
         }
