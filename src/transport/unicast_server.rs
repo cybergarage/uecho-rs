@@ -6,7 +6,7 @@ use log::*;
 use std::io;
 // use std::net::{IpAddr, SocketAddr, UdpSocket};
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, RwLock};
 use std::thread;
 
 use crate::protocol::message::Message;
@@ -18,14 +18,14 @@ use crate::transport::observer::*;
 use crate::transport::udp_socket::UdpSocket;
 
 pub struct UnicastServer {
-    socket: Arc<Mutex<UdpSocket>>,
+    socket: Arc<RwLock<UdpSocket>>,
     notifier: Notifier,
 }
 
 impl UnicastServer {
     pub fn new() -> UnicastServer {
         UnicastServer {
-            socket: Arc::new(Mutex::new(UdpSocket::new())),
+            socket: Arc::new(RwLock::new(UdpSocket::new())),
             notifier: notifier_new(),
         }
     }
@@ -40,14 +40,14 @@ impl UnicastServer {
         let port = to_addr.port();
         info!(
             "SEND {} -> {}:{} ({})",
-            self.socket.lock().unwrap().local_addr().unwrap(),
+            self.socket.read().unwrap().local_addr().unwrap(),
             addr,
             port,
             msg,
         );
         if self
             .socket
-            .lock()
+            .read()
             .unwrap()
             .send_to(&msg_bytes, to_addr)
             .is_err()
@@ -59,20 +59,20 @@ impl UnicastServer {
     }
 
     pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        self.socket.lock().unwrap().local_addr()
+        self.socket.read().unwrap().local_addr()
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
         let addr: SocketAddr = format!("{}:{}", ifaddr, PORT).parse().unwrap();
         debug!("BIND UDP {}", addr);
-        if self.socket.lock().unwrap().bind(addr).is_err() {
+        if self.socket.write().unwrap().bind(addr).is_err() {
             return false;
         }
         true
     }
 
     pub fn close(&mut self) -> bool {
-        self.socket.lock().unwrap().close();
+        self.socket.write().unwrap().close();
         true
     }
 
@@ -82,7 +82,7 @@ impl UnicastServer {
         thread::spawn(move || {
             let mut buf = [0 as u8; MAX_PACKET_SIZE];
             loop {
-                let recv_res = socket.lock().unwrap().recv_from(&mut buf);
+                let recv_res = socket.read().unwrap().recv_from(&mut buf);
                 match &recv_res {
                     Ok((n_bytes, remote_addr)) => {
                         let recv_msg = &buf[0..*n_bytes];
@@ -99,7 +99,7 @@ impl UnicastServer {
                         info!(
                             "RECV {} -> {} ({})",
                             remote_addr.ip(),
-                            socket.lock().unwrap().local_addr().ok().unwrap(),
+                            socket.read().unwrap().local_addr().ok().unwrap(),
                             msg
                         );
                         msg.set_addr(remote_addr.ip());
@@ -108,7 +108,7 @@ impl UnicastServer {
                     Err(e) => {
                         error!(
                             "RECV {} -> {}",
-                            socket.lock().unwrap().local_addr().ok().unwrap(),
+                            socket.read().unwrap().local_addr().ok().unwrap(),
                             e
                         );
                         break;
