@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 pub mod default;
+pub mod error;
 pub mod interface;
 pub mod manager;
 pub mod multicast_manager;
@@ -10,6 +11,7 @@ pub mod multicast_server;
 pub mod notifier;
 pub mod notify_manager;
 pub mod observer;
+pub mod result;
 pub mod udp_socket;
 pub mod unicast_manager;
 pub mod unicast_server;
