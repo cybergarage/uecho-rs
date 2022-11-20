@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[test]
-
 #[cfg(test)]
 mod tests {
 
@@ -22,26 +20,27 @@ mod tests {
 
     #[test]
     fn object_code() {
-        let obj = Object::new();
+        let mut obj = Object::new();
         obj.set_code(0x0EF001);
-        equals!(obj.code(), 0x0EF001);
-        equals!(obj.group_code(), 0x0E);
-        equals!(obj.class_code(),0xF0);
-        equals!(obj.instance_code(),0x01 );
+        assert_eq!(obj.code(), 0x0EF001);
+        assert_eq!(obj.class_group_code(), 0x0E);
+        assert_eq!(obj.class_code(), 0xF0);
+        assert_eq!(obj.instance_code(), 0x01);
+    }
 
     #[test]
     fn object_property() {
-        let obj = Object::new();
+        let mut obj = Object::new();
 
         for n in 1..10 {
-            let prop = Property::new();
-            prop.set_code(n as PropertyCpde);
+            let mut prop = Property::new();
+            prop.set_code(n as PropertyCode);
             assert!(obj.add_property(prop));
         }
 
         for n in 1..10 {
-            let prop = obj.property(n as PropertyCpde);
-            assert!(prop);
+            let prop = obj.property(n as PropertyCode);
+            assert!(prop.is_some());
         }
     }
 }
