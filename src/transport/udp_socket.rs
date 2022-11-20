@@ -5,7 +5,7 @@
 use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use log::warn;
-use nix::sys::socket::sockopt::{ReuseAddr, ReusePort};
+use nix::sys::socket::sockopt::{ReuseAddr, ReusePort, IpMulticastLoop};
 use nix::sys::socket::Shutdown;
 use nix::sys::socket::{setsockopt, shutdown};
 use std::io;
@@ -63,6 +63,9 @@ impl UdpSocket {
         }
         if setsockopt(fd, ReusePort, &true).is_err() {
             warn!("SO_REUSEPORT is not supported");
+        }
+        if setsockopt(fd, IpMulticastLoop, &true).is_err() {
+            warn!("IP_MULTICAST_LOOP is not supported");
         }
         self.sock = Some(sock.unwrap());
         self.ifaddr = Some(ifaddr);
