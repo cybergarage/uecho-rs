@@ -12,21 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[test]
-
 #[cfg(test)]
 mod tests {
 
     use crate::device::*;
+    use crate::super_object::{OBJECT_OPERATING_STATUS_ON, SUPER_OBJECT_CODE};
 
     #[test]
     fn device_new() {
-        let dev = Device::new();
-        assert_eq!(dev.operating_status().byte_data(), OBJECT_OPERATING_STATUS_ON);
-        assert_eq!(dev.installation_location().byte_data(), DEVICE_INSTALLATION_LOCATION_UNKNOWN);
-        assert_eq!(dev.standard_version().byte_data(), [0x01, 0x00, DEVICE_STANDARD_VERSION, 0x00]);
+        let mut dev = Device::new(SUPER_OBJECT_CODE);
+        assert_eq!(
+            dev.operating_status().byte_data(),
+            OBJECT_OPERATING_STATUS_ON
+        );
+        assert_eq!(
+            dev.installation_location().byte_data(),
+            DEVICE_INSTALLATION_LOCATION_UNKNOWN
+        );
+        assert_eq!(
+            dev.standard_version().byte_data(),
+            DEVICE_STANDARD_VERSION
+        );
         assert_eq!(dev.operating_status().byte_data(), DEVICE_NO_FAULT_OCCURRED);
-        }
+    }
 }
-
-
