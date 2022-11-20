@@ -8,7 +8,7 @@ use crate::transport::default::PORT;
 use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use log::warn;
-use nix::sys::socket::{setsockopt, shutdown, Shutdown};
+use nix::sys::socket::{shutdown, Shutdown};
 use nix::unistd::close;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
