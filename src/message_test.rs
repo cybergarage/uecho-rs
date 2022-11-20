@@ -16,11 +16,11 @@
 mod tests {
 
     use crate::message::SearchMessage;
-    // use std::hex;
+    use hex;
 
     #[test]
     fn search_message() {
         let msg = SearchMessage::new();
-        // assert_eq!(msg.bytes(), hex::decode("108100020ef0010ef0016201d600"))
+        assert_eq!(msg.bytes(), hex::decode("108100020ef0010ef0016201d600").ok().unwrap())
     }
 }
