@@ -20,18 +20,10 @@ pub struct UdpSocket {
     ifaddr: Option<SocketAddr>,
 }
 
-#[cfg(target_os = "linux")]
 fn create_socket(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v4()?
         .reuse_address(true)?
-        .reuse_port(true)?
-        .bind(ifaddr)
-}
-
-#[cfg(not(target_os = "linux"))]
-fn create_socket(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
-    net2::UdpBuilder::new_v4()?
-        .reuse_address(true)?
+        // .reuse_port(true)?
         .bind(ifaddr)
 }
 
