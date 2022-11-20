@@ -23,7 +23,7 @@ mod tests {
         let msg = SearchMessage::new();
         assert_eq!(
             msg.bytes(),
-            hex::decode("108100010EF0010EF0016201D600").ok().unwrap()
+            hex::decode("108100000EF0010EF0016201D600").ok().unwrap()
         )
     }
 }
