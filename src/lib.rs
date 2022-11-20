@@ -35,3 +35,13 @@ pub mod super_object;
 mod controller_observer;
 mod database_manufacturers;
 mod database_mra_objects;
+
+mod controller_test;
+mod database_test;
+mod device_test;
+mod local_node_test;
+mod message_test;
+mod object_test;
+mod profile_test;
+mod property_test;
+mod remote_node_test;
