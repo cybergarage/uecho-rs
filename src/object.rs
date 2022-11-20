@@ -151,7 +151,7 @@ impl Object {
     }
 
     pub fn add_standard_properties(&mut self, code: ObjectCode) -> bool {
-        let db = get_shared_standard_database();
+        let db = StandardDatabase::shared();
         let std_obj = db.find_object(code & 0xFFFF00);
         match std_obj {
             Some(obj) => {

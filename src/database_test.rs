@@ -21,7 +21,7 @@ mod tests {
 
     #[test]
     fn standard_database() {
-        let db = get_shared_standard_database();
+        let db = StandardDatabase::shared();
 
         // Super Object
         let obj = db.get_object(SUPER_OBJECT_CODE);
