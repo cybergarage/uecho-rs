@@ -26,19 +26,19 @@ mod tests {
         // Super Object
         let obj = db.find_object(SUPER_OBJECT_CODE);
         assert!(obj.is_some());
-        // let prop = obj.property(OBJECT_OPERATING_STATUS);
-        // assert(prop.is_some())ß
+        // let prop = obj.find_property(OBJECT_OPERATING_STATUS);
+        // assert(prop.is_some());
 
         // Node Profile
         // let obj = db.find_object(NODE_PROFILE_OBJECT_CODE);
         // assert!(obj.is_some());
-        // let prop = obj.property(NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES);
+        // let prop = obj.find_property(NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES);
         // assert(prop.is_some());
 
         // Mono functional lighting (0x0291)
         let obj = db.find_object(0x029100);
         assert!(obj.is_some());
-        // let prop = obj.property(0xB0); // Light level Setting
+        // let prop = obj.find_property(0xB0); // Light level Setting
         // assert(prop.is_some());
     }
 }

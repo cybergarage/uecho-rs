@@ -114,12 +114,12 @@ impl Object {
         self.properties.values()
     }
 
-    pub fn property(&mut self, code: PropertyCode) -> Option<&mut Property> {
+    pub fn find_property(&mut self, code: PropertyCode) -> Option<&mut Property> {
         self.properties.get_mut(&code)
     }
 
     pub fn set_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
-        match self.property(code).as_mut() {
+        match self.find_property(code).as_mut() {
             Some(prop) => {
                 prop.set_data(data);
                 true
@@ -144,7 +144,7 @@ impl Object {
     }
 
     pub fn property_data(&mut self, code: PropertyCode) -> Option<&PropertyData> {
-        match self.property(code) {
+        match self.find_property(code) {
             Some(prop) => return Some(prop.data()),
             None => return None,
         }
@@ -166,7 +166,7 @@ impl Object {
     }
 
     pub fn equals_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
-        match self.property(code) {
+        match self.find_property(code) {
             Some(prop) => prop.equals_data(data),
             None => false,
         }
