@@ -15,19 +15,16 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::node::*;
+    use crate::object::*;
     use crate::remote_node::*;
 
     #[test]
     fn remote_node() {
         let mut node = RemoteNode::new();
         for n in 1..10 {
-            let obj = Object::new();
+            let mut obj = Object::new();
             assert!(obj.set_code(n));
-            assert!(obj.add_object(obj));
-        }
-
-        for n in 1..10 {
+            assert!(node.add_object(obj));
         }
     }
 }
