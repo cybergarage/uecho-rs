@@ -53,7 +53,7 @@ mod tests {
         }
 
         for ifaddr in get_v4_interfaces() {
-            test_udp_server(ifaddr)
+            test_udp_server(ifaddr);
         }
     }
 }
