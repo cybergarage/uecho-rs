@@ -26,8 +26,6 @@ mod tests {
             assert!(obj.set_code(n));
             assert!(node.lock().unwrap().add_object(obj));
         }
-
-        for n in 1..10 {}
     }
 
     #[test]
