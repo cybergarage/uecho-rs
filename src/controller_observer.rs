@@ -18,7 +18,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::local_node::*;
-use crate::message::*;
+use crate::message::SearchMessage;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::esv::*;
@@ -64,7 +64,7 @@ impl ControllerObserver {
     }
 
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
-        let mut msg = message_serarch_new();
+        let mut msg = SearchMessage::new();
         msg.set_deoj(obj_code);
         let mut node = self.node.lock().unwrap();
         node.notify(&mut msg)

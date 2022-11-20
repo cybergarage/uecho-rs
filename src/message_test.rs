@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[test]
 
 #[cfg(test)]
 mod tests {
 
-    use crate::message::*;
+    use crate::message::SearchMessage;
 
     #[test]
     fn message_test() {
-        message_serarch_new();
+        SearchMessage::new();
     }
 }
