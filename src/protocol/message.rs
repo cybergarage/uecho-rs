@@ -245,7 +245,7 @@ impl Clone for Message {
 impl fmt::Display for Message {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for b in self.bytes() {
-            let res = f.write_fmt(format_args!("{:X}", b));
+            let res = f.write_fmt(format_args!("{:02X}", b));
             if res.is_err() {
                 return res;
             }
