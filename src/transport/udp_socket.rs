@@ -6,8 +6,8 @@ use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use log::warn;
 use nix::sys::socket::sockopt::{IpMulticastLoop, ReuseAddr, ReusePort};
-use nix::sys::socket::Shutdown;
-use nix::sys::socket::{setsockopt, shutdown};
+use nix::sys::socket::{Shutdown, setsockopt, shutdown};
+use nix::unistd::close;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::os::unix::io::AsRawFd;
@@ -43,6 +43,10 @@ impl UdpSocket {
         }
         let fd = self.sock.as_ref().unwrap().as_raw_fd();
         let res = shutdown(fd, Shutdown::Both);
+        if res.is_err() {
+            warn!("shutdown {:?}", res.err());
+        }
+        let res = close(fd);
         if res.is_err() {
             warn!("close {:?}", res.err());
         }
