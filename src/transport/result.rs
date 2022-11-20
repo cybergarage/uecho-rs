@@ -2,6 +2,4 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-use std::io::{Error, ErrorKind};
-
 pub type Result<T> = std::result::Result<T, std::io::Error>;
