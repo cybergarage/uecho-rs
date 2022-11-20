@@ -4,7 +4,7 @@
 
 use log::*;
 use std::io;
-use std::net::{IpAddr, SocketAddr};
+use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::sync::{Arc, RwLock};
 use std::thread;
 
@@ -63,8 +63,10 @@ impl MulticastServer {
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
-        let addr = format!("{}:{}", ifaddr, PORT);
-        let addr: SocketAddr = addr.parse().unwrap();
+        let mut addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), PORT);
+        if ifaddr.is_ipv6() {
+            addr = SocketAddr::new(IpAddr::V6(Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0)), PORT);
+        }
         debug!("BIND MCT {}", addr);
         if self.socket.write().unwrap().bind(addr).is_err() {
             return false;
