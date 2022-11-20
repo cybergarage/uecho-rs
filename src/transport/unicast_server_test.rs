@@ -29,7 +29,7 @@ mod tests {
     use crate::transport::notify_manager_test::*;
 
     #[test]
-    fn unicast_server_test() {
+    fn unicast_server() {
         logger::init();
 
         fn test_udp_server(ifaddr: IpAddr) {

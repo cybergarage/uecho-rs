@@ -21,7 +21,7 @@ mod tests {
     use crate::property::*;
 
     #[test]
-    fn object_code_test() {
+    fn object_code() {
         let obj = Object::new();
         obj.set_code(0x0EF001);
         equals!(obj.code(), 0x0EF001);
@@ -30,7 +30,7 @@ mod tests {
         equals!(obj.instance_code(),0x01 );
 
     #[test]
-    fn object_property_test() {
+    fn object_property() {
         let obj = Object::new();
 
         for n in 1..10 {

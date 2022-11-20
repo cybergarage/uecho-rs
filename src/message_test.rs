@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #[cfg(test)]
 mod tests {
 
+    use std::hex;
     use crate::message::SearchMessage;
 
     #[test]
-    fn message_test() {
-        SearchMessage::new();
+    fn search_message() {
+        let msg = SearchMessage::new();
+        assert_eq!(msg.bytes(), hex::decode("108100020ef0010ef0016201d600"))
     }
 }

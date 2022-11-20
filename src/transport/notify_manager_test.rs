@@ -43,7 +43,7 @@ mod tests {
     use crate::transport::notify_manager_test::*;
 
     #[test]
-    fn notify_manager_test() {
+    fn notify_manager() {
         const TEST_OBSERVER_COUNT: i32 = 10;
         let counter = Arc::new(Mutex::new(0));
 

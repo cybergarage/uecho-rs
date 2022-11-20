@@ -18,7 +18,7 @@ mod tests {
     use crate::transport::interface::*;
 
     #[test]
-    fn v4_interface_test() {
+    fn v4_interface() {
         let ifaddrs = get_v4_interfaces();
         for ifaddr in ifaddrs {
             assert!(ifaddr.is_ipv4())
@@ -26,7 +26,7 @@ mod tests {
     }
 
     #[test]
-    fn v6_interface_test() {
+    fn v6_interface() {
         let ifaddrs = get_v6_interfaces();
         for ifaddr in ifaddrs {
             assert!(ifaddr.is_ipv6())
@@ -34,7 +34,7 @@ mod tests {
     }
 
     #[test]
-    fn all_interface_test() {
+    fn all_interface() {
         let ifaddrs = get_all_interfaces();
         for ifaddr in ifaddrs {
             assert!(ifaddr.is_ipv6() || ifaddr.is_ipv4())

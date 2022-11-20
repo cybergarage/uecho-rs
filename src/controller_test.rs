@@ -19,7 +19,7 @@ mod tests {
     use crate::log::logger;
 
     #[test]
-    fn controller_test() {
+    fn controller() {
         logger::init();
 
         let mut ctrl = Controller::new();

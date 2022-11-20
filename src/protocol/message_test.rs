@@ -19,13 +19,13 @@ mod tests {
     use crate::protocol::message::*;
 
     #[test]
-    fn new_message_test() {
+    fn new_message() {
         let mut msg = Message::new();
         assert!(msg.is_format1());
     }
 
     #[test]
-    fn message_setter_test() {
+    fn message_setter() {
         let mut msg = Message::new();
 
         let test_tid = 0x1234 as TID;
@@ -46,7 +46,7 @@ mod tests {
     }
 
     #[test]
-    fn message_parse_test() {
+    fn message_parse() {
         fn message_parse(msg_bytes: &[u8]) {
             // Checks parsed result
 
@@ -117,7 +117,7 @@ mod tests {
     }
 
     #[test]
-    fn message_parse_requests_test() {
+    fn message_parse_requests() {
         let mut test_msgs = Vec::new();
         test_msgs.push(hex::decode("1081000100F00100F0016201D600").ok().unwrap());
 
@@ -130,4 +130,7 @@ mod tests {
             );
         }
     }
+
+    #[test]
+    fn message_encode() {}
 }
