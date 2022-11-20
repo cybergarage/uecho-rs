@@ -16,6 +16,7 @@ fn main() {
 
     let mut ctrl = Controller::new();
     ctrl.start();
+    ctrl.search_all();
 
     thread::sleep(time::Duration::from_secs(2));
 
@@ -42,6 +43,5 @@ fn main() {
         }
     }
 
-    ctrl.search_all();
     ctrl.stop();
 }
