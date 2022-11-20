@@ -5,7 +5,7 @@
 use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use log::warn;
-use nix::sys::socket::sockopt::{ReuseAddr, ReusePort, IpMulticastLoop};
+use nix::sys::socket::sockopt::{IpMulticastLoop, ReuseAddr, ReusePort};
 use nix::sys::socket::Shutdown;
 use nix::sys::socket::{setsockopt, shutdown};
 use std::io;
