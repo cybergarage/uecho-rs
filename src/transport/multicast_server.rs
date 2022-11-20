@@ -75,7 +75,7 @@ impl MulticastServer {
             IpAddr::V4(ip4) => {
                 if self
                     .socket
-                    .read()
+                    .write()
                     .unwrap()
                     .join_multicast_v4(&MULTICAST_V4_ADDRESS, &ip4)
                     .is_err()
@@ -91,7 +91,7 @@ impl MulticastServer {
             IpAddr::V6(ip6) => {
                 if self
                     .socket
-                    .read()
+                    .write()
                     .unwrap()
                     .join_multicast_v6(&MULTICAST_V6_ADDRESS, &ip6)
                     .is_err()
