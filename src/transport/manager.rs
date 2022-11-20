@@ -46,11 +46,11 @@ impl Manager {
     }
 
     pub fn start(&mut self) -> bool {
-        if !self.ucast_mgr.start() {
+        if !self.mcast_mgr.start() {
             self.stop();
             return false;
         }
-        if !self.mcast_mgr.start() {
+        if !self.ucast_mgr.start() {
             self.stop();
             return false;
         }
