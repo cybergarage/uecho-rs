@@ -2,10 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// NOTE: Standard UdpSocket could not enable SO_REUSEADDR
+// use nix::sys::socket::sockopt::{IpMulticastLoop, ReuseAddr, ReusePort};
 use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use log::warn;
-use nix::sys::socket::sockopt::{IpMulticastLoop, ReuseAddr, ReusePort};
 use nix::sys::socket::{setsockopt, shutdown, Shutdown};
 use nix::unistd::close;
 use std::io;
@@ -17,6 +18,21 @@ use std::time::Duration;
 pub struct UdpSocket {
     sock: Option<std::net::UdpSocket>,
     ifaddr: Option<SocketAddr>,
+}
+
+#[cfg(target_os = "linux")]
+fn create_socket(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
+    net2::UdpBuilder::new_v4()?
+        .reuse_address(true)?
+        .reuse_port(true)?
+        .bind(ifaddr)
+}
+
+#[cfg(not(target_os = "linux"))]
+fn create_socket(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
+    net2::UdpBuilder::new_v4()?
+        .reuse_address(true)?
+        .bind(ifaddr)
 }
 
 impl UdpSocket {
@@ -36,6 +52,34 @@ impl UdpSocket {
             "socket is not bound",
         ))
     }
+    pub fn bind(&mut self, ifaddr: SocketAddr) -> Result<()> {
+        if self.sock.is_some() {
+            self.close();
+        }
+
+        // NOTE: Standard UdpSocket could not enable SO_REUSEADDR
+        // let sock = std::net::UdpSocket::bind(ifaddr.to_string());
+        // let fd = sock.as_ref().unwrap().as_raw_fd();
+        // if setsockopt(fd, ReuseAddr, &true).is_err() {
+        //     warn!("SO_REUSEADDR is not supported");
+        // }
+        // if setsockopt(fd, ReusePort, &true).is_err() {
+        //     warn!("SO_REUSEPORT is not supported");
+        // }
+        // if setsockopt(fd, IpMulticastLoop, &true).is_err() {
+        //     warn!("IP_MULTICAST_LOOP is not supported");
+        // }
+
+        // net2::UdpBuilder could enable SO_REUSEADDR and SO_REUSEPORT on macOS and Linux
+        let sock = create_socket(ifaddr);
+        if sock.is_err() {
+            return Err(ScoketError::new(&format!("could not bind to {}", ifaddr)));
+        }
+
+        self.sock = Some(sock.unwrap());
+        self.ifaddr = Some(ifaddr);
+        Ok(())
+    }
 
     pub fn close(&self) {
         if self.sock.is_none() {
@@ -51,29 +95,6 @@ impl UdpSocket {
             warn!("close {:?}", res.err());
         }
         thread::sleep(Duration::from_secs(1));
-    }
-
-    pub fn bind(&mut self, ifaddr: SocketAddr) -> Result<()> {
-        if self.sock.is_some() {
-            self.close();
-        }
-        let sock = std::net::UdpSocket::bind(ifaddr.to_string());
-        if sock.is_err() {
-            return Err(ScoketError::new(&format!("could not bind to {}", ifaddr)));
-        }
-        let fd = sock.as_ref().unwrap().as_raw_fd();
-        if setsockopt(fd, ReuseAddr, &true).is_err() {
-            warn!("SO_REUSEADDR is not supported");
-        }
-        if setsockopt(fd, ReusePort, &true).is_err() {
-            warn!("SO_REUSEPORT is not supported");
-        }
-        if setsockopt(fd, IpMulticastLoop, &true).is_err() {
-            warn!("IP_MULTICAST_LOOP is not supported");
-        }
-        self.sock = Some(sock.unwrap());
-        self.ifaddr = Some(ifaddr);
-        Ok(())
     }
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
