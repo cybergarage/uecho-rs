@@ -16,25 +16,24 @@
 mod tests {
 
     use crate::local_node::*;
-    use crate::node::*;
+    use crate::object::Object;
 
     #[test]
     fn local_node_object() {
-        let mut node = LocalNode::new();
+        let node = LocalNode::new();
         for n in 1..10 {
-            let obj = Object::new();
+            let mut obj = Object::new();
             assert!(obj.set_code(n));
-            assert!(obj.add_object(obj));
+            assert!(node.lock().unwrap().add_object(obj));
         }
 
-        for n in 1..10 {
-        }
+        for n in 1..10 {}
     }
 
     #[test]
     fn local_node() {
-        let mut node = LocalNode::new();
-        assert!(node.start());
-        assert!(node.stop());
+        let node = LocalNode::new();
+        assert!(node.lock().unwrap().start());
+        assert!(node.lock().unwrap().stop());
     }
 }
