@@ -17,4 +17,4 @@ build: format
 	cargo build
 
 test: build
-	cargo test
+	cargo test -- --test-threads=1
