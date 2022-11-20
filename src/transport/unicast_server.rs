@@ -117,7 +117,7 @@ impl UnicastServer {
         true
     }
 
-    pub fn stop(&mut self) -> bool {
+    pub fn stop(&self) -> bool {
         if !self.close() {
             return false;
         }
