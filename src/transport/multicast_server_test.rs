@@ -38,8 +38,8 @@ mod tests {
             let mut msg = Message::new();
             msg.set_esv(Esv::Notification);
             for _ in 0..TEST_OBSERVER_COUNT {
-                // let server_addr = server.local_addr();
-                // assert!(server_addr.is_ok());
+                let server_addr = server.local_addr();
+                assert!(server_addr.is_ok());
                 assert!(server.notify(&msg));
             }
 

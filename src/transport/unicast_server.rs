@@ -4,8 +4,7 @@
 
 use log::*;
 use std::io;
-// use std::net::{IpAddr, SocketAddr, UdpSocket};
-use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use std::net::{IpAddr, SocketAddr};
 use std::sync::{Arc, RwLock};
 use std::thread;
 
@@ -14,7 +13,6 @@ use crate::transport::default::{MAX_PACKET_SIZE, PORT};
 use crate::transport::notifier::*;
 use crate::transport::notify_manager::*;
 use crate::transport::observer::*;
-// use crate::transport::udp_socket::*;
 use crate::transport::udp_socket::UdpSocket;
 
 pub struct UnicastServer {
