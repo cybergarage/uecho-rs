@@ -15,7 +15,8 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::transport::esv::*;
+    use crate::protocol::esv::*;
+    use strum::IntoEnumIterator;
 
     #[test]
     fn esv() {
