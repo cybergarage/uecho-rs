@@ -21,6 +21,9 @@ mod tests {
     #[test]
     fn search_message() {
         let msg = SearchMessage::new();
-        assert_eq!(msg.bytes(), hex::decode("108100020ef0010ef0016201d600").ok().unwrap())
+        assert_eq!(
+            msg.bytes(),
+            hex::decode("108100010EF0010EF0016201D600").ok().unwrap()
+        )
     }
 }
