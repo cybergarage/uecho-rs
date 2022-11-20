@@ -69,8 +69,8 @@ impl UnicastServer {
         true
     }
 
-    pub fn close(&mut self) -> bool {
-        self.socket.write().unwrap().close();
+    pub fn close(&self) -> bool {
+        self.socket.read().unwrap().close();
         true
     }
 
