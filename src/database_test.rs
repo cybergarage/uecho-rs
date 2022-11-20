@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[test]
-
 #[cfg(test)]
 mod tests {
 
     use crate::database::*;
-    use crate::super_object:*;
-    use crate::node_profile:*;
+    use crate::node_profile::*;
+    use crate::super_object::*;
 
     #[test]
     fn standard_database() {
-        let db = get_shared_standard_database()
+        let db = get_shared_standard_database();
 
         // Super Object
         let obj = db.get_object(SUPER_OBJECT_CODE);
