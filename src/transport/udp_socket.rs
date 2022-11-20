@@ -5,35 +5,18 @@
 use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use log::warn;
-use nix::sys::socket;
-use nix::sys::socket::sockopt::{
-    IpAddMembership, IpMulticastLoop, Ipv6AddMembership, ReuseAddr, ReusePort,
-};
-use nix::sys::socket::{bind, recvfrom, sendto, setsockopt, shutdown, socket};
-use nix::sys::socket::{
-    AddressFamily, IpMembershipRequest, Ipv6MembershipRequest, MsgFlags, Shutdown, SockFlag,
-    SockType, SockaddrIn,
-};
+use nix::sys::socket::sockopt::{ReuseAddr, ReusePort};
+use nix::sys::socket::Shutdown;
+use nix::sys::socket::{setsockopt, shutdown};
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
-use std::os::unix::io::{AsRawFd, RawFd};
-use std::str::FromStr;
+use std::os::unix::io::AsRawFd;
 use std::thread;
 use std::time::Duration;
 
 pub struct UdpSocket {
     sock: Option<std::net::UdpSocket>,
     ifaddr: Option<SocketAddr>,
-}
-
-fn stdaddr_to_nixaddrin(saddr: SocketAddr) -> SockaddrIn {
-    let addr = saddr.ip();
-    let port = saddr.port();
-    SockaddrIn::from_str(&format!("{}:{}", addr, port)).unwrap()
-}
-
-fn nixdaddrin_to_ipaddr(addrin: SockaddrIn) -> SocketAddr {
-    FromStr::from_str(&addrin.to_string()).unwrap()
 }
 
 impl UdpSocket {
