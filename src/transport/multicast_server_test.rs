@@ -51,7 +51,7 @@ mod tests {
         }
 
         for ifaddr in get_v4_interfaces() {
-            test_multicast_server(ifaddr)
+            test_multicast_server(ifaddr);
         }
     }
 }
