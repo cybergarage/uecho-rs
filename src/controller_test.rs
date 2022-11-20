@@ -23,7 +23,6 @@ mod tests {
         logger::init();
 
         let mut ctrl = Controller::new();
-        ctrl.add_observer(Arc::new(Mutex::new(ctrl)));
         assert!(ctrl.start());
         assert!(ctrl.search_all());
         assert!(ctrl.stop());
