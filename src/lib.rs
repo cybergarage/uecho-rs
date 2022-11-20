@@ -37,7 +37,7 @@ mod database_manufacturers;
 mod database_mra_objects;
 
 mod controller_test;
-// mod database_test;
+mod database_test;
 // mod device_test;
 mod local_node_test;
 mod message_test;

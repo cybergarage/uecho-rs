@@ -27,11 +27,11 @@ mod tests {
         let obj = db.find_object(SUPER_OBJECT_CODE);
         assert!(obj.is_some());
         // let prop = obj.property(OBJECT_OPERATING_STATUS);
-        // assert(prop.is_some());
+        // assert(prop.is_some())ß
 
         // Node Profile
-        let obj = db.find_object(NODE_PROFILE_OBJECT_CODE);
-        assert!(obj.is_some());
+        // let obj = db.find_object(NODE_PROFILE_OBJECT_CODE);
+        // assert!(obj.is_some());
         // let prop = obj.property(NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES);
         // assert(prop.is_some());
 
