@@ -83,6 +83,7 @@ impl UdpSocket {
             warn!("SO_REUSEPORT is not supported");
         }
         self.sock = Some(sock.unwrap());
+        self.ifaddr = Some(ifaddr);
         Ok(())
     }
 
