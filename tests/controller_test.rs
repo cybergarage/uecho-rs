@@ -11,7 +11,6 @@ fn controller_test() {
     logger::init();
 
     let mut ctrl = Controller::new();
-    // ctrl.add_observer(Arc::new(Mutex::new(ctrl)));
     assert!(ctrl.start());
     assert!(ctrl.search_all());
     thread::sleep(time::Duration::from_secs(2));
