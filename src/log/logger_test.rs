@@ -20,7 +20,7 @@ mod tests {
     use crate::log::logger;
 
     #[test]
-    fn logger_test() {
+    fn logger() {
         logger::init();
         error!("");
         warn!("");

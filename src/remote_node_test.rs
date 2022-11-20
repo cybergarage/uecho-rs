@@ -19,7 +19,7 @@ mod tests {
     use crate::remote_node::*;
 
     #[test]
-    fn remote_node_test() {
+    fn remote_node() {
         let mut node = RemoteNode::new();
         for n in 1..10 {
             let obj = Object::new();

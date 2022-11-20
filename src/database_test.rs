@@ -22,7 +22,7 @@ mod tests {
     use crate::node_profile:*;
 
     #[test]
-    fn standard_database_test() {
+    fn standard_database() {
         let db = get_shared_standard_database()
 
         // Super Object

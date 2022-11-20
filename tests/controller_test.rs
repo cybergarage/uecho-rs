@@ -17,7 +17,7 @@ use uecho::controller::Controller;
 use uecho::log::logger;
 
 #[test]
-fn controller_test() {
+fn controller() {
     logger::init();
 
     let mut ctrl = Controller::new();

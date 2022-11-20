@@ -20,7 +20,7 @@ mod tests {
     use crate::profile::*;
 
     #[test]
-    fn profile_test() {
+    fn profile() {
         Profile::new();
     }
 }

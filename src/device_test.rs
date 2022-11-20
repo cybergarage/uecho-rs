@@ -20,7 +20,7 @@ mod tests {
     use crate::device::*;
 
     #[test]
-    fn device_new_test() {
+    fn device_new() {
         let dev = Device::new();
         assert_eq!(dev.operating_status().byte_data(), OBJECT_OPERATING_STATUS_ON);
         assert_eq!(dev.installation_location().byte_data(), DEVICE_INSTALLATION_LOCATION_UNKNOWN);

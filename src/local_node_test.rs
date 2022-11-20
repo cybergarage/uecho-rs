@@ -19,7 +19,7 @@ mod tests {
     use crate::node::*;
 
     #[test]
-    fn local_node_object_test() {
+    fn local_node_object() {
         let mut node = LocalNode::new();
         for n in 1..10 {
             let obj = Object::new();
@@ -32,7 +32,7 @@ mod tests {
     }
 
     #[test]
-    fn local_node_test() {
+    fn local_node() {
         let mut node = LocalNode::new();
         assert!(node.start());
         assert!(node.stop());
