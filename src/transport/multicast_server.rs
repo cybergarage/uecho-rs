@@ -106,8 +106,8 @@ impl MulticastServer {
         true
     }
 
-    pub fn close(&mut self) -> bool {
-        self.socket.write().unwrap().close();
+    pub fn close(&self) -> bool {
+        self.socket.read().unwrap().close();
         true
     }
 
@@ -154,7 +154,7 @@ impl MulticastServer {
         true
     }
 
-    pub fn stop(&mut self) -> bool {
+    pub fn stop(&self) -> bool {
         if !self.close() {
             return false;
         }
