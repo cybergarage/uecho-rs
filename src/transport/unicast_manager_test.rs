@@ -18,7 +18,7 @@ mod tests {
     use crate::transport::unicast_manager::*;
 
     #[test]
-    fn unicast_manager_test() {
+    fn unicast_manager() {
         let mut mgr = UnicastManager::new();
         assert!(mgr.start());
         assert!(mgr.stop());

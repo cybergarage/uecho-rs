@@ -18,7 +18,7 @@ mod tests {
     use crate::transport::esv::*;
 
     #[test]
-    fn esv_test() {
+    fn esv() {
         for esv in Esv::iter() {
             let u8esv = Esv::to_u8(esv);
             assert_eq!(esv, Esv::from_u8(u8esv));

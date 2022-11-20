@@ -29,7 +29,7 @@ mod tests {
     use crate::transport::notify_manager_test::*;
 
     #[test]
-    fn multicast_server_test() {
+    fn multicast_server() {
         fn test_multicast_server(ifaddr: IpAddr) {
             logger::init();
 

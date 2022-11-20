@@ -18,7 +18,7 @@ mod tests {
     use crate::util::bytes::*;
 
     #[test]
-    fn bytes_from_test() {
+    fn bytes_from() {
         let mut buf: [u8; 1] = [0; 1];
         for n in 0..=0xFF {
             Bytes::from_u32(n, &mut buf);

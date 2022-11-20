@@ -18,7 +18,7 @@ mod tests {
     use crate::protocol::property::*;
 
     #[test]
-    fn property_parse_test() {
+    fn property_parse() {
         let test_prop_bytes = &[
             10, 1, 0x61, // a
         ];

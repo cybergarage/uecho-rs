@@ -18,7 +18,7 @@ mod tests {
     use crate::transport::manager::*;
 
     #[test]
-    fn manager_test() {
+    fn manager() {
         let mut mgr = Manager::new();
         assert!(mgr.start());
         assert!(mgr.stop());

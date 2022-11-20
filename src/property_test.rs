@@ -20,7 +20,7 @@ mod tests {
     use crate::property::*;
 
     #[test]
-    fn property_set_data_test() {
+    fn property_set_data() {
         let mut prop = Property::new();
         for n in 1..10 {
             let data = vec![0; n];
@@ -30,7 +30,7 @@ mod tests {
     }
 
     #[test]
-    fn property_add_data_test() {
+    fn property_add_data() {
         let mut prop = Property::new();
         let total_data_size = 0;
         for n in 1..10 {

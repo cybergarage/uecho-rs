@@ -18,7 +18,7 @@ mod tests {
     use crate::transport::multicast_manager::*;
 
     #[test]
-    fn multicast_manager_test() {
+    fn multicast_manager() {
         let mut mgr = MulticastManager::new();
         assert!(mgr.start());
         assert!(mgr.stop());
