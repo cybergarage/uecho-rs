@@ -4,6 +4,7 @@
 
 // NOTE: Standard UdpSocket could not enable SO_REUSEADDR
 // use nix::sys::socket::sockopt::{IpMulticastLoop, ReuseAddr, ReusePort};
+use crate::transport::default::PORT;
 use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use log::warn;
@@ -107,20 +108,22 @@ impl UdpSocket {
         self.sock.as_ref().unwrap().recv_from(buf)
     }
 
-    pub fn join_multicast_v4(&self, multiaddr: &Ipv4Addr, interface: &Ipv4Addr) -> Result<()> {
+    pub fn join_multicast_v4(&mut self, multiaddr: &Ipv4Addr, ifaddr: &Ipv4Addr) -> Result<()> {
         if self.sock.is_none() {
             return Err(BindError::new());
         }
+        self.ifaddr = Some(format!("{}:{}", ifaddr, PORT).parse().unwrap());
         self.sock
             .as_ref()
             .unwrap()
-            .join_multicast_v4(multiaddr, interface)
+            .join_multicast_v4(multiaddr, ifaddr)
     }
 
-    pub fn join_multicast_v6(&self, multiaddr: &Ipv6Addr, _interface: &Ipv6Addr) -> Result<()> {
+    pub fn join_multicast_v6(&mut self, multiaddr: &Ipv6Addr, ifaddr: &Ipv6Addr) -> Result<()> {
         if self.sock.is_none() {
             return Err(BindError::new());
         }
+        self.ifaddr = Some(format!("{}:{}", ifaddr, PORT).parse().unwrap());
         self.sock.as_ref().unwrap().join_multicast_v6(multiaddr, 0)
     }
 }
