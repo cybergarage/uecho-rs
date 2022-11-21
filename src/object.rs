@@ -118,6 +118,10 @@ impl Object {
         self.properties.get_mut(&code)
     }
 
+    pub fn find_property(&self, code: PropertyCode) -> Option<&Property> {
+        self.properties.get(&code)
+    }
+
     pub fn set_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
         match self.find_property_mut(code).as_mut() {
             Some(prop) => {
