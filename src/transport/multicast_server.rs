@@ -153,8 +153,8 @@ impl MulticastServer {
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(e) => {
-                        error!(
-                            "RECV {} -> {}",
+                        warn!(
+                            "RECV {} ({})",
                             socket.read().unwrap().local_addr().ok().unwrap(),
                             e
                         );
