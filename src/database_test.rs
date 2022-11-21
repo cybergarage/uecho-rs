@@ -16,7 +16,6 @@
 mod tests {
 
     use crate::database::*;
-    use crate::node_profile::*;
     use crate::super_object::*;
 
     #[test]
