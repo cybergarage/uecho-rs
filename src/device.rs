@@ -103,7 +103,7 @@ impl Object {
     }
 
     pub fn operating_status(&mut self) -> &mut Property {
-        self.find_property(DEVICE_OPERATING_STATUS).unwrap()
+        self.find_property_mut(DEVICE_OPERATING_STATUS).unwrap()
     }
 
     pub fn set_installation_location(&mut self, loc: u8) -> bool {
@@ -111,7 +111,8 @@ impl Object {
     }
 
     pub fn installation_location(&mut self) -> &mut Property {
-        self.find_property(DEVICE_INSTALLATION_LOCATION).unwrap()
+        self.find_property_mut(DEVICE_INSTALLATION_LOCATION)
+            .unwrap()
     }
 
     pub fn set_standard_version(&mut self, ver: u8) -> bool {
@@ -121,7 +122,7 @@ impl Object {
     }
 
     pub fn standard_version(&mut self) -> &mut Property {
-        self.find_property(DEVICE_STANDARD_VERSION).unwrap()
+        self.find_property_mut(DEVICE_STANDARD_VERSION).unwrap()
     }
 
     pub fn set_fault_status(&mut self, status: bool) -> bool {
@@ -134,6 +135,6 @@ impl Object {
     }
 
     pub fn fault_status(&mut self) -> &mut Property {
-        self.find_property(DEVICE_FAULT_STATUS).unwrap()
+        self.find_property_mut(DEVICE_FAULT_STATUS).unwrap()
     }
 }
