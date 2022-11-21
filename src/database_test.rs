@@ -26,8 +26,8 @@ mod tests {
         // Super Object
         let obj = db.find_object(SUPER_OBJECT_CODE);
         assert!(obj.is_some());
-        // let prop = obj.unwrap().find_property(OBJECT_OPERATING_STATUS);
-        // assert(prop.is_some());
+        // let prop = &(obj.unwrap().find_property_ref(OBJECT_OPERATING_STATUS));
+        // assert!(prop.is_some());
 
         // Node Profile
         // let obj = db.find_object(NODE_PROFILE_OBJECT_CODE);
