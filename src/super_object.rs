@@ -45,6 +45,6 @@ impl Object {
     }
 
     pub fn manufacturer_code(&mut self) -> &mut Property {
-        self.find_property(OBJECT_MANUFACTURER_CODE).unwrap()
+        self.find_property_mut(OBJECT_MANUFACTURER_CODE).unwrap()
     }
 }

@@ -39,7 +39,7 @@ mod tests {
         }
 
         for n in 1..10 {
-            let prop = obj.find_property(n as PropertyCode);
+            let prop = obj.find_property_mut(n as PropertyCode);
             assert!(prop.is_some());
         }
     }
