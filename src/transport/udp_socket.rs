@@ -91,7 +91,7 @@ impl UdpSocket {
         let fd = self.sock.as_ref().unwrap().as_raw_fd();
         let res = shutdown(fd, Shutdown::Both);
         if res.is_err() {
-            warn!("shutdown {:?}", res.err());
+            warn!("shutdown ({})", res.err().unwrap().desc());
         }
         let res = close(fd);
         if res.is_err() {
