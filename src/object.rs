@@ -46,6 +46,12 @@ impl Object {
         }
     }
 
+    pub fn from_code(code: ObjectCode) -> Object {
+        let mut obj = Object::new();
+        obj.set_code(code);
+        obj
+    }
+
     pub fn set_code(&mut self, code: ObjectCode) -> bool {
         self.codes[0] = ((code & 0xFF0000) >> 16) as u8;
         self.codes[1] = ((code & 0x00FF00) >> 8) as u8;
