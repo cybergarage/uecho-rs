@@ -33,6 +33,7 @@ mod tests {
         let msg =
             Message::from_bytes(&hex::decode("108100010EF0010EF0017201D6040105FF01").unwrap());
         let mut profile_msg = NodeProfileMessage::from_message(&msg);
-        assert!(profile_msg.parse())
+        assert!(profile_msg.parse());
+        assert_eq!(profile_msg.object_codes().len(), 1);
     }
 }
