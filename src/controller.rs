@@ -64,7 +64,9 @@ impl Controller {
 
     pub fn start(&mut self) -> bool {
         let mut ctrl = self.observer.lock().unwrap();
-        ctrl.start()
+        ctrl.start();
+        ctrl.add_observer(Arc::new(Mutex::new(self.observer.clone())));
+        true
     }
 
     pub fn stop(&mut self) -> bool {
