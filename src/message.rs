@@ -39,3 +39,30 @@ impl SearchMessage {
         SearchMessage::new_with(NODE_PROFILE_OBJECT_CODE)
     }
 }
+
+pub struct NodeProfileMessage<'a> {
+    message: &'a Message,
+}
+
+impl NodeProfileMessage<'_> {
+    pub fn from_message<'a>(msg: &'a Message) -> NodeProfileMessage<'a> {
+        NodeProfileMessage { message: msg }
+    }
+    pub fn parse(&self) -> bool {
+        true
+    }
+}
+
+impl Message {
+    pub fn is_node_profile_message(&self) -> bool {
+        let esv = self.esv();
+        if esv != Esv::Notification && esv != Esv::ReadResponse {
+            return false;
+        }
+        let dst_obj = self.deoj();
+        if dst_obj != NODE_PROFILE_OBJECT_CODE && dst_obj != NODE_PROFILE_OBJECT_READ_ONLY {
+            return false;
+        }
+        true
+    }
+}
