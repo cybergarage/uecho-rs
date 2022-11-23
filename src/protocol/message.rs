@@ -50,6 +50,12 @@ impl Message {
         }
     }
 
+    pub fn from_message(msg_bytes: &[u8]) -> Message {
+        let mut msg = Message::new();
+        msg.parse(msg_bytes);
+        msg
+    }
+
     pub fn set_tid(&mut self, tid: TID) {
         self.tid[0] = ((tid & 0xFF00) >> 8) as u8;
         self.tid[1] = (tid & 0x00FF) as u8;
