@@ -14,6 +14,7 @@
 
 use std::net::{IpAddr, Ipv4Addr};
 
+use crate::message::NodeProfileMessage;
 use crate::object::*;
 use crate::protocol::message::Message;
 
@@ -67,6 +68,10 @@ impl RemoteNode {
 
     fn parse(&mut self, msg: &Message) -> bool {
         if !msg.is_node_profile_message() {
+            return false;
+        }
+        let profile_msg = NodeProfileMessage::from_message(msg);
+        if !profile_msg.parse() {
             return false;
         }
         true
