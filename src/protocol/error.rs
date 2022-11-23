@@ -12,12 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use hex;
 use std::fmt;
 
 #[derive(Debug, Clone)]
 pub struct MessageError {
     pub message: String,
     pub offset: usize,
+}
+
+impl MessageError {
+    pub fn new(msg_bytes: &[u8], offset: usize) -> MessageError {
+        MessageError {
+            message: hex::encode(msg_bytes),
+            offset: offset,
+        }
+    }
 }
 
 impl fmt::Display for MessageError {
