@@ -16,6 +16,7 @@ pub mod esv;
 pub mod message;
 pub mod message_handler;
 pub mod property;
+pub mod error;
 
 mod esv_test;
 mod message_test;
