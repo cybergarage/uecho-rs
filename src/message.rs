@@ -21,7 +21,7 @@ use crate::protocol::property::Property;
 pub struct SearchMessage {}
 
 impl SearchMessage {
-    pub fn new_with(code: ObjectCode) -> Message {
+    pub fn with_object_code(code: ObjectCode) -> Message {
         let mut msg = Message::new();
 
         msg.set_esv(Esv::ReadRequest);
@@ -36,7 +36,7 @@ impl SearchMessage {
     }
 
     pub fn new() -> Message {
-        SearchMessage::new_with(NODE_PROFILE_OBJECT_CODE)
+        SearchMessage::with_object_code(NODE_PROFILE_OBJECT_CODE)
     }
 }
 
