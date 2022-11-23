@@ -15,7 +15,7 @@
 use std::net::{IpAddr, Ipv4Addr};
 
 use crate::message::NodeProfileMessage;
-use crate::object::*;
+use crate::object::{Object, ObjectCode};
 use crate::protocol::message::Message;
 
 pub struct RemoteNode {
@@ -73,6 +73,9 @@ impl RemoteNode {
         let mut profile_msg = NodeProfileMessage::from_message(msg);
         if !profile_msg.parse() {
             return false;
+        }
+        for object_code in profile_msg.object_codes().iter() {
+            // let obj = Object::fr
         }
         true
     }
