@@ -17,6 +17,7 @@ mod tests {
 
     use crate::protocol::esv::*;
     use crate::protocol::message::*;
+    use hex;
 
     #[test]
     fn new_message() {
@@ -132,5 +133,10 @@ mod tests {
     }
 
     #[test]
-    fn message_encode() {}
+    fn message_from_message() {
+        let msg_bytes = hex::decode("108100010EF0010EF0017201D607020F2001029101")
+            .ok()
+            .unwrap();
+        let _msg = Message::from_message(&msg_bytes);
+    }
 }
