@@ -65,7 +65,10 @@ impl RemoteNode {
         None
     }
 
-    pub fn parse(&mut self, msg: &Message) -> bool {
+    fn parse(&mut self, msg: &Message) -> bool {
+        if !msg.is_node_profile_message() {
+            return false;
+        }
         true
     }
 }

@@ -23,7 +23,6 @@ use crate::local_node::*;
 use crate::message::SearchMessage;
 use crate::node_profile::*;
 use crate::object::*;
-use crate::protocol::esv::*;
 use crate::protocol::message::*;
 use crate::remote_node::*;
 use crate::transport::default::PORT;
@@ -106,19 +105,7 @@ impl Observer for Arc<Mutex<ControllerObserver>> {
     fn message_received(&mut self, msg: &Message) {
         let mut ctrl = self.lock().unwrap();
 
-        fn is_node_profile_message(msg: &Message) -> bool {
-            let esv = msg.esv();
-            if esv != Esv::Notification && esv != Esv::ReadResponse {
-                return false;
-            }
-            let dst_obj = msg.deoj();
-            if dst_obj != NODE_PROFILE_OBJECT_CODE && dst_obj != NODE_PROFILE_OBJECT_READ_ONLY {
-                return false;
-            }
-            true
-        }
-
-        if is_node_profile_message(msg) {
+        if msg.is_node_profile_message() {
             let remote_node = RemoteNode::from_message(msg);
             info!("FOUND: {}", remote_node.addr());
             for (n, obj) in remote_node.objects().iter().enumerate() {
