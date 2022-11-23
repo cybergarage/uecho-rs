@@ -23,5 +23,6 @@ fn controller() {
     let mut ctrl = Controller::new();
     assert!(ctrl.start());
     assert!(ctrl.search_all());
+    // thread::sleep(time::Duration::from_secs(10));
     assert!(ctrl.stop());
 }
