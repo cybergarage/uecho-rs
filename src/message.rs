@@ -42,7 +42,7 @@ impl SearchMessage {
 }
 
 pub struct NodeProfileMessage<'a> {
-    object_codes: Vec<ObjectCode>,
+    obj_codes: Vec<ObjectCode>,
     msg: &'a Message,
 }
 
@@ -50,8 +50,12 @@ impl NodeProfileMessage<'_> {
     pub fn from_message<'a>(msg: &'a Message) -> NodeProfileMessage<'a> {
         NodeProfileMessage {
             msg: msg,
-            object_codes: Vec::new(),
+            obj_codes: Vec::new(),
         }
+    }
+
+    pub fn object_codes(&self) -> &Vec<ObjectCode> {
+        return &self.obj_codes;
     }
 
     pub fn parse(&mut self) -> bool {
@@ -72,7 +76,7 @@ impl NodeProfileMessage<'_> {
                 }
                 let obj_code_bytes = &prop_data[idx..(idx + 3)];
                 let obj_code = Bytes::to_u32(obj_code_bytes) as ObjectCode;
-                self.object_codes.push(obj_code);
+                self.obj_codes.push(obj_code);
             }
         }
         true
