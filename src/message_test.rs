@@ -15,8 +15,8 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::message::protocol::Message;
-    use crate::message::SearchMessage;
+    use crate::protocol::message::Message;
+    use crate::message::{SearchMessage, NodeProfileMessage};
     use hex;
 
     #[test]
@@ -30,6 +30,8 @@ mod tests {
 
     #[test]
     fn node_profile_message() {
-        let msg = Message::from_message(hex::decode("108100010EF0010EF0017201D6040105FF01"));
+        let msg = Message::from_bytes(&hex::decode("108100010EF0010EF0017201D6040105FF01").unwrap());
+        let profile_msg = NodeProfileMessage::from_message(&msg);
+        assert!(profile_msg.parse())
     }
 }
