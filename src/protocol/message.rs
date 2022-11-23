@@ -50,7 +50,7 @@ impl Message {
         }
     }
 
-    pub fn from_message(msg_bytes: &[u8]) -> Message {
+    pub fn from_bytes(msg_bytes: &[u8]) -> Message {
         let mut msg = Message::new();
         msg.parse(msg_bytes);
         msg
