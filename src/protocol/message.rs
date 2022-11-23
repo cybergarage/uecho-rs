@@ -50,8 +50,7 @@ impl Message {
         }
     }
 
-     // FIXME: Return Result
-     pub fn from_message(msg_bytes: &[u8]) -> Message {
+    pub fn from_message(msg_bytes: &[u8]) -> Message {
         let mut msg = Message::new();
         msg.parse(msg_bytes);
         msg
@@ -130,7 +129,6 @@ impl Message {
         true
     }
 
-    // FIXME: Define package error
     pub fn parse(&mut self, msg: &[u8]) -> bool {
         if !self.parse_header(msg) {
             return false;
