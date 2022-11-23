@@ -137,6 +137,6 @@ mod tests {
         let msg_bytes = hex::decode("108100010EF0010EF0017201D607020F2001029101")
             .ok()
             .unwrap();
-        let _msg = Message::from_message(&msg_bytes);
+        let _msg = Message::from_bytes(&msg_bytes);
     }
 }
