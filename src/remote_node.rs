@@ -31,10 +31,12 @@ impl RemoteNode {
     }
 
     pub fn from_message(msg: &Message) -> RemoteNode {
-        RemoteNode {
+        let mut node = RemoteNode {
             addr: msg.addr(),
             objects: Vec::new(),
-        }
+        };
+        node.parse(msg);
+        node
     }
 
     pub fn addr(&self) -> IpAddr {
@@ -61,6 +63,10 @@ impl RemoteNode {
             }
         }
         None
+    }
+
+    pub fn parse(&mut self, msg: &Message) -> bool {
+        true
     }
 }
 
