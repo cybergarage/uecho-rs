@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use log::info;
 use std::net::SocketAddr;
 use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use crate::database::StandardDatabase;
 use crate::local_node::*;
 use crate::message::SearchMessage;
 use crate::node_profile::*;
@@ -28,6 +30,7 @@ use crate::transport::default::PORT;
 use crate::transport::observer::*;
 
 pub struct ControllerObserver {
+    db: StandardDatabase,
     node: Arc<Mutex<LocalNode>>,
     pub remote_nodes: Vec<RemoteNode>,
 }
@@ -35,6 +38,7 @@ pub struct ControllerObserver {
 impl ControllerObserver {
     pub fn new() -> Arc<Mutex<ControllerObserver>> {
         let ctrl = Arc::new(Mutex::new(ControllerObserver {
+            db: StandardDatabase::new(),
             node: LocalNode::new(),
             remote_nodes: Vec::new(),
         }));
@@ -116,6 +120,14 @@ impl Observer for Arc<Mutex<ControllerObserver>> {
 
         if is_node_profile_message(msg) {
             let remote_node = RemoteNode::from_message(msg);
+            info!("FOUND: {}", remote_node.addr());
+            for (n, obj) in remote_node.objects().iter().enumerate() {
+                let std_obj = ctrl.db.find_object(obj.code());
+                if std_obj.is_none() {
+                    continue;
+                }
+                info!("    [{}] {:02X}", n, std_obj.unwrap().code());
+            }
             ctrl.add_remote_node(remote_node);
         }
     }
