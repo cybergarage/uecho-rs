@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+pub mod error;
 pub mod esv;
 pub mod message;
 pub mod message_handler;
 pub mod property;
-pub mod error;
 
 mod esv_test;
 mod message_test;
