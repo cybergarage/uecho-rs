@@ -38,9 +38,6 @@ impl ControllerObserver {
             node: LocalNode::new(),
             remote_nodes: Vec::new(),
         }));
-        ctrl.lock()
-            .unwrap()
-            .add_observer(Arc::new(Mutex::new(ctrl.clone())));
         ctrl
     }
 
