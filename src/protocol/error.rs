@@ -32,7 +32,7 @@ impl MessageError {
 
 impl fmt::Display for MessageError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} ({})", self.message, self.offset)
+        write!(f, "{} (offset:{})", self.message, self.offset)
     }
 }
 
