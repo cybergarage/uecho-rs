@@ -75,7 +75,7 @@ impl RemoteNode {
             return false;
         }
         for object_code in profile_msg.object_codes().iter() {
-            // let obj = Object::fr
+            self.add_object(Object::from_code(*object_code));
         }
         true
     }
