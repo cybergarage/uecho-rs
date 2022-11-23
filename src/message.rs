@@ -17,6 +17,7 @@ use crate::object::ObjectCode;
 use crate::protocol::esv::*;
 use crate::protocol::message::Message;
 use crate::protocol::property::Property;
+use crate::util::bytes::Bytes;
 
 pub struct SearchMessage {}
 
@@ -41,14 +42,39 @@ impl SearchMessage {
 }
 
 pub struct NodeProfileMessage<'a> {
-    message: &'a Message,
+    object_codes: Vec<ObjectCode>,
+    msg: &'a Message,
 }
 
 impl NodeProfileMessage<'_> {
     pub fn from_message<'a>(msg: &'a Message) -> NodeProfileMessage<'a> {
-        NodeProfileMessage { message: msg }
+        NodeProfileMessage {
+            msg: msg,
+            object_codes: Vec::new(),
+        }
     }
-    pub fn parse(&self) -> bool {
+
+    pub fn parse(&mut self) -> bool {
+        let opc = self.msg.opc();
+        for n in 0..opc {
+            let prop = self.msg.property(n);
+            if prop.code() != NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S {
+                continue;
+            }
+            let prop_data = prop.data();
+            if prop_data.len() < 1 {
+                continue;
+            }
+            // let num_objs = prop_data[0] as usize;
+            for idx in (1..prop_data.len()).step_by(3) {
+                if (prop_data.len() - idx) < 3 {
+                    continue;
+                }
+                let obj_code_bytes = &prop_data[idx..(idx + 3)];
+                let obj_code = Bytes::to_u32(obj_code_bytes) as ObjectCode;
+                self.object_codes.push(obj_code);
+            }
+        }
         true
     }
 }
