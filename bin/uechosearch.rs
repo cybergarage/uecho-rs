@@ -33,7 +33,7 @@ fn main() {
     for (i, node) in ctrl.nodes().iter().enumerate() {
         println!("[{}] {}", i, node.addr());
         for (j, obj) in node.objects().iter().enumerate() {
-            println!("    [{}] {}", j, obj.code());
+            println!("    [{}] {:02X}", j, obj.code());
             for obj_prop in obj.properties() {
                 let mut msg = Message::new();
                 msg.set_esv(Esv::ReadRequest);
@@ -43,10 +43,10 @@ fn main() {
                 let rx = ctrl.post_message(&node, &mut msg);
                 match rx.recv_timeout(Duration::from_secs(1)) {
                     Ok(msg) => {
-                        println!("        [{} {}]", prop.code(), hex::encode(msg.bytes()));
+                        println!("        [{:02X} {}]", prop.code(), hex::encode(msg.bytes()));
                     }
                     Err(_e) => {
-                        println!("        [{}]", prop.code());
+                        println!("        [{:02X}]", prop.code());
                     }
                 };
             }
