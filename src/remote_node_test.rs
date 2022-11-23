@@ -16,6 +16,7 @@
 mod tests {
 
     use crate::object::*;
+    use crate::protocol::message::Message;
     use crate::remote_node::*;
 
     #[test]
@@ -27,4 +28,15 @@ mod tests {
             assert!(node.add_object(obj));
         }
     }
+
+    // #[test]
+    // fn remote_node_from_message() {
+    //     let msg = Message::
+    //     let mut node = RemoteNode::from_message("");
+    //     for n in 1..10 {
+    //         let mut obj = Object::new();
+    //         assert!(obj.set_code(n));
+    //         assert!(node.add_object(obj));
+    //     }
+    // }
 }
