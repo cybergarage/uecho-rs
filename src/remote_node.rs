@@ -70,7 +70,7 @@ impl RemoteNode {
         if !msg.is_node_profile_message() {
             return false;
         }
-        let profile_msg = NodeProfileMessage::from_message(msg);
+        let mut profile_msg = NodeProfileMessage::from_message(msg);
         if !profile_msg.parse() {
             return false;
         }
