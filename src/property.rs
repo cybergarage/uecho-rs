@@ -96,6 +96,30 @@ impl Property {
         self.anno_attr
     }
 
+    pub fn is_read_required(&self) -> bool {
+        match self.read_attr {
+            PropertyAttr::Prohibited => return false,
+            PropertyAttr::Required => return true,
+            PropertyAttr::Optional => return false,
+        };
+    }
+
+    pub fn is_write_required(&self) -> bool {
+        match self.write_attr {
+            PropertyAttr::Prohibited => return false,
+            PropertyAttr::Required => return true,
+            PropertyAttr::Optional => return false,
+        };
+    }
+
+    pub fn is_announce_required(&self) -> bool {
+        match self.anno_attr {
+            PropertyAttr::Prohibited => return false,
+            PropertyAttr::Required => return true,
+            PropertyAttr::Optional => return false,
+        };
+    }
+
     pub fn is_readable(&self) -> bool {
         match self.read_attr {
             PropertyAttr::Prohibited => return false,
