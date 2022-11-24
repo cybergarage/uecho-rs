@@ -106,14 +106,18 @@ impl Observer for Arc<Mutex<ControllerObserver>> {
         let mut ctrl = self.lock().unwrap();
 
         if msg.is_node_profile_message() {
-            let remote_node = RemoteNode::from_message(msg);
+            let mut remote_node = RemoteNode::from_message(msg);
             info!("FOUND: {}", remote_node.addr());
-            for (n, obj) in remote_node.objects().iter().enumerate() {
+            // Copy standard object properties
+            for (n, obj) in remote_node.objects_mut().iter_mut().enumerate() {
                 let std_obj = ctrl.db.find_object(obj.code());
                 if std_obj.is_none() {
                     continue;
                 }
                 info!("    [{}] {:02X}", n, std_obj.unwrap().code());
+                for std_prop in std_obj.unwrap().properties() {
+                    obj.add_property(std_prop.clone());
+                }
             }
             ctrl.add_remote_node(remote_node);
         }
