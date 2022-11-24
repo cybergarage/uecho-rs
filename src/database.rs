@@ -58,8 +58,9 @@ impl StandardDatabase {
     }
 
     pub fn find_object(&self, code: ObjectCode) -> Option<&Object> {
+        let class_group_code = code & 0xFFFF00;
         for n in 0..self.objects.len() {
-            if self.objects[n].code() == code {
+            if self.objects[n].code() == class_group_code {
                 return Some(&self.objects[n]);
             }
         }
