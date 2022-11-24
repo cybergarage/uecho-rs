@@ -52,39 +52,44 @@ impl Property {
         }
     }
 
-    pub fn set_code(&mut self, code: PropertyCode) {
-        self.code = code
+    pub fn set_code(&mut self, code: PropertyCode) -> &mut Self {
+        self.code = code;
+        self
     }
 
     pub fn code(&self) -> PropertyCode {
         self.code
     }
 
-    pub fn set_name(&mut self, name: String) {
+    pub fn set_name(&mut self, name: String) -> &mut Self {
         self.name = name;
+        self
     }
 
     pub fn name(&self) -> &String {
         &self.name
     }
 
-    pub fn set_read_attribute(&mut self, attr: PropertyAttr) {
-        self.read_attr = attr
+    pub fn set_read_attribute(&mut self, attr: PropertyAttr) -> &mut Self {
+        self.read_attr = attr;
+        self
     }
 
     pub fn read_attribute(&self) -> PropertyAttr {
         self.read_attr
     }
 
-    pub fn set_write_attribute(&mut self, attr: PropertyAttr) {
-        self.write_attr = attr
+    pub fn set_write_attribute(&mut self, attr: PropertyAttr) -> &mut Self {
+        self.write_attr = attr;
+        self
     }
 
     pub fn write_attribute(&self) -> PropertyAttr {
         self.write_attr
     }
-    pub fn set_anno_attribute(&mut self, attr: PropertyAttr) {
-        self.anno_attr = attr
+    pub fn set_anno_attribute(&mut self, attr: PropertyAttr) -> &mut Self {
+        self.anno_attr = attr;
+        self
     }
 
     pub fn anno_attribute(&self) -> PropertyAttr {
@@ -142,29 +147,32 @@ impl Property {
         self.data.len()
     }
 
-    pub fn set_data(&mut self, data: &[u8]) -> bool {
+    pub fn set_data(&mut self, data: &[u8]) -> &mut Self {
         self.data = data.to_vec();
-        true
+        self
     }
 
-    pub fn set_byte_data(&mut self, v: u8) -> bool {
+    pub fn set_byte_data(&mut self, v: u8) -> &mut Self {
         let data: &[u8] = &[v];
-        self.set_data(data)
+        self.set_data(data);
+        self
     }
 
-    pub fn set_bytes_data(&mut self, data: &[u8]) -> bool {
-        self.set_data(data)
+    pub fn set_bytes_data(&mut self, data: &[u8]) -> &mut Self {
+        self.set_data(data);
+        self
     }
 
-    pub fn set_integer_data(&mut self, val: u32, byte_size: usize) -> bool {
+    pub fn set_integer_data(&mut self, val: u32, byte_size: usize) -> &mut Self {
         let mut buf = Vec::<u8>::with_capacity(byte_size);
         Bytes::from_u32(val, &mut buf);
-        self.set_data(&buf)
+        self.set_data(&buf);
+        self
     }
 
-    pub fn add_data(&mut self, data: &[u8]) -> bool {
+    pub fn add_data(&mut self, data: &[u8]) -> &mut Self {
         self.data.append(&mut data.to_vec());
-        true
+        self
     }
 
     pub fn data(&self) -> &PropertyData {
