@@ -66,11 +66,15 @@ impl NodeProfileMessage<'_> {
                 continue;
             }
             let prop_data = prop.data();
-            if prop_data.len() < 1 {
+            let prop_data_len = prop_data.len();
+            if prop_data_len < 1 {
                 continue;
             }
-            // let num_objs = prop_data[0] as usize;
-            for idx in (1..prop_data.len()).step_by(3) {
+            let num_objs = prop_data[0] as usize;
+            if prop_data_len < ((num_objs * 3) + 1) {
+                continue;
+            }
+            for idx in (1..prop_data_len).step_by(3) {
                 if (prop_data.len() - idx) < 3 {
                     continue;
                 }
