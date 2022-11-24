@@ -59,6 +59,10 @@ impl ControllerObserver {
         true
     }
 
+    pub fn local_node(&self) -> Arc<Mutex<LocalNode>> {
+        self.node.clone()
+    }
+
     pub fn nodes(&self) -> &Vec<RemoteNode> {
         return &self.remote_nodes;
     }
@@ -99,21 +103,13 @@ impl ControllerObserver {
         }
         true
     }
-
-    fn is_self_message(&self, msg: &Message) -> bool {
-        false
-    }
 }
 
 impl Observer for Arc<Mutex<ControllerObserver>> {
     fn message_received(&mut self, msg: &Message) {
         let mut ctrl = self.lock().unwrap();
 
-        if ctrl.is_self_message(msg) {
-            return;
-        }
-
-        if msg.is_node_profile_message() {
+        if !msg.is_node_profile_message() {
             return;
         }
 
