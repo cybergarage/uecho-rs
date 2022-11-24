@@ -56,9 +56,10 @@ impl Message {
         msg
     }
 
-    pub fn set_tid(&mut self, tid: TID) {
+    pub fn set_tid(&mut self, tid: TID) -> &mut Self {
         self.tid[0] = ((tid & 0xFF00) >> 8) as u8;
         self.tid[1] = (tid & 0x00FF) as u8;
+        self
     }
 
     pub fn tid(&self) -> TID {
@@ -69,28 +70,31 @@ impl Message {
         ((eoj[0] as u32) << 16) + ((eoj[1] as u32) << 8) + (eoj[2] as u32)
     }
 
-    pub fn set_seoj(&mut self, code: u32) {
+    pub fn set_seoj(&mut self, code: u32) -> &mut Self {
         self.seoj[0] = ((code & 0xFF0000) >> 16) as u8;
         self.seoj[1] = ((code & 0xFF00) >> 8) as u8;
         self.seoj[2] = (code & 0x00FF) as u8;
+        self
     }
 
     pub fn seoj(&self) -> u32 {
         self.to_object_code(&self.seoj)
     }
 
-    pub fn set_deoj(&mut self, code: u32) {
+    pub fn set_deoj(&mut self, code: u32) -> &mut Self {
         self.deoj[0] = ((code & 0xFF0000) >> 16) as u8;
         self.deoj[1] = ((code & 0xFF00) >> 8) as u8;
         self.deoj[2] = (code & 0x00FF) as u8;
+        self
     }
 
     pub fn deoj(&self) -> u32 {
         self.to_object_code(&self.deoj)
     }
 
-    pub fn set_esv(&mut self, code: Esv) {
-        self.esv = code as u8
+    pub fn set_esv(&mut self, code: Esv) -> &mut Self {
+        self.esv = code as u8;
+        self
     }
 
     pub fn esv(&self) -> Esv {
@@ -101,8 +105,9 @@ impl Message {
         self.properties.len()
     }
 
-    pub fn add_property(&mut self, prop: Property) {
+    pub fn add_property(&mut self, prop: Property) -> &mut Self {
         self.properties.push(prop);
+        self
     }
 
     pub fn properties(&self) -> &Vec<Property> {
@@ -113,8 +118,9 @@ impl Message {
         &self.properties[n]
     }
 
-    pub fn set_addr(&mut self, addr: IpAddr) {
-        self.addr = addr
+    pub fn set_addr(&mut self, addr: IpAddr) -> &mut Self {
+        self.addr = addr;
+        self
     }
 
     pub fn addr(&self) -> IpAddr {
