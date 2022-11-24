@@ -57,6 +57,10 @@ impl RemoteNode {
         return &self.objects;
     }
 
+    pub fn objects_mut(&mut self) -> &mut Vec<Object> {
+        return &mut self.objects;
+    }
+
     pub fn find_object(&self, code: ObjectCode) -> Option<&Object> {
         for n in 0..self.objects.len() {
             if self.objects[n].code() == code {
