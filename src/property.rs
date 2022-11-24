@@ -98,29 +98,26 @@ impl Property {
 
     pub fn is_readable(&self) -> bool {
         match self.read_attr {
-            PropertyAttr::Prohibited => false,
-            PropertyAttr::Required => true,
-            PropertyAttr::Optional => true,
+            PropertyAttr::Prohibited => return false,
+            PropertyAttr::Required => return true,
+            PropertyAttr::Optional => return true,
         };
-        false
     }
 
     pub fn is_writable(&self) -> bool {
         match self.write_attr {
-            PropertyAttr::Prohibited => false,
-            PropertyAttr::Required => true,
-            PropertyAttr::Optional => true,
+            PropertyAttr::Prohibited => return false,
+            PropertyAttr::Required => return true,
+            PropertyAttr::Optional => return true,
         };
-        false
     }
 
     pub fn is_announceable(&self) -> bool {
         match self.anno_attr {
-            PropertyAttr::Prohibited => false,
-            PropertyAttr::Required => true,
-            PropertyAttr::Optional => true,
+            PropertyAttr::Prohibited => return false,
+            PropertyAttr::Required => return true,
+            PropertyAttr::Optional => return true,
         };
-        false
     }
 
     pub fn is_readonly(&self) -> bool {
