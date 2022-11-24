@@ -1,8 +1,14 @@
 [package]
 name = "uecho"
-version = "0.1.0"
+version = "0.9.0"
 authors = ["The uecho-rs Authors <skonno@cybergarage.org>"]
 edition = "2021"
+readme = "README.md"
+homepage = "http://www.cybergarage.org/"
+repository = "https://github.com/cybergarage/uecho-rs"
+license = "Apache-2.0"
+description = "Portable development framework for ECHONET Lite"
+keywords = ["echonet-lite"]
 
 [dependencies]
 log = "0.4"
