@@ -99,27 +99,37 @@ impl ControllerObserver {
         }
         true
     }
+
+    fn is_self_message(&self, msg: &Message) -> bool {
+        false
+    }
 }
 
 impl Observer for Arc<Mutex<ControllerObserver>> {
     fn message_received(&mut self, msg: &Message) {
         let mut ctrl = self.lock().unwrap();
 
-        if msg.is_node_profile_message() {
-            let mut remote_node = RemoteNode::from_message(msg);
-            info!("FOUND: {}", remote_node.addr());
-            // Copy standard object properties
-            for (n, obj) in remote_node.objects_mut().iter_mut().enumerate() {
-                let std_obj = ctrl.db.find_object(obj.code());
-                if std_obj.is_none() {
-                    continue;
-                }
-                info!("    [{}] {:02X}", n, std_obj.unwrap().code());
-                for std_prop in std_obj.unwrap().properties() {
-                    obj.add_property(std_prop.clone());
-                }
-            }
-            ctrl.add_remote_node(remote_node);
+        if ctrl.is_self_message(msg) {
+            return;
         }
+
+        if msg.is_node_profile_message() {
+            return;
+        }
+
+        let mut remote_node = RemoteNode::from_message(msg);
+        info!("FOUND: {}", remote_node.addr());
+        // Copy standard object properties
+        for (n, obj) in remote_node.objects_mut().iter_mut().enumerate() {
+            let std_obj = ctrl.db.find_object(obj.code());
+            if std_obj.is_none() {
+                continue;
+            }
+            info!("    [{}] {:02X}", n, std_obj.unwrap().code());
+            for std_prop in std_obj.unwrap().properties() {
+                obj.add_property(std_prop.clone());
+            }
+        }
+        ctrl.add_remote_node(remote_node);
     }
 }
