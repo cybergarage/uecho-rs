@@ -53,11 +53,13 @@ impl ControllerNode {
         node.add_observer(observer.clone())
     }
 
-    pub fn add_remote_node(&mut self, node: RemoteNode) -> bool {
-        for found_node in self.remote_nodes.iter() {
-            if found_node == &node {
-                return false;
+    pub fn replace_remote_node(&mut self, node: RemoteNode) -> bool {
+        for (n, found_node) in self.remote_nodes.iter().enumerate() {
+            if found_node != &node {
+                continue;
             }
+            self.remote_nodes.remove(n);
+            break;
         }
         self.remote_nodes.push(node);
         true
@@ -130,6 +132,6 @@ impl Observer for Arc<Mutex<ControllerNode>> {
                 obj.add_property(std_prop.clone());
             }
         }
-        ctrl.add_remote_node(remote_node);
+        ctrl.replace_remote_node(remote_node);
     }
 }
