@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::hash::{Hash, Hasher};
 use std::net::{IpAddr, Ipv4Addr};
 
 use crate::message::NodeProfileMessage;
@@ -101,5 +102,11 @@ impl Clone for RemoteNode {
 impl<'a> PartialEq for RemoteNode {
     fn eq(&self, other: &Self) -> bool {
         self.addr == other.addr
+    }
+}
+
+impl Hash for RemoteNode {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.addr.hash(state);
     }
 }
