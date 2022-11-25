@@ -22,7 +22,7 @@ use uecho::protocol::esv::Esv;
 use uecho::protocol::message::Message;
 
 fn main() {
-    // logger::init();
+    logger::init();
 
     let mut ctrl = Controller::new();
     ctrl.start();
