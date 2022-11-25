@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::object::*;
+use std::sync::Arc;
+use std::sync::Mutex;
+
+use crate::device_node::DeviceNode;
+use crate::local_node::LocalNode;
+use crate::object::{Object, ObjectCode};
 use crate::property::*;
 use crate::super_object::*;
 
@@ -81,14 +86,21 @@ pub const DEVICE_NO_FAULT_OCCURRED: u8 = 0x42;
 pub const DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = 0x00;
 pub const DEVICE_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_UNKNOWN;
 
-pub struct Device {}
+pub struct Device {
+    node: Arc<Mutex<DeviceNode>>,
+}
 
 impl Device {
-    pub fn new(code: ObjectCode) -> Object {
-        let mut obj = Object::new();
-        obj.add_standard_properties(SUPER_OBJECT_CODE);
-        obj.add_standard_properties(code);
-        obj
+    pub fn new(code: ObjectCode) -> Device {
+        Device {
+            node: DeviceNode::new(),
+        }
+    }
+
+    pub fn new_with_node(code: ObjectCode, node: Arc<Mutex<LocalNode>>) -> Device {
+        Device {
+            node: DeviceNode::new_with_node(node),
+        }
     }
 }
 
