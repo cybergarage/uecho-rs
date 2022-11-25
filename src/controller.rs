@@ -55,7 +55,7 @@ impl Controller {
         ctrl.search_object(obj_code)
     }
 
-    pub fn search_all(&mut self) -> bool {
+    pub fn search(&mut self) -> bool {
         self.search_object(NODE_PROFILE_OBJECT_CODE)
     }
 
