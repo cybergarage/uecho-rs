@@ -12,38 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod log;
-pub mod protocol;
-pub mod transport;
-pub mod util;
+use std::sync::Arc;
+use std::sync::Mutex;
 
-pub mod class;
-pub mod controller;
-pub mod database;
-pub mod device;
-pub mod error;
-pub mod local_node;
-pub mod manufacture;
-pub mod message;
-pub mod node_profile;
-pub mod object;
-pub mod objects;
-pub mod profile;
-pub mod property;
-pub mod remote_node;
-pub mod super_object;
+use crate::object::Object;
 
-mod controller_node;
-mod database_manufacturers;
-mod database_mra_objects;
-mod device_node;
+pub struct Objects(Arc<Mutex<Vec<Object>>>);
 
-mod controller_test;
-mod database_test;
-mod device_test;
-mod local_node_test;
-mod message_test;
-mod object_test;
-mod profile_test;
-mod property_test;
-mod remote_node_test;
+impl Objects {
+    pub fn new() -> Objects {
+        Objects(Arc::new(Mutex::new(Vec::new())))
+    }
+}
