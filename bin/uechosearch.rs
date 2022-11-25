@@ -35,6 +35,9 @@ fn main() {
         for (j, obj) in node.objects().iter().enumerate() {
             println!("    [{}] {:06X}", j, obj.code());
             for obj_prop in obj.properties() {
+                if !obj_prop.is_read_required() {
+                    continue;
+                }
                 let mut msg = Message::new();
                 msg.set_esv(Esv::ReadRequest);
                 msg.set_deoj(obj.code());
