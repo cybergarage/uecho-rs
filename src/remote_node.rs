@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::cmp::PartialEq;
 use std::hash::{Hash, Hasher};
 use std::net::{IpAddr, Ipv4Addr};
 
@@ -99,7 +100,7 @@ impl Clone for RemoteNode {
     }
 }
 
-impl<'a> PartialEq for RemoteNode {
+impl PartialEq for RemoteNode {
     fn eq(&self, other: &Self) -> bool {
         self.addr == other.addr
     }
