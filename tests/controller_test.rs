@@ -30,8 +30,8 @@ fn controller() {
 
     let mut ctrl = mock::TestController::new(node.clone());
     assert!(ctrl.start());
-    assert!(ctrl.search_all());
-    thread::sleep(time::Duration::from_secs(1));
+    assert!(ctrl.search());
+    thread::sleep(time::Duration::from_secs(10));
     assert!(ctrl.stop());
 
     assert!(dev.stop());

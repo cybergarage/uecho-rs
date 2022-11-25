@@ -26,7 +26,7 @@ fn main() {
 
     let mut ctrl = Controller::new();
     ctrl.start();
-    ctrl.search_all();
+    ctrl.search();
 
     thread::sleep(time::Duration::from_secs(2));
 
@@ -49,7 +49,7 @@ fn main() {
                         println!("        [{:02X} {}]", prop.code(), hex::encode(msg.bytes()));
                     }
                     Err(_e) => {
-                        println!("        [{:02X}]", prop.code());
+                        println!("        [{:02X}] {}", prop.code(), "timeout");
                     }
                 };
             }

@@ -24,7 +24,7 @@ mod tests {
 
         let mut ctrl = Controller::new();
         assert!(ctrl.start());
-        assert!(ctrl.search_all());
+        assert!(ctrl.search());
         assert!(ctrl.stop());
     }
 }
