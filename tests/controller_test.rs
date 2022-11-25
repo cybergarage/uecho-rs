@@ -13,16 +13,26 @@
 // limitations under the License.
 
 use std::{thread, time};
-use uecho::controller::Controller;
+
+use uecho::local_node::LocalNode;
 use uecho::log::logger;
+
+mod mock;
 
 #[test]
 fn controller() {
     logger::init();
 
-    let mut ctrl = Controller::new();
+    let node = LocalNode::new();
+
+    let _dev = mock::TestDevice::new(node.clone());
+    // assert!(dev.start());
+
+    let mut ctrl = mock::TestController::new(node.clone());
     assert!(ctrl.start());
     assert!(ctrl.search_all());
-    thread::sleep(time::Duration::from_secs(10));
+    thread::sleep(time::Duration::from_secs(1));
     assert!(ctrl.stop());
+
+    // assert!(dev.sop());
 }
