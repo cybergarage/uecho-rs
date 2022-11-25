@@ -36,9 +36,13 @@ pub struct ControllerObserver {
 
 impl ControllerObserver {
     pub fn new() -> Arc<Mutex<ControllerObserver>> {
+        ControllerObserver::new_with_node(LocalNode::new())
+    }
+
+    pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<ControllerObserver>> {
         let ctrl = Arc::new(Mutex::new(ControllerObserver {
             db: StandardDatabase::new(),
-            node: LocalNode::new(),
+            node: node,
             remote_nodes: Vec::new(),
         }));
         ctrl
