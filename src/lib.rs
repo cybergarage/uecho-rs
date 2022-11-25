@@ -30,12 +30,12 @@ pub mod profile;
 pub mod property;
 pub mod remote_node;
 pub mod super_object;
+pub mod local_node;
 
 mod controller_node;
 mod database_manufacturers;
 mod database_mra_objects;
 mod device_node;
-mod local_node;
 
 mod controller_test;
 mod database_test;
