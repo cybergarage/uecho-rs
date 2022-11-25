@@ -12,13 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod error;
-pub mod esv;
-pub mod message;
-pub mod message_handler;
-pub mod property;
-pub mod result;
+use crate::protocol::error::ProtocolError;
 
-mod esv_test;
-mod message_test;
-mod property_test;
+/// A Result type for protocol decoding and encoding operations.
+pub type Result<T> = ::std::result::Result<T, ProtocolError>;
