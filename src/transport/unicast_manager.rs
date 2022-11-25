@@ -59,7 +59,18 @@ impl UnicastManager {
         return Err(io::Error::new(io::ErrorKind::NotConnected, ""));
     }
 
+    pub fn is_running(&self) -> bool {
+        if self.udp_servers.len() == 0 {
+            return false;
+        }
+        true
+    }
+
     pub fn start(&mut self) -> bool {
+        if self.is_running() {
+            return true;
+        }
+
         for ifaddr in get_v4_interfaces() {
             let mut udp_server = UnicastServer::new();
             if !udp_server.bind(ifaddr) {
