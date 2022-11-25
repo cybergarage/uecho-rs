@@ -27,7 +27,6 @@ pub mod manufacture;
 pub mod message;
 pub mod node_profile;
 pub mod object;
-pub mod objects;
 pub mod profile;
 pub mod property;
 pub mod remote_node;
