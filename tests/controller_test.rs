@@ -25,8 +25,8 @@ fn controller() {
 
     let node = LocalNode::new();
 
-    let _dev = mock::TestDevice::new(node.clone());
-    // assert!(dev.start());
+    let mut dev = mock::TestDevice::new(node.clone());
+    assert!(dev.start());
 
     let mut ctrl = mock::TestController::new(node.clone());
     assert!(ctrl.start());
@@ -34,5 +34,5 @@ fn controller() {
     thread::sleep(time::Duration::from_secs(1));
     assert!(ctrl.stop());
 
-    // assert!(dev.sop());
+    assert!(dev.stop());
 }
