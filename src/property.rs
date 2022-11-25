@@ -13,6 +13,7 @@
 // limitations under the License.
 
 use crate::util::bytes::Bytes;
+use std::hash::{Hash, Hasher};
 
 pub const PROPERTY_CODE_MIN: u8 = 0x80;
 pub const PROPERTY_CODE_MAX: u8 = 0xFF;
@@ -240,5 +241,11 @@ impl Clone for Property {
         prop.data.resize(self.data.len(), 0);
         prop.data.copy_from_slice(self.data.as_slice());
         prop
+    }
+}
+
+impl Hash for Property {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.code().hash(state);
     }
 }
