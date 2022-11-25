@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::cmp::PartialEq;
 use std::collections::hash_map::Values;
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -189,5 +190,14 @@ impl Clone for Object {
             obj.add_property(prop.clone());
         }
         obj
+    }
+}
+
+impl PartialEq for Object {
+    fn eq(&self, other: &Self) -> bool {
+        if self.code() != other.code() {
+            return false;
+        }
+        true
     }
 }
