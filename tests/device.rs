@@ -16,13 +16,13 @@ use uecho::device::Device;
 use uecho::object::Object;
 
 pub struct TestDevice {
-    obj: Object,
+    dev: Device,
 }
 
 impl TestDevice {
     pub fn new() -> TestDevice {
         TestDevice {
-            obj: Device::new(0x029101),
+            dev: Device::new(0x029101),
         }
     }
 }
