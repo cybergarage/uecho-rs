@@ -32,7 +32,7 @@ pub mod property;
 pub mod remote_node;
 pub mod super_object;
 
-mod controller_observer;
+mod controller_node;
 mod database_manufacturers;
 mod database_mra_objects;
 
