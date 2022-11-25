@@ -12,16 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use uecho::controller::Controller;
+use std::sync::Arc;
+use std::sync::Mutex;
 
-pub struct TestController {
-    obj: Controller,
-}
+use uecho::controller::Controller;
+use uecho::device::Device;
+use uecho::local_node::LocalNode;
+
+pub struct TestController {}
 
 impl TestController {
-    pub fn new() -> TestController {
-        TestController {
-            obj: Controller::new(),
-        }
+    pub fn new(node: Arc<Mutex<LocalNode>>) -> Controller {
+        Controller::new_with_node(node)
+    }
+}
+pub struct TestDevice {}
+
+impl TestDevice {
+    pub fn new(node: Arc<Mutex<LocalNode>>) -> Device {
+        Device::new_with_node(0x029101, node)
     }
 }
