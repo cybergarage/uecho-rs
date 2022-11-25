@@ -17,6 +17,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::controller_observer::ControllerObserver;
+use crate::local_node::LocalNode;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::message::*;
@@ -30,6 +31,12 @@ impl Controller {
     pub fn new() -> Controller {
         Controller {
             observer: ControllerObserver::new(),
+        }
+    }
+
+    pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Controller {
+        Controller {
+            observer: ControllerObserver::new_with_node(node),
         }
     }
 
