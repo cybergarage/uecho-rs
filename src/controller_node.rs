@@ -53,6 +53,11 @@ impl ControllerNode {
         node.add_observer(observer.clone())
     }
 
+    pub fn add_remote_node(&mut self, node: RemoteNode) -> bool {
+        self.remote_nodes.push(node);
+        true
+    }
+
     pub fn replace_remote_node(&mut self, node: RemoteNode) -> bool {
         for (n, found_node) in self.remote_nodes.iter().enumerate() {
             if found_node != &node {
