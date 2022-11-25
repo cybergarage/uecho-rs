@@ -66,6 +66,13 @@ impl Controller {
         let mut ctrl = self.observer.lock().unwrap();
         ctrl.start();
         ctrl.add_observer(Arc::new(Mutex::new(self.observer.clone())));
+
+        let local_node = ctrl.local_node();
+        local_node
+            .lock()
+            .unwrap()
+            .add_observer(Arc::new(Mutex::new(local_node.clone())));
+
         true
     }
 
