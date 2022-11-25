@@ -19,28 +19,28 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::database::StandardDatabase;
-use crate::local_node::*;
+use crate::local_node::LocalNode;
 use crate::message::SearchMessage;
-use crate::node_profile::*;
-use crate::object::*;
-use crate::protocol::message::*;
-use crate::remote_node::*;
+use crate::node_profile::NODE_PROFILE_OBJECT_CODE;
+use crate::object::ObjectCode;
+use crate::protocol::message::Message;
+use crate::remote_node::RemoteNode;
 use crate::transport::default::PORT;
-use crate::transport::observer::*;
+use crate::transport::observer::{Observer, ObserverEntity};
 
-pub struct ControllerObserver {
+pub struct ControllerNode {
     db: StandardDatabase,
     node: Arc<Mutex<LocalNode>>,
     pub remote_nodes: Vec<RemoteNode>,
 }
 
-impl ControllerObserver {
-    pub fn new() -> Arc<Mutex<ControllerObserver>> {
-        ControllerObserver::new_with_node(LocalNode::new())
+impl ControllerNode {
+    pub fn new() -> Arc<Mutex<ControllerNode>> {
+        ControllerNode::new_with_node(LocalNode::new())
     }
 
-    pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<ControllerObserver>> {
-        let ctrl = Arc::new(Mutex::new(ControllerObserver {
+    pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<ControllerNode>> {
+        let ctrl = Arc::new(Mutex::new(ControllerNode {
             db: StandardDatabase::new(),
             node: node,
             remote_nodes: Vec::new(),
@@ -109,7 +109,7 @@ impl ControllerObserver {
     }
 }
 
-impl Observer for Arc<Mutex<ControllerObserver>> {
+impl Observer for Arc<Mutex<ControllerNode>> {
     fn message_received(&mut self, msg: &Message) {
         let mut ctrl = self.lock().unwrap();
 

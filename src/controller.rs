@@ -16,7 +16,7 @@ use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::controller_observer::ControllerObserver;
+use crate::controller_node::ControllerNode;
 use crate::local_node::LocalNode;
 use crate::node_profile::*;
 use crate::object::*;
@@ -24,26 +24,26 @@ use crate::protocol::message::*;
 use crate::remote_node::*;
 
 pub struct Controller {
-    observer: Arc<Mutex<ControllerObserver>>,
+    node: Arc<Mutex<ControllerNode>>,
 }
 
 impl Controller {
     pub fn new() -> Controller {
         Controller {
-            observer: ControllerObserver::new(),
+            node: ControllerNode::new(),
         }
     }
 
     pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Controller {
         Controller {
-            observer: ControllerObserver::new_with_node(node),
+            node: ControllerNode::new_with_node(node),
         }
     }
 
     pub fn nodes(&mut self) -> Vec<RemoteNode> {
         // TODO: Return remote nodes in the observer directly
         let mut nodes = Vec::new();
-        let ctrl = self.observer.lock().unwrap();
+        let ctrl = self.node.lock().unwrap();
         for node in ctrl.nodes() {
             nodes.push(node.clone());
         }
@@ -51,7 +51,7 @@ impl Controller {
     }
 
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
-        let mut ctrl = self.observer.lock().unwrap();
+        let mut ctrl = self.node.lock().unwrap();
         ctrl.search_object(obj_code)
     }
 
@@ -60,19 +60,19 @@ impl Controller {
     }
 
     pub fn send_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> bool {
-        let ctrl = self.observer.lock().unwrap();
+        let ctrl = self.node.lock().unwrap();
         ctrl.send_message(remote_node, msg)
     }
 
     pub fn post_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> Receiver<Message> {
-        let ctrl = self.observer.lock().unwrap();
+        let ctrl = self.node.lock().unwrap();
         ctrl.post_message(remote_node, msg)
     }
 
     pub fn start(&mut self) -> bool {
-        let mut ctrl = self.observer.lock().unwrap();
+        let mut ctrl = self.node.lock().unwrap();
         ctrl.start();
-        ctrl.add_observer(Arc::new(Mutex::new(self.observer.clone())));
+        ctrl.add_observer(Arc::new(Mutex::new(self.node.clone())));
 
         let local_node = ctrl.local_node();
         local_node
@@ -84,7 +84,7 @@ impl Controller {
     }
 
     pub fn stop(&mut self) -> bool {
-        let mut ctrl = self.observer.lock().unwrap();
+        let mut ctrl = self.node.lock().unwrap();
         ctrl.stop()
     }
 }
