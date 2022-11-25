@@ -30,12 +30,6 @@ pub struct Object {
     properties: HashMap<PropertyCode, Property>,
 }
 
-pub type Objects = Arc<Mutex<Vec<Object>>>;
-
-pub fn objects_new() -> Objects {
-    Arc::new(Mutex::new(Vec::new()))
-}
-
 impl Object {
     pub fn new() -> Object {
         Object {
