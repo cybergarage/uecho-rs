@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::cmp::PartialEq;
-use std::collections::hash_map::Values;
-use std::collections::HashMap;
-use std::sync::Arc;
-use std::sync::Mutex;
-
 use crate::database::*;
 use crate::property::*;
 use crate::util::bytes::Bytes;
+use std::cmp::PartialEq;
+use std::collections::hash_map::Values;
+use std::collections::HashMap;
+use std::hash::{Hash, Hasher};
+use std::sync::Arc;
+use std::sync::Mutex;
 
 pub type ObjectCode = u32;
 
@@ -199,5 +199,11 @@ impl PartialEq for Object {
             return false;
         }
         true
+    }
+}
+
+impl Hash for Object {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.code().hash(state);
     }
 }
