@@ -22,6 +22,7 @@ pub mod controller;
 pub mod database;
 pub mod device;
 pub mod error;
+pub mod local_node;
 pub mod manufacture;
 pub mod message;
 pub mod node_profile;
@@ -30,7 +31,6 @@ pub mod profile;
 pub mod property;
 pub mod remote_node;
 pub mod super_object;
-pub mod local_node;
 
 mod controller_node;
 mod database_manufacturers;
