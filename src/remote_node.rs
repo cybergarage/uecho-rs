@@ -106,6 +106,8 @@ impl PartialEq for RemoteNode {
     }
 }
 
+impl Eq for RemoteNode {}
+
 impl Hash for RemoteNode {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.addr.hash(state);
