@@ -202,6 +202,8 @@ impl PartialEq for Object {
     }
 }
 
+impl Eq for Object {}
+
 impl Hash for Object {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.code().hash(state);
