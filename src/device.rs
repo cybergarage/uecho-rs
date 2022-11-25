@@ -102,6 +102,25 @@ impl Device {
             node: DeviceNode::new_with_node(node),
         }
     }
+
+    pub fn start(&mut self) -> bool {
+        let mut dev = self.node.lock().unwrap();
+        dev.start();
+        dev.add_observer(Arc::new(Mutex::new(self.node.clone())));
+
+        let local_node = dev.local_node();
+        local_node
+            .lock()
+            .unwrap()
+            .add_observer(Arc::new(Mutex::new(local_node.clone())));
+
+        true
+    }
+
+    pub fn stop(&mut self) -> bool {
+        let mut ctrl = self.node.lock().unwrap();
+        ctrl.stop()
+    }
 }
 
 impl Object {
