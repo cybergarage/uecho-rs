@@ -15,7 +15,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 
 pub trait Observer {
     fn message_received(&mut self, msg: &Message);

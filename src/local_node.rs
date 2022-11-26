@@ -22,7 +22,7 @@ use std::sync::Mutex;
 // use crate::local_node_observer::LocalNodeObserver;
 use crate::node_profile::*;
 use crate::object::*;
-use crate::protocol::message::*;
+use crate::protocol::{Message, TID, TID_MAX, TID_MIN};
 use crate::transport::manager::*;
 use crate::transport::observer::*;
 

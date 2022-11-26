@@ -16,7 +16,7 @@
 mod tests {
 
     use crate::message::{NodeProfileMessage, SearchMessage};
-    use crate::protocol::message::Message;
+    use crate::protocol::Message;
     use hex;
 
     #[test]

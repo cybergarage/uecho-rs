@@ -16,7 +16,7 @@
 mod tests {
 
     use crate::object::*;
-    use crate::protocol::message::Message;
+    use crate::protocol::Message;
     use crate::remote_node::*;
 
     #[test]

@@ -18,7 +18,7 @@ use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::sync::{Arc, RwLock};
 use std::thread;
 
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 use crate::transport::default::*;
 use crate::transport::notifier::*;
 use crate::transport::notify_manager::*;

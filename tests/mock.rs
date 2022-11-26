@@ -16,8 +16,8 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use uecho::controller::Controller;
-use uecho::device::Device;
 use uecho::local_node::LocalNode;
+use uecho::Device;
 
 pub struct TestController {}
 

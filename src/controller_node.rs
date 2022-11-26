@@ -23,7 +23,7 @@ use crate::local_node::LocalNode;
 use crate::message::SearchMessage;
 use crate::node_profile::NODE_PROFILE_OBJECT_CODE;
 use crate::object::ObjectCode;
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
 use crate::transport::default::PORT;
 use crate::transport::observer::{Observer, ObserverEntity};

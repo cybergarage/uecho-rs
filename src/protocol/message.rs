@@ -15,8 +15,8 @@
 use std::fmt;
 use std::net::{IpAddr, Ipv4Addr};
 
-use crate::protocol::esv::*;
 use crate::protocol::property::*;
+use crate::protocol::Esv;
 
 pub const HEADER_EHD1_ECHONET: u8 = 0x10;
 pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
