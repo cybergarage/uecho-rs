@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::util::bytes::Bytes;
+use crate::util::Bytes;
 use std::hash::{Hash, Hasher};
 
 pub const PROPERTY_CODE_MIN: u8 = 0x80;
