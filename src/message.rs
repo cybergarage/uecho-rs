@@ -17,7 +17,7 @@ use crate::object::ObjectCode;
 use crate::protocol::Esv;
 use crate::protocol::Message;
 use crate::protocol::Property;
-use crate::util::bytes::Bytes;
+use crate::util::Bytes;
 
 pub struct SearchMessage {}
 

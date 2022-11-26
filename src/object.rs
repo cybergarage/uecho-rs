@@ -14,7 +14,7 @@
 
 use crate::database::*;
 use crate::property::*;
-use crate::util::bytes::Bytes;
+use crate::util::Bytes;
 use std::cmp::PartialEq;
 use std::collections::hash_map::Values;
 use std::collections::HashMap;
