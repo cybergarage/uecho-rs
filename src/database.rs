@@ -22,7 +22,7 @@ static SHARED_STANDARD_DATABASE: Lazy<StandardDatabase> = Lazy::new(|| StandardD
 /// # Examples
 /// ```
 /// use echonet::StandardDatabase;
-/// 
+///
 /// let db = StandardDatabase::shared();
 /// let m = db.find_manufacture(0x00000B);
 /// assert!(m.is_some());

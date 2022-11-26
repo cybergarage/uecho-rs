@@ -23,6 +23,7 @@ pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
 pub const FRAME_HEADER_SIZE: usize = 1 + 1 + 2;
 pub const FORMAT1_HEADER_SIZE: usize = 3 + 3 + 1 + 1;
 
+/// TID represents a ECHONET-Lite transaction identification number as specified in the ECHONET-lite specification.
 pub type TID = u16;
 pub const TID_MIN: TID = 0;
 pub const TID_MAX: TID = 65535;
