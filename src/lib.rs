@@ -32,13 +32,12 @@ pub mod util;
 
 pub use self::controller::*;
 pub use self::database::*;
-pub use self::device::*;
+pub use self::device::Device;
 pub use self::local_node::*;
-pub use self::manufacture::*;
-pub use self::object::*;
+pub use self::manufacture::{Manufacture, ManufactureCode};
+pub use self::object::Object;
 pub use self::property::Property;
 pub use self::remote_node::*;
-pub use self::super_object::*;
 
 mod class;
 mod controller;
