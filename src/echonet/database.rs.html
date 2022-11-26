@@ -68,6 +68,19 @@
 <span id="68">68</span>
 <span id="69">69</span>
 <span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -89,6 +102,19 @@
 <span class="kw">static </span>SHARED_STANDARD_DATABASE: Lazy&lt;StandardDatabase&gt; = Lazy::new(|| StandardDatabase::new());
 
 <span class="doccomment">/// StandardDatabase represents a standard database for official device objects and manufactures defined by the ECHONET CONSORTIUM.
+/// # Examples
+/// ```
+/// use echonet::StandardDatabase;
+/// 
+/// let db = StandardDatabase::shared();
+/// let m = db.find_manufacture(0x00000B);
+/// assert!(m.is_some());
+///
+/// let obj = db.find_object(0x029100);
+/// assert!(obj.is_some());
+/// let prop = obj.unwrap().find_property(0xB0);
+/// assert!(prop.is_some());
+/// ```
 </span><span class="kw">pub struct </span>StandardDatabase {
     manufactures: Vec&lt;Manufacture&gt;,
     objects: Vec&lt;Object&gt;,
