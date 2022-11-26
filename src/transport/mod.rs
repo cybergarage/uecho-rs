@@ -12,19 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod default;
-pub mod error;
-pub mod interface;
-pub mod manager;
-pub mod multicast_manager;
-pub mod multicast_server;
-pub mod notifier;
-pub mod notify_manager;
-pub mod observer;
-pub mod result;
-pub mod udp_socket;
-pub mod unicast_manager;
-pub mod unicast_server;
+pub use self::default::PORT;
+pub use self::manager::Manager;
+pub use self::observer::{Observer, ObserverEntity};
+
+mod default;
+mod error;
+mod interface;
+mod manager;
+mod multicast_manager;
+mod multicast_server;
+mod notifier;
+mod notify_manager;
+mod observer;
+mod result;
+mod udp_socket;
+mod unicast_manager;
+mod unicast_server;
 
 mod interface_test;
 mod manager_test;

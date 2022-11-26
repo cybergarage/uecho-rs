@@ -19,7 +19,7 @@ use crate::database::StandardDatabase;
 use crate::local_node::LocalNode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
-use crate::transport::observer::{Observer, ObserverEntity};
+use crate::transport::{Observer, ObserverEntity};
 
 pub struct DeviceNode {
     db: StandardDatabase,

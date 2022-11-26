@@ -25,8 +25,8 @@ use crate::node_profile::NODE_PROFILE_OBJECT_CODE;
 use crate::object::ObjectCode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
-use crate::transport::default::PORT;
-use crate::transport::observer::{Observer, ObserverEntity};
+use crate::transport::PORT;
+use crate::transport::{Observer, ObserverEntity};
 
 pub struct ControllerNode {
     db: StandardDatabase,

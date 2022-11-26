@@ -19,7 +19,7 @@ use std::sync::{Arc, RwLock};
 use std::thread;
 
 use crate::protocol::Message;
-use crate::transport::default::{MAX_PACKET_SIZE, PORT};
+use crate::transport::default::*;
 use crate::transport::notifier::*;
 use crate::transport::notify_manager::*;
 use crate::transport::observer::*;
