@@ -56,13 +56,21 @@ pub const NODE_PROFILE_CLASS_BOOTING: u8 = 0x30;
 pub const NODE_PROFILE_CLASS_NOT_BOOTING: u8 = 0x31;
 pub const LOWER_COMMUNICATION_LAYER_PROTOCOL_TYPE: u8 = 0xFE;
 
-pub struct NodeProfile {}
+pub struct NodeProfile<'a> {
+    obj: &'a Object,
+}
 
-impl NodeProfile {
+impl NodeProfile<'_> {
     pub fn new() -> Object {
         let mut obj = Object::new();
         obj.add_standard_properties(SUPER_OBJECT_CODE);
         obj.add_standard_properties(NODE_PROFILE_OBJECT_CODE);
         obj
     }
+
+    pub fn from(obj: &Object) -> NodeProfile {
+        NodeProfile { obj: obj }
+    }
+
+    pub fn update(&mut self, objs: &Vec<Object>) {}
 }
