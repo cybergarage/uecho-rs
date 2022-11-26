@@ -20,7 +20,7 @@ mod tests {
 
     #[test]
     fn device() {
-        // let mut dev = Device::new(SUPER_OBJECT_CODE);
+        let mut dev = Device::new(SUPER_OBJECT_CODE);
         // dev.set_operating_status(true);
         // assert_eq!(
         //     dev.operating_status().byte_data(),
@@ -31,5 +31,8 @@ mod tests {
         //     dev.installation_location().byte_data(),
         //     DEVICE_INSTALLATION_LOCATION_UNKNOWN
         // );
+
+        assert!(dev.start());
+        assert!(dev.stop());
     }
 }
