@@ -14,8 +14,8 @@
 
 use std::{thread, time};
 
-use uecho::local_node::LocalNode;
 use uecho::log::logger;
+use uecho::LocalNode;
 
 mod mock;
 
