@@ -17,8 +17,8 @@ use std::net::SocketAddr;
 
 use crate::protocol::Message;
 use crate::transport::interface::*;
-use crate::transport::observer::*;
 use crate::transport::unicast_server::UnicastServer;
+use crate::transport::*;
 
 pub struct UnicastManager {
     udp_servers: Vec<UnicastServer>,
