@@ -16,6 +16,7 @@ pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 
 pub type PropertyCode = u8;
 
+/// Each ECHONET-lite message has properties. Property represents a ECHONET-lite property of a message packet as specified in the ECHONET-lite specification.
 pub struct Property {
     code: PropertyCode,
     data: Vec<u8>,

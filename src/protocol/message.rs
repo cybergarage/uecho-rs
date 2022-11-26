@@ -27,6 +27,27 @@ pub type TID = u16;
 pub const TID_MIN: TID = 0;
 pub const TID_MAX: TID = 65535;
 
+/// Message represents a messaging packet between ECHONET-lite nodes as specified in the ECHONET-lite specification.
+/// # Examples
+/// ```
+/// use echonet::protocol::Message;
+/// use echonet::protocol::Esv;
+/// use echonet::protocol::Property;
+/// use hex;
+///
+/// let mut msg = Message::new();
+/// msg.set_esv(Esv::ReadRequest);
+/// msg.set_deoj(0x029101);
+/// let mut prop = Property::new();
+/// prop.set_code(0x80);
+/// msg.add_property(prop);
+///
+/// let opc = msg.opc();
+/// for n in 0..opc {
+///     let prop = msg.property(n);
+///     println!("[{}] {}", n, hex::encode(prop.data()));
+/// }
+/// ```
 pub struct Message {
     ehd: [u8; 2],
     tid: [u8; 2],
