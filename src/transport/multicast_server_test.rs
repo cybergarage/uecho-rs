@@ -43,7 +43,7 @@ mod tests {
 
             assert!(server.bind(ifaddr));
             assert!(server.start());
-            thread::sleep(time::Duration::from_secs(1));
+            thread::sleep(time::Duration::from_secs(2));
 
             let mut msg = Message::new();
             msg.set_esv(Esv::Notification);
