@@ -42,9 +42,6 @@ impl LocalNode {
             last_tid: TID_MIN,
             post_sender: tx,
         }));
-        node.lock()
-            .unwrap()
-            .add_observer(Arc::new(Mutex::new(node.clone())));
         node
     }
 
@@ -129,19 +126,21 @@ impl LocalNode {
         true
     }
 
-    fn send_post_reopnse(&self, msg: Message) {
+    fn send_post_reopnse(&mut self, msg: Message) {
         match self.post_sender.send(msg) {
             Ok(()) => {}
             Err(err) => {
                 warn!("{}", err);
             }
         }
+        let (tx, _): (Sender<Message>, Receiver<Message>) = mpsc::channel();
+        self.post_sender = tx;
     }
 }
 
 impl Observer for Arc<Mutex<LocalNode>> {
     fn message_received(&mut self, msg: &Message) {
-        let node = self.lock().unwrap();
+        let mut node = self.lock().unwrap();
         if node.is_last_message_response(msg) {
             node.send_post_reopnse(msg.clone());
         }
