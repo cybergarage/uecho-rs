@@ -91,6 +91,7 @@ pub const DEVICE_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_UNKNOWN;
 
 /// Device represents a ECHONET-lite device node.
 pub struct Device {
+    code: ObjectCode,
     node: Arc<Mutex<DeviceNode>>,
 }
 
@@ -98,6 +99,7 @@ impl Device {
     /// Create a new device.
     pub fn new(code: ObjectCode) -> Device {
         let mut dev = Device {
+            code: code,
             node: DeviceNode::new(),
         };
         dev.set_code(code);
@@ -107,17 +109,30 @@ impl Device {
     /// Create a new device with the node to which it belongs.
     pub fn new_with_node(code: ObjectCode, node: Arc<Mutex<LocalNode>>) -> Device {
         let mut dev = Device {
+            code: code,
             node: DeviceNode::new_with_node(node),
         };
         dev.set_code(code);
         dev
     }
 
+    /// Returns the object code.
+    pub fn code(&self) -> ObjectCode {
+        self.code
+    }
+
     /// Returns the parent local node to which the device belongs.
     pub fn node(&self) -> Arc<Mutex<LocalNode>> {
-        let mut dev_node = self.node.lock().unwrap();
+        let dev_node = self.node.lock().unwrap();
         dev_node.local_node()
     }
+
+    /// Returns the parent local node to which the device belongs.
+    // pub fn object(&self) -> &mut Object {
+    //     let mut node = self.node().lock().unwrap();
+    //     let obj = node.find_object_mut(self.code);
+    //     obj.unwrap()
+    // }
 
     /// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
     pub fn start(&mut self) -> bool {
