@@ -15,9 +15,9 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use uecho::Controller;
-use uecho::Device;
-use uecho::LocalNode;
+use echonet::Controller;
+use echonet::Device;
+use echonet::LocalNode;
 
 pub struct TestController {}
 
