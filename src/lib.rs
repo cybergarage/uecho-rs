@@ -17,14 +17,15 @@ pub mod protocol;
 pub mod transport;
 pub mod util;
 
-pub use self::controller::Controller;
-pub use self::database::StandardDatabase;
-pub use self::device::Device;
-pub use self::manufacture::Manufacture;
-pub use self::message::SearchMessage;
-pub use self::object::{Object, ObjectCode};
-pub use self::property::Property;
-pub use self::remote_node::RemoteNode;
+pub use self::controller::*;
+pub use self::database::*;
+pub use self::device::*;
+pub use self::local_node::*;
+pub use self::manufacture::*;
+pub use self::message::*;
+pub use self::object::*;
+pub use self::property::*;
+pub use self::remote_node::*;
 
 mod class;
 mod controller;
