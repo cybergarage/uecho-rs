@@ -85,8 +85,8 @@ impl Controller {
         }
     }
 
+    // Returns all searched remote nodes.
     pub fn nodes(&mut self) -> Vec<RemoteNode> {
-        // TODO: Return remote nodes in the observer directly
         let mut nodes = Vec::new();
         let ctrl = self.node.lock().unwrap();
         for node in ctrl.nodes() {
@@ -95,25 +95,30 @@ impl Controller {
         nodes
     }
 
+    // Searches only the specified object nodes on the local network.
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
         let mut ctrl = self.node.lock().unwrap();
         ctrl.search_object(obj_code)
     }
 
+    // Searches all ECHONET-lite nodes on the local network.
     pub fn search(&mut self) -> bool {
         self.search_object(NODE_PROFILE_OBJECT_CODE)
     }
 
+    // Sends the specified message to the specified remote node. The function automatically updates the SEOJ (Source ECHONET-Lite object) and TID (Transaction ID) in the specified message, so you do not need to set the message fields.
     pub fn send_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> bool {
         let ctrl = self.node.lock().unwrap();
         ctrl.send_message(remote_node, msg)
     }
 
+    // Posts the specified message to the remote node and waits for the response using the messaging channel. TThe function automatically updates the SEOJ (Source ECHONET-Lite object) and TID (Transaction ID) in the specified message, so you do not need to set the message fields.
     pub fn post_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> Receiver<Message> {
         let ctrl = self.node.lock().unwrap();
         ctrl.post_message(remote_node, msg)
     }
 
+    // Starts the controller node to communicate with other ECHONET-Lite nodes on the local network.
     pub fn start(&mut self) -> bool {
         let mut ctrl = self.node.lock().unwrap();
         ctrl.start();
@@ -128,6 +133,7 @@ impl Controller {
         true
     }
 
+    // Stops the controller node, and clears all searched remote nodes.
     pub fn stop(&mut self) -> bool {
         let mut ctrl = self.node.lock().unwrap();
         ctrl.stop()
