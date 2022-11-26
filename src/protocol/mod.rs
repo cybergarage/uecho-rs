@@ -14,7 +14,7 @@
 
 pub use self::error::*;
 pub use self::esv::*;
-pub use self::message::*;
+pub use self::message::{Message, TID, TID_MAX, TID_MIN};
 pub use self::property::*;
 pub use self::result::*;
 
