@@ -18,11 +18,16 @@
 
 all: test
 
+.PHONY: format
+
 format:
 	cargo fmt
 
 build: format
 	cargo build
+
+doc: format
+	cargo doc --open
 
 test: build
 	cargo test -- --test-threads=1
