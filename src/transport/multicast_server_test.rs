@@ -54,7 +54,7 @@ mod tests {
                 thread::sleep(time::Duration::from_secs(1));
             }
 
-            // NOTE: GitHub Actions is slow
+            // NOTE: GitHub Action is slow and may drop to send packets.
             // assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
             assert!(0 < *counter.lock().unwrap());
 
