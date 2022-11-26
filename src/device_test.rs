@@ -20,7 +20,9 @@ mod tests {
 
     #[test]
     fn device() {
-        let mut dev = Device::new(SUPER_OBJECT_CODE);
+        let device_code = 0x029101;
+        let mut dev = Device::new(device_code);
+        let node = dev.node();
         // dev.set_operating_status(true);
         // assert_eq!(
         //     dev.operating_status().byte_data(),
