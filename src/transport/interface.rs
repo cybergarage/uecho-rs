@@ -28,23 +28,14 @@ fn is_ignore_interface(ipnet: ipnetwork::IpNetwork) -> bool {
 }
 
 fn is_all_interface(ipnet: ipnetwork::IpNetwork) -> bool {
-    if is_ignore_interface(ipnet) {
-        return false;
-    }
     true
 }
 
 fn is_v4_interface(ipnet: ipnetwork::IpNetwork) -> bool {
-    if is_ignore_interface(ipnet) {
-        return false;
-    }
     ipnet.is_ipv4()
 }
 
 fn is_v6_interface(ipnet: ipnetwork::IpNetwork) -> bool {
-    if is_ignore_interface(ipnet) {
-        return false;
-    }
     ipnet.is_ipv6()
 }
 
@@ -61,6 +52,9 @@ fn get_interfaces(enable_interface: EnableInterface) -> Vec<IpAddr> {
             continue;
         }
         for ifaddr in iface.ips {
+            if is_ignore_interface(ifaddr) {
+                continue;
+            }
             if !enable_interface(ifaddr) {
                 continue;
             }
