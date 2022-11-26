@@ -72,5 +72,5 @@ impl NodeProfile<'_> {
         NodeProfile { obj: obj }
     }
 
-    pub fn update(&mut self, objs: &Vec<Object>) {}
+    pub fn update(&mut self, objs: &Vec<ObjectCode>) {}
 }
