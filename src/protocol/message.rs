@@ -43,9 +43,13 @@ pub const TID_MAX: TID = 65535;
 /// prop.set_code(0x80);
 /// msg.add_property(prop);
 ///
+/// let msg = Message::from_bytes(&msg.bytes());
 /// let opc = msg.opc();
 /// for n in 0..opc {
 ///     let prop = msg.property(n);
+///     println!("[{}] {}", n, hex::encode(prop.data()));
+/// }
+/// for (n, prop) in msg.properties().iter().enumerate() {
 ///     println!("[{}] {}", n, hex::encode(prop.data()));
 /// }
 /// ```
