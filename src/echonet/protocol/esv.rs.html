@@ -50,6 +50,7 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -67,7 +68,8 @@
 </span><span class="kw">use </span>strum::IntoEnumIterator;
 <span class="kw">use </span>strum_macros::EnumIter;
 
-<span class="attribute">#[derive(Copy, Clone, PartialEq, Debug, EnumIter)]
+<span class="doccomment">/// ESV represents a ECHONET-Lite service (ESV) code as specified in the ECHONET-lite specification.
+</span><span class="attribute">#[derive(Copy, Clone, PartialEq, Debug, EnumIter)]
 </span><span class="kw">pub enum </span>Esv {
     Unknown = <span class="number">0x00</span>,
     WriteRequest = <span class="number">0x60</span>,

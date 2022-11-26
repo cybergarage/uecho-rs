@@ -286,6 +286,7 @@
 <span id="286">286</span>
 <span id="287">287</span>
 <span id="288">288</span>
+<span id="289">289</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -311,7 +312,8 @@
 <span class="kw">pub const </span>FRAME_HEADER_SIZE: usize = <span class="number">1 </span>+ <span class="number">1 </span>+ <span class="number">2</span>;
 <span class="kw">pub const </span>FORMAT1_HEADER_SIZE: usize = <span class="number">3 </span>+ <span class="number">3 </span>+ <span class="number">1 </span>+ <span class="number">1</span>;
 
-<span class="kw">pub type </span>TID = u16;
+<span class="doccomment">/// TID represents a ECHONET-Lite transaction identification number as specified in the ECHONET-lite specification.
+</span><span class="kw">pub type </span>TID = u16;
 <span class="kw">pub const </span>TID_MIN: TID = <span class="number">0</span>;
 <span class="kw">pub const </span>TID_MAX: TID = <span class="number">65535</span>;
 
