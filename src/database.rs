@@ -19,6 +19,19 @@ use once_cell::sync::Lazy;
 static SHARED_STANDARD_DATABASE: Lazy<StandardDatabase> = Lazy::new(|| StandardDatabase::new());
 
 /// StandardDatabase represents a standard database for official device objects and manufactures defined by the ECHONET CONSORTIUM.
+/// # Examples
+/// ```
+/// use echonet::StandardDatabase;
+/// 
+/// let db = StandardDatabase::shared();
+/// let m = db.find_manufacture(0x00000B);
+/// assert!(m.is_some());
+///
+/// let obj = db.find_object(0x029100);
+/// assert!(obj.is_some());
+/// let prop = obj.unwrap().find_property(0xB0);
+/// assert!(prop.is_some());
+/// ```
 pub struct StandardDatabase {
     manufactures: Vec<Manufacture>,
     objects: Vec<Object>,
