@@ -111,22 +111,19 @@ impl Device {
         dev
     }
 
-    fn set_code(&mut self, code: ObjectCode) {
-        let std_db = StandardDatabase::shared();
-        let std_obj = std_db.find_object(code);
-        if std_obj.is_none() {
-            return;
-        }
-        let mut dev = self.node.lock().unwrap();
-        dev.add_object(std_obj.unwrap().clone());
+    /// Returns the parent local node to which the device belongs.
+    pub fn node(&self) -> Arc<Mutex<LocalNode>> {
+        let mut dev_node = self.node.lock().unwrap();
+        dev_node.local_node()
     }
 
+    /// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
     pub fn start(&mut self) -> bool {
-        let mut dev = self.node.lock().unwrap();
-        dev.start();
-        dev.add_observer(Arc::new(Mutex::new(self.node.clone())));
+        let mut dev_node = self.node.lock().unwrap();
+        dev_node.start();
+        dev_node.add_observer(Arc::new(Mutex::new(self.node.clone())));
 
-        let local_node = dev.local_node();
+        let local_node = dev_node.local_node();
         local_node
             .lock()
             .unwrap()
@@ -135,9 +132,20 @@ impl Device {
         true
     }
 
+    /// Stops the device.
     pub fn stop(&mut self) -> bool {
-        let mut ctrl = self.node.lock().unwrap();
-        ctrl.stop()
+        let mut dev_node = self.node.lock().unwrap();
+        dev_node.stop()
+    }
+
+    fn set_code(&mut self, code: ObjectCode) {
+        let std_db = StandardDatabase::shared();
+        let std_obj = std_db.find_object(code);
+        if std_obj.is_none() {
+            return;
+        }
+        let mut dev_node = self.node.lock().unwrap();
+        dev_node.add_object(std_obj.unwrap().clone());
     }
 }
 
