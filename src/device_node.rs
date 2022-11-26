@@ -15,14 +15,13 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::database::StandardDatabase;
 use crate::local_node::LocalNode;
+use crate::object::Object;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
 use crate::transport::{Observer, ObserverEntity};
 
 pub struct DeviceNode {
-    db: StandardDatabase,
     node: Arc<Mutex<LocalNode>>,
     pub remote_nodes: Vec<RemoteNode>,
 }
@@ -34,11 +33,15 @@ impl DeviceNode {
 
     pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<DeviceNode>> {
         let ctrl = Arc::new(Mutex::new(DeviceNode {
-            db: StandardDatabase::new(),
             node: node,
             remote_nodes: Vec::new(),
         }));
         ctrl
+    }
+
+    pub fn add_object(&mut self, obj: Object) -> bool {
+        let mut node = self.node.lock().unwrap();
+        node.add_object(obj)
     }
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
@@ -68,5 +71,5 @@ impl DeviceNode {
 }
 
 impl Observer for Arc<Mutex<DeviceNode>> {
-    fn message_received(&mut self, msg: &Message) {}
+    fn message_received(&mut self, _msg: &Message) {}
 }
