@@ -28,10 +28,10 @@ use crate::remote_node::*;
 /// ```
 /// use std::{thread, time};
 ///
-/// use uecho::Controller;
-/// use uecho::Property;
-/// use uecho::protocol::Esv;
-/// use uecho::protocol::Message;
+/// use echonet::Controller;
+/// use echonet::Property;
+/// use echonet::protocol::Esv;
+/// use echonet::protocol::Message;
 ///
 /// let mut ctrl = Controller::new();
 /// ctrl.start();
