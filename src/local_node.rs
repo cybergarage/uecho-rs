@@ -157,13 +157,17 @@ impl LocalNode {
     }
 
     fn update_node_profile(&mut self) {
+        let mut obj_codes = Vec::new();
+        for obj in self.objects() {
+            obj_codes.push(obj.code());
+        }
         let node_prof_obj = self.node_profile_object();
         if node_prof_obj.is_none() {
             return;
         }
         let node_prof_obj = node_prof_obj.unwrap();
         let mut node_prof = NodeProfile::from(node_prof_obj);
-        // node_prof.update(self.objects())
+        node_prof.update(&obj_codes);
     }
 }
 
