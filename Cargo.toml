@@ -1,5 +1,5 @@
 [package]
-name = "uecho"
+name = "echonet"
 version = "0.9.0"
 authors = ["The uecho-rs Authors <skonno@cybergarage.org>"]
 edition = "2021"
