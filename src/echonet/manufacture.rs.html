@@ -49,6 +49,7 @@
 <span id="49">49</span>
 <span id="50">50</span>
 <span id="51">51</span>
+<span id="52">52</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -66,7 +67,8 @@
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">pub type </span>ManufactureCode = u32;
+<span class="doccomment">/// ManufactureCode represents a manufacturer code registerd by the ECHONET CONSORTIUM.
+</span><span class="kw">pub type </span>ManufactureCode = u32;
 
 <span class="doccomment">/// Manufacture represents a manufacturer name and code registerd by the ECHONET CONSORTIUM.
 </span><span class="kw">pub struct </span>Manufacture {
