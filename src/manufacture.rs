@@ -24,10 +24,6 @@ pub struct Manufacture {
 
 pub type Manufactures = Arc<Mutex<Vec<Manufacture>>>;
 
-fn manufactures_new() -> Manufactures {
-    Arc::new(Mutex::new(Vec::new()))
-}
-
 impl Manufacture {
     pub fn new() -> Manufacture {
         Manufacture {
