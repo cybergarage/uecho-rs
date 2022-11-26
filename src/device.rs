@@ -95,6 +95,7 @@ pub struct Device {
 }
 
 impl Device {
+    /// Create a new device.
     pub fn new(code: ObjectCode) -> Device {
         let mut dev = Device {
             node: DeviceNode::new(),
@@ -103,6 +104,7 @@ impl Device {
         dev
     }
 
+    /// Create a new device with the node to which it belongs.
     pub fn new_with_node(code: ObjectCode, node: Arc<Mutex<LocalNode>>) -> Device {
         let mut dev = Device {
             node: DeviceNode::new_with_node(node),
