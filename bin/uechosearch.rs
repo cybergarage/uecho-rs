@@ -22,7 +22,7 @@ use uecho::protocol::esv::Esv;
 use uecho::protocol::message::Message;
 
 fn main() {
-    logger::init();
+    // logger::init();
 
     let mut ctrl = Controller::new();
     ctrl.start();
@@ -38,18 +38,22 @@ fn main() {
                 if !obj_prop.is_read_required() {
                     continue;
                 }
+                print!("        [{:02X}] {}:", obj_prop.code(), obj_prop.name());
                 let mut msg = Message::new();
                 msg.set_esv(Esv::ReadRequest);
                 msg.set_deoj(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
                 let rx = ctrl.post_message(&node, &mut msg);
-                match rx.recv_timeout(Duration::from_secs(2)) {
+                match rx.recv_timeout(Duration::from_secs(1)) {
                     Ok(msg) => {
-                        println!("        [{:02X} {}]", prop.code(), hex::encode(msg.bytes()));
+                        for msg_prop in msg.properties() {
+                            print!("{}", hex::encode(msg_prop.data()));
+                        }
+                        println!("");
                     }
                     Err(_e) => {
-                        println!("        [{:02X}] {}", prop.code(), "timeout");
+                        println!("{}",  "<timeout>");
                     }
                 };
             }
