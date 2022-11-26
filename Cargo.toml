@@ -6,6 +6,7 @@ edition = "2021"
 readme = "README.md"
 homepage = "http://www.cybergarage.org/"
 repository = "https://github.com/cybergarage/uecho-rs"
+license = "Apache-2.0"
 license-file = "LICENSE"
 description = "Portable development framework for ECHONET Lite"
 categories = ["network-programming"]
