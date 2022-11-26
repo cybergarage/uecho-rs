@@ -17,8 +17,8 @@ use std::net::SocketAddr;
 
 use crate::protocol::Message;
 use crate::transport::multicast_manager::MulticastManager;
-use crate::transport::observer::*;
 use crate::transport::unicast_manager::UnicastManager;
+use crate::transport::*;
 
 pub struct Manager {
     ucast_mgr: UnicastManager,

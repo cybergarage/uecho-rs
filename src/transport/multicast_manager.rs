@@ -15,7 +15,7 @@
 use crate::protocol::Message;
 use crate::transport::interface::*;
 use crate::transport::multicast_server::MulticastServer;
-use crate::transport::observer::*;
+use crate::transport::*;
 
 pub struct MulticastManager {
     mcast_servers: Vec<MulticastServer>,

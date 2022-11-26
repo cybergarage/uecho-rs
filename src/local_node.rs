@@ -22,8 +22,8 @@ use std::sync::Mutex;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::{Message, TID, TID_MAX, TID_MIN};
-use crate::transport::manager::*;
-use crate::transport::observer::*;
+use crate::transport::Manager;
+use crate::transport::*;
 
 // LocalNode represents an internal ECHONET-lite node in the controller and device nodes.
 pub struct LocalNode {
