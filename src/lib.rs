@@ -12,9 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//! # echonet (uecho-rs)
+//! The `uecho-rs` is a portable and cross-platform development framework for creating controller applications and devices of [ECHONET-Lite][enet] for Rust developers. [ECHONET-Lite][enet] is an open standard specification for IoT devices in Japan, it specifies more than 100 IoT devices such as crime prevention sensors, air conditioners and refrigerators.
+//!
+//! ## What is uEcho ?
+//!
+//! The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
+//!
+//! ![](https://github.com/cybergarage/uecho-rs/raw/master/doc/img/framework.png)
+//!
+//! However, the `uecho-rs`, developer has only to set basic listeners to implement the devices and controllers because uEcho handles other requests such as request and notification requests automatically.
+//!
+//! [enet]:http://echonet.jp/english/
+
+/// Logger function module.
 pub mod log;
+/// Messaging protocol module (Internal).
 pub mod protocol;
+/// Messaging transport module (Internal).
 pub mod transport;
+/// Utility function module.
 pub mod util;
 
 pub use self::controller::*;
