@@ -33,7 +33,13 @@ fn is_v6_interface(ipnet: ipnetwork::IpNetwork) -> bool {
 fn get_interfaces(enable_interface: EnableInterface) -> Vec<IpAddr> {
     let mut ifaddrs = Vec::new();
     for iface in datalink::interfaces() {
-        if iface.is_loopback() || iface.ips.is_empty() {
+        if !iface.is_up() {
+            continue;
+        }
+        if iface.is_loopback() || iface.is_point_to_point() {
+            continue;
+        }
+        if iface.ips.is_empty() {
             continue;
         }
         for ifaddr in iface.ips {
