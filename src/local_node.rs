@@ -19,13 +19,13 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
 
-// use crate::local_node_observer::LocalNodeObserver;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::{Message, TID, TID_MAX, TID_MIN};
 use crate::transport::manager::*;
 use crate::transport::observer::*;
 
+// LocalNode represents an internal ECHONET-lite node in the controller and device nodes.
 pub struct LocalNode {
     transport_mgr: Manager,
     objects: Vec<Object>,
