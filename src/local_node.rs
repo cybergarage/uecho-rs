@@ -130,8 +130,8 @@ impl LocalNode {
     fn send_post_reopnse(&mut self, msg: Message) {
         match self.post_sender.send(msg) {
             Ok(()) => {}
-            Err(err) => {
-                warn!("{}", err);
+            Err(_err) => {
+                // warn!("{}", err);
             }
         }
         let (tx, _): (Sender<Message>, Receiver<Message>) = mpsc::channel();
