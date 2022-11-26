@@ -15,7 +15,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 use crate::transport::observer::Observer;
 
 pub struct TestNotifyCounter {
@@ -38,7 +38,7 @@ impl Observer for TestNotifyCounter {
 #[cfg(test)]
 mod tests {
 
-    use crate::protocol::message::Message;
+    use crate::protocol::Message;
     use crate::transport::notify_manager::*;
     use crate::transport::notify_manager_test::*;
 

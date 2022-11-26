@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 
 pub trait MessageHandler {
     fn message_received(&self, msg: &Message) -> Result<Message, String>;

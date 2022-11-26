@@ -15,7 +15,7 @@
 use std::io;
 use std::net::SocketAddr;
 
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 use crate::transport::multicast_manager::MulticastManager;
 use crate::transport::observer::*;
 use crate::transport::unicast_manager::UnicastManager;

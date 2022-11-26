@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 use crate::transport::interface::*;
 use crate::transport::multicast_server::MulticastServer;
 use crate::transport::observer::*;

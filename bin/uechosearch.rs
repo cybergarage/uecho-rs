@@ -15,11 +15,11 @@
 use std::time::Duration;
 use std::{thread, time};
 
-use uecho::Controller;
 use uecho::log::*;
-use uecho::protocol::esv::Esv;
-use uecho::protocol::message::Message;
-use uecho::protocol::property::Property;
+use uecho::protocol::Esv;
+use uecho::protocol::Message;
+use uecho::protocol::Property;
+use uecho::Controller;
 
 fn main() {
     // logger::init();

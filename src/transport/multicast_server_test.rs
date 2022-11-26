@@ -20,8 +20,8 @@ mod tests {
     use std::thread;
     use std::time::Duration;
 
-    use crate::protocol::esv::Esv;
-    use crate::protocol::message::*;
+    use crate::protocol::Esv;
+    use crate::protocol::Message;
     use crate::transport::interface::*;
     use crate::transport::multicast_server::*;
 

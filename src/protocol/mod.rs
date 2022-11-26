@@ -12,12 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod error;
-pub mod esv;
-pub mod message;
-pub mod message_handler;
-pub mod property;
-pub mod result;
+pub use self::error::*;
+pub use self::esv::*;
+pub use self::message::*;
+pub use self::property::*;
+pub use self::result::*;
+
+mod error;
+mod esv;
+mod message;
+mod message_handler;
+mod property;
+mod result;
 
 mod esv_test;
 mod message_test;
