@@ -49,13 +49,6 @@ impl LocalNode {
         self.objects.push(NodeProfile::new());
     }
 
-    pub fn addr(&self) -> IpAddr {
-        match self.transport_mgr.local_addr() {
-            Ok(local_addr) => return local_addr.ip(),
-            Err(_) => return IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
-        }
-    }
-
     pub fn add_object(&mut self, obj: Object) -> bool {
         self.objects.push(obj);
         self.update_node_profile();
