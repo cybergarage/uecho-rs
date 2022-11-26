@@ -23,7 +23,7 @@ use crate::object::*;
 use crate::protocol::Message;
 use crate::remote_node::*;
 
-/// Controller represents a ECHONET-lite controller to communicate other ECHONET-lite nodes.
+/// Controller represents a ECHONET-lite controller node to communicate other ECHONET-lite nodes.
 /// # Examples
 /// ```
 /// use std::{thread, time};
