@@ -75,6 +75,8 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -88,6 +90,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+</span><span class="attribute">#![allow(dead_code)]
 
 </span><span class="kw">use </span>pnet::datalink;
 <span class="kw">use </span>pnet::ipnetwork;
@@ -104,7 +108,7 @@
     }
 }
 
-<span class="kw">fn </span>is_all_interface(ipnet: ipnetwork::IpNetwork) -&gt; bool {
+<span class="kw">fn </span>is_all_interface(_ipnet: ipnetwork::IpNetwork) -&gt; bool {
     <span class="bool-val">true
 </span>}
 
