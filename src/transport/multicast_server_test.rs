@@ -18,7 +18,7 @@ mod tests {
     use std::sync::Arc;
     use std::sync::Mutex;
     use std::thread;
-    use std::time::Duration;
+    use std::time;
 
     use crate::protocol::Esv;
     use crate::protocol::Message;
@@ -33,7 +33,7 @@ mod tests {
         fn test_multicast_server(ifaddr: IpAddr) {
             logger::init();
 
-            const TEST_OBSERVER_COUNT: i32 = 10;
+            const TEST_OBSERVER_COUNT: i32 = 1;
             let counter = Arc::new(Mutex::new(0));
 
             let mut server = MulticastServer::new();
@@ -43,7 +43,7 @@ mod tests {
 
             assert!(server.bind(ifaddr));
             assert!(server.start());
-            thread::sleep(Duration::from_secs(1));
+            thread::sleep(time::Duration::from_secs(1));
 
             let mut msg = Message::new();
             msg.set_esv(Esv::Notification);
@@ -51,10 +51,10 @@ mod tests {
                 let server_addr = server.local_addr();
                 assert!(server_addr.is_ok());
                 assert!(server.notify(&msg));
+                thread::sleep(time::Duration::from_secs(1));
             }
 
             let wait_time = (TEST_OBSERVER_COUNT as u64) / 5;
-            thread::sleep(Duration::from_secs(wait_time));
             assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
 
             assert!(server.stop());
