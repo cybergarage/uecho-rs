@@ -55,6 +55,23 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -69,10 +86,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+</span><span class="doccomment">//! # echonet (uecho-rs)
+//! The `uecho-rs` is a portable and cross-platform development framework for creating controller applications and devices of [ECHONET-Lite][enet] for Rust developers. [ECHONET-Lite][enet] is an open standard specification for IoT devices in Japan, it specifies more than 100 IoT devices such as crime prevention sensors, air conditioners and refrigerators.
+//!
+//! ## What is uEcho ?
+//!
+//! The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
+//!
+//! ![](https://github.com/cybergarage/uecho-rs/raw/master/doc/img/framework.png)
+//!
+//! However, the `uecho-rs`, developer has only to set basic listeners to implement the devices and controllers because uEcho handles other requests such as request and notification requests automatically.
+//!
+//! [enet]:http://echonet.jp/english/
+
+/// Logger function module.
 </span><span class="kw">pub mod </span>log;
-<span class="kw">pub mod </span>protocol;
-<span class="kw">pub mod </span>transport;
-<span class="kw">pub mod </span>util;
+<span class="doccomment">/// Messaging protocol module (Internal).
+</span><span class="kw">pub mod </span>protocol;
+<span class="doccomment">/// Messaging transport module (Internal).
+</span><span class="kw">pub mod </span>transport;
+<span class="doccomment">/// Utility function module.
+</span><span class="kw">pub mod </span>util;
 
 <span class="kw">pub use </span><span class="self">self</span>::controller::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::database::<span class="kw-2">*</span>;
