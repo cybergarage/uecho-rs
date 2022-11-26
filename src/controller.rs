@@ -73,12 +73,14 @@ pub struct Controller {
 }
 
 impl Controller {
+    /// Create a new controller.
     pub fn new() -> Controller {
         Controller {
             node: ControllerNode::new(),
         }
     }
 
+    /// Create a new controller with the node to which it belongs.
     pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Controller {
         Controller {
             node: ControllerNode::new_with_node(node),
