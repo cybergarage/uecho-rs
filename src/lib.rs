@@ -23,7 +23,6 @@ pub use self::device::*;
 pub use self::local_node::*;
 pub use self::manufacture::*;
 pub use self::object::*;
-pub use self::profile::*;
 pub use self::property::*;
 pub use self::remote_node::*;
 pub use self::super_object::*;
