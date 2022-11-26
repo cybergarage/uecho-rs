@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/// Bytes offers encoding and decoding utility functions between byte array and integers.
 pub struct Bytes {}
 
 impl Bytes {
