@@ -1,0 +1,690 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/database_manufacturers.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>database_manufacturers.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../echonet/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../echonet/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../echonet/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+</span><span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
+<span class="kw">use </span><span class="kw">crate</span>::manufacture::<span class="kw-2">*</span>;
+
+<span class="kw">impl </span>StandardDatabase {
+    <span class="kw">fn </span>add_standard_manufacture(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ManufactureCode, name: String) -&gt; Manufacture {
+        <span class="kw">let </span><span class="kw-2">mut </span>m = Manufacture::new();
+        m.set_code(code);
+        m.set_name(name);
+        m
+    }
+
+    <span class="kw">pub fn </span>init_manufactures(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00002F</span>, String::from(<span class="string">&quot;AIPHONE CO., LTD. &quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00011A</span>, String::from(<span class="string">&quot;ACCESS CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00002C</span>, String::from(<span class="string">&quot;AFT CO.,LTD&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000068</span>, String::from(<span class="string">&quot;AISIN CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000079</span>, String::from(<span class="string">&quot;Anritsu Engineering Co.,Ltd,&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00007F</span>, String::from(<span class="string">&quot;ANRITSU CUSTOMER SUPPORT CO., LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000110</span>, String::from(<span class="string">&quot;ASUKA SOLUTION COMPANY LIMITED&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000096</span>, String::from(<span class="string">&quot;Azbil Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000FD</span>, String::from(<span class="string">&quot;Bellnix Co.,LTD&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00006F</span>, String::from(<span class="string">&quot;BUFFALO INC.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B6</span>, String::from(<span class="string">&quot;Bunka Shutter Co., Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000D2</span>, String::from(<span class="string">&quot;CHOFUKOSAN.Co.Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000088</span>, String::from(<span class="string">&quot;CHOFU SEISAKUSHO CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000D5</span>, String::from(<span class="string">&quot;Choshu Industry Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000A3</span>,
+            String::from(<span class="string">&quot;Chubu Electric Power Grid Co.,Inc. &quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000FB</span>, String::from(<span class="string">&quot;CICO CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F8</span>, String::from(<span class="string">&quot;CIMX INITIATIVE INC. &quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000123</span>, String::from(<span class="string">&quot;Contec Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000067</span>, String::from(<span class="string">&quot;CORONA CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00009C</span>, String::from(<span class="string">&quot;Diamond Electric Mfg.Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000080</span>,
+            String::from(<span class="string">&quot;DIAMOND&amp;ZEBRA ELECTRIC MFG.CO.,LTD.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000119</span>, String::from(<span class="string">&quot;DAIHEN Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000008</span>, String::from(<span class="string">&quot;DAIKIN INDUSTRIES,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000015</span>,
+            String::from(<span class="string">&quot;Daikin Systems&amp;Solutions Laboratory Ltd.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00004F</span>, String::from(<span class="string">&quot;Daiwa House Industry co.,Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000103</span>, String::from(<span class="string">&quot;Data Technology Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E3</span>, String::from(<span class="string">&quot;DDL Co.,Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000AD</span>, String::from(<span class="string">&quot;Delta Electronics (Japan), Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000BE</span>, String::from(<span class="string">&quot;DENKEN Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F4</span>, String::from(<span class="string">&quot;DENSO AIRCOOL CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00003C</span>, String::from(<span class="string">&quot;DENSO Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000109</span>, String::from(<span class="string">&quot;DENSO Co.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00012B</span>, String::from(<span class="string">&quot;DENSO WAVE INCORPORATED&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000113</span>, String::from(<span class="string">&quot;EBARA JITSUGYO POWER CO., LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000057</span>, String::from(<span class="string">&quot;ELIIYPower Co.,ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00012E</span>, String::from(<span class="string">&quot;Eneres Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000041</span>, String::from(<span class="string">&quot;ENEGATE CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00010A</span>, String::from(<span class="string">&quot;ENERGY GAP CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F3</span>, String::from(<span class="string">&quot;Energy Gateway, Inc&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F2</span>, String::from(<span class="string">&quot;Energy Solutions Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000072</span>, String::from(<span class="string">&quot;Eneres Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000DD</span>, String::from(<span class="string">&quot;EneStone Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000055</span>, String::from(<span class="string">&quot;FAMILYNET JAPAN CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F6</span>, String::from(<span class="string">&quot;Field Logic Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00012F</span>, String::from(<span class="string">&quot;FORMOSA BIO AND ENERGY CORP JAPAN&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000CB</span>, String::from(<span class="string">&quot;Fuji Electric Co.,Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000FC</span>, String::from(<span class="string">&quot;FUJI INDUSTRIAL CO.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000051</span>, String::from(<span class="string">&quot;Fuji IT Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00008A</span>, String::from(<span class="string">&quot;FUJITSU GENERAL LIMITED&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00004E</span>, String::from(<span class="string">&quot;FUJITSU LIMITED&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000090</span>, String::from(<span class="string">&quot;Fujitsu Component Limited&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000DE</span>,
+            String::from(<span class="string">&quot;FUJIFILM Business Innovation Japan Corp&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000097</span>,
+            String::from(<span class="string">&quot;Future Technology Laboratories, Inc.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00009B</span>, String::from(<span class="string">&quot;GASTAR Co.,Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00008F</span>, String::from(<span class="string">&quot;Glamo Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000129</span>, String::from(<span class="string">&quot;GoodWe  Japan K.K&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00009F</span>, String::from(<span class="string">&quot;GS Yuasa International Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000122</span>, String::from(<span class="string">&quot;Hanwha Q CELLS Japan CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000001</span>, String::from(<span class="string">&quot;Hitachi, Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000022</span>,
+            String::from(<span class="string">&quot;Hitachi Global Life Solutions, Inc.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000040</span>,
+            String::from(<span class="string">&quot;Hitachi High-Tech Solutions Corporation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000044</span>,
+            String::from(<span class="string">&quot;Hitachi Industrial Equipment Systems Co.,Ltd.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000CC</span>,
+            String::from(<span class="string">&quot;Hitachi-Johnson Controls Air Conditioning,Inc.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E5</span>, String::from(<span class="string">&quot;Hitachi Power Solutions Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000E6</span>,
+            String::from(<span class="string">&quot;Hokkaido Electrical Safety Services Foundation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B8</span>, String::from(<span class="string">&quot;Hokkaido Electric Power Co.,Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000BB</span>,
+            String::from(<span class="string">&quot;Hokuriku Electric Power Transmission &amp; Distribution Company&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000A1</span>, String::from(<span class="string">&quot;Honda R&amp;D Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000115</span>, String::from(<span class="string">&quot;HUAWEI TECHNOLOGIES JAPAN K.K.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000AC</span>, String::from(<span class="string">&quot;IDEC COROPRATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00004D</span>, String::from(<span class="string">&quot;INABA DENKI SANGYO CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000056</span>, String::from(<span class="string">&quot;iND Co.,Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000ED</span>, String::from(<span class="string">&quot;INFINI Co. LTD&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F2</span>, String::from(<span class="string">&quot;INTEC Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B1</span>, String::from(<span class="string">&quot;Internet Initiative Japan Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000087</span>, String::from(<span class="string">&quot;I-O DATA DEVICE,INC.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00006B</span>, String::from(<span class="string">&quot;ISB Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00010F</span>, String::from(<span class="string">&quot;Iwatani Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000081</span>, String::from(<span class="string">&quot;IWATSU ELECTRIC CO., LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000C3</span>,
+            String::from(<span class="string">&quot;Japan Electric Meters Inspection Corporation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F7</span>, String::from(<span class="string">&quot;JCity,Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000CA</span>, String::from(<span class="string">&quot;JSP CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000D7</span>, String::from(<span class="string">&quot;Kaga Electronics co.,ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000077</span>, String::from(<span class="string">&quot;Kanagawa Institute of Technology&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000063</span>, String::from(<span class="string">&quot;Kawamura Electric Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F0</span>, String::from(<span class="string">&quot;KANEKA CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00010B</span>, String::from(<span class="string">&quot;KITANIHON ELECTRIC CABLE CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E8</span>, String::from(<span class="string">&quot;KOIZUMI LIGHTING TECHNOLOGY CORP.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00003B</span>, String::from(<span class="string">&quot;KYOCERA Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00008C</span>, String::from(<span class="string">&quot;Kyuden Technosystems Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000BF</span>,
+            String::from(<span class="string">&quot;KYUSHU ELECTRIC POWER TRANSMISSION AND DISTRIBUTION CO.,INC. &quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F1</span>, String::from(<span class="string">&quot;Laplace Systems Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000125</span>, String::from(<span class="string">&quot;LiveSmart KK&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000025</span>, String::from(<span class="string">&quot;LIXIL Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E0</span>, String::from(<span class="string">&quot;Looop Inc&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00010C</span>, String::from(<span class="string">&quot;MAX CO., LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000078</span>, String::from(<span class="string">&quot;Maxell, Ltd. &quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000058</span>, String::from(<span class="string">&quot;Mediotec Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000120</span>, String::from(<span class="string">&quot;Meisei electric co.,ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000083</span>, String::from(<span class="string">&quot;Melco Techno Yokohama Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000006</span>, String::from(<span class="string">&quot;Mitsubishi Electric Corp.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000034</span>,
+            String::from(<span class="string">&quot;MITSUBISHI ELECTRIC ENGINEERING COMPANY LIMITED&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000105</span>,
+            String::from(<span class="string">&quot;Mitsubishi Electric Lighting Corporation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00012A</span>, String::from(<span class="string">&quot;Monochrome Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00011D</span>, String::from(<span class="string">&quot;mui Lab, Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000D4</span>, String::from(<span class="string">&quot;Murata Manufacturing Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B0</span>, String::from(<span class="string">&quot;NALTEC, Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000106</span>, String::from(<span class="string">&quot;Nature Inc. &quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000009</span>, String::from(<span class="string">&quot;NEC Corp.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000118</span>, String::from(<span class="string">&quot;NEC Magnus Communications, Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000073</span>, String::from(<span class="string">&quot;NEC Platforms, Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000091</span>, String::from(<span class="string">&quot;NEC Platforms, Ltd. &quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E2</span>, String::from(<span class="string">&quot;NextDrive Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000104</span>, String::from(<span class="string">&quot;Next Energy &amp; Resources Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B2</span>, String::from(<span class="string">&quot;NF Blossom Technologies, Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000A5</span>, String::from(<span class="string">&quot;Nichibei Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00006C</span>, String::from(<span class="string">&quot;NICHICON CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000EB</span>, String::from(<span class="string">&quot;NICHICON (KAMEOKA) CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000102</span>, String::from(<span class="string">&quot;NICHICON (KUSATSU) CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000112</span>, String::from(<span class="string">&quot;NICHIEI INTEC CO., LTD&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000071</span>, String::from(<span class="string">&quot;NIHON SANGYO CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000DC</span>, String::from(<span class="string">&quot;NIHON TECHNO CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00007C</span>, String::from(<span class="string">&quot;NIPPON SYSTEMWARE CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x00008D</span>,
+            String::from(<span class="string">&quot;NIPPON TELEGRAPH AND TELEPHONE CORPORATION&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000047</span>,
+            String::from(<span class="string">&quot;NIPPON TELEGRAPH AND TELEPHONE EAST CORPORATION&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000086</span>,
+            String::from(<span class="string">&quot;NIPPON TELEGRAPH AND TELEPHONE WEST CORPORATION&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000036</span>, String::from(<span class="string">&quot;NISSIN SYSTEMS CO., LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B7</span>, String::from(<span class="string">&quot;Nitto Kogyo Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000054</span>, String::from(<span class="string">&quot;NORITZ CORP.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000A0</span>,
+            String::from(<span class="string">&quot;NTT Advanced Technology Corporation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000023</span>, String::from(<span class="string">&quot;NTT COMWARE CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000061</span>, String::from(<span class="string">&quot;NTT DATA INTELLILINK CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E9</span>, String::from(<span class="string">&quot;NTT Smile Energy Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F5</span>, String::from(<span class="string">&quot;ODELIC CO., LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000012</span>, String::from(<span class="string">&quot;Oi Electric Co., Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00006A</span>, String::from(<span class="string">&quot;OKAYA &amp; CO., LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000114</span>, String::from(<span class="string">&quot;OkayaKiden Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000048</span>, String::from(<span class="string">&quot;Oki Electric Industry Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000064</span>, String::from(<span class="string">&quot;OMRON SOCIAL SOLUTIONS CO.,LTD. &quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00012C</span>, String::from(<span class="string">&quot;Onamba Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000D8</span>, String::from(<span class="string">&quot;OSAKI DATATECH CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000052</span>, String::from(<span class="string">&quot;OSAKI ELECTRIC CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000127</span>, String::from(<span class="string">&quot;Paloma Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00000B</span>, String::from(<span class="string">&quot;Panasonic Holdings Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000DA</span>,
+            String::from(<span class="string">&quot;Panasonic Commercial Equipment Systems Co.,Ltd.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000FE</span>, String::from(<span class="string">&quot;Panasonic Ecology Systems Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000FA</span>, String::from(<span class="string">&quot;Plat&#39;Home Co.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000082</span>, String::from(<span class="string">&quot;PURPOSE CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000059</span>, String::from(<span class="string">&quot;Rinnai Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000128</span>, String::from(<span class="string">&quot;SAIKOH ENGINEERING Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00011E</span>, String::from(<span class="string">&quot;SAKAIGAWA CO., LTD&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00011C</span>, String::from(<span class="string">&quot;SANDEN RETAIL SYSTEMS CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00010E</span>, String::from(<span class="string">&quot;SANIX INCORPORATED&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000BA</span>, String::from(<span class="string">&quot;SankyoTateyama, Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000C5</span>, String::from(<span class="string">&quot;SANWA SHUTTER CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000093</span>, String::from(<span class="string">&quot;SATORI ELECTRIC CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000107</span>, String::from(<span class="string">&quot;SEIKO ELECTRIC CO.,LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00003A</span>, String::from(<span class="string">&quot;SEKISUI HOUSE, LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000005</span>, String::from(<span class="string">&quot;Sharp Corp&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000AE</span>, String::from(<span class="string">&quot;SHIKOKU ELECTRIC POWER CO.,INC.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00002E</span>, String::from(<span class="string">&quot;SHIKOKU INSTRUMENTATION CO.,LTD&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000CE</span>,
+            String::from(<span class="string">&quot;SHINDENGEN ELECTRIC MANUFACTURING CO.LTD.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00010D</span>, String::from(<span class="string">&quot;Shizen Energy Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000A8</span>, String::from(<span class="string">&quot;Smart Power System. Co,. Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000DF</span>, String::from(<span class="string">&quot;SMA Japan K.K.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000100</span>, String::from(<span class="string">&quot;Smart Solar Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00007E</span>, String::from(<span class="string">&quot;SMK Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E1</span>, String::from(<span class="string">&quot;SoftBank Corp.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x00011B</span>,
+            String::from(<span class="string">&quot;SolaX Power Network Technology (Zhe jiang) Co. , Ltd.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000060</span>,
+            String::from(<span class="string">&quot;Sony Computer Science Laboratories, Inc.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00006E</span>, String::from(<span class="string">&quot;Soundvision co.,ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000108</span>, String::from(<span class="string">&quot;SOUSEI Technology Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000116</span>, String::from(<span class="string">&quot;Sungrow Power Supply Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000101</span>, String::from(<span class="string">&quot;Sunpot Co., Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000DB</span>, String::from(<span class="string">&quot;Suntech Power Japan Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00003D</span>, String::from(<span class="string">&quot;SUMITOMO ELECTRIC INDUSTRIES, LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00003E</span>, String::from(<span class="string">&quot;SUMITOMO ELECTRIC NETWORKS, INC.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000085</span>, String::from(<span class="string">&quot;TAKAOKA TOKO CO.,LTD&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000AF</span>, String::from(<span class="string">&quot;Takara Standard Co.,Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000E4</span>, String::from(<span class="string">&quot;technoeye Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000FF</span>, String::from(<span class="string">&quot;TEPCO Energy Partner, Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000EE</span>, String::from(<span class="string">&quot;TESSERA TECHNOLOGY INC.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000B5</span>,
+            String::from(<span class="string">&quot;The Chugoku Electric Power Co., Ltd&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x00009A</span>,
+            String::from(<span class="string">&quot;The Kansai Electric Power Co., Inc.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000CD</span>, String::from(<span class="string">&quot;TOCLAS CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000126</span>, String::from(<span class="string">&quot;Togami Electric Mfg.co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000F9</span>, String::from(<span class="string">&quot;TOHO ELECTRONICS INC.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000C2</span>,
+            String::from(<span class="string">&quot;Tohoku Electric Meter Industry Co.,Inc&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000BC</span>,
+            String::from(<span class="string">&quot;TohokuElectric Power Network Company,Incorporated&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000099</span>,
+            String::from(<span class="string">&quot;Tokyo Electric Power Company Holdings, Inc.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B3</span>, String::from(<span class="string">&quot;TOPPERS Project, Inc.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000111</span>, String::from(<span class="string">&quot;Topre Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000017</span>, String::from(<span class="string">&quot;TOSHIBA CARRIER CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000016</span>, String::from(<span class="string">&quot;Toshiba Corp.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000043</span>,
+            String::from(<span class="string">&quot;TOSHIBA DEVELOPMENT &amp; ENGINEERING CORPORATION&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000EC</span>,
+            String::from(<span class="string">&quot;Toshiba Energy Systems &amp; Solutions Corporation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x0000D9</span>,
+            String::from(<span class="string">&quot;Toshiba IT &amp; Control Systems Corporation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000069</span>,
+            String::from(<span class="string">&quot;Toshiba Lifestyle Products &amp; Services Corporation&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x00001B</span>,
+            String::from(<span class="string">&quot;TOSHIBA  LIGHTING &amp; TECHNOLOGY CORPORATION&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(
+            <span class="number">0x000035</span>,
+            String::from(<span class="string">&quot;Toshiba Toko Meter Systems Co.,Ltd.&quot;</span>),
+        );
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000050</span>, String::from(<span class="string">&quot;TOTO LTD.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000EF</span>, String::from(<span class="string">&quot;TOYOTA INDUSTRIES CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000121</span>, String::from(<span class="string">&quot;TOYOTA MOTOR CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00011F</span>, String::from(<span class="string">&quot;TOYOTA TSUSHO CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00005D</span>, String::from(<span class="string">&quot;Tranceboot Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000076</span>, String::from(<span class="string">&quot;TSP CO.,Ltd&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000D0</span>, String::from(<span class="string">&quot;TSUBAKIMOTO CHAIN CO.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000C1</span>, String::from(<span class="string">&quot;Tsuken Electric Ind Co., Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000053</span>, String::from(<span class="string">&quot;Ubiquitous AI Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000117</span>, String::from(<span class="string">&quot;WWB Corporation&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x000095</span>, String::from(<span class="string">&quot;Yamato Denki Co.,Ltd.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00009E</span>, String::from(<span class="string">&quot;YASKAWA ELECTRIC CORPORATION&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x00007A</span>, String::from(<span class="string">&quot;ZUKEN ELMIC,INC.&quot;</span>));
+        <span class="self">self</span>.add_standard_manufacture(<span class="number">0x0000B4</span>, String::from(<span class="string">&quot;４R Energy Corporation&quot;</span>));
+    }
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="echonet" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
