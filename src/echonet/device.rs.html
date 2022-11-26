@@ -172,6 +172,21 @@
 <span id="172">172</span>
 <span id="173">173</span>
 <span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -191,6 +206,7 @@
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
+<span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
 <span class="kw">use </span><span class="kw">crate</span>::device_node::DeviceNode;
 <span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
@@ -269,15 +285,29 @@
 
 <span class="kw">impl </span>Device {
     <span class="kw">pub fn </span>new(code: ObjectCode) -&gt; Device {
-        Device {
+        <span class="kw">let </span><span class="kw-2">mut </span>dev = Device {
             node: DeviceNode::new(),
-        }
+        };
+        dev.set_code(code);
+        dev
     }
 
     <span class="kw">pub fn </span>new_with_node(code: ObjectCode, node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Device {
-        Device {
+        <span class="kw">let </span><span class="kw-2">mut </span>dev = Device {
             node: DeviceNode::new_with_node(node),
+        };
+        dev.set_code(code);
+        dev
+    }
+
+    <span class="kw">fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) {
+        <span class="kw">let </span>std_db = StandardDatabase::shared();
+        <span class="kw">let </span>std_obj = std_db.find_object(code);
+        <span class="kw">if </span>std_obj.is_none() {
+            <span class="kw">return</span>;
         }
+        <span class="kw">let </span><span class="kw-2">mut </span>dev = <span class="self">self</span>.node.lock().unwrap();
+        dev.add_object(std_obj.unwrap().clone());
     }
 
     <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {

@@ -33,6 +33,9 @@
 <span id="33">33</span>
 <span id="34">34</span>
 <span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -55,8 +58,8 @@
 
     <span class="attribute">#[test]
     </span><span class="kw">fn </span>device() {
-        <span class="comment">// let mut dev = Device::new(SUPER_OBJECT_CODE);
-        // dev.set_operating_status(true);
+        <span class="kw">let </span><span class="kw-2">mut </span>dev = Device::new(SUPER_OBJECT_CODE);
+        <span class="comment">// dev.set_operating_status(true);
         // assert_eq!(
         //     dev.operating_status().byte_data(),
         //     OBJECT_OPERATING_STATUS_ON
@@ -66,7 +69,10 @@
         //     dev.installation_location().byte_data(),
         //     DEVICE_INSTALLATION_LOCATION_UNKNOWN
         // );
-    </span>}
+
+        </span><span class="macro">assert!</span>(dev.start());
+        <span class="macro">assert!</span>(dev.stop());
+    }
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="echonet" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

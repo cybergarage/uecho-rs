@@ -94,6 +94,11 @@
 <span id="94">94</span>
 <span id="95">95</span>
 <span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -118,9 +123,9 @@
 <span class="kw">use </span>echonet::{Controller, ManufactureCode, StandardDatabase};
 
 <span class="kw">fn </span>main() {
-    <span class="comment">// logger::init();
+    logger::init();
 
-    </span><span class="kw">let </span><span class="kw-2">mut </span>ctrl = Controller::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>ctrl = Controller::new();
     ctrl.start();
     ctrl.search();
 
@@ -171,19 +176,24 @@
                 prop.set_code(obj_prop.code());
                 msg.add_property(prop);
 
+                <span class="kw">let </span><span class="kw-2">mut </span>prop_data = String::from(<span class="string">&quot;&quot;</span>);
                 <span class="kw">let </span>rx = ctrl.post_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>msg);
-                <span class="macro">print!</span>(<span class="string">&quot;        [{:02X}] {}: &quot;</span>, obj_prop.code(), obj_prop.name());
                 <span class="kw">match </span>rx.recv_timeout(Duration::from_secs(<span class="number">1</span>)) {
                     <span class="prelude-val">Ok</span>(msg) =&gt; {
-                        <span class="kw">for </span>msg_prop <span class="kw">in </span>msg.properties() {
-                            <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, hex::encode(msg_prop.data()));
+                        <span class="kw">if </span><span class="number">0 </span>&lt; msg.opc() {
+                            prop_data = hex::encode(msg.property(<span class="number">0</span>).data());
                         }
-                        <span class="macro">println!</span>(<span class="string">&quot;&quot;</span>);
                     }
-                    <span class="prelude-val">Err</span>(_e) =&gt; {
-                        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="string">&quot;&lt;timeout&gt;&quot;</span>);
+                    <span class="prelude-val">Err</span>(e) =&gt; {
+                        prop_data = <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, e);
                     }
                 };
+                <span class="macro">println!</span>(
+                    <span class="string">&quot;        [{:02X}] {}: {}&quot;</span>,
+                    obj_prop.code(),
+                    obj_prop.name(),
+                    prop_data
+                );
             }
         }
     }

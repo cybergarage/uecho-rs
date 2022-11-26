@@ -70,6 +70,9 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -87,14 +90,13 @@
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
 <span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
+<span class="kw">use </span><span class="kw">crate</span>::object::Object;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::RemoteNode;
 <span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverEntity};
 
 <span class="kw">pub struct </span>DeviceNode {
-    db: StandardDatabase,
     node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;,
     <span class="kw">pub </span>remote_nodes: Vec&lt;RemoteNode&gt;,
 }
@@ -106,11 +108,15 @@
 
     <span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Arc&lt;Mutex&lt;DeviceNode&gt;&gt; {
         <span class="kw">let </span>ctrl = Arc::new(Mutex::new(DeviceNode {
-            db: StandardDatabase::new(),
             node: node,
             remote_nodes: Vec::new(),
         }));
         ctrl
+    }
+
+    <span class="kw">pub fn </span>add_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj: Object) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
+        node.add_object(obj)
     }
 
     <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverEntity) -&gt; bool {
@@ -140,7 +146,7 @@
 }
 
 <span class="kw">impl </span>Observer <span class="kw">for </span>Arc&lt;Mutex&lt;DeviceNode&gt;&gt; {
-    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) {}
+    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _msg: <span class="kw-2">&amp;</span>Message) {}
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="echonet" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

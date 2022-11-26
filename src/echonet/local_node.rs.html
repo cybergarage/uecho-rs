@@ -147,6 +147,38 @@
 <span id="147">147</span>
 <span id="148">148</span>
 <span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -161,14 +193,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span>log::warn;
+</span><span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span>std::net::{IpAddr, Ipv4Addr, SocketAddr};
 <span class="kw">use </span>std::sync::mpsc;
 <span class="kw">use </span>std::sync::mpsc::{Receiver, Sender};
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, TID, TID_MAX, TID_MIN};
 <span class="kw">use </span><span class="kw">crate</span>::transport::Manager;
@@ -191,7 +222,12 @@
             last_tid: TID_MIN,
             post_sender: tx,
         }));
+        node.lock().unwrap().init();
         node
+    }
+
+    <span class="kw">pub fn </span>init(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.objects.push(NodeProfile::new());
     }
 
     <span class="kw">pub fn </span>addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IpAddr {
@@ -203,6 +239,7 @@
 
     <span class="kw">pub fn </span>add_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj: Object) -&gt; bool {
         <span class="self">self</span>.objects.push(obj);
+        <span class="self">self</span>.update_node_profile();
         <span class="bool-val">true
     </span>}
 
@@ -210,7 +247,7 @@
         <span class="kw">return </span><span class="kw-2">&amp;</span><span class="self">self</span>.objects;
     }
 
-    <span class="kw">pub fn </span>get_object(<span class="kw-2">&amp;</span><span class="self">self</span>, code: ObjectCode) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Object&gt; {
+    <span class="kw">pub fn </span>find_object(<span class="kw-2">&amp;</span><span class="self">self</span>, code: ObjectCode) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Object&gt; {
         <span class="kw">for </span>n <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.objects.len() {
             <span class="kw">if </span><span class="self">self</span>.objects[n].code() == code {
                 <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.objects[n]);
@@ -218,6 +255,19 @@
         }
         <span class="prelude-val">None
     </span>}
+
+    <span class="kw">pub fn </span>find_object_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Object&gt; {
+        <span class="kw">for </span>n <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.objects.len() {
+            <span class="kw">if </span><span class="self">self</span>.objects[n].code() == code {
+                <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span><span class="self">self</span>.objects[n]);
+            }
+        }
+        <span class="prelude-val">None
+    </span>}
+
+    <span class="kw">pub fn </span>node_profile_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Object&gt; {
+        <span class="self">self</span>.find_object_mut(NODE_PROFILE_OBJECT_CODE)
+    }
 
     <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverEntity) -&gt; bool {
         <span class="self">self</span>.transport_mgr.add_observer(observer.clone())
@@ -279,12 +329,26 @@
     <span class="kw">fn </span>send_post_reopnse(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: Message) {
         <span class="kw">match </span><span class="self">self</span>.post_sender.send(msg) {
             <span class="prelude-val">Ok</span>(()) =&gt; {}
-            <span class="prelude-val">Err</span>(err) =&gt; {
-                <span class="macro">warn!</span>(<span class="string">&quot;{}&quot;</span>, err);
-            }
+            <span class="prelude-val">Err</span>(_err) =&gt; {
+                <span class="comment">// warn!(&quot;{}&quot;, err);
+            </span>}
         }
         <span class="kw">let </span>(tx, <span class="kw">_</span>): (Sender&lt;Message&gt;, Receiver&lt;Message&gt;) = mpsc::channel();
         <span class="self">self</span>.post_sender = tx;
+    }
+
+    <span class="kw">fn </span>update_node_profile(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span><span class="kw-2">mut </span>obj_codes = Vec::new();
+        <span class="kw">for </span>obj <span class="kw">in </span><span class="self">self</span>.objects() {
+            obj_codes.push(obj.code());
+        }
+        <span class="kw">let </span>node_prof_obj = <span class="self">self</span>.node_profile_object();
+        <span class="kw">if </span>node_prof_obj.is_none() {
+            <span class="kw">return</span>;
+        }
+        <span class="kw">let </span>node_prof_obj = node_prof_obj.unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>node_prof = NodeProfile::from(node_prof_obj);
+        node_prof.update(<span class="kw-2">&amp;</span>obj_codes);
     }
 }
 
