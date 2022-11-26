@@ -58,7 +58,7 @@ impl MulticastManager {
             return true;
         }
 
-        for ifaddr in get_v4_interfaces() {
+        for ifaddr in get_all_interfaces() {
             let mut mcast_server = MulticastServer::new();
             if !mcast_server.bind(ifaddr) {
                 self.stop();

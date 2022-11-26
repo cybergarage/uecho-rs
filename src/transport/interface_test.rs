@@ -19,7 +19,7 @@ mod tests {
 
     #[test]
     fn v4_interface() {
-        let ifaddrs = get_v4_interfaces();
+        let ifaddrs = get_all_interfaces();
         for ifaddr in ifaddrs {
             assert!(ifaddr.is_ipv4())
         }

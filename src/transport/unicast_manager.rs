@@ -71,7 +71,7 @@ impl UnicastManager {
             return true;
         }
 
-        for ifaddr in get_v4_interfaces() {
+        for ifaddr in get_all_interfaces() {
             let mut udp_server = UnicastServer::new();
             if !udp_server.bind(ifaddr) {
                 self.stop();
