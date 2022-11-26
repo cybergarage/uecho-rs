@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::database::StandardDatabase;
 use crate::node_profile::*;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::mpsc;
@@ -47,12 +46,7 @@ impl LocalNode {
     }
 
     pub fn init(&mut self) {
-        let std_db = StandardDatabase::shared();
-        let std_obj = std_db.find_object(NODE_PROFILE_OBJECT_CODE);
-        if std_obj.is_none() {
-            return;
-        }
-        self.objects.push(std_obj.unwrap().clone());
+        self.objects.push(NodeProfile::new());
     }
 
     pub fn addr(&self) -> IpAddr {
@@ -146,6 +140,65 @@ impl LocalNode {
         }
         let (tx, _): (Sender<Message>, Receiver<Message>) = mpsc::channel();
         self.post_sender = tx;
+    }
+
+    fn update_node_profile(&mut self) {
+        // nodeProf, err := node.NodeProfile()
+        // if err != nil {
+        //     log.Errorf(err.Error())
+        //     return
+        // }
+
+        // // Check the current all objects
+
+        // classes := make([]*Class, 0)
+
+        // for _, dev := range node.devices {
+        //     devClass := dev.Class()
+        //     hasSameClass := false
+        //     for _, class := range classes {
+        //         if class.Equals(devClass) {
+        //             hasSameClass = true
+        //             break
+        //         }
+        //     }
+        //     if hasSameClass {
+        //         continue
+        //     }
+        //     classes = append(classes, devClass)
+        // }
+
+        // for _, prof := range node.profiles {
+        //     profClass := prof.Class()
+        //     hasSameClass := false
+        //     for _, class := range classes {
+        //         if class.Equals(profClass) {
+        //             hasSameClass = true
+        //             break
+        //         }
+        //     }
+        //     if hasSameClass {
+        //         continue
+        //     }
+        //     classes = append(classes, profClass)
+        // }
+
+        // // Number of self-node instances
+
+        // instanceCount := uint(len(node.devices))
+        // nodeProf.SetInstanceCount(instanceCount)
+
+        // // Number of self-node classes
+
+        // nodeProf.SetClassCount(uint(len(classes)))
+
+        // // Self-node instance list S and Instance list notification
+
+        // nodeProf.SetInstanceList(node.devices)
+
+        // // Self-node class list S
+
+        // nodeProf.SetClassList(classes)
     }
 }
 
