@@ -18,15 +18,33 @@ use std::net::IpAddr;
 
 type EnableInterface = fn(ipnetwork::IpNetwork) -> bool;
 
-fn is_all_interface(_ipnet: ipnetwork::IpNetwork) -> bool {
+fn is_ignore_interface(ipnet: ipnetwork::IpNetwork) -> bool {
+    let binding = ipnet.to_string();
+    let ifaddr = binding.as_str();
+    match ifaddr {
+        "172.17.0.1" => return true, // Docker default gateway
+        _ => return false,
+    }
+}
+
+fn is_all_interface(ipnet: ipnetwork::IpNetwork) -> bool {
+    if is_ignore_interface(ipnet) {
+        return false;
+    }
     true
 }
 
 fn is_v4_interface(ipnet: ipnetwork::IpNetwork) -> bool {
+    if is_ignore_interface(ipnet) {
+        return false;
+    }
     ipnet.is_ipv4()
 }
 
 fn is_v6_interface(ipnet: ipnetwork::IpNetwork) -> bool {
+    if is_ignore_interface(ipnet) {
+        return false;
+    }
     ipnet.is_ipv6()
 }
 
@@ -53,7 +71,7 @@ fn get_interfaces(enable_interface: EnableInterface) -> Vec<IpAddr> {
 }
 
 pub fn get_all_interfaces() -> Vec<IpAddr> {
-    get_interfaces(is_all_interface)
+    get_interfaces(is_v4_interface)
 }
 
 pub fn get_v4_interfaces() -> Vec<IpAddr> {

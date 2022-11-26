@@ -64,7 +64,7 @@ mod tests {
             assert!(server.stop());
         }
 
-        for ifaddr in get_v4_interfaces() {
+        for ifaddr in get_all_interfaces() {
             test_multicast_server(ifaddr);
         }
     }
