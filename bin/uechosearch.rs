@@ -33,7 +33,7 @@ fn main() {
     for (i, node) in ctrl.nodes().iter().enumerate() {
         println!("[{}] {}", i, node.addr());
         for (j, obj) in node.objects().iter().enumerate() {
-            println!("    [{}] {:06X}", j, obj.code());
+            println!("    [{}] {:06X} ({})", j, obj.code(), obj.class_name());
             for obj_prop in obj.properties() {
                 if !obj_prop.is_read_required() {
                     continue;
