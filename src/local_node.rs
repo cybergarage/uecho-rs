@@ -74,8 +74,17 @@ impl LocalNode {
         None
     }
 
-    pub fn node_profile_object(&self) -> Option<&Object> {
-        self.find_object(NODE_PROFILE_OBJECT_CODE)
+    pub fn find_object_mut(&mut self, code: ObjectCode) -> Option<&mut Object> {
+        for n in 0..self.objects.len() {
+            if self.objects[n].code() == code {
+                return Some(&mut self.objects[n]);
+            }
+        }
+        None
+    }
+
+    pub fn node_profile_object(&mut self) -> Option<&mut Object> {
+        self.find_object_mut(NODE_PROFILE_OBJECT_CODE)
     }
 
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
