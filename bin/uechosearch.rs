@@ -22,7 +22,7 @@ use echonet::util::Bytes;
 use echonet::{Controller, ManufactureCode, StandardDatabase};
 
 fn main() {
-    // logger::init();
+    logger::init();
 
     let mut ctrl = Controller::new();
     ctrl.start();
@@ -75,19 +75,19 @@ fn main() {
                 prop.set_code(obj_prop.code());
                 msg.add_property(prop);
 
+                let mut prop_data = String::from("");
                 let rx = ctrl.post_message(&node, &mut msg);
-                print!("        [{:02X}] {}: ", obj_prop.code(), obj_prop.name());
                 match rx.recv_timeout(Duration::from_secs(1)) {
                     Ok(msg) => {
-                        for msg_prop in msg.properties() {
-                            print!("{}", hex::encode(msg_prop.data()));
+                        if 0 < msg.opc() {
+                            prop_data = hex::encode(msg.property(0).data());
                         }
-                        println!("");
                     }
-                    Err(_e) => {
-                        println!("{}", "<timeout>");
+                    Err(e) => {
+                        prop_data = format!("{}", e);
                     }
                 };
+                println!("        [{:02X}] {}: {}", obj_prop.code(), obj_prop.name(), prop_data);
             }
         }
     }
