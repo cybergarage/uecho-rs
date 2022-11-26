@@ -37,11 +37,11 @@ use crate::database::StandardDatabase;
 use crate::manufacture::*;
 
 impl StandardDatabase {
-    fn add_standard_manufacture(&mut self, code: ManufactureCode, name: String) -> Manufacture {
+    fn add_standard_manufacture(&mut self, code: ManufactureCode, name: String) {
         let mut m = Manufacture::new();
         m.set_code(code);
         m.set_name(name);
-        m
+        self.add_manufacture(m);
     }
 
     pub fn init_manufactures(&mut self) {
