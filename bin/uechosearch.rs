@@ -53,8 +53,7 @@ fn main() {
                     }
                 }
             }
-            Err(_e) => {
-            }
+            Err(_e) => {}
         };
 
         println!("[{}] {} ({})", i, node.addr(), manufacture_name);
