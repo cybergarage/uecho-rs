@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["PORT",""]],"struct":[["Manager",""]],"trait":[["Observer",""]],"type":[["ObserverEntity",""]]};
+window.SIDEBAR_ITEMS = {"constant":[["PORT",""]],"struct":[["Manager","Manager handles all messaging packet between ECHONET-lite nodes."]],"trait":[["Observer","Observer defines a messaging packet interface between ECHONET-lite nodes."]],"type":[["ObserverEntity",""]]};

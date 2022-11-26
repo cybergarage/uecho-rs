@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Bytes",""]]};
+window.SIDEBAR_ITEMS = {"struct":[["Bytes","Bytes offers encoding and decoding utility functions between byte array and integers."]]};

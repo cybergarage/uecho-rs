@@ -27,6 +27,7 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -46,7 +47,8 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 
-<span class="kw">pub trait </span>Observer {
+<span class="doccomment">/// Observer defines a messaging packet interface between ECHONET-lite nodes.
+</span><span class="kw">pub trait </span>Observer {
     <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message);
 }
 

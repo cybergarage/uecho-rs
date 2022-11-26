@@ -73,6 +73,7 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
+<span id="76">76</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -95,7 +96,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::transport::unicast_manager::UnicastManager;
 <span class="kw">use </span><span class="kw">crate</span>::transport::<span class="kw-2">*</span>;
 
-<span class="kw">pub struct </span>Manager {
+<span class="doccomment">/// Manager handles all messaging packet between ECHONET-lite nodes.
+</span><span class="kw">pub struct </span>Manager {
     ucast_mgr: UnicastManager,
     mcast_mgr: MulticastManager,
 }
