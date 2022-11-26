@@ -17,12 +17,7 @@
 //!
 //! ## What is uEcho ?
 //!
-//! The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
-//!
-//! ![](https://github.com/cybergarage/uecho-rs/raw/master/doc/img/framework.png)
-//!
-//! However, the `uecho-rs`, developer has only to set basic listeners to implement the devices and controllers because uEcho handles other requests such as request and notification requests automatically.
-//!
+//! The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences. However, the developer has only to set basic listeners to implement the devices and controllers because the `uecho-rs` handles other requests such as read and notification requests automatically.
 //! [enet]:http://echonet.jp/english/
 
 /// Logger function module.
