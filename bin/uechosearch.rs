@@ -15,11 +15,11 @@
 use std::time::Duration;
 use std::{thread, time};
 
-use uecho::controller::Controller;
+use uecho::Controller;
 use uecho::log::*;
-use uecho::property::Property;
 use uecho::protocol::esv::Esv;
 use uecho::protocol::message::Message;
+use uecho::protocol::property::Property;
 
 fn main() {
     // logger::init();
@@ -38,13 +38,16 @@ fn main() {
                 if !obj_prop.is_read_required() {
                     continue;
                 }
-                print!("        [{:02X}] {}:", obj_prop.code(), obj_prop.name());
+
                 let mut msg = Message::new();
                 msg.set_esv(Esv::ReadRequest);
                 msg.set_deoj(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
+                msg.add_property(prop);
+
                 let rx = ctrl.post_message(&node, &mut msg);
+                print!("        [{:02X}] {}: ", obj_prop.code(), obj_prop.name());
                 match rx.recv_timeout(Duration::from_secs(1)) {
                     Ok(msg) => {
                         for msg_prop in msg.properties() {
@@ -53,7 +56,7 @@ fn main() {
                         println!("");
                     }
                     Err(_e) => {
-                        println!("{}",  "<timeout>");
+                        println!("{}", "<timeout>");
                     }
                 };
             }

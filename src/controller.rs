@@ -28,7 +28,7 @@ use crate::remote_node::*;
 /// ```
 /// use std::{thread, time};
 ///
-/// use uecho::controller::Controller;
+/// use uecho::Controller;
 /// use uecho::property::Property;
 /// use uecho::protocol::esv::Esv;
 /// use uecho::protocol::message::Message;
