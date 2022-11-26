@@ -1,7 +1,8 @@
 # Changelog
 
 ## v1.0.0 (2022-xx-x)
-- Added Device that represents a ECHONET-lite device node.
+- Added Device that represents a ECHONET-lite device node
+- Improved transport::Manager not to bind unavailable interfaces
 
 ## v0.9.0 (2022-11-26)
 - Initial public release  
