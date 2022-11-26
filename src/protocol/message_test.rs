@@ -15,8 +15,8 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::protocol::message::*;
     use crate::protocol::esv::*;
+    use crate::protocol::message::*;
     use hex;
 
     #[test]
