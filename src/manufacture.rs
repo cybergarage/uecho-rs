@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::sync::Arc;
-use std::sync::Mutex;
-
 /// ManufactureCode represents a manufacturer code registerd by the ECHONET CONSORTIUM.
 pub type ManufactureCode = u32;
 
@@ -23,8 +20,6 @@ pub struct Manufacture {
     code: ManufactureCode,
     name: String,
 }
-
-pub type Manufactures = Arc<Mutex<Vec<Manufacture>>>;
 
 impl Manufacture {
     pub fn new() -> Manufacture {
