@@ -58,6 +58,7 @@ impl LocalNode {
 
     pub fn add_object(&mut self, obj: Object) -> bool {
         self.objects.push(obj);
+        self.update_node_profile();
         true
     }
 
@@ -156,62 +157,13 @@ impl LocalNode {
     }
 
     fn update_node_profile(&mut self) {
-        // nodeProf, err := node.NodeProfile()
-        // if err != nil {
-        //     log.Errorf(err.Error())
-        //     return
-        // }
-
-        // // Check the current all objects
-
-        // classes := make([]*Class, 0)
-
-        // for _, dev := range node.devices {
-        //     devClass := dev.Class()
-        //     hasSameClass := false
-        //     for _, class := range classes {
-        //         if class.Equals(devClass) {
-        //             hasSameClass = true
-        //             break
-        //         }
-        //     }
-        //     if hasSameClass {
-        //         continue
-        //     }
-        //     classes = append(classes, devClass)
-        // }
-
-        // for _, prof := range node.profiles {
-        //     profClass := prof.Class()
-        //     hasSameClass := false
-        //     for _, class := range classes {
-        //         if class.Equals(profClass) {
-        //             hasSameClass = true
-        //             break
-        //         }
-        //     }
-        //     if hasSameClass {
-        //         continue
-        //     }
-        //     classes = append(classes, profClass)
-        // }
-
-        // // Number of self-node instances
-
-        // instanceCount := uint(len(node.devices))
-        // nodeProf.SetInstanceCount(instanceCount)
-
-        // // Number of self-node classes
-
-        // nodeProf.SetClassCount(uint(len(classes)))
-
-        // // Self-node instance list S and Instance list notification
-
-        // nodeProf.SetInstanceList(node.devices)
-
-        // // Self-node class list S
-
-        // nodeProf.SetClassList(classes)
+        let node_prof_obj = self.node_profile_object();
+        if node_prof_obj.is_none() {
+            return;
+        }
+        let node_prof_obj = node_prof_obj.unwrap();
+        let mut node_prof = NodeProfile::from(node_prof_obj);
+        // node_prof.update(self.objects())
     }
 }
 
