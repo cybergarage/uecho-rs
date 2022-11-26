@@ -22,9 +22,10 @@ use crate::database::StandardDatabase;
 use crate::local_node::LocalNode;
 use crate::message::SearchMessage;
 use crate::node_profile::NODE_PROFILE_OBJECT_CODE;
-use crate::object::ObjectCode;
+use crate::object::{Object, ObjectCode};
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
+use crate::super_object::SUPER_OBJECT_CODE;
 use crate::transport::PORT;
 use crate::transport::{Observer, ObserverEntity};
 
@@ -114,6 +115,20 @@ impl ControllerNode {
         }
         true
     }
+
+    pub fn import_std_object_properties(&mut self, obj: &mut Object, obj_code: ObjectCode) {
+        let std_obj = self.db.find_object(obj_code);
+        if std_obj.is_none() {
+            return;
+        }
+        obj.set_class_name(std_obj.unwrap().class_name().to_string());
+        for std_prop in std_obj.unwrap().properties() {
+            if std_obj.is_none() {
+                return;
+            }
+            obj.add_property(std_prop.clone());
+        }
+    }
 }
 
 impl Observer for Arc<Mutex<ControllerNode>> {
@@ -126,16 +141,9 @@ impl Observer for Arc<Mutex<ControllerNode>> {
 
         let mut remote_node = RemoteNode::from_message(msg);
         info!("FOUND: {}", remote_node.addr());
-        // Copy standard object properties
-        for (n, obj) in remote_node.objects_mut().iter_mut().enumerate() {
-            let std_obj = ctrl.db.find_object(obj.code());
-            if std_obj.is_none() {
-                continue;
-            }
-            info!("    [{}] {:02X}", n, std_obj.unwrap().code());
-            for std_prop in std_obj.unwrap().properties() {
-                obj.add_property(std_prop.clone());
-            }
+        for (_, obj) in remote_node.objects_mut().iter_mut().enumerate() {
+            ctrl.import_std_object_properties(obj, SUPER_OBJECT_CODE);
+            ctrl.import_std_object_properties(obj, obj.code());
         }
         ctrl.replace_remote_node(remote_node);
     }
