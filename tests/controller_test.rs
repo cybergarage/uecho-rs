@@ -31,7 +31,7 @@ fn controller() {
     let mut ctrl = mock::TestController::new(node.clone());
     assert!(ctrl.start());
     assert!(ctrl.search());
-    thread::sleep(time::Duration::from_secs(10));
+    thread::sleep(time::Duration::from_secs(0));
     assert!(ctrl.stop());
 
     assert!(dev.stop());
