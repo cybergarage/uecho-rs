@@ -15,6 +15,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
+/// ManufactureCode represents a manufacturer code registerd by the ECHONET CONSORTIUM.
 pub type ManufactureCode = u32;
 
 /// Manufacture represents a manufacturer name and code registerd by the ECHONET CONSORTIUM.
