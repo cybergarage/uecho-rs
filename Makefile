@@ -16,6 +16,8 @@
 #
 ###################################################################
 
+# export RUSTFLAGS := "-A dead_code"
+
 all: test
 
 .PHONY: format
@@ -24,7 +26,7 @@ format:
 	cargo fmt
 
 build: format
-	RUSTFLAGS="$RUSTFLAGS -A dead_code"; cargo build
+	cargo build
 
 doc: format
 	cargo doc --open
