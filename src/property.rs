@@ -32,6 +32,7 @@ pub enum PropertyAttr {
     Optional = 2,
 }
 
+/// Each ECHONET-lite object has properties. Property represents an ECHONET-lite property in a ECHONET-lite object.
 pub struct Property {
     code: PropertyCode,
     data: PropertyData,

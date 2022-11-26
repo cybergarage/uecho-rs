@@ -20,6 +20,7 @@ use crate::message::NodeProfileMessage;
 use crate::object::{Object, ObjectCode};
 use crate::protocol::Message;
 
+/// RemoteNode represents a ECHONET-lite node discovered by Controller. The remote node has the standard objects and properties defined by the ECHONET CONSORTIUM.
 pub struct RemoteNode {
     addr: IpAddr,
     objects: Vec<Object>,

@@ -24,6 +24,7 @@ use std::sync::Mutex;
 
 pub type ObjectCode = u32;
 
+/// Each ECHONET-lite node has objects. Object represents an ECHONET-lite Object in a ECHONET-lite node.
 pub struct Object {
     codes: [u8; 3],
     name: String,

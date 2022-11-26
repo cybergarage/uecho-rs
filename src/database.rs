@@ -18,6 +18,7 @@ use once_cell::sync::Lazy;
 
 static SHARED_STANDARD_DATABASE: Lazy<StandardDatabase> = Lazy::new(|| StandardDatabase::new());
 
+/// StandardDatabase represents a standard database for official device objects and manufactures defined by the ECHONET CONSORTIUM.
 pub struct StandardDatabase {
     manufactures: Vec<Manufacture>,
     objects: Vec<Object>,
