@@ -80,6 +80,7 @@ impl LocalNode {
     }
 
     pub fn post_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> Receiver<Message> {
+        self.update_message_header(msg);
         let (tx, rx): (Sender<Message>, Receiver<Message>) = mpsc::channel();
         self.post_sender = tx;
         self.transport_mgr.send(to_addr, msg);

@@ -44,7 +44,7 @@ fn main() {
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());
                 let rx = ctrl.post_message(&node, &mut msg);
-                match rx.recv_timeout(Duration::from_secs(1)) {
+                match rx.recv_timeout(Duration::from_secs(2)) {
                     Ok(msg) => {
                         println!("        [{:02X} {}]", prop.code(), hex::encode(msg.bytes()));
                     }
