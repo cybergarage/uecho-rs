@@ -86,6 +86,7 @@ pub const DEVICE_NO_FAULT_OCCURRED: u8 = 0x42;
 pub const DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = 0x00;
 pub const DEVICE_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_UNKNOWN;
 
+/// Device represents a ECHONET-lite device node.
 pub struct Device {
     node: Arc<Mutex<DeviceNode>>,
 }
