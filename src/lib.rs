@@ -23,9 +23,9 @@
 
 /// Logger function module.
 pub mod log;
-/// Messaging protocol module (Internal).
+/// Messaging protocol encoder and decoder module.
 pub mod protocol;
-/// Messaging transport module (Internal).
+/// Messaging transport manager module (Internal).
 pub mod transport;
 /// Utility function module.
 pub mod util;
