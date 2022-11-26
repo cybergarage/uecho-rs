@@ -74,6 +74,10 @@ impl LocalNode {
         None
     }
 
+    pub fn node_profile_object(&self) -> Option<&Object> {
+        self.find_object(NODE_PROFILE_OBJECT_CODE)
+    }
+
     pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
         self.transport_mgr.add_observer(observer.clone())
     }
