@@ -20,7 +20,7 @@ use crate::controller_node::ControllerNode;
 use crate::local_node::LocalNode;
 use crate::node_profile::*;
 use crate::object::*;
-use crate::protocol::message::*;
+use crate::protocol::Message;
 use crate::remote_node::*;
 
 /// Controller represents a ECHONET-lite controller to communicate other ECHONET-lite nodes.
@@ -30,8 +30,8 @@ use crate::remote_node::*;
 ///
 /// use uecho::Controller;
 /// use uecho::property::Property;
-/// use uecho::protocol::esv::Esv;
-/// use uecho::protocol::message::Message;
+/// use uecho::protocol::Esv;
+/// use uecho::protocol::Message;
 ///
 /// let mut ctrl = Controller::new();
 /// ctrl.start();

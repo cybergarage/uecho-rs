@@ -18,7 +18,7 @@ use std::net::{IpAddr, Ipv4Addr};
 
 use crate::message::NodeProfileMessage;
 use crate::object::{Object, ObjectCode};
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 
 pub struct RemoteNode {
     addr: IpAddr,

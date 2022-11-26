@@ -17,7 +17,7 @@ use std::sync::Mutex;
 
 use crate::database::StandardDatabase;
 use crate::local_node::LocalNode;
-use crate::protocol::message::Message;
+use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
 use crate::transport::observer::{Observer, ObserverEntity};
 
