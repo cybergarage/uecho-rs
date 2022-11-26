@@ -24,7 +24,7 @@ pub struct Manufacture {
 
 pub type Manufactures = Arc<Mutex<Vec<Manufacture>>>;
 
-pub fn manufactures_new() -> Manufactures {
+fn manufactures_new() -> Manufactures {
     Arc::new(Mutex::new(Vec::new()))
 }
 
