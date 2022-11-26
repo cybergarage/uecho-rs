@@ -19,8 +19,6 @@ use std::cmp::PartialEq;
 use std::collections::hash_map::Values;
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
-use std::sync::Arc;
-use std::sync::Mutex;
 
 pub type ObjectCode = u32;
 

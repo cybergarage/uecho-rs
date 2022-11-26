@@ -29,7 +29,7 @@ fn is_ignore_interface(ipnet: ipnetwork::IpNetwork) -> bool {
     }
 }
 
-fn is_all_interface(ipnet: ipnetwork::IpNetwork) -> bool {
+fn is_all_interface(_ipnet: ipnetwork::IpNetwork) -> bool {
     true
 }
 
