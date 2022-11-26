@@ -1,5 +1,7 @@
 ![logo](doc/img/logo.png)
 
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/cybergarage/uecho-rs)
+
 The `uecho-rs` is a portable and cross platform development framework for creating controller applications and devices of [ECHONET Lite][enet] for Rust developers. [ECHONET][enet] is an open standard specification for IoT devices in Japan, it specifies more than 100 IoT devices such as crime prevention sensor, air conditioner and refrigerator.
 
 ## What is uEcho ?
