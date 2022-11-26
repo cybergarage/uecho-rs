@@ -17,6 +17,7 @@ use std::sync::Mutex;
 
 use crate::protocol::Message;
 
+/// Observer defines a messaging packet interface between ECHONET-lite nodes.
 pub trait Observer {
     fn message_received(&mut self, msg: &Message);
 }
