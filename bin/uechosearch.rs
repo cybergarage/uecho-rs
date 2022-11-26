@@ -87,7 +87,12 @@ fn main() {
                         prop_data = format!("{}", e);
                     }
                 };
-                println!("        [{:02X}] {}: {}", obj_prop.code(), obj_prop.name(), prop_data);
+                println!(
+                    "        [{:02X}] {}: {}",
+                    obj_prop.code(),
+                    obj_prop.name(),
+                    prop_data
+                );
             }
         }
     }
