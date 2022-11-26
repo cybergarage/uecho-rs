@@ -88,6 +88,7 @@
 <span id="88">88</span>
 <span id="89">89</span>
 <span id="90">90</span>
+<span id="91">91</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -106,7 +107,8 @@
 
 <span class="kw">pub type </span>PropertyCode = u8;
 
-<span class="kw">pub struct </span>Property {
+<span class="doccomment">/// Each ECHONET-lite message has properties. Property represents a ECHONET-lite property of a message packet as specified in the ECHONET-lite specification.
+</span><span class="kw">pub struct </span>Property {
     code: PropertyCode,
     data: Vec&lt;u8&gt;,
 }

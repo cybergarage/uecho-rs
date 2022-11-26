@@ -265,6 +265,27 @@
 <span id="265">265</span>
 <span id="266">266</span>
 <span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -294,7 +315,28 @@
 <span class="kw">pub const </span>TID_MIN: TID = <span class="number">0</span>;
 <span class="kw">pub const </span>TID_MAX: TID = <span class="number">65535</span>;
 
-<span class="kw">pub struct </span>Message {
+<span class="doccomment">/// Message represents a messaging packet between ECHONET-lite nodes as specified in the ECHONET-lite specification.
+/// # Examples
+/// ```
+/// use echonet::protocol::Message;
+/// use echonet::protocol::Esv;
+/// use echonet::protocol::Property;
+/// use hex;
+///
+/// let mut msg = Message::new();
+/// msg.set_esv(Esv::ReadRequest);
+/// msg.set_deoj(0x029101);
+/// let mut prop = Property::new();
+/// prop.set_code(0x80);
+/// msg.add_property(prop);
+///
+/// let opc = msg.opc();
+/// for n in 0..opc {
+///     let prop = msg.property(n);
+///     println!(&quot;[{}] {}&quot;, n, hex::encode(prop.data()));
+/// }
+/// ```
+</span><span class="kw">pub struct </span>Message {
     ehd: [u8; <span class="number">2</span>],
     tid: [u8; <span class="number">2</span>],
     seoj: [u8; <span class="number">3</span>],

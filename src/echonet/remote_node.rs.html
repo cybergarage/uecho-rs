@@ -113,6 +113,7 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
+<span id="116">116</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -135,7 +136,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 
-<span class="kw">pub struct </span>RemoteNode {
+<span class="doccomment">/// RemoteNode represents a ECHONET-lite node discovered by Controller. The remote node has the standard objects and properties defined by the ECHONET CONSORTIUM.
+</span><span class="kw">pub struct </span>RemoteNode {
     addr: IpAddr,
     objects: Vec&lt;Object&gt;,
 }

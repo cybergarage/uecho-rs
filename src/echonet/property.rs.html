@@ -249,6 +249,7 @@
 <span id="249">249</span>
 <span id="250">250</span>
 <span id="251">251</span>
+<span id="252">252</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -283,7 +284,8 @@
     Optional = <span class="number">2</span>,
 }
 
-<span class="kw">pub struct </span>Property {
+<span class="doccomment">/// Each ECHONET-lite object has properties. Property represents an ECHONET-lite property in a ECHONET-lite object.
+</span><span class="kw">pub struct </span>Property {
     code: PropertyCode,
     data: PropertyData,
     name: String,

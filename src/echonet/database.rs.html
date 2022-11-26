@@ -67,6 +67,7 @@
 <span id="67">67</span>
 <span id="68">68</span>
 <span id="69">69</span>
+<span id="70">70</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -87,7 +88,8 @@
 
 <span class="kw">static </span>SHARED_STANDARD_DATABASE: Lazy&lt;StandardDatabase&gt; = Lazy::new(|| StandardDatabase::new());
 
-<span class="kw">pub struct </span>StandardDatabase {
+<span class="doccomment">/// StandardDatabase represents a standard database for official device objects and manufactures defined by the ECHONET CONSORTIUM.
+</span><span class="kw">pub struct </span>StandardDatabase {
     manufactures: Vec&lt;Manufacture&gt;,
     objects: Vec&lt;Object&gt;,
 }
