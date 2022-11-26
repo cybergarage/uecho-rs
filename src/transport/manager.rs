@@ -52,10 +52,6 @@ impl Manager {
         self.mcast_mgr.notify(msg)
     }
 
-    pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        self.ucast_mgr.local_addr()
-    }
-
     pub fn start(&mut self) -> bool {
         if !self.mcast_mgr.start() {
             self.stop();
