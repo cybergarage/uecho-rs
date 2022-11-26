@@ -23,6 +23,51 @@ use crate::object::*;
 use crate::protocol::message::*;
 use crate::remote_node::*;
 
+/// Controller represents a ECHONET-lite controller to communicate other ECHONET-lite nodes.
+/// # Examples
+/// ```
+/// use std::{thread, time};
+///
+/// use uecho::controller::Controller;
+/// use uecho::property::Property;
+/// use uecho::protocol::esv::Esv;
+/// use uecho::protocol::message::Message;
+///
+/// let mut ctrl = Controller::new();
+/// ctrl.start();
+/// ctrl.search();
+/// thread::sleep(time::Duration::from_secs(2));
+/// for (i, node) in ctrl.nodes().iter().enumerate() {
+///     println!("[{}] {}", i, node.addr());
+///     for (j, obj) in node.objects().iter().enumerate() {
+///         println!("    [{}] {:06X}", j, obj.code());
+///         for obj_prop in obj.properties() {
+///             if !obj_prop.is_read_required() {
+///                 continue;
+///             }
+///             print!("        [{:02X}] {}:", obj_prop.code(), obj_prop.name());
+///             let mut msg = Message::new();
+///             msg.set_esv(Esv::ReadRequest);
+///             msg.set_deoj(obj.code());
+///             let mut prop = Property::new();
+///             prop.set_code(obj_prop.code());
+///             let rx = ctrl.post_message(&node, &mut msg);
+///             match rx.recv_timeout(time::Duration::from_secs(1)) {
+///                 Ok(msg) => {
+///                     for msg_prop in msg.properties() {
+///                         print!("{}", hex::encode(msg_prop.data()));
+///                     }
+///                     println!("");
+///                 }
+///                 Err(_e) => {
+///                     println!("{}",  "<timeout>");
+///                 }
+///             };
+///         }
+///     }
+/// }
+/// ctrl.stop();
+/// ```
 pub struct Controller {
     node: Arc<Mutex<ControllerNode>>,
 }
