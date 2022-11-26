@@ -22,6 +22,10 @@ mod tests {
     fn standard_database() {
         let db = StandardDatabase::shared();
 
+        // Manufacture Object
+        let m = db.find_manufacture(0x00000B);
+        assert!(m.is_some());
+
         // Super Object
         let obj = db.find_object(SUPER_OBJECT_CODE);
         assert!(obj.is_some());
