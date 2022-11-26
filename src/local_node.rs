@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use log::warn;
+use crate::database::StandardDatabase;
+use crate::node_profile::*;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::{Message, TID, TID_MAX, TID_MIN};
 use crate::transport::Manager;
@@ -42,7 +42,17 @@ impl LocalNode {
             last_tid: TID_MIN,
             post_sender: tx,
         }));
+        node.lock().unwrap().init();
         node
+    }
+
+    pub fn init(&mut self) {
+        let std_db = StandardDatabase::shared();
+        let std_obj = std_db.find_object(NODE_PROFILE_OBJECT_CODE);
+        if std_obj.is_none() {
+            return;
+        }
+        self.objects.push(std_obj.unwrap().clone());
     }
 
     pub fn addr(&self) -> IpAddr {

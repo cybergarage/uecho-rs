@@ -20,7 +20,6 @@ use std::sync::Mutex;
 use crate::database::StandardDatabase;
 use crate::device_node::DeviceNode;
 use crate::local_node::LocalNode;
-use crate::node_profile::*;
 use crate::object::{Object, ObjectCode};
 use crate::property::*;
 use crate::super_object::*;
@@ -101,7 +100,6 @@ impl Device {
             node: DeviceNode::new(),
         };
         dev.set_code(code);
-        dev.set_code(NODE_PROFILE_OBJECT_CODE);
         dev
     }
 
@@ -110,7 +108,6 @@ impl Device {
             node: DeviceNode::new_with_node(node),
         };
         dev.set_code(code);
-        dev.set_code(NODE_PROFILE_OBJECT_CODE);
         dev
     }
 
