@@ -17,6 +17,7 @@ use std::sync::Mutex;
 
 pub type ManufactureCode = u32;
 
+/// Manufacture represents a manufacturer name and code registerd by the ECHONET CONSORTIUM.
 pub struct Manufacture {
     code: ManufactureCode,
     name: String,

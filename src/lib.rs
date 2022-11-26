@@ -22,8 +22,6 @@ pub use self::database::*;
 pub use self::device::*;
 pub use self::local_node::*;
 pub use self::manufacture::*;
-pub use self::message::*;
-pub use self::node_profile::*;
 pub use self::object::*;
 pub use self::profile::*;
 pub use self::property::*;
