@@ -35,6 +35,10 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -58,6 +62,10 @@
     <span class="attribute">#[test]
     </span><span class="kw">fn </span>standard_database() {
         <span class="kw">let </span>db = StandardDatabase::shared();
+
+        <span class="comment">// Manufacture Object
+        </span><span class="kw">let </span>m = db.find_manufacture(<span class="number">0x00000B</span>);
+        <span class="macro">assert!</span>(m.is_some());
 
         <span class="comment">// Super Object
         </span><span class="kw">let </span>obj = db.find_object(SUPER_OBJECT_CODE);

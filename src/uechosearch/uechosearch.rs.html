@@ -65,6 +65,36 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -79,14 +109,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span>std::time::Duration;
+</span><span class="kw">use </span>std::string::String;
+<span class="kw">use </span>std::time::Duration;
 <span class="kw">use </span>std::{thread, time};
 
 <span class="kw">use </span>echonet::log::<span class="kw-2">*</span>;
-<span class="kw">use </span>echonet::protocol::Esv;
-<span class="kw">use </span>echonet::protocol::Message;
-<span class="kw">use </span>echonet::protocol::Property;
-<span class="kw">use </span>echonet::Controller;
+<span class="kw">use </span>echonet::protocol::{Esv, Message, Property};
+<span class="kw">use </span>echonet::util::Bytes;
+<span class="kw">use </span>echonet::{Controller, ManufactureCode, StandardDatabase};
 
 <span class="kw">fn </span>main() {
     <span class="comment">// logger::init();
@@ -98,15 +128,45 @@
     thread::sleep(time::Duration::from_secs(<span class="number">2</span>));
 
     <span class="kw">for </span>(i, node) <span class="kw">in </span>ctrl.nodes().iter().enumerate() {
-        <span class="macro">println!</span>(<span class="string">&quot;[{}] {}&quot;</span>, i, node.addr());
-        <span class="kw">for </span>(j, obj) <span class="kw">in </span>node.objects().iter().enumerate() {
+        <span class="comment">// Makes a manufacture code read (Esv::ReadRequest) message.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+        msg.set_esv(Esv::ReadRequest);
+        msg.set_deoj(<span class="number">0x0EF001</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
+        prop.set_code(<span class="number">0x8A</span>);
+        msg.add_property(prop);
+
+        <span class="kw">let </span><span class="kw-2">mut </span>manufacture_name = String::from(<span class="string">&quot;&quot;</span>);
+        <span class="kw">let </span>rx = ctrl.post_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>msg);
+        <span class="kw">match </span>rx.recv_timeout(Duration::from_secs(<span class="number">1</span>)) {
+            <span class="prelude-val">Ok</span>(msg) =&gt; {
+                <span class="kw">let </span>props = msg.properties();
+                <span class="kw">if </span><span class="number">0 </span>&lt; props.len() {
+                    <span class="kw">let </span>manufacture_code = Bytes::to_u32(props[<span class="number">0</span>].data()) <span class="kw">as </span>ManufactureCode;
+                    <span class="kw">let </span>std_db = StandardDatabase::shared();
+                    <span class="kw">let </span>found_manufacture = std_db.find_manufacture(manufacture_code);
+                    <span class="kw">if </span>found_manufacture.is_some() {
+                        manufacture_name = found_manufacture.unwrap().name().to_string();
+                    }
+                }
+            }
+            <span class="prelude-val">Err</span>(_e) =&gt; {
+            }
+        };
+
+        <span class="macro">println!</span>(<span class="string">&quot;[{}] {} ({})&quot;</span>, i, node.addr(), manufacture_name);
+
+        <span class="comment">// Prints all mandatory properties in the object.
+
+        </span><span class="kw">for </span>(j, obj) <span class="kw">in </span>node.objects().iter().enumerate() {
             <span class="macro">println!</span>(<span class="string">&quot;    [{}] {:06X} ({})&quot;</span>, j, obj.code(), obj.class_name());
             <span class="kw">for </span>obj_prop <span class="kw">in </span>obj.properties() {
                 <span class="kw">if </span>!obj_prop.is_read_required() {
                     <span class="kw">continue</span>;
                 }
 
-                <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+                <span class="comment">// Makes a property value read (Esv::ReadRequest) message.
+                </span><span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
                 msg.set_esv(Esv::ReadRequest);
                 msg.set_deoj(obj.code());
                 <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
