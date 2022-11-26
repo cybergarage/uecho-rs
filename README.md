@@ -12,6 +12,6 @@ The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the
 
 ![](doc/img/framework.png)
 
-However, the `uecho-rs`, developer has only to set basic listeners to implement the devices and controllers because uEcho handles other requests such as request and notification requests automatically.
+However, the developer has only to set basic listeners to implement the devices and controllers because the `uecho-rs` handles other requests such as read and notification requests automatically.
 
 [enet]:http://echonet.jp/english/
