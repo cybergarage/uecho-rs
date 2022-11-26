@@ -24,7 +24,7 @@ format:
 	cargo fmt
 
 build: format
-	cargo build
+	RUSTFLAGS="$RUSTFLAGS -A dead_code"; cargo build
 
 doc: format
 	cargo doc --open

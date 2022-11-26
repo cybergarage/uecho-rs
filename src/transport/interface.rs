@@ -22,7 +22,7 @@ fn is_ignore_interface(ipnet: ipnetwork::IpNetwork) -> bool {
     let binding = ipnet.to_string();
     let ifaddr = binding.as_str();
     match ifaddr {
-        "172.17.0.1" => return true, // Docker default gateway
+        "172.17.0.1/16" => return true, // Docker default gateway
         _ => return false,
     }
 }
