@@ -17,8 +17,10 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use crate::database::StandardDatabase;
 use crate::device_node::DeviceNode;
 use crate::local_node::LocalNode;
+use crate::node_profile::*;
 use crate::object::{Object, ObjectCode};
 use crate::property::*;
 use crate::super_object::*;
@@ -95,15 +97,31 @@ pub struct Device {
 
 impl Device {
     pub fn new(code: ObjectCode) -> Device {
-        Device {
+        let mut dev = Device {
             node: DeviceNode::new(),
-        }
+        };
+        dev.set_code(code);
+        dev.set_code(NODE_PROFILE_OBJECT_CODE);
+        dev
     }
 
     pub fn new_with_node(code: ObjectCode, node: Arc<Mutex<LocalNode>>) -> Device {
-        Device {
+        let mut dev = Device {
             node: DeviceNode::new_with_node(node),
+        };
+        dev.set_code(code);
+        dev.set_code(NODE_PROFILE_OBJECT_CODE);
+        dev
+    }
+
+    fn set_code(&mut self, code: ObjectCode) {
+        let std_db = StandardDatabase::shared();
+        let std_obj = std_db.find_object(code);
+        if std_obj.is_none() {
+            return;
         }
+        let mut dev = self.node.lock().unwrap();
+        dev.add_object(std_obj.unwrap().clone());
     }
 
     pub fn start(&mut self) -> bool {
