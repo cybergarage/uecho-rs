@@ -43,7 +43,7 @@ mod tests {
 
             assert!(server.bind(ifaddr));
             assert!(server.start());
-            thread::sleep(time::Duration::from_secs(1));
+            thread::sleep(time::Duration::from_secs(5));
 
             let mut msg = Message::new();
             msg.set_esv(Esv::Notification);
@@ -54,7 +54,7 @@ mod tests {
                 thread::sleep(time::Duration::from_secs(1));
             }
 
-            // NOTE: GitHub Action is slow and may drop to send packets.
+            // NOTE: GitHub Action is slow and may drop to send UDP packets.
             // assert_eq!(*counter.lock().unwrap(), TEST_OBSERVER_COUNT);
             assert!(0 < *counter.lock().unwrap());
 
