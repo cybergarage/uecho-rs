@@ -217,25 +217,19 @@ impl LocalNode {
             return None;
         }
 
-        // (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
-        // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
-        // (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
-
         let mut are_all_properties_available = true;
         for req_msg_prop in req_msg.properties() {
+            // (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
             let dst_prop = dst_obj.find_property(req_msg_prop.code());
             if dst_prop.is_none() {
                 are_all_properties_available = false;
                 break;
             }
+            // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
             let dst_prop = dst_prop.unwrap();
             match req_msg.esv() {
                 Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
                     if !dst_prop.is_writable() {
-                        are_all_properties_available = false;
-                        break;
-                    }
-                    if 0 < dst_prop.capacity() && (dst_prop.capacity() < req_msg_prop.size()) {
                         are_all_properties_available = false;
                         break;
                     }
@@ -255,15 +249,21 @@ impl LocalNode {
                         are_all_properties_available = false;
                         break;
                     }
-                    if 0 < dst_prop.capacity() && (dst_prop.capacity() < req_msg_prop.size()) {
-                        are_all_properties_available = false;
-                        break;
-                    }
                 }
                 _ => {
                     are_all_properties_available = false;
                     break;
                 }
+            }
+            // (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
+            match req_msg.esv() {
+                Esv::WriteRequest | Esv::WriteRequestResponseRequired | Esv::WriteReadRequest => {
+                    if 0 < dst_prop.capacity() && (dst_prop.capacity() < req_msg_prop.size()) {
+                        are_all_properties_available = false;
+                        break;
+                    }
+                }
+                _ => {}
             }
         }
 
