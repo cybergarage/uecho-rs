@@ -172,6 +172,90 @@
 <span id="172">172</span>
 <span id="173">173</span>
 <span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -186,17 +270,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
+</span><span class="kw">use </span>log::<span class="kw-2">*</span>;
 <span class="kw">use </span>std::net::SocketAddr;
 <span class="kw">use </span>std::sync::mpsc;
 <span class="kw">use </span>std::sync::mpsc::{Receiver, Sender};
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, TID, TID_MAX, TID_MIN};
+<span class="kw">use </span><span class="kw">crate</span>::message::ResponseErrorMessage;
+<span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
 <span class="kw">use </span><span class="kw">crate</span>::transport::Manager;
 <span class="kw">use </span><span class="kw">crate</span>::transport::<span class="kw-2">*</span>;
+<span class="kw">use crate</span>::{object::<span class="kw-2">*</span>, Property};
 
 <span class="doccomment">/// LocalNode represents an internal ECHONET-Lite node in the controller and device nodes.
 </span><span class="kw">pub struct </span>LocalNode {
@@ -260,12 +346,12 @@
     }
 
     <span class="kw">pub fn </span>send_message(<span class="kw-2">&amp;mut </span><span class="self">self</span>, to_addr: SocketAddr, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; bool {
-        <span class="self">self</span>.update_message_header(msg);
+        <span class="self">self</span>.update_message_trandaction_id(msg);
         <span class="self">self</span>.transport_mgr.send(to_addr, msg)
     }
 
     <span class="kw">pub fn </span>post_message(<span class="kw-2">&amp;mut </span><span class="self">self</span>, to_addr: SocketAddr, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; Receiver&lt;Message&gt; {
-        <span class="self">self</span>.update_message_header(msg);
+        <span class="self">self</span>.update_message_trandaction_id(msg);
         <span class="kw">let </span>(tx, rx): (Sender&lt;Message&gt;, Receiver&lt;Message&gt;) = mpsc::channel();
         <span class="self">self</span>.post_sender = tx;
         <span class="self">self</span>.transport_mgr.send(to_addr, msg);
@@ -273,12 +359,45 @@
     }
 
     <span class="kw">pub fn </span>notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; bool {
-        <span class="self">self</span>.update_message_header(msg);
+        <span class="self">self</span>.update_message_trandaction_id(msg);
         <span class="self">self</span>.transport_mgr.notify(msg)
+    }
+
+    <span class="kw">fn </span>create_annouce_property_message(<span class="kw-2">&amp;</span><span class="self">self</span>, obj: <span class="kw-2">&amp;</span>Object, prop: <span class="kw-2">&amp;</span>Property) -&gt; Message {
+        <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+        msg.set_esv(Esv::Notification);
+        msg.set_deoj(NODE_PROFILE_OBJECT_CODE);
+        msg.set_seoj(obj.code());
+        msg.add_property(prop.into());
+        msg
+    }
+
+    <span class="kw">pub fn </span>annouce_property(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj: <span class="kw-2">&amp;</span>Object, prop: <span class="kw-2">&amp;</span>Property) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>msg = <span class="self">self</span>.create_annouce_property_message(obj, prop);
+        <span class="self">self</span>.notify(<span class="kw-2">&amp;mut </span>msg)
+    }
+
+    <span class="kw">pub fn </span>annouce(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">let </span>node_profile_obj = <span class="self">self</span>.find_object(NODE_PROFILE_OBJECT_CODE);
+        <span class="kw">if </span>node_profile_obj.is_none() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="kw">let </span>node_profile_obj = node_profile_obj.unwrap();
+        <span class="kw">let </span>instance_list_prop =
+            node_profile_obj.find_property(NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION);
+        <span class="kw">if </span>instance_list_prop.is_none() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="kw">let </span>instance_list_prop = instance_list_prop.unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>msg = <span class="self">self</span>.create_annouce_property_message(node_profile_obj, instance_list_prop);
+        <span class="self">self</span>.notify(<span class="kw-2">&amp;mut </span>msg)
     }
 
     <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.start() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="kw">if </span>!<span class="self">self</span>.annouce() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
         <span class="bool-val">true
@@ -291,9 +410,8 @@
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">fn </span>update_message_header(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;mut </span>Message) {
+    <span class="kw">fn </span>update_message_trandaction_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;mut </span>Message) {
         msg.set_tid(<span class="self">self</span>.next_tid());
-        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
     }
 
     <span class="kw">fn </span>next_tid(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; TID {
@@ -336,13 +454,63 @@
         <span class="kw">let </span><span class="kw-2">mut </span>node_prof = NodeProfile::from(node_prof_obj);
         node_prof.update(<span class="kw-2">&amp;</span>obj_codes);
     }
+
+    <span class="kw">fn </span>response_for_request_message(<span class="kw-2">&amp;</span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
+        <span class="comment">// Part II ECHONET Lite Communication Middleware Specifications
+        // 4.2.2 Basic Sequences for Object Control in General
+
+        </span><span class="kw">let </span>dst_obj_code = req_msg.deoj();
+
+        <span class="comment">// (A) Processing when the controlled object does not exist
+
+        </span><span class="kw">let </span>dst_obj = <span class="self">self</span>.find_object(dst_obj_code);
+        <span class="kw">if </span>dst_obj.is_none() {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        }
+        <span class="kw">let </span>dst_obj = dst_obj.unwrap();
+
+        <span class="comment">// (B) Processing when the controlled object exists, except when ESV = 0x60 to 0x63, 0x6E and 0x74
+
+        </span><span class="kw">if </span>!req_msg.esv().is_request() {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        }
+
+        <span class="comment">// (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
+
+        </span><span class="kw">let </span><span class="kw-2">mut </span>has_all_properties = <span class="bool-val">true</span>;
+        <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties() {
+            <span class="kw">if </span>!dst_obj.has_property(req_msg_prop.code()) {
+                has_all_properties = <span class="bool-val">false</span>;
+                <span class="kw">break</span>;
+            }
+        }
+
+        <span class="kw">if </span>!has_all_properties {
+            <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+        }
+
+        <span class="prelude-val">None
+    </span>}
 }
 
 <span class="kw">impl </span>Observer <span class="kw">for </span>Arc&lt;Mutex&lt;LocalNode&gt;&gt; {
-    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) {
+    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) {
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.lock().unwrap();
-        <span class="kw">if </span>node.is_last_message_response(msg) {
-            node.send_post_reopnse(msg.clone());
+        <span class="kw">if </span>node.is_last_message_response(req_msg) {
+            node.send_post_reopnse(req_msg.clone());
+        }
+        <span class="kw">let </span>res_msg = node.response_for_request_message(req_msg);
+        <span class="kw">if </span>res_msg.is_some() {
+            <span class="kw">let </span><span class="kw-2">mut </span>res_msg = res_msg.unwrap();
+            <span class="kw">if </span>res_msg.esv().is_response() {
+                <span class="kw">if </span>res_msg.esv().is_unicast_response() {
+                    node.send_message(SocketAddr::new(req_msg.addr(), PORT), <span class="kw-2">&amp;mut </span>res_msg);
+                } <span class="kw">else </span>{
+                    node.notify(<span class="kw-2">&amp;mut </span>res_msg);
+                }
+            } <span class="kw">else </span>{
+                <span class="macro">warn!</span>(<span class="string">&quot;invalid ESV response ({}): {}&quot;</span>, res_msg.esv(), res_msg)
+            }
         }
     }
 }

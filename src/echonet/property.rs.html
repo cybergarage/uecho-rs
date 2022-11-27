@@ -254,6 +254,11 @@
 <span id="254">254</span>
 <span id="255">255</span>
 <span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -270,8 +275,10 @@
 
 </span><span class="attribute">#![allow(dead_code)]
 
-</span><span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
-<span class="kw">use </span>std::hash::{Hash, Hasher};
+</span><span class="kw">use </span>std::hash::{Hash, Hasher};
+
+<span class="kw">use </span><span class="kw">crate</span>::protocol;
+<span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
 
 <span class="kw">pub const </span>PROPERTY_CODE_MIN: u8 = <span class="number">0x80</span>;
 <span class="kw">pub const </span>PROPERTY_CODE_MAX: u8 = <span class="number">0xFF</span>;
@@ -491,23 +498,26 @@
 
 <span class="kw">impl </span>Clone <span class="kw">for </span>Property {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Property {
-        <span class="kw">let </span><span class="kw-2">mut </span>prop = Property {
+        Property {
             code: <span class="self">self</span>.code(),
-            data: Vec::new(),
+            data: <span class="self">self</span>.data.clone(),
             name: <span class="self">self</span>.name.clone(),
             read_attr: <span class="self">self</span>.read_attr,
             write_attr: <span class="self">self</span>.write_attr,
             anno_attr: <span class="self">self</span>.anno_attr,
-        };
-        prop.data.resize(<span class="self">self</span>.data.len(), <span class="number">0</span>);
-        prop.data.copy_from_slice(<span class="self">self</span>.data.as_slice());
-        prop
+        }
     }
 }
 
 <span class="kw">impl </span>Hash <span class="kw">for </span>Property {
     <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
         <span class="self">self</span>.code().hash(state);
+    }
+}
+
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>Property&gt; <span class="kw">for </span>protocol::Property {
+    <span class="kw">fn </span>from(from: <span class="kw-2">&amp;</span>Property) -&gt; <span class="self">Self </span>{
+        protocol::Property::from(from.code, from.data.clone())
     }
 }
 </code></pre></div>

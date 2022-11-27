@@ -132,6 +132,9 @@
 <span id="132">132</span>
 <span id="133">133</span>
 <span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -212,6 +215,7 @@
 
     <span class="kw">pub fn </span>search_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj_code: ObjectCode) -&gt; bool {
         <span class="kw">let </span><span class="kw-2">mut </span>msg = SearchMessage::new();
+        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         msg.set_deoj(obj_code);
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
         node.notify(<span class="kw-2">&amp;mut </span>msg)
@@ -222,11 +226,13 @@
     }
 
     <span class="kw">pub fn </span>send_message(<span class="kw-2">&amp;</span><span class="self">self</span>, remote_node: <span class="kw-2">&amp;</span>RemoteNode, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; bool {
+        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
         node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
     <span class="kw">pub fn </span>post_message(<span class="kw-2">&amp;</span><span class="self">self</span>, remote_node: <span class="kw-2">&amp;</span>RemoteNode, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; Receiver&lt;Message&gt; {
+        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
         node.post_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }

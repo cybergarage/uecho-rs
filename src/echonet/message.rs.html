@@ -100,6 +100,45 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -140,6 +179,45 @@
 
     <span class="kw">pub fn </span>new() -&gt; Message {
         SearchMessage::from_object_code(NODE_PROFILE_OBJECT_CODE)
+    }
+}
+
+<span class="kw">pub struct </span>ResponseErrorMessage {}
+
+<span class="kw">impl </span>ResponseErrorMessage {
+    <span class="kw">pub fn </span>from(req_msg: <span class="kw-2">&amp;</span>Message) -&gt; Message {
+        <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+        <span class="kw">match </span>req_msg.esv() {
+            Esv::WriteRequest =&gt; {
+                msg.set_esv(Esv::WriteRequestError);
+            }
+            Esv::WriteRequestResponseRequired =&gt; {
+                msg.set_esv(Esv::WriteRequestResponseRequiredError);
+            }
+            Esv::ReadRequest =&gt; {
+                msg.set_esv(Esv::ReadRequestError);
+            }
+            Esv::NotificationRequest =&gt; {
+                msg.set_esv(Esv::NotificationRequestError);
+            }
+            Esv::WriteReadRequest =&gt; {
+                msg.set_esv(Esv::WriteReadRequestError);
+            }
+            Esv::NotificationResponseRequired =&gt; {
+                msg.set_esv(Esv::NotificationRequestError);
+            }
+            <span class="kw">_ </span>=&gt; {
+                msg.set_esv(Esv::Unknown);
+            }
+        }
+        msg.set_esv(Esv::ReadRequest);
+        msg.set_seoj(req_msg.deoj());
+        msg.set_deoj(req_msg.seoj());
+        <span class="kw">for </span>n <span class="kw">in </span><span class="number">0</span>..req_msg.opc() {
+            <span class="kw">let </span>req_prop = req_msg.property(n);
+            msg.add_property(req_prop.clone());
+        }
+        msg
     }
 }
 
