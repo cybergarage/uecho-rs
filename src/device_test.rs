@@ -22,22 +22,25 @@ mod tests {
     fn device() {
         let device_code = 0x029101;
         let mut dev = Device::new(device_code);
-        // let node = dev.node();
+
         assert!(dev.set_property(DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_ON]));
         let prop_data = dev.property(DEVICE_OPERATING_STATUS);
         assert!(prop_data.is_some());
-        // dev.set_operating_status(true);
-        // assert_eq!(
-        //     dev.operating_status().byte_data(),
-        //     OBJECT_OPERATING_STATUS_ON
-        // );
-        // dev.set_installation_location(DEVICE_INSTALLATION_LOCATION_UNKNOWN);
-        // assert_eq!(
-        //     dev.installation_location().byte_data(),
-        //     DEVICE_INSTALLATION_LOCATION_UNKNOWN
-        // );
+        assert_eq!(prop_data.unwrap(), &[OBJECT_OPERATING_STATUS_ON]);
+
+        assert!(dev.set_property(DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_OFF]));
+        let prop_data = dev.property(DEVICE_OPERATING_STATUS);
+        assert!(prop_data.is_some());
+        assert_eq!(prop_data.unwrap(), &[OBJECT_OPERATING_STATUS_OFF]);
 
         assert!(dev.start());
+        let prop_data = dev.property(DEVICE_OPERATING_STATUS);
+        assert!(prop_data.is_some());
+        assert_eq!(prop_data.unwrap(), &[OBJECT_OPERATING_STATUS_ON]);
+
         assert!(dev.stop());
+        let prop_data = dev.property(DEVICE_OPERATING_STATUS);
+        assert!(prop_data.is_some());
+        assert_eq!(prop_data.unwrap(), &[OBJECT_OPERATING_STATUS_OFF]);
     }
 }
