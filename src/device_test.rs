@@ -16,14 +16,16 @@
 mod tests {
 
     use crate::device::*;
-    use crate::super_object::{OBJECT_OPERATING_STATUS_ON, SUPER_OBJECT_CODE};
+    use crate::super_object::*;
 
     #[test]
     fn device() {
         let device_code = 0x029101;
         let mut dev = Device::new(device_code);
         // let node = dev.node();
-        assert!(dev.set_property_data(DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_ON]));
+        assert!(dev.set_property(DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_ON]));
+        let prop_data = dev.property(DEVICE_OPERATING_STATUS);
+        assert!(prop_data.is_some());
         // dev.set_operating_status(true);
         // assert_eq!(
         //     dev.operating_status().byte_data(),
