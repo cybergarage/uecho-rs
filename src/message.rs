@@ -41,6 +41,45 @@ impl SearchMessage {
     }
 }
 
+pub struct ResponseErrorMessage {}
+
+impl ResponseErrorMessage {
+    pub fn from(req_msg: &Message) -> Message {
+        let mut msg = Message::new();
+        match req_msg.esv() {
+            Esv::WriteRequest => {
+                msg.set_esv(Esv::WriteRequestError);
+            }
+            Esv::WriteRequestResponseRequired => {
+                msg.set_esv(Esv::WriteRequestResponseRequiredError);
+            }
+            Esv::ReadRequest => {
+                msg.set_esv(Esv::ReadRequestError);
+            }
+            Esv::NotificationRequest => {
+                msg.set_esv(Esv::NotificationRequestError);
+            }
+            Esv::WriteReadRequest => {
+                msg.set_esv(Esv::WriteReadRequestError);
+            }
+            Esv::NotificationResponseRequired => {
+                msg.set_esv(Esv::NotificationRequestError);
+            }
+            _ => {
+                msg.set_esv(Esv::Unknown);
+            }
+        }
+        msg.set_esv(Esv::ReadRequest);
+        msg.set_seoj(req_msg.deoj());
+        msg.set_deoj(req_msg.seoj());
+        for n in 0..req_msg.opc() {
+            let req_prop = req_msg.property(n);
+            msg.add_property(req_prop.clone());
+        }
+        msg
+    }
+}
+
 pub struct NodeProfileMessage<'a> {
     obj_codes: Vec<ObjectCode>,
     msg: &'a Message,
