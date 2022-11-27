@@ -187,6 +187,31 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -280,42 +305,56 @@
 
 <span class="doccomment">/// Device represents a ECHONET-lite device node.
 </span><span class="kw">pub struct </span>Device {
+    code: ObjectCode,
     node: Arc&lt;Mutex&lt;DeviceNode&gt;&gt;,
 }
 
 <span class="kw">impl </span>Device {
-    <span class="kw">pub fn </span>new(code: ObjectCode) -&gt; Device {
+    <span class="doccomment">/// Create a new device.
+    </span><span class="kw">pub fn </span>new(code: ObjectCode) -&gt; Device {
         <span class="kw">let </span><span class="kw-2">mut </span>dev = Device {
+            code: code,
             node: DeviceNode::new(),
         };
         dev.set_code(code);
         dev
     }
 
-    <span class="kw">pub fn </span>new_with_node(code: ObjectCode, node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Device {
+    <span class="doccomment">/// Create a new device with the node to which it belongs.
+    </span><span class="kw">pub fn </span>new_with_node(code: ObjectCode, node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Device {
         <span class="kw">let </span><span class="kw-2">mut </span>dev = Device {
+            code: code,
             node: DeviceNode::new_with_node(node),
         };
         dev.set_code(code);
         dev
     }
 
-    <span class="kw">fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) {
-        <span class="kw">let </span>std_db = StandardDatabase::shared();
-        <span class="kw">let </span>std_obj = std_db.find_object(code);
-        <span class="kw">if </span>std_obj.is_none() {
-            <span class="kw">return</span>;
-        }
-        <span class="kw">let </span><span class="kw-2">mut </span>dev = <span class="self">self</span>.node.lock().unwrap();
-        dev.add_object(std_obj.unwrap().clone());
+    <span class="doccomment">/// Returns the object code.
+    </span><span class="kw">pub fn </span>code(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ObjectCode {
+        <span class="self">self</span>.code
     }
 
-    <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">let </span><span class="kw-2">mut </span>dev = <span class="self">self</span>.node.lock().unwrap();
-        dev.start();
-        dev.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
+    <span class="doccomment">/// Returns the parent local node to which the device belongs.
+    </span><span class="kw">pub fn </span>node(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;Mutex&lt;LocalNode&gt;&gt; {
+        <span class="kw">let </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
+        dev_node.local_node()
+    }
 
-        <span class="kw">let </span>local_node = dev.local_node();
+    <span class="doccomment">/// Returns the parent local node to which the device belongs.
+    </span><span class="comment">// pub fn object(&amp;self) -&gt; &amp;mut Object {
+    //     let mut node = self.node().lock().unwrap();
+    //     let obj = node.find_object_mut(self.code);
+    //     obj.unwrap()
+    // }
+
+    </span><span class="doccomment">/// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
+    </span><span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
+        dev_node.start();
+        dev_node.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
+
+        <span class="kw">let </span>local_node = dev_node.local_node();
         local_node
             .lock()
             .unwrap()
@@ -324,9 +363,20 @@
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">let </span><span class="kw-2">mut </span>ctrl = <span class="self">self</span>.node.lock().unwrap();
-        ctrl.stop()
+    <span class="doccomment">/// Stops the device.
+    </span><span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
+        dev_node.stop()
+    }
+
+    <span class="kw">fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) {
+        <span class="kw">let </span>std_db = StandardDatabase::shared();
+        <span class="kw">let </span>std_obj = std_db.find_object(code);
+        <span class="kw">if </span>std_obj.is_none() {
+            <span class="kw">return</span>;
+        }
+        <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
+        dev_node.add_object(std_obj.unwrap().clone());
     }
 }
 

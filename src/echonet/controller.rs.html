@@ -139,6 +139,8 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -214,13 +216,15 @@
 }
 
 <span class="kw">impl </span>Controller {
-    <span class="kw">pub fn </span>new() -&gt; Controller {
+    <span class="doccomment">/// Create a new controller.
+    </span><span class="kw">pub fn </span>new() -&gt; Controller {
         Controller {
             node: ControllerNode::new(),
         }
     }
 
-    <span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Controller {
+    <span class="doccomment">/// Create a new controller with the node to which it belongs.
+    </span><span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Controller {
         Controller {
             node: ControllerNode::new_with_node(node),
         }
