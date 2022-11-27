@@ -22,6 +22,7 @@ use crate::local_node::LocalNode;
 use crate::object::{Object, ObjectCode};
 use crate::property::{Property, PropertyCode};
 use crate::super_object::*;
+use crate::util::Bytes;
 
 pub const DEVICE_OPERATING_STATUS: u8 = OBJECT_OPERATING_STATUS;
 pub const DEVICE_INSTALLATION_LOCATION: u8 = 0x81;
@@ -123,8 +124,32 @@ impl Device {
         let mut dev_node = self.node.lock().unwrap();
         dev_node.add_object(obj);
 
-        dev_node.set_property(self.code, DEVICE_INSTALLATION_LOCATION, &[DEVICE_INSTALLATION_LOCATION_UNKNOWN]);
-        dev_node.set_property(self.code, DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_OFF]);
+        // Sets mandatory properties
+
+        let vers: [u8; 4] = [0, 0, DEVICE_DEFAULT_VERSION_APPENDIX, 0];
+        dev_node.set_property(self.code, DEVICE_STANDARD_VERSION, &vers);
+        dev_node.set_property(
+            self.code,
+            DEVICE_MANUFACTURER_FAULT_CODE,
+            &[DEVICE_NO_FAULT_OCCURRED],
+        );
+        dev_node.set_property(
+            self.code,
+            DEVICE_INSTALLATION_LOCATION,
+            &[DEVICE_INSTALLATION_LOCATION_UNKNOWN],
+        );
+        dev_node.set_property(
+            self.code,
+            DEVICE_OPERATING_STATUS,
+            &[OBJECT_OPERATING_STATUS_OFF],
+        );
+        let mut code: [u8; 3] = [0; 3];
+        Bytes::from_u32(DEVICE_MANUFACTURER_UNKNOWN, &mut code);
+        dev_node.set_property(
+            self.code,
+            DEVICE_MANUFACTURER_CODE,
+            &code,
+        );
     }
 
     /// Returns the object code.
@@ -172,14 +197,22 @@ impl Device {
             .unwrap()
             .add_observer(Arc::new(Mutex::new(local_node.clone())));
 
-            dev_node.set_property(self.code, DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_ON]);
-            true
+        dev_node.set_property(
+            self.code,
+            DEVICE_OPERATING_STATUS,
+            &[OBJECT_OPERATING_STATUS_ON],
+        );
+        true
     }
 
     /// Stops the device.
     pub fn stop(&mut self) -> bool {
         let mut dev_node = self.node.lock().unwrap();
-        dev_node.set_property(self.code, DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_OFF]);
+        dev_node.set_property(
+            self.code,
+            DEVICE_OPERATING_STATUS,
+            &[OBJECT_OPERATING_STATUS_OFF],
+        );
         dev_node.stop()
     }
 }
