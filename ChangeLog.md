@@ -5,8 +5,8 @@
 - Improved transport::Manager not to bind unavailable interfaces
 
 ## v0.9.2 (2022-11-27)
-- Update ControllerNode to add the standard node profile object as default
-- Updated StandardDatabase to add experimental manufacture codes
+- Update Controller to add the standard node profile object as default
+- Updated StandardDatabase to add experimentamanufacture codes
 
 ## v0.9.1 (2022-11-26)
 - Updated StandardDatabase to store official registerd manufactures by the ECHONET CONSORTIUM

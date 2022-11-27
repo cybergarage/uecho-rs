@@ -162,13 +162,22 @@ impl LocalNode {
         let mut node_prof = NodeProfile::from(node_prof_obj);
         node_prof.update(&obj_codes);
     }
+
+    fn response_for_request_message(&self, req_msg: &Message) -> Option<Message> {
+        None
+    }
 }
 
 impl Observer for Arc<Mutex<LocalNode>> {
-    fn message_received(&mut self, msg: &Message) {
+    fn message_received(&mut self, req_msg: &Message) {
         let mut node = self.lock().unwrap();
-        if node.is_last_message_response(msg) {
-            node.send_post_reopnse(msg.clone());
+        if node.is_last_message_response(req_msg) {
+            node.send_post_reopnse(req_msg.clone());
+        }
+        let res_msg = node.response_for_request_message(req_msg);
+        if res_msg.is_some() {
+            let mut res_msg = res_msg.unwrap();
+            node.send_message(SocketAddr::new(req_msg.addr(), PORT), &mut res_msg);
         }
     }
 }
