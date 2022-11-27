@@ -43,6 +43,8 @@ pub struct Property {
     code: PropertyCode,
     data: PropertyData,
     name: String,
+    typ: String,
+    capacity: usize,
     read_attr: PropertyAttr,
     write_attr: PropertyAttr,
     anno_attr: PropertyAttr,
@@ -54,6 +56,8 @@ impl Property {
             code: 0,
             data: Vec::new(),
             name: String::from(""),
+            typ: String::from(""),
+            capacity: 0,
             read_attr: PropertyAttr::Prohibited,
             write_attr: PropertyAttr::Prohibited,
             anno_attr: PropertyAttr::Prohibited,
@@ -76,6 +80,24 @@ impl Property {
 
     pub fn name(&self) -> &String {
         &self.name
+    }
+
+    pub fn set_data_type(&mut self, typ: String) -> &mut Self {
+        self.typ = typ;
+        self
+    }
+
+    pub fn data_type(&self) -> &String {
+        &self.typ
+    }
+
+    pub fn set_capacity(&mut self, capacity: usize) -> &mut Self {
+        self.capacity = capacity;
+        self
+    }
+
+    pub fn capacity(&self) -> usize {
+        self.capacity
     }
 
     pub fn set_read_attribute(&mut self, attr: PropertyAttr) -> &mut Self {
@@ -238,9 +260,11 @@ impl Property {
 impl Clone for Property {
     fn clone(&self) -> Property {
         Property {
-            code: self.code(),
+            code: self.code,
             data: self.data.clone(),
             name: self.name.clone(),
+            typ: self.typ.clone(),
+            capacity: self.capacity,
             read_attr: self.read_attr,
             write_attr: self.write_attr,
             anno_attr: self.anno_attr,
