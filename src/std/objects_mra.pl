@@ -42,10 +42,12 @@ use crate::object::*;
 use crate::property::*;
 
 impl Object {
-    fn add_standard_property(&mut self, code: PropertyCode, name: String, _data_type: String, _data_size: usize, get_rule: PropertyAttr, set_rule: PropertyAttr, anno_rule: PropertyAttr) {
+    fn add_standard_property(&mut self, code: PropertyCode, name: String, data_type: String, data_size: usize, get_rule: PropertyAttr, set_rule: PropertyAttr, anno_rule: PropertyAttr) {
         let mut prop = Property::new();
         prop.set_code(code);
         prop.set_name(name);
+        prop.set_data_type(data_type);
+        prop.set_capacity(data_size);
         prop.set_read_attribute(get_rule);
         prop.set_write_attribute(set_rule);
         prop.set_anno_attribute(anno_rule);

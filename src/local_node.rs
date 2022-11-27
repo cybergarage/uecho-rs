@@ -235,8 +235,9 @@ impl LocalNode {
                         are_all_properties_available = false;
                         break;
                     }
-                    if 0 < dst_prop.capacity() {
-                        
+                    if 0 < dst_prop.capacity() && (dst_prop.capacity() < req_msg_prop.size()) {
+                        are_all_properties_available = false;
+                        break;
                     }
                 }
                 Esv::ReadRequest | Esv::NotificationRequest | Esv::NotificationResponseRequired => {
