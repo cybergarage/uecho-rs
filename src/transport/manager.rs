@@ -19,7 +19,7 @@ use crate::transport::multicast_manager::MulticastManager;
 use crate::transport::unicast_manager::UnicastManager;
 use crate::transport::*;
 
-/// Manager handles all messaging packet between ECHONET-lite nodes.
+/// Manager handles all messaging packet between ECHONET-Lite nodes.
 pub struct Manager {
     ucast_mgr: UnicastManager,
     mcast_mgr: MulticastManager,
