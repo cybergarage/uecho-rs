@@ -31,7 +31,7 @@ The examples are available for [ECHONET-Lite][enet] controller and device implem
 ## Getting Help
 
 - [Generated Docs (latest version)](https://docs.rs/echonet/latest/echonet/)
-- [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples).
+- [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
 
 ## License
 
