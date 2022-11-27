@@ -89,7 +89,7 @@ pub const DEVICE_NO_FAULT_OCCURRED: u8 = 0x42;
 pub const DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = 0x00;
 pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 
-/// Device represents a ECHONET-Lite device node.
+/// Device represents an ECHONET-Lite device node.
 /// # Examples
 /// ```
 /// use echonet::Device;
