@@ -54,10 +54,9 @@ use crate::remote_node::*;
 ///             let rx = ctrl.post_message(&node, &mut msg);
 ///             match rx.recv_timeout(time::Duration::from_secs(1)) {
 ///                 Ok(msg) => {
-///                     for msg_prop in msg.properties() {
-///                         print!("{}", hex::encode(msg_prop.data()));
+///                     if 0 < msg.opc() {
+///                       println!("{}", hex::encode(msg.property(0).data()));
 ///                     }
-///                     println!("");
 ///                 }
 ///                 Err(_e) => {
 ///                     println!("{}",  "<timeout>");
