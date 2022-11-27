@@ -123,7 +123,9 @@ impl Controller {
     /// Starts the controller node to communicate with other ECHONET-Lite nodes on the local network.
     pub fn start(&mut self) -> bool {
         let mut ctrl = self.node.lock().unwrap();
-        ctrl.start();
+        if !ctrl.start() {
+            return false;
+        }
         ctrl.add_observer(Arc::new(Mutex::new(self.node.clone())));
 
         let local_node = ctrl.local_node();
