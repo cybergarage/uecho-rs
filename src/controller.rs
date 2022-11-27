@@ -40,12 +40,12 @@ use crate::remote_node::*;
 /// for (i, node) in ctrl.nodes().iter().enumerate() {
 ///     println!("[{}] {}", i, node.addr());
 ///     for (j, obj) in node.objects().iter().enumerate() {
-///         println!("    [{}] {:06X}", j, obj.code());
+///         println!("[{}] {:06X}", j, obj.code());
 ///         for obj_prop in obj.properties() {
 ///             if !obj_prop.is_read_required() {
 ///                 continue;
 ///             }
-///             print!("        [{:02X}] {}:", obj_prop.code(), obj_prop.name());
+///             print!("[{:02X}] {}:", obj_prop.code(), obj_prop.name());
 ///             let mut msg = Message::new();
 ///             msg.set_esv(Esv::ReadRequest);
 ///             msg.set_deoj(obj.code());
