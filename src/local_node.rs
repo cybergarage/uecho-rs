@@ -19,6 +19,7 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use crate::message::ResponseErrorMessage;
 use crate::node_profile::*;
 use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
 use crate::transport::Manager;
@@ -226,7 +227,9 @@ impl LocalNode {
             }
         }
 
-        if !has_all_properties {}
+        if !has_all_properties {
+            return Some(ResponseErrorMessage::from(req_msg));
+        }
 
         None
     }
