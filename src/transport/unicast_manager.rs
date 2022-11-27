@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::io;
 use std::net::SocketAddr;
 
 use crate::protocol::Message;
@@ -47,16 +46,6 @@ impl UnicastManager {
             }
         }
         false
-    }
-
-    pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        for udp_server in self.udp_servers.iter() {
-            let udp_server_addr = udp_server.local_addr();
-            if udp_server_addr.is_ok() {
-                return udp_server_addr;
-            }
-        }
-        return Err(io::Error::new(io::ErrorKind::NotConnected, ""));
     }
 
     pub fn is_running(&self) -> bool {
