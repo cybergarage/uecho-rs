@@ -107,6 +107,7 @@ impl LocalNode {
     pub fn annouce_property(&mut self, obj: &Object, prop: &Property) -> bool {
         let mut msg = Message::new();
         msg.set_esv(Esv::Notification);
+        msg.set_deoj(NODE_PROFILE_OBJECT_CODE);
         msg.set_seoj(obj.code());
         msg.add_property(prop.into());
         self.notify(&mut msg)
@@ -123,9 +124,18 @@ impl LocalNode {
         if instance_list_prop.is_none() {
             return false;
         }
-        // let instance_list_prop = instance_list_prop.unwrap();
-        // return self.annouce_property(node_profile_obj, instance_list_prop);
-        true
+        let instance_list_prop = instance_list_prop.unwrap();
+
+        // FIXME: error[E0502]: cannot borrow `*self` as mutable because it is also borrowed as immutable
+        // self.annouce_property(node_profile_obj, instance_list_prop);
+
+        // annouce_property()
+        let mut msg = Message::new();
+        msg.set_esv(Esv::Notification);
+        msg.set_deoj(NODE_PROFILE_OBJECT_CODE);
+        msg.set_seoj(node_profile_obj.code());
+        msg.add_property(instance_list_prop.into());
+        self.notify(&mut msg)
     }
 
     pub fn start(&mut self) -> bool {
