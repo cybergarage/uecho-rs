@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::node_profile::*;
+use log::*;
 use std::net::SocketAddr;
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::{Message, TID, TID_MAX, TID_MIN};
 use crate::transport::Manager;
@@ -177,7 +178,15 @@ impl Observer for Arc<Mutex<LocalNode>> {
         let res_msg = node.response_for_request_message(req_msg);
         if res_msg.is_some() {
             let mut res_msg = res_msg.unwrap();
-            node.send_message(SocketAddr::new(req_msg.addr(), PORT), &mut res_msg);
+            if res_msg.esv().is_response() {
+                if res_msg.esv().is_unicast_response() {
+                    node.send_message(SocketAddr::new(req_msg.addr(), PORT), &mut res_msg);
+                } else {
+                    node.notify(&mut res_msg);
+                }
+            } else {
+                warn!("invalid ESV response ({}): {}", res_msg.esv(), res_msg)
+            }
         }
     }
 }
