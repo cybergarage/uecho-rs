@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::fmt;
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
@@ -103,5 +104,16 @@ impl Esv {
             return false;
         }
         !self.is_notification_response()
+    }
+}
+
+impl fmt::Display for Esv {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let code = *self as u8;
+        let res = f.write_fmt(format_args!("{:02X}", code));
+        if res.is_err() {
+            return res;
+        }
+        Ok(())
     }
 }
