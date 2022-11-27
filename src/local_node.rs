@@ -20,10 +20,10 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::node_profile::*;
-use crate::object::*;
-use crate::protocol::{Message, TID, TID_MAX, TID_MIN};
+use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
 use crate::transport::Manager;
 use crate::transport::*;
+use crate::{object::*, Property};
 
 /// LocalNode represents an internal ECHONET-Lite node in the controller and device nodes.
 pub struct LocalNode {
@@ -104,8 +104,35 @@ impl LocalNode {
         self.transport_mgr.notify(msg)
     }
 
+    pub fn annouce_property(&mut self, obj: &Object, prop: &Property) -> bool {
+        let mut msg = Message::new();
+        msg.set_esv(Esv::Notification);
+        msg.set_seoj(obj.code());
+        msg.add_property(prop.into());
+        self.notify(&mut msg)
+    }
+
+    pub fn annouce(&mut self) -> bool {
+        let node_profile_obj = self.find_object(NODE_PROFILE_OBJECT_CODE);
+        if node_profile_obj.is_none() {
+            return false;
+        }
+        let node_profile_obj = node_profile_obj.unwrap();
+        let instance_list_prop =
+            node_profile_obj.find_property(NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION);
+        if instance_list_prop.is_none() {
+            return false;
+        }
+        // let instance_list_prop = instance_list_prop.unwrap();
+        // return self.annouce_property(node_profile_obj, instance_list_prop);
+        true
+    }
+
     pub fn start(&mut self) -> bool {
         if !self.transport_mgr.start() {
+            return false;
+        }
+        if !self.annouce() {
             return false;
         }
         true
