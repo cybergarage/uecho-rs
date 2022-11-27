@@ -87,12 +87,12 @@ impl LocalNode {
     }
 
     pub fn send_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> bool {
-        self.update_message_header(msg);
+        self.update_message_trandaction_id(msg);
         self.transport_mgr.send(to_addr, msg)
     }
 
     pub fn post_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> Receiver<Message> {
-        self.update_message_header(msg);
+        self.update_message_trandaction_id(msg);
         let (tx, rx): (Sender<Message>, Receiver<Message>) = mpsc::channel();
         self.post_sender = tx;
         self.transport_mgr.send(to_addr, msg);
@@ -100,7 +100,7 @@ impl LocalNode {
     }
 
     pub fn notify(&mut self, msg: &mut Message) -> bool {
-        self.update_message_header(msg);
+        self.update_message_trandaction_id(msg);
         self.transport_mgr.notify(msg)
     }
 
@@ -151,9 +151,8 @@ impl LocalNode {
         true
     }
 
-    fn update_message_header(&mut self, msg: &mut Message) {
+    fn update_message_trandaction_id(&mut self, msg: &mut Message) {
         msg.set_tid(self.next_tid());
-        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
     }
 
     fn next_tid(&mut self) -> TID {
@@ -198,6 +197,37 @@ impl LocalNode {
     }
 
     fn response_for_request_message(&self, req_msg: &Message) -> Option<Message> {
+        // Part II ECHONET Lite Communication Middleware Specifications
+        // 4.2.2 Basic Sequences for Object Control in General
+
+        let dst_obj_code = req_msg.deoj();
+
+        // (A) Processing when the controlled object does not exist
+
+        let dst_obj = self.find_object(dst_obj_code);
+        if dst_obj.is_none() {
+            return None;
+        }
+        let dst_obj = dst_obj.unwrap();
+
+        // (B) Processing when the controlled object exists, except when ESV = 0x60 to 0x63, 0x6E and 0x74
+
+        if !req_msg.esv().is_request() {
+            return None;
+        }
+
+        // (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
+
+        let mut has_all_properties = true;
+        for req_msg_prop in req_msg.properties() {
+            if !dst_obj.has_property(req_msg_prop.code()) {
+                has_all_properties = false;
+                break;
+            }
+        }
+
+        if !has_all_properties {}
+
         None
     }
 }
