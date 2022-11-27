@@ -17,11 +17,36 @@ mod tests {
 
     use crate::device::*;
     use crate::super_object::*;
+    use crate::util::Bytes;
 
     #[test]
-    fn device() {
+    fn device_mandatory_properties() {
         let device_code = 0x029101;
         let mut dev = Device::new(device_code);
+
+        let prop_data = dev.property(DEVICE_STANDARD_VERSION);
+        assert!(prop_data.is_some());
+        let prop_data = prop_data.unwrap();
+        assert_eq!(prop_data.len(), 4);
+        assert_eq!(prop_data[2], DEVICE_DEFAULT_VERSION_APPENDIX);
+
+        let prop_data = dev.property(DEVICE_MANUFACTURER_FAULT_CODE);
+        assert!(prop_data.is_some());
+        let prop_data = prop_data.unwrap();
+        assert_eq!(prop_data.len(), 1);
+        assert_eq!(Bytes::to_u32(&prop_data) as u8, DEVICE_NO_FAULT_OCCURRED);
+
+        let prop_data = dev.property(DEVICE_INSTALLATION_LOCATION);
+        assert!(prop_data.is_some());
+        let prop_data = prop_data.unwrap();
+        assert_eq!(prop_data.len(), 1);
+        assert_eq!(Bytes::to_u32(&prop_data) as u8, DEVICE_INSTALLATION_LOCATION_UNKNOWN);
+
+        let prop_data = dev.property(DEVICE_MANUFACTURER_CODE);
+        assert!(prop_data.is_some());
+        let prop_data = prop_data.unwrap();
+        assert_eq!(prop_data.len(), 3);
+        assert_eq!(Bytes::to_u32(&prop_data), DEVICE_MANUFACTURER_EXPERIMENT);
 
         assert!(dev.set_property(DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_ON]));
         let prop_data = dev.property(DEVICE_OPERATING_STATUS);
