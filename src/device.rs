@@ -145,33 +145,14 @@ impl Device {
 
     /// Sets the data into the specified property if the device node has the property, otherwise return false.
     pub fn set_property(&mut self, code: PropertyCode, data: &[u8]) -> bool {
-        let binding = self.node();
-        let mut node = binding.lock().unwrap();
-        let obj = node.find_object_mut(self.code);
-        if obj.is_none() {
-            return false;
-        }
-        let prop = obj.unwrap().find_property_mut(code);
-        if prop.is_none() {
-            return false;
-        }
-        prop.unwrap().set_data(data);
-        true
+        let mut dev_node = self.node.lock().unwrap();
+        dev_node.set_property(self.code, code, data)
     }
 
     /// Gets the specified property data if the device node has the property, otherwise return none.
     pub fn property(&self, code: PropertyCode) -> Option<Vec<u8>> {
-        let binding = self.node();
-        let node = binding.lock().unwrap();
-        let obj = node.find_object(self.code);
-        if obj.is_none() {
-            return None;
-        }
-        let prop = obj.unwrap().find_property(code);
-        if prop.is_none() {
-            return None;
-        }
-        Some(prop.unwrap().data().clone())
+        let dev_node = self.node.lock().unwrap();
+        dev_node.property(self.code, code)
     }
 
     /// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
@@ -187,6 +168,7 @@ impl Device {
             .lock()
             .unwrap()
             .add_observer(Arc::new(Mutex::new(local_node.clone())));
+
         true
     }
 
