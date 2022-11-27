@@ -90,6 +90,15 @@ pub const DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = 0x00;
 pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 
 /// Device represents a ECHONET-Lite device node.
+/// # Examples
+/// ```
+/// use echonet::Device;
+///
+/// let mut dev = Device::new(0x029101);
+/// dev.start();
+/// dev.stop();
+/// ```
+
 pub struct Device {
     code: ObjectCode,
     node: Arc<Mutex<DeviceNode>>,
