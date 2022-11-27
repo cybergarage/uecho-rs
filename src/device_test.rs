@@ -40,7 +40,10 @@ mod tests {
         assert!(prop_data.is_some());
         let prop_data = prop_data.unwrap();
         assert_eq!(prop_data.len(), 1);
-        assert_eq!(Bytes::to_u32(&prop_data) as u8, DEVICE_INSTALLATION_LOCATION_UNKNOWN);
+        assert_eq!(
+            Bytes::to_u32(&prop_data) as u8,
+            DEVICE_INSTALLATION_LOCATION_UNKNOWN
+        );
 
         let prop_data = dev.property(DEVICE_MANUFACTURER_CODE);
         assert!(prop_data.is_some());
