@@ -78,6 +78,7 @@ impl ControllerNode {
 
     pub fn search_object(&mut self, obj_code: ObjectCode) -> bool {
         let mut msg = SearchMessage::new();
+        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         msg.set_deoj(obj_code);
         let mut node = self.node.lock().unwrap();
         node.notify(&mut msg)
@@ -88,11 +89,13 @@ impl ControllerNode {
     }
 
     pub fn send_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> bool {
+        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         let mut node = self.node.lock().unwrap();
         node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
     pub fn post_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> Receiver<Message> {
+        msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         let mut node = self.node.lock().unwrap();
         node.post_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
