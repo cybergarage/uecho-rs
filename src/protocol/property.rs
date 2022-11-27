@@ -31,6 +31,13 @@ impl Property {
         }
     }
 
+    pub fn from(code: PropertyCode, data: Vec<u8>) -> Property {
+        Property {
+            code: code,
+            data: data,
+        }
+    }
+
     pub fn set_code(&mut self, code: PropertyCode) {
         self.code = code
     }
