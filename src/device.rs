@@ -20,7 +20,7 @@ use std::sync::Mutex;
 use crate::device_node::DeviceNode;
 use crate::local_node::LocalNode;
 use crate::object::{Object, ObjectCode};
-use crate::property::{PropertyCode};
+use crate::property::PropertyCode;
 use crate::super_object::*;
 use crate::util::Bytes;
 
