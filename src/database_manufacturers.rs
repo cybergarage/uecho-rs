@@ -337,5 +337,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x00009E, String::from("YASKAWA ELECTRIC CORPORATION"));
         self.add_standard_manufacture(0x00007A, String::from("ZUKEN ELMIC,INC."));
         self.add_standard_manufacture(0x0000B4, String::from("4R Energy Corporation"));
+        self.add_standard_manufacture(0xFFFFFF, String::from("Experimental"));
+        self.add_standard_manufacture(0xFFFFFE, String::from("Undefined"));
     }
 }

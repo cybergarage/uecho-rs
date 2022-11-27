@@ -67,6 +67,8 @@ while(<MANLIST>){
   }
   printf("        self.add_standard_manufacture(0x$code, String::from($name));\n");
 }
+printf("        self.add_standard_manufacture(0xFFFFFF, String::from(\"Experimental\"));\n");
+printf("        self.add_standard_manufacture(0xFFFFFE, String::from(\"Undefined\"));\n");
 close(MANLIST);
 print<<FOTTER;
     }
