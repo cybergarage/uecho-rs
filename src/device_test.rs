@@ -22,7 +22,8 @@ mod tests {
     fn device() {
         let device_code = 0x029101;
         let mut dev = Device::new(device_code);
-        let node = dev.node();
+        // let node = dev.node();
+        assert!(dev.set_property_data(DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_ON]));
         // dev.set_operating_status(true);
         // assert_eq!(
         //     dev.operating_status().byte_data(),
