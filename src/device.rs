@@ -145,11 +145,7 @@ impl Device {
         );
         let mut code: [u8; 3] = [0; 3];
         Bytes::from_u32(DEVICE_MANUFACTURER_EXPERIMENT, &mut code);
-        dev_node.set_property(
-            self.code,
-            DEVICE_MANUFACTURER_CODE,
-            &code,
-        );
+        dev_node.set_property(self.code, DEVICE_MANUFACTURER_CODE, &code);
     }
 
     /// Returns the object code.
