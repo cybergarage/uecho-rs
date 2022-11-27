@@ -18,11 +18,10 @@ use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::database::StandardDatabase;
 use crate::local_node::LocalNode;
 use crate::message::SearchMessage;
 use crate::node_profile::NODE_PROFILE_OBJECT_CODE;
-use crate::object::{Object, ObjectCode};
+use crate::object::ObjectCode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
 use crate::super_object::SUPER_OBJECT_CODE;
@@ -30,7 +29,6 @@ use crate::transport::PORT;
 use crate::transport::{Observer, ObserverEntity};
 
 pub struct ControllerNode {
-    db: StandardDatabase,
     node: Arc<Mutex<LocalNode>>,
     pub remote_nodes: Vec<RemoteNode>,
 }
@@ -42,7 +40,6 @@ impl ControllerNode {
 
     pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<ControllerNode>> {
         let ctrl = Arc::new(Mutex::new(ControllerNode {
-            db: StandardDatabase::new(),
             node: node,
             remote_nodes: Vec::new(),
         }));
@@ -115,20 +112,6 @@ impl ControllerNode {
         }
         true
     }
-
-    pub fn import_std_object_properties(&mut self, obj: &mut Object, obj_code: ObjectCode) {
-        let std_obj = self.db.find_object(obj_code);
-        if std_obj.is_none() {
-            return;
-        }
-        obj.set_class_name(std_obj.unwrap().class_name().to_string());
-        for std_prop in std_obj.unwrap().properties() {
-            if std_obj.is_none() {
-                return;
-            }
-            obj.add_property(std_prop.clone());
-        }
-    }
 }
 
 impl Observer for Arc<Mutex<ControllerNode>> {
@@ -142,8 +125,8 @@ impl Observer for Arc<Mutex<ControllerNode>> {
         let mut remote_node = RemoteNode::from_message(msg);
         info!("FOUND: {}", remote_node.addr());
         for (_, obj) in remote_node.objects_mut().iter_mut().enumerate() {
-            ctrl.import_std_object_properties(obj, SUPER_OBJECT_CODE);
-            ctrl.import_std_object_properties(obj, obj.code());
+            obj.add_standard_properties(SUPER_OBJECT_CODE);
+            obj.add_standard_properties(obj.code());
         }
         ctrl.replace_remote_node(remote_node);
     }
