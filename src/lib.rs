@@ -30,12 +30,12 @@
 //! echonet = "1.x.x"
 //! ```
 //!
-//! The examples are available for [ECHONET-Lite][enet] controller and device implementations using the `uecho-rs`, check out [the examples folder in GitHub](https://github.com/cybergarage/uecho-rs/tree/master/bin).
+//! The examples are available for [ECHONET-Lite][enet] controller and device implementations using the `uecho-rs`, check out [the examples folder in GitHub](https://github.com/cybergarage/uecho-rs/tree/master/examples).
 //!
 //! ## Getting Help
 //!
 //! - [Generated Docs (latest version)](https://docs.rs/echonet/latest/echonet/)
-//! - [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/bin).
+//! - [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
 //!
 //! ## License
 //!
