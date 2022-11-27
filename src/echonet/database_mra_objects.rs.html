@@ -7799,6 +7799,8 @@
 <span id="7799">7799</span>
 <span id="7800">7800</span>
 <span id="7801">7801</span>
+<span id="7802">7802</span>
+<span id="7803">7803</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -7822,8 +7824,8 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         code: PropertyCode,
         name: String,
-        _data_type: String,
-        _data_size: usize,
+        data_type: String,
+        data_size: usize,
         get_rule: PropertyAttr,
         set_rule: PropertyAttr,
         anno_rule: PropertyAttr,
@@ -7831,6 +7833,8 @@
         <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
         prop.set_code(code);
         prop.set_name(name);
+        prop.set_data_type(data_type);
+        prop.set_capacity(data_size);
         prop.set_read_attribute(get_rule);
         prop.set_write_attribute(set_rule);
         prop.set_anno_attribute(anno_rule);
