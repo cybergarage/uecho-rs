@@ -22,7 +22,7 @@ use std::hash::{Hash, Hasher};
 
 pub type ObjectCode = u32;
 
-/// Each ECHONET-Lite node has objects. Object represents an ECHONET-Lite Object in a ECHONET-Lite node.
+/// Each ECHONET-Lite node has objects. Object represents an ECHONET-Lite Object in an ECHONET-Lite node.
 pub struct Object {
     codes: [u8; 3],
     name: String,

@@ -26,9 +26,9 @@ pub const PROPERTY_MAP_FORMAT1_MAX_SIZE: i32 = 15;
 pub const PROPERTY_MAP_FORMAT2_SIZE: i32 = 18;
 pub const PROPERTY_MAP_FORMAT_MAX_SIZE: i32 = PROPERTY_MAP_FORMAT2_SIZE;
 
-/// PropertyCode represents an ECHONET-Lite property code in a ECHONET-Lite object.
+/// PropertyCode represents an ECHONET-Lite property code in an ECHONET-Lite object.
 pub type PropertyCode = u8;
-/// PropertyData represents an ECHONET-Lite property date in a ECHONET-Lite object.
+/// PropertyData represents an ECHONET-Lite property date in an ECHONET-Lite object.
 pub type PropertyData = Vec<u8>;
 
 #[derive(Copy, Clone)]
@@ -38,7 +38,7 @@ pub enum PropertyAttr {
     Optional = 2,
 }
 
-/// Each ECHONET-Lite object has properties. Property represents an ECHONET-Lite property in a ECHONET-Lite object.
+/// Each ECHONET-Lite object has properties. Property represents an ECHONET-Lite property in an ECHONET-Lite object.
 pub struct Property {
     code: PropertyCode,
     data: PropertyData,
