@@ -131,6 +131,7 @@
 <span id="131">131</span>
 <span id="132">132</span>
 <span id="133">133</span>
+<span id="134">134</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -153,7 +154,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
 <span class="kw">use </span><span class="kw">crate</span>::message::SearchMessage;
-<span class="kw">use </span><span class="kw">crate</span>::node_profile::NODE_PROFILE_OBJECT_CODE;
+<span class="kw">use </span><span class="kw">crate</span>::node_profile::{NodeProfile, NODE_PROFILE_OBJECT_CODE};
 <span class="kw">use </span><span class="kw">crate</span>::object::ObjectCode;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::RemoteNode;
@@ -261,6 +262,7 @@
             obj.add_standard_properties(SUPER_OBJECT_CODE);
             obj.add_standard_properties(obj.code());
         }
+        remote_node.add_object(NodeProfile::new());
         ctrl.replace_remote_node(remote_node);
     }
 }

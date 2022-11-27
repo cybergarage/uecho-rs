@@ -142,7 +142,6 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
-<span id="145">145</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -168,7 +167,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// Controller represents a ECHONET-lite controller node to communicate other ECHONET-lite nodes.
+<span class="doccomment">/// Controller represents a ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
 /// # Examples
 /// ```
 /// use std::{thread, time};
@@ -199,10 +198,9 @@
 ///             let rx = ctrl.post_message(&amp;node, &amp;mut msg);
 ///             match rx.recv_timeout(time::Duration::from_secs(1)) {
 ///                 Ok(msg) =&gt; {
-///                     for msg_prop in msg.properties() {
-///                         print!(&quot;{}&quot;, hex::encode(msg_prop.data()));
+///                     if 0 &lt; msg.opc() {
+///                       println!(&quot;{}&quot;, hex::encode(msg.property(0).data()));
 ///                     }
-///                     println!(&quot;&quot;);
 ///                 }
 ///                 Err(_e) =&gt; {
 ///                     println!(&quot;{}&quot;,  &quot;&lt;timeout&gt;&quot;);
@@ -248,7 +246,7 @@
         ctrl.search_object(obj_code)
     }
 
-    <span class="doccomment">/// Searches all ECHONET-lite nodes on the local network.
+    <span class="doccomment">/// Searches all ECHONET-Lite nodes on the local network.
     </span><span class="kw">pub fn </span>search(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.search_object(NODE_PROFILE_OBJECT_CODE)
     }

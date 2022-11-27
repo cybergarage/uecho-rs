@@ -252,6 +252,8 @@
 <span id="252">252</span>
 <span id="253">253</span>
 <span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -278,8 +280,10 @@
 <span class="kw">pub const </span>PROPERTY_MAP_FORMAT2_SIZE: i32 = <span class="number">18</span>;
 <span class="kw">pub const </span>PROPERTY_MAP_FORMAT_MAX_SIZE: i32 = PROPERTY_MAP_FORMAT2_SIZE;
 
-<span class="kw">pub type </span>PropertyCode = u8;
-<span class="kw">pub type </span>PropertyData = Vec&lt;u8&gt;;
+<span class="doccomment">/// PropertyCode represents an ECHONET-Lite property code in a ECHONET-Lite object.
+</span><span class="kw">pub type </span>PropertyCode = u8;
+<span class="doccomment">/// PropertyData represents an ECHONET-Lite property date in a ECHONET-Lite object.
+</span><span class="kw">pub type </span>PropertyData = Vec&lt;u8&gt;;
 
 <span class="attribute">#[derive(Copy, Clone)]
 </span><span class="kw">pub enum </span>PropertyAttr {
@@ -288,7 +292,7 @@
     Optional = <span class="number">2</span>,
 }
 
-<span class="doccomment">/// Each ECHONET-lite object has properties. Property represents an ECHONET-lite property in a ECHONET-lite object.
+<span class="doccomment">/// Each ECHONET-Lite object has properties. Property represents an ECHONET-Lite property in a ECHONET-Lite object.
 </span><span class="kw">pub struct </span>Property {
     code: PropertyCode,
     data: PropertyData,
