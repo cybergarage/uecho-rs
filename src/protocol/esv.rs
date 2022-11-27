@@ -58,6 +58,23 @@ impl Esv {
             Esv::ReadRequest => return true,
             Esv::NotificationRequest => return true,
             Esv::WriteReadRequest => return true,
+            Esv::NotificationResponseRequired => return true,
+            _ => return false,
+        }
+    }
+
+    pub fn is_response(&self) -> bool {
+        match self {
+            Esv::WriteResponse => return true,
+            Esv::ReadResponse => return true,
+            Esv::Notification => return true,
+            Esv::NotificationResponse => return true,
+            Esv::WriteReadResponse => return true,
+            Esv::WriteRequestError => return true,
+            Esv::WriteRequestResponseRequiredError => return true,
+            Esv::ReadRequestError => return true,
+            Esv::NotificationRequestError => return true,
+            Esv::WriteReadRequestError => return true,
             _ => return false,
         }
     }
