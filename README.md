@@ -23,7 +23,7 @@ To add the `uecho-rs` to your project, add the following to your Cargo.toml file
 
 ```
 [dependencies]
-echonet = "1.0.0"
+echonet = "1.x.x"
 ```
 
 The examples are available for [ECHONET-Lite][enet] controller and device implementations using the `uecho-rs`, check out [the examples folder in GitHub](https://github.com/cybergarage/uecho-rs/tree/master/bin).
