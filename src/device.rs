@@ -122,6 +122,9 @@ impl Device {
         obj.add_standard_properties(code);
         let mut dev_node = self.node.lock().unwrap();
         dev_node.add_object(obj);
+
+        dev_node.set_property(self.code, DEVICE_INSTALLATION_LOCATION, &[DEVICE_INSTALLATION_LOCATION_UNKNOWN]);
+        dev_node.set_property(self.code, DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_OFF]);
     }
 
     /// Returns the object code.
@@ -169,47 +172,48 @@ impl Device {
             .unwrap()
             .add_observer(Arc::new(Mutex::new(local_node.clone())));
 
-        true
+            dev_node.set_property(self.code, DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_ON]);
+            true
     }
 
     /// Stops the device.
     pub fn stop(&mut self) -> bool {
         let mut dev_node = self.node.lock().unwrap();
+        dev_node.set_property(self.code, DEVICE_OPERATING_STATUS, &[OBJECT_OPERATING_STATUS_OFF]);
         dev_node.stop()
     }
 }
 
-impl Object {
+impl Device {
     pub fn set_operating_status(&mut self, status: bool) -> bool {
         let status_byte: u8 = if status {
             OBJECT_OPERATING_STATUS_ON
         } else {
             OBJECT_OPERATING_STATUS_OFF
         };
-        self.set_property_byte(DEVICE_OPERATING_STATUS, status_byte)
+        self.set_property(DEVICE_OPERATING_STATUS, &[status_byte])
     }
 
-    pub fn operating_status(&mut self) -> &mut Property {
-        self.find_property_mut(DEVICE_OPERATING_STATUS).unwrap()
+    pub fn operating_status(&mut self) -> Option<Vec<u8>> {
+        self.property(DEVICE_OPERATING_STATUS)
     }
 
     pub fn set_installation_location(&mut self, loc: u8) -> bool {
-        self.set_property_byte(DEVICE_INSTALLATION_LOCATION, loc)
+        self.set_property(DEVICE_INSTALLATION_LOCATION, &[loc])
     }
 
-    pub fn installation_location(&mut self) -> &mut Property {
-        self.find_property_mut(DEVICE_INSTALLATION_LOCATION)
-            .unwrap()
+    pub fn installation_location(&mut self) -> Option<Vec<u8>> {
+        self.property(DEVICE_INSTALLATION_LOCATION)
     }
 
     pub fn set_standard_version(&mut self, ver: u8) -> bool {
         let mut vers: [u8; 4] = [0; 4];
         vers[2] = ver;
-        self.set_property_bytes(DEVICE_STANDARD_VERSION, &vers)
+        self.set_property(DEVICE_STANDARD_VERSION, &vers)
     }
 
-    pub fn standard_version(&mut self) -> &mut Property {
-        self.find_property_mut(DEVICE_STANDARD_VERSION).unwrap()
+    pub fn standard_version(&mut self) -> Option<Vec<u8>> {
+        self.property(DEVICE_STANDARD_VERSION)
     }
 
     pub fn set_fault_status(&mut self, status: bool) -> bool {
@@ -218,10 +222,10 @@ impl Object {
         } else {
             DEVICE_NO_FAULT_OCCURRED
         };
-        self.set_property_byte(DEVICE_FAULT_STATUS, status_byte)
+        self.set_property(DEVICE_FAULT_STATUS, &[status_byte])
     }
 
-    pub fn fault_status(&mut self) -> &mut Property {
-        self.find_property_mut(DEVICE_FAULT_STATUS).unwrap()
+    pub fn fault_status(&mut self) -> Option<Vec<u8>> {
+        self.property(DEVICE_FAULT_STATUS)
     }
 }
