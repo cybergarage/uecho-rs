@@ -14,8 +14,10 @@
 
 #![allow(dead_code)]
 
-use crate::util::Bytes;
 use std::hash::{Hash, Hasher};
+
+use crate::protocol;
+use crate::util::Bytes;
 
 pub const PROPERTY_CODE_MIN: u8 = 0x80;
 pub const PROPERTY_CODE_MAX: u8 = 0xFF;
@@ -252,5 +254,11 @@ impl Clone for Property {
 impl Hash for Property {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.code().hash(state);
+    }
+}
+
+impl From<&Property> for protocol::Property {
+    fn from(from: &Property) -> Self {
+        protocol::Property::from(from.code, from.data.clone())
     }
 }
