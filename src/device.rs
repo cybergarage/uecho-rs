@@ -21,7 +21,7 @@ use crate::database::StandardDatabase;
 use crate::device_node::DeviceNode;
 use crate::local_node::LocalNode;
 use crate::object::{Object, ObjectCode};
-use crate::property::*;
+use crate::property::{Property, PropertyCode};
 use crate::super_object::*;
 
 pub const DEVICE_OPERATING_STATUS: u8 = OBJECT_OPERATING_STATUS;
@@ -133,6 +133,21 @@ impl Device {
     //     let obj = node.find_object_mut(self.code);
     //     obj.unwrap()
     // }
+
+    pub fn set_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
+        let binding = self.node();
+        let mut node = binding.lock().unwrap();
+        let obj = node.find_object_mut(self.code);
+        if obj.is_none() {
+            return false;
+        }
+        let prop = obj.unwrap().find_property_mut(code);
+        if prop.is_none() {
+            return false;
+        }
+        prop.unwrap().set_data(data);
+        true
+    }
 
     /// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
     pub fn start(&mut self) -> bool {
