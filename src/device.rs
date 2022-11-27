@@ -137,7 +137,9 @@ impl Device {
     /// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
     pub fn start(&mut self) -> bool {
         let mut dev_node = self.node.lock().unwrap();
-        dev_node.start();
+        if !dev_node.start() {
+            return false;
+        }
         dev_node.add_observer(Arc::new(Mutex::new(self.node.clone())));
 
         let local_node = dev_node.local_node();
@@ -145,7 +147,6 @@ impl Device {
             .lock()
             .unwrap()
             .add_observer(Arc::new(Mutex::new(local_node.clone())));
-
         true
     }
 
