@@ -23,7 +23,7 @@ use crate::object::*;
 use crate::protocol::Message;
 use crate::remote_node::*;
 
-/// Controller represents a ECHONET-lite controller node to communicate other ECHONET-lite nodes.
+/// Controller represents a ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
 /// # Examples
 /// ```
 /// use std::{thread, time};
@@ -103,7 +103,7 @@ impl Controller {
         ctrl.search_object(obj_code)
     }
 
-    /// Searches all ECHONET-lite nodes on the local network.
+    /// Searches all ECHONET-Lite nodes on the local network.
     pub fn search(&mut self) -> bool {
         self.search_object(NODE_PROFILE_OBJECT_CODE)
     }

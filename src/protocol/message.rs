@@ -23,12 +23,12 @@ pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
 pub const FRAME_HEADER_SIZE: usize = 1 + 1 + 2;
 pub const FORMAT1_HEADER_SIZE: usize = 3 + 3 + 1 + 1;
 
-/// TID represents a ECHONET-Lite transaction identification number as specified in the ECHONET-lite specification.
+/// TID represents a ECHONET-Lite transaction identification number as specified in the ECHONET-Lite specification.
 pub type TID = u16;
 pub const TID_MIN: TID = 0;
 pub const TID_MAX: TID = 65535;
 
-/// Message represents a messaging packet between ECHONET-lite nodes as specified in the ECHONET-lite specification.
+/// Message represents a messaging packet between ECHONET-Lite nodes as specified in the ECHONET-Lite specification.
 /// # Examples
 /// ```
 /// use echonet::protocol::Message;
