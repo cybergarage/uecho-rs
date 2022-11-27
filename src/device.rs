@@ -88,7 +88,7 @@ pub const DEVICE_NO_FAULT_OCCURRED: u8 = 0x42;
 pub const DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = 0x00;
 pub const DEVICE_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_UNKNOWN;
 
-/// Device represents a ECHONET-lite device node.
+/// Device represents a ECHONET-Lite device node.
 pub struct Device {
     code: ObjectCode,
     node: Arc<Mutex<DeviceNode>>,
@@ -143,7 +143,7 @@ impl Device {
     //     obj.unwrap()
     // }
 
-    // Sets the data into the specified property if the device node has the property, otherwise return false.
+    /// Sets the data into the specified property if the device node has the property, otherwise return false.
     pub fn set_property(&mut self, code: PropertyCode, data: &[u8]) -> bool {
         let binding = self.node();
         let mut node = binding.lock().unwrap();
@@ -159,8 +159,8 @@ impl Device {
         true
     }
 
-    // Gets the specified property data if the device node has the property, otherwise return none.
-    pub fn property(&self, code: PropertyCode) -> Option<Vec<u8>>  {
+    /// Gets the specified property data if the device node has the property, otherwise return none.
+    pub fn property(&self, code: PropertyCode) -> Option<Vec<u8>> {
         let binding = self.node();
         let node = binding.lock().unwrap();
         let obj = node.find_object(self.code);
