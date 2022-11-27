@@ -24,7 +24,7 @@ use crate::protocol::{Message, TID, TID_MAX, TID_MIN};
 use crate::transport::Manager;
 use crate::transport::*;
 
-/// LocalNode represents an internal ECHONET-lite node in the controller and device nodes.
+/// LocalNode represents an internal ECHONET-Lite node in the controller and device nodes.
 pub struct LocalNode {
     transport_mgr: Manager,
     objects: Vec<Object>,
