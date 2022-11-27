@@ -89,4 +89,13 @@ impl Esv {
             _ => return false,
         }
     }
+
+    pub fn is_notification_response(&self) -> bool {
+        match self {
+            Esv::NotificationRequestError => return true,
+            Esv::Notification => return true,
+            Esv::NotificationResponse => return true,
+            _ => return false,
+        }
+    }
 }
