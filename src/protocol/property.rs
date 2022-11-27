@@ -14,10 +14,10 @@
 
 pub const FORMAT1_PROPERTY_HEADER_SIZE: usize = 2;
 
-/// PropertyCode represents an ECHONET-Lite property code (EPC) in a ECHONET-Lite message.
+/// PropertyCode represents an ECHONET-Lite property code (EPC) in an ECHONET-Lite message.
 pub type PropertyCode = u8;
 
-/// Each ECHONET-Lite message has properties. Property represents a ECHONET-Lite property of a message packet as specified in the ECHONET-Lite specification.
+/// Each ECHONET-Lite message has properties. Property represents an ECHONET-Lite property of a message packet as specified in the ECHONET-Lite specification.
 pub struct Property {
     code: PropertyCode,
     data: Vec<u8>,

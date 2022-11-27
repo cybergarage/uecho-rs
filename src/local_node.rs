@@ -26,7 +26,7 @@ use crate::transport::Manager;
 use crate::transport::*;
 use crate::{object::*, Property};
 
-/// LocalNode represents an internal ECHONET-Lite node in the controller and device nodes.
+/// LocalNode represents an ECHONET-Lite node in the controller and device nodes.
 pub struct LocalNode {
     transport_mgr: Manager,
     objects: Vec<Object>,
