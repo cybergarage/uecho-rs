@@ -184,12 +184,12 @@
 /// for (i, node) in ctrl.nodes().iter().enumerate() {
 ///     println!(&quot;[{}] {}&quot;, i, node.addr());
 ///     for (j, obj) in node.objects().iter().enumerate() {
-///         println!(&quot;    [{}] {:06X}&quot;, j, obj.code());
+///         println!(&quot;[{}] {:06X}&quot;, j, obj.code());
 ///         for obj_prop in obj.properties() {
 ///             if !obj_prop.is_read_required() {
 ///                 continue;
 ///             }
-///             print!(&quot;        [{:02X}] {}:&quot;, obj_prop.code(), obj_prop.name());
+///             print!(&quot;[{:02X}] {}:&quot;, obj_prop.code(), obj_prop.name());
 ///             let mut msg = Message::new();
 ///             msg.set_esv(Esv::ReadRequest);
 ///             msg.set_deoj(obj.code());
