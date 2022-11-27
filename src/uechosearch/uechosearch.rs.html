@@ -123,9 +123,9 @@
 <span class="kw">use </span>echonet::{Controller, ManufactureCode, StandardDatabase};
 
 <span class="kw">fn </span>main() {
-    logger::init();
+    <span class="comment">// logger::init();
 
-    <span class="kw">let </span><span class="kw-2">mut </span>ctrl = Controller::new();
+    </span><span class="kw">let </span><span class="kw-2">mut </span>ctrl = Controller::new();
     ctrl.start();
     ctrl.search();
 

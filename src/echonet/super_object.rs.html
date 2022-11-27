@@ -79,15 +79,15 @@
 <span class="kw">pub const </span>OBJECT_OPERATING_STATUS_ON: u8 = <span class="number">0x30</span>;
 <span class="kw">pub const </span>OBJECT_OPERATING_STATUS_OFF: u8 = <span class="number">0x31</span>;
 <span class="kw">pub const </span>OBJECT_OPERATING_STATUS_SIZE: usize = <span class="number">1</span>;
-<span class="kw">pub const </span>OBJECT_MANUFACTURER_EVALUATION_CODE_MIN: u32 = <span class="number">0xFFFFF0</span>;
-<span class="kw">pub const </span>OBJECT_MANUFACTURER_EVALUATION_CODE_MAX: u32 = <span class="number">0xFFFFFF</span>;
+<span class="kw">pub const </span>OBJECT_MANUFACTURER_EXPERIMENT_CODE_MIN: u32 = <span class="number">0xFFFFF0</span>;
+<span class="kw">pub const </span>OBJECT_MANUFACTURER_EXPERIMENT_CODE_MAX: u32 = <span class="number">0xFFFFFF</span>;
 <span class="kw">pub const </span>OBJECT_MANUFACTURER_CODE_SIZE: usize = <span class="number">3</span>;
 <span class="kw">pub const </span>OBJECT_PROPERTY_MAP_MAX_SIZE: usize = <span class="number">16</span>;
 <span class="kw">pub const </span>OBJECT_ANNO_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_MAX_SIZE + <span class="number">1</span>;
 <span class="kw">pub const </span>OBJECT_SET_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_MAX_SIZE + <span class="number">1</span>;
 <span class="kw">pub const </span>OBJECT_GET_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_MAX_SIZE + <span class="number">1</span>;
 
-<span class="kw">pub const </span>OBJECT_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_EVALUATION_CODE_MIN;
+<span class="kw">pub const </span>OBJECT_MANUFACTURER_EXPERIMENT: u32 = <span class="number">0xFFFFFF</span>;
 
 <span class="kw">impl </span>Object {
     <span class="kw">pub fn </span>set_manufacturer_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u32) -&gt; bool {
