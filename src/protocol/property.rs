@@ -97,3 +97,12 @@ impl Property {
         true
     }
 }
+
+impl Clone for Property {
+    fn clone(&self) -> Property {
+        Property {
+            code: self.code(),
+            data: self.data.clone(),
+        }
+    }
+}
