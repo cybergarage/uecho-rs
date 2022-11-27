@@ -15,7 +15,7 @@
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
-/// ESV represents a ECHONET-Lite service (ESV) code as specified in the ECHONET-lite specification.
+/// ESV represents a ECHONET-Lite service (ESV) code as specified in the ECHONET-Lite specification.
 #[derive(Copy, Clone, PartialEq, Debug, EnumIter)]
 pub enum Esv {
     Unknown = 0x00,
