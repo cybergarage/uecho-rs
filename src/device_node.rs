@@ -16,7 +16,8 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::local_node::LocalNode;
-use crate::object::Object;
+use crate::object::{Object, ObjectCode};
+use crate::property::PropertyCode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
 use crate::transport::{Observer, ObserverEntity};
@@ -51,6 +52,39 @@ impl DeviceNode {
 
     pub fn local_node(&self) -> Arc<Mutex<LocalNode>> {
         self.node.clone()
+    }
+
+    pub fn set_property(
+        &mut self,
+        obj_code: ObjectCode,
+        prop_code: PropertyCode,
+        data: &[u8],
+    ) -> bool {
+        let mut node = self.node.lock().unwrap();
+        let obj = node.find_object_mut(obj_code);
+        if obj.is_none() {
+            return false;
+        }
+        let prop = obj.unwrap().find_property_mut(prop_code);
+        if prop.is_none() {
+            return false;
+        }
+        prop.unwrap().set_data(data);
+        true
+    }
+
+    /// Gets the specified property data if the device node has the property, otherwise return none.
+    pub fn property(&self, obj_code: ObjectCode, prop_code: PropertyCode) -> Option<Vec<u8>> {
+        let node = self.node.lock().unwrap();
+        let obj = node.find_object(obj_code);
+        if obj.is_none() {
+            return None;
+        }
+        let prop = obj.unwrap().find_property(prop_code);
+        if prop.is_none() {
+            return None;
+        }
+        Some(prop.unwrap().data().clone())
     }
 
     pub fn start(&mut self) -> bool {
