@@ -22,7 +22,7 @@ use echonet::util::Bytes;
 use echonet::{Controller, ManufactureCode, StandardDatabase};
 
 fn main() {
-    logger::init();
+    // logger::init();
 
     let mut ctrl = Controller::new();
     ctrl.start();
