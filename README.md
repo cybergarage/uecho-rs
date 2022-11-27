@@ -9,10 +9,33 @@ The `uecho-rs` is a portable and cross-platform development framework for creati
 
 ## What is uEcho ?
 
-The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
+To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
+
+The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. 
 
 ![](doc/img/framework.png)
 
-However, the developer has only to set basic listeners to implement the devices and controllers because the `uecho-rs` handles other requests such as read and notification requests automatically.
+Using the `uecho-rs`, the developer has only to set basic listeners to implement the devices and controllers because the `uecho-rs` handles other requests such as read and notification requests automatically.
+
+## Getting Started
+
+To add the `uecho-rs` to your project, add the following to your Cargo.toml file:
+
+```
+[dependencies]
+echonet = "1.0.0"
+```
+
+The examples are available for [ECHONET-Lite][enet] controller and device implementations using the `uecho-rs`, check out [the examples folder in GitHub](https://github.com/cybergarage/uecho-rs/tree/master/bin).
+
+## Getting Help
+
+- [Generated Docs (latest version)](https://docs.rs/echonet/latest/echonet/)
+- [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/bin).
+
+## License
+
+This project is licensed under the Apache-2.0 License.
 
 [enet]:http://echonet.jp/english/
+
