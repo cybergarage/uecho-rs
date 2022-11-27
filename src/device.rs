@@ -87,7 +87,7 @@ pub const DEVICE_DEFAULT_VERSION_APPENDIX: u8 = DEVICE_VERSION_APPENDIX_G;
 pub const DEVICE_FAULT_OCCURRED: u8 = 0x41;
 pub const DEVICE_NO_FAULT_OCCURRED: u8 = 0x42;
 pub const DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = 0x00;
-pub const DEVICE_MANUFACTURER_UNKNOWN: u32 = OBJECT_MANUFACTURER_UNKNOWN;
+pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_UNKNOWN;
 
 /// Device represents a ECHONET-Lite device node.
 pub struct Device {
@@ -144,7 +144,7 @@ impl Device {
             &[OBJECT_OPERATING_STATUS_OFF],
         );
         let mut code: [u8; 3] = [0; 3];
-        Bytes::from_u32(DEVICE_MANUFACTURER_UNKNOWN, &mut code);
+        Bytes::from_u32(DEVICE_MANUFACTURER_EXPERIMENT, &mut code);
         dev_node.set_property(
             self.code,
             DEVICE_MANUFACTURER_CODE,
