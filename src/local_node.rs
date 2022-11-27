@@ -218,16 +218,51 @@ impl LocalNode {
         }
 
         // (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
+        // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
+        // (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
 
-        let mut has_all_properties = true;
+        let mut are_all_properties_available = true;
         for req_msg_prop in req_msg.properties() {
-            if !dst_obj.has_property(req_msg_prop.code()) {
-                has_all_properties = false;
+            let dst_prop = dst_obj.find_property(req_msg_prop.code());
+            if dst_prop.is_none() {
+                are_all_properties_available = false;
                 break;
+            }
+            let dst_prop = dst_prop.unwrap();
+            match req_msg.esv() {
+                Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
+                    if !dst_prop.is_writable() {
+                        are_all_properties_available = false;
+                        break;
+                    }
+                    if 0 < dst_prop.capacity() {
+                        
+                    }
+                }
+                Esv::ReadRequest | Esv::NotificationRequest | Esv::NotificationResponseRequired => {
+                    if !dst_prop.is_readable() {
+                        are_all_properties_available = false;
+                        break;
+                    }
+                }
+                Esv::WriteReadRequest => {
+                    if !dst_prop.is_writable() {
+                        are_all_properties_available = false;
+                        break;
+                    }
+                    if !dst_prop.is_readable() {
+                        are_all_properties_available = false;
+                        break;
+                    }
+                }
+                _ => {
+                    are_all_properties_available = false;
+                    break;
+                }
             }
         }
 
-        if !has_all_properties {
+        if !are_all_properties_available {
             return Some(ResponseErrorMessage::from(req_msg));
         }
 
