@@ -135,7 +135,8 @@ impl Device {
         dev_node.local_node()
     }
 
-    /// Returns the parent local node to which the device belongs.
+    // Returns the parent local node to which the device belongs.
+    // rustc --explain E0515
     // pub fn object(&self) -> &mut Object {
     //     let mut node = self.node().lock().unwrap();
     //     let obj = node.find_object_mut(self.code);
