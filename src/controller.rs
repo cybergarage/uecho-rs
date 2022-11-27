@@ -25,7 +25,7 @@ use crate::remote_node::*;
 
 /// Controller represents a ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
 /// # Examples
-/// ```
+/// ```no_run
 /// use std::{thread, time};
 ///
 /// use echonet::Controller;
