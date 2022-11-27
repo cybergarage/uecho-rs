@@ -78,4 +78,15 @@ impl Esv {
             _ => return false,
         }
     }
+
+    pub fn is_error_response(&self) -> bool {
+        match self {
+            Esv::WriteRequestError => return true,
+            Esv::WriteRequestResponseRequiredError => return true,
+            Esv::ReadRequestError => return true,
+            Esv::NotificationRequestError => return true,
+            Esv::WriteReadRequestError => return true,
+            _ => return false,
+        }
+    }
 }
