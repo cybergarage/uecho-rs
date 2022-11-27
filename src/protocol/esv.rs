@@ -50,4 +50,15 @@ impl Esv {
     pub fn to_u8(esv: Esv) -> u8 {
         esv as u8
     }
+
+    pub fn is_request(&self) -> bool {
+        match self {
+            Esv::WriteRequest => return true,
+            Esv::WriteRequestResponseRequired => return true,
+            Esv::ReadRequest => return true,
+            Esv::NotificationRequest => return true,
+            Esv::WriteReadRequest => return true,
+            _ => return false,
+        }
+    }
 }
