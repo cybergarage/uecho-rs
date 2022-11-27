@@ -20,7 +20,7 @@ use std::sync::Mutex;
 
 use crate::local_node::LocalNode;
 use crate::message::SearchMessage;
-use crate::node_profile::NODE_PROFILE_OBJECT_CODE;
+use crate::node_profile::{NodeProfile, NODE_PROFILE_OBJECT_CODE};
 use crate::object::ObjectCode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
@@ -128,6 +128,7 @@ impl Observer for Arc<Mutex<ControllerNode>> {
             obj.add_standard_properties(SUPER_OBJECT_CODE);
             obj.add_standard_properties(obj.code());
         }
+        remote_node.add_object(NodeProfile::new());
         ctrl.replace_remote_node(remote_node);
     }
 }
