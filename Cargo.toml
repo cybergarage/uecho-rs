@@ -10,7 +10,7 @@ license = "Apache-2.0"
 # license-file = "LICENSE"
 description = "Portable development framework for ECHONET Lite"
 categories = ["network-programming"]
-keywords = ["echonet-lite"]
+keywords = ["echonet", "echonet-lite"]
 
 [dependencies]
 log = "0.4"
@@ -26,4 +26,4 @@ net2 = "0.2"
 
 [[bin]]
 name = "uechosearch"
-path = "bin/uechosearch.rs"
+path = "examples/uechosearch.rs"
