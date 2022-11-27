@@ -131,23 +131,6 @@
 <span id="131">131</span>
 <span id="132">132</span>
 <span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
-<span id="148">148</span>
-<span id="149">149</span>
-<span id="150">150</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -168,11 +151,10 @@
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
 <span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
 <span class="kw">use </span><span class="kw">crate</span>::message::SearchMessage;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::NODE_PROFILE_OBJECT_CODE;
-<span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
+<span class="kw">use </span><span class="kw">crate</span>::object::ObjectCode;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::RemoteNode;
 <span class="kw">use </span><span class="kw">crate</span>::super_object::SUPER_OBJECT_CODE;
@@ -180,7 +162,6 @@
 <span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverEntity};
 
 <span class="kw">pub struct </span>ControllerNode {
-    db: StandardDatabase,
     node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;,
     <span class="kw">pub </span>remote_nodes: Vec&lt;RemoteNode&gt;,
 }
@@ -192,7 +173,6 @@
 
     <span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Arc&lt;Mutex&lt;ControllerNode&gt;&gt; {
         <span class="kw">let </span>ctrl = Arc::new(Mutex::new(ControllerNode {
-            db: StandardDatabase::new(),
             node: node,
             remote_nodes: Vec::new(),
         }));
@@ -265,20 +245,6 @@
         }
         <span class="bool-val">true
     </span>}
-
-    <span class="kw">pub fn </span>import_std_object_properties(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj: <span class="kw-2">&amp;mut </span>Object, obj_code: ObjectCode) {
-        <span class="kw">let </span>std_obj = <span class="self">self</span>.db.find_object(obj_code);
-        <span class="kw">if </span>std_obj.is_none() {
-            <span class="kw">return</span>;
-        }
-        obj.set_class_name(std_obj.unwrap().class_name().to_string());
-        <span class="kw">for </span>std_prop <span class="kw">in </span>std_obj.unwrap().properties() {
-            <span class="kw">if </span>std_obj.is_none() {
-                <span class="kw">return</span>;
-            }
-            obj.add_property(std_prop.clone());
-        }
-    }
 }
 
 <span class="kw">impl </span>Observer <span class="kw">for </span>Arc&lt;Mutex&lt;ControllerNode&gt;&gt; {
@@ -292,8 +258,8 @@
         <span class="kw">let </span><span class="kw-2">mut </span>remote_node = RemoteNode::from_message(msg);
         <span class="macro">info!</span>(<span class="string">&quot;FOUND: {}&quot;</span>, remote_node.addr());
         <span class="kw">for </span>(<span class="kw">_</span>, obj) <span class="kw">in </span>remote_node.objects_mut().iter_mut().enumerate() {
-            ctrl.import_std_object_properties(obj, SUPER_OBJECT_CODE);
-            ctrl.import_std_object_properties(obj, obj.code());
+            obj.add_standard_properties(SUPER_OBJECT_CODE);
+            obj.add_standard_properties(obj.code());
         }
         ctrl.replace_remote_node(remote_node);
     }

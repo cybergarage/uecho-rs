@@ -212,6 +212,20 @@
 <span id="212">212</span>
 <span id="213">213</span>
 <span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -231,11 +245,10 @@
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
 <span class="kw">use </span><span class="kw">crate</span>::device_node::DeviceNode;
 <span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
-<span class="kw">use </span><span class="kw">crate</span>::property::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::property::{Property, PropertyCode};
 <span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
 
 <span class="kw">pub const </span>DEVICE_OPERATING_STATUS: u8 = OBJECT_OPERATING_STATUS;
@@ -316,7 +329,7 @@
             code: code,
             node: DeviceNode::new(),
         };
-        dev.set_code(code);
+        dev.init(code);
         dev
     }
 
@@ -326,8 +339,17 @@
             code: code,
             node: DeviceNode::new_with_node(node),
         };
-        dev.set_code(code);
+        dev.init(code);
         dev
+    }
+
+    <span class="kw">fn </span>init(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) {
+        <span class="kw">let </span><span class="kw-2">mut </span>obj = Object::new();
+        obj.set_code(code);
+        obj.add_standard_properties(SUPER_OBJECT_CODE);
+        obj.add_standard_properties(code);
+        <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
+        dev_node.add_object(obj);
     }
 
     <span class="doccomment">/// Returns the object code.
@@ -348,10 +370,27 @@
     //     obj.unwrap()
     // }
 
-    </span><span class="doccomment">/// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
+    </span><span class="kw">pub fn </span>set_property_data(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode, data: <span class="kw-2">&amp;</span>[u8]) -&gt; bool {
+        <span class="kw">let </span>binding = <span class="self">self</span>.node();
+        <span class="kw">let </span><span class="kw-2">mut </span>node = binding.lock().unwrap();
+        <span class="kw">let </span>obj = node.find_object_mut(<span class="self">self</span>.code);
+        <span class="kw">if </span>obj.is_none() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="kw">let </span>prop = obj.unwrap().find_property_mut(code);
+        <span class="kw">if </span>prop.is_none() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        prop.unwrap().set_data(data);
+        <span class="bool-val">true
+    </span>}
+
+    <span class="doccomment">/// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
     </span><span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
-        dev_node.start();
+        <span class="kw">if </span>!dev_node.start() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
         dev_node.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
 
         <span class="kw">let </span>local_node = dev_node.local_node();
@@ -359,7 +398,6 @@
             .lock()
             .unwrap()
             .add_observer(Arc::new(Mutex::new(local_node.clone())));
-
         <span class="bool-val">true
     </span>}
 
@@ -367,16 +405,6 @@
     </span><span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
         dev_node.stop()
-    }
-
-    <span class="kw">fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) {
-        <span class="kw">let </span>std_db = StandardDatabase::shared();
-        <span class="kw">let </span>std_obj = std_db.find_object(code);
-        <span class="kw">if </span>std_obj.is_none() {
-            <span class="kw">return</span>;
-        }
-        <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
-        dev_node.add_object(std_obj.unwrap().clone());
     }
 }
 

@@ -141,6 +141,8 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -266,7 +268,9 @@
     <span class="doccomment">/// Starts the controller node to communicate with other ECHONET-Lite nodes on the local network.
     </span><span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="kw">let </span><span class="kw-2">mut </span>ctrl = <span class="self">self</span>.node.lock().unwrap();
-        ctrl.start();
+        <span class="kw">if </span>!ctrl.start() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
         ctrl.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
 
         <span class="kw">let </span>local_node = ctrl.local_node();

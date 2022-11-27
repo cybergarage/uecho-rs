@@ -86,17 +86,6 @@
 <span id="86">86</span>
 <span id="87">87</span>
 <span id="88">88</span>
-<span id="89">89</span>
-<span id="90">90</span>
-<span id="91">91</span>
-<span id="92">92</span>
-<span id="93">93</span>
-<span id="94">94</span>
-<span id="95">95</span>
-<span id="96">96</span>
-<span id="97">97</span>
-<span id="98">98</span>
-<span id="99">99</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -111,8 +100,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span>std::io;
-<span class="kw">use </span>std::net::SocketAddr;
+</span><span class="kw">use </span>std::net::SocketAddr;
 
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::transport::interface::<span class="kw-2">*</span>;
@@ -147,16 +135,6 @@
         }
         <span class="bool-val">false
     </span>}
-
-    <span class="kw">pub fn </span>local_addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SocketAddr&gt; {
-        <span class="kw">for </span>udp_server <span class="kw">in </span><span class="self">self</span>.udp_servers.iter() {
-            <span class="kw">let </span>udp_server_addr = udp_server.local_addr();
-            <span class="kw">if </span>udp_server_addr.is_ok() {
-                <span class="kw">return </span>udp_server_addr;
-            }
-        }
-        <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(io::ErrorKind::NotConnected, <span class="string">&quot;&quot;</span>));
-    }
 
     <span class="kw">pub fn </span>is_running(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">if </span><span class="self">self</span>.udp_servers.len() == <span class="number">0 </span>{

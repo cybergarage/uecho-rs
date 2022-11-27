@@ -38,6 +38,7 @@
 <span id="38">38</span>
 <span id="39">39</span>
 <span id="40">40</span>
+<span id="41">41</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -62,7 +63,8 @@
     </span><span class="kw">fn </span>device() {
         <span class="kw">let </span>device_code = <span class="number">0x029101</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>dev = Device::new(device_code);
-        <span class="kw">let </span>node = dev.node();
+        <span class="comment">// let node = dev.node();
+        </span><span class="macro">assert!</span>(dev.set_property_data(DEVICE_OPERATING_STATUS, <span class="kw-2">&amp;</span>[OBJECT_OPERATING_STATUS_ON]));
         <span class="comment">// dev.set_operating_status(true);
         // assert_eq!(
         //     dev.operating_status().byte_data(),
