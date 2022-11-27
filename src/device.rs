@@ -17,7 +17,6 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::database::StandardDatabase;
 use crate::device_node::DeviceNode;
 use crate::local_node::LocalNode;
 use crate::object::{Object, ObjectCode};
@@ -102,7 +101,7 @@ impl Device {
             code: code,
             node: DeviceNode::new(),
         };
-        dev.set_code(code);
+        dev.init(code);
         dev
     }
 
@@ -112,8 +111,17 @@ impl Device {
             code: code,
             node: DeviceNode::new_with_node(node),
         };
-        dev.set_code(code);
+        dev.init(code);
         dev
+    }
+
+    fn init(&mut self, code: ObjectCode) {
+        let mut obj = Object::new();
+        obj.set_code(code);
+        obj.add_standard_properties(SUPER_OBJECT_CODE);
+        obj.add_standard_properties(code);
+        let mut dev_node = self.node.lock().unwrap();
+        dev_node.add_object(obj);
     }
 
     /// Returns the object code.
@@ -169,16 +177,6 @@ impl Device {
     pub fn stop(&mut self) -> bool {
         let mut dev_node = self.node.lock().unwrap();
         dev_node.stop()
-    }
-
-    fn set_code(&mut self, code: ObjectCode) {
-        let std_db = StandardDatabase::shared();
-        let std_obj = std_db.find_object(code);
-        if std_obj.is_none() {
-            return;
-        }
-        let mut dev_node = self.node.lock().unwrap();
-        dev_node.add_object(std_obj.unwrap().clone());
     }
 }
 
