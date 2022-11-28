@@ -52,8 +52,8 @@
     <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message);
 }
 
-<span class="kw">pub type </span>ObserverEntity = Arc&lt;Mutex&lt;<span class="kw">dyn </span>Observer + Send&gt;&gt;;
-<span class="kw">pub type </span>Observers = Vec&lt;ObserverEntity&gt;;
+<span class="kw">pub type </span>ObserverObject = Arc&lt;Mutex&lt;<span class="kw">dyn </span>Observer + Send&gt;&gt;;
+<span class="kw">pub type </span>Observers = Vec&lt;ObserverObject&gt;;
 
 <span class="kw">pub fn </span>observers_new() -&gt; Observers {
     Vec::new()

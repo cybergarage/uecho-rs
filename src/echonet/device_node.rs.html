@@ -107,6 +107,12 @@
 <span id="107">107</span>
 <span id="108">108</span>
 <span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -124,12 +130,13 @@
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
+<span class="kw">use </span><span class="kw">crate</span>::handler::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
 <span class="kw">use </span><span class="kw">crate</span>::property::PropertyCode;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::RemoteNode;
-<span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverEntity};
+<span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverObject};
 
 <span class="kw">pub struct </span>DeviceNode {
     node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;,
@@ -154,7 +161,12 @@
         node.add_object(obj)
     }
 
-    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverEntity) -&gt; bool {
+    <span class="kw">pub fn </span>set_request_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: RequestHandlerObject) {
+        <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
+        node.set_request_handler(handler.clone());
+    }
+
+    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
         node.add_observer(observer.clone())
     }

@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["echonet","uechosearch"];
+window.ALL_CRATES = ["echonet","monolight","uechosearch"];

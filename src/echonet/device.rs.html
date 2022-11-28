@@ -267,6 +267,12 @@
 <span id="267">267</span>
 <span id="268">268</span>
 <span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -287,6 +293,7 @@
 <span class="kw">use </span>std::sync::Mutex;
 
 <span class="kw">use </span><span class="kw">crate</span>::device_node::DeviceNode;
+<span class="kw">use </span><span class="kw">crate</span>::handler::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
 <span class="kw">use </span><span class="kw">crate</span>::property::PropertyCode;
@@ -455,6 +462,11 @@
     </span><span class="kw">pub fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, code: PropertyCode) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt; {
         <span class="kw">let </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
         dev_node.property(<span class="self">self</span>.code, code)
+    }
+
+    <span class="kw">pub fn </span>set_request_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: RequestHandlerObject) {
+        <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
+        dev_node.set_request_handler(handler.clone());
     }
 
     <span class="doccomment">/// Starts the device to communicate with other ECHONET-Lite nodes on the local network.

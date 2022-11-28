@@ -163,7 +163,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::RemoteNode;
 <span class="kw">use </span><span class="kw">crate</span>::super_object::SUPER_OBJECT_CODE;
 <span class="kw">use </span><span class="kw">crate</span>::transport::PORT;
-<span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverEntity};
+<span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverObject};
 
 <span class="kw">pub struct </span>ControllerNode {
     node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;,
@@ -183,7 +183,7 @@
         ctrl
     }
 
-    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverEntity) -&gt; bool {
+    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
         node.add_observer(observer.clone())
     }

@@ -296,6 +296,13 @@
 <span id="296">296</span>
 <span id="297">297</span>
 <span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -317,6 +324,7 @@
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
+<span class="kw">use </span><span class="kw">crate</span>::handler::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::message::ResponseErrorMessage;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
@@ -330,6 +338,7 @@
     objects: Vec&lt;Object&gt;,
     last_tid: TID,
     post_sender: Sender&lt;Message&gt;,
+    request_handler: <span class="prelude-ty">Option</span>&lt;RequestHandlerObject&gt;,
 }
 
 <span class="kw">impl </span>LocalNode {
@@ -340,6 +349,7 @@
             objects: Vec::new(),
             last_tid: TID_MIN,
             post_sender: tx,
+            request_handler: <span class="prelude-val">None</span>,
         }));
         node.lock().unwrap().init();
         node
@@ -381,7 +391,11 @@
         <span class="self">self</span>.find_object_mut(NODE_PROFILE_OBJECT_CODE)
     }
 
-    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverEntity) -&gt; bool {
+    <span class="kw">pub fn </span>set_request_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: RequestHandlerObject) {
+        <span class="self">self</span>.request_handler = <span class="prelude-val">Some</span>(handler.clone());
+    }
+
+    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
         <span class="self">self</span>.transport_mgr.add_observer(observer.clone())
     }
 

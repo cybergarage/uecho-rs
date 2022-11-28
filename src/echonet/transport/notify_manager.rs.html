@@ -76,7 +76,7 @@
 <span class="kw">pub trait </span>NotifytManager {
     <span class="kw">fn </span>observers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Observers;
 
-    <span class="kw">fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverEntity) -&gt; bool {
+    <span class="kw">fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
         <span class="self">self</span>.observers().push(observer);
         <span class="bool-val">true
     </span>}
