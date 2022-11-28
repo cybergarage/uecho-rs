@@ -18,6 +18,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::device_node::DeviceNode;
+use crate::handler::*;
 use crate::local_node::LocalNode;
 use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
@@ -186,6 +187,11 @@ impl Device {
     pub fn property(&self, code: PropertyCode) -> Option<Vec<u8>> {
         let dev_node = self.node.lock().unwrap();
         dev_node.property(self.code, code)
+    }
+
+    pub fn set_request_handler(&mut self, handler: RequestHandlerObject) {
+        let mut dev_node = self.node.lock().unwrap();
+        dev_node.set_request_handler(handler.clone());
     }
 
     /// Starts the device to communicate with other ECHONET-Lite nodes on the local network.
