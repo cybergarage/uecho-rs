@@ -278,6 +278,22 @@ impl LocalNode {
             return Some(ResponseErrorMessage::from(req_msg));
         }
 
+        // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
+
+        let req_esv = req_msg.esv();
+        if self.request_handler.is_some() {
+            for req_msg_prop in req_msg.properties() {
+                // let request_handler = self.request_handler.unwrap();
+                // let result = request_handler
+                //     .lock()
+                //     .unwrap()
+                //     .property_request_received(req_esv, req_msg_prop);
+                // if result {
+                //     return Some(ResponseErrorMessage::from(req_msg));
+                // }
+            }
+        }
+
         None
     }
 }
