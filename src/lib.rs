@@ -23,13 +23,6 @@
 //!
 //! ## Getting Started
 //!
-//! To add the `uecho-rs` to your project, add the following to your Cargo.toml file:
-//!
-//! ```
-//! [dependencies]
-//! echonet = "1.x.x"
-//! ```
-//!
 //! The examples are available for [ECHONET-Lite][enet] controller and device implementations using the `uecho-rs`, check out [the examples folder in GitHub](https://github.com/cybergarage/uecho-rs/tree/master/examples).
 //!
 //! ## Getting Help
@@ -58,7 +51,7 @@ pub use self::device::Device;
 pub use self::local_node::*;
 pub use self::manufacture::{Manufacture, ManufactureCode};
 pub use self::object::Object;
-pub use self::property::Property;
+pub use self::property::{Property, PropertyEnum, PropertyRule};
 pub use self::remote_node::*;
 
 mod class;
