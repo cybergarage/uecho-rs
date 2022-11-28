@@ -28,7 +28,7 @@ impl MulticastManager {
         }
     }
 
-    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         for mcast_server in self.mcast_servers.iter_mut() {
             if mcast_server.add_observer(observer.clone()) {
                 return false;

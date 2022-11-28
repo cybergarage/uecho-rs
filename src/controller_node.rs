@@ -26,7 +26,7 @@ use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
 use crate::super_object::SUPER_OBJECT_CODE;
 use crate::transport::PORT;
-use crate::transport::{Observer, ObserverEntity};
+use crate::transport::{Observer, ObserverObject};
 
 pub struct ControllerNode {
     node: Arc<Mutex<LocalNode>>,
@@ -46,7 +46,7 @@ impl ControllerNode {
         ctrl
     }
 
-    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         let mut node = self.node.lock().unwrap();
         node.add_observer(observer.clone())
     }
