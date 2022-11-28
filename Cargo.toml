@@ -27,3 +27,7 @@ net2 = "0.2"
 [[bin]]
 name = "uechosearch"
 path = "examples/uechosearch/uechosearch.rs"
+
+[[bin]]
+name = "monolight"
+path = "examples/monolight/monolight.rs"
