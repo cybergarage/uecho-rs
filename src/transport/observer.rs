@@ -22,8 +22,8 @@ pub trait Observer {
     fn message_received(&mut self, msg: &Message);
 }
 
-pub type ObserverEntity = Arc<Mutex<dyn Observer + Send>>;
-pub type Observers = Vec<ObserverEntity>;
+pub type ObserverObject = Arc<Mutex<dyn Observer + Send>>;
+pub type Observers = Vec<ObserverObject>;
 
 pub fn observers_new() -> Observers {
     Vec::new()

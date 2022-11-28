@@ -20,7 +20,7 @@ use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
-use crate::transport::{Observer, ObserverEntity};
+use crate::transport::{Observer, ObserverObject};
 
 pub struct DeviceNode {
     node: Arc<Mutex<LocalNode>>,
@@ -45,7 +45,7 @@ impl DeviceNode {
         node.add_object(obj)
     }
 
-    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         let mut node = self.node.lock().unwrap();
         node.add_observer(observer.clone())
     }

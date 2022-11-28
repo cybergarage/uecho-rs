@@ -40,7 +40,7 @@ impl UnicastServer {
         }
     }
 
-    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         self.notifier.lock().unwrap().add_observer(observer)
     }
 

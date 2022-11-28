@@ -83,7 +83,7 @@ impl LocalNode {
         self.find_object_mut(NODE_PROFILE_OBJECT_CODE)
     }
 
-    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         self.transport_mgr.add_observer(observer.clone())
     }
 
