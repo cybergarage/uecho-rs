@@ -30,6 +30,7 @@ The examples are available for [ECHONET-Lite][enet] controller and device implem
 
 ## Getting Help
 
+- [echonet - crates.io: Rust Package Registry (latest version)](https://crates.io/crates/echonet)
 - [Generated Docs (latest version)](https://docs.rs/echonet/latest/echonet/)
 - [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
 
