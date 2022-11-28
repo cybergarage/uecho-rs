@@ -20,6 +20,7 @@ use std::collections::hash_map::Values;
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 
+/// ObjectCode represents an ECHONET-Lite object code.
 pub type ObjectCode = u32;
 
 /// Each ECHONET-Lite node has objects. Object represents an ECHONET-Lite Object in an ECHONET-Lite node.
