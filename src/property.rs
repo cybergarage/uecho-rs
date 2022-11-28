@@ -28,24 +28,24 @@ pub const PROPERTY_MAP_FORMAT1_MAX_SIZE: i32 = 15;
 pub const PROPERTY_MAP_FORMAT2_SIZE: i32 = 18;
 pub const PROPERTY_MAP_FORMAT_MAX_SIZE: i32 = PROPERTY_MAP_FORMAT2_SIZE;
 
-/// PropertyCode represents an ECHONET-Lite property code in an ECHONET-Lite property.
+/// PropertyCode represents an ECHONET-Lite property code.
 pub type PropertyCode = u8;
 
-/// PropertyData represents an ECHONET-Lite property data in an ECHONET-Lite property.
+/// PropertyData represents an ECHONET-Lite property data.
 pub type PropertyData = Vec<u8>;
 
-/// PropertyEnumCode represents an ECHONET-Lite data (EDT) code in an ECHONET-Lite property.
+/// PropertyEnumCode represents an ECHONET-Lite data (EDT) code.
 pub type PropertyEnumCode = u32;
 
 #[derive(Copy, Clone)]
-/// PropertyRule represents an ECHONET-Lite property access rule for an ECHONET-Lite property.
+/// PropertyRule represents an ECHONET-Lite property access rule.
 pub enum PropertyRule {
     Prohibited = 0,
     Required = 1,
     Optional = 2,
 }
 
-/// PropertyEnum represents an ECHONET-Lite property enumerated data for an ECHONET-Lite property.
+/// PropertyEnum represents an ECHONET-Lite property enumerated data.
 pub struct PropertyEnum {
     code: PropertyEnumCode,
     name: String,
@@ -102,6 +102,44 @@ impl Clone for PropertyEnum {
 impl Hash for PropertyEnum {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.code.hash(state);
+    }
+}
+
+/// PropertyType represents an ECHONET-Lite property type.
+#[derive(Copy, Clone, PartialEq, Debug)]
+pub enum PropertyType {
+    Unknown,
+    Number,
+    State,
+    NumericValue,
+    Level,
+    Date,
+    DateTime,
+    Time,
+    Raw,
+    Bitmap,
+    Array,
+    Object,
+    OneOf,
+}
+
+impl PropertyType {
+    pub fn from_string(typ: String) -> PropertyType {
+        match typ.as_str() {
+            "number" => PropertyType::Number,
+            "state" => PropertyType::State,
+            "numericValue" => PropertyType::NumericValue,
+            "level" => PropertyType::Level,
+            "date" => PropertyType::Date,
+            "date-time" => PropertyType::DateTime,
+            "time" => PropertyType::Time,
+            "raw" => PropertyType::Raw,
+            "bitmap" => PropertyType::Bitmap,
+            "array" => PropertyType::Array,
+            "object" => PropertyType::Object,
+            "oneOf" => PropertyType::OneOf,
+            _ => PropertyType::Unknown,
+        }
     }
 }
 
