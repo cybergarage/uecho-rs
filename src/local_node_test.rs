@@ -23,7 +23,7 @@ mod tests {
         let node = LocalNode::new();
         for n in 1..10 {
             let mut obj = Object::new();
-            assert!(obj.set_code(n));
+            obj.set_code(n);
             assert!(node.lock().unwrap().add_object(obj));
         }
     }
