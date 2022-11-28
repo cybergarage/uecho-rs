@@ -33,7 +33,7 @@ pub struct LocalNode {
     objects: Vec<Object>,
     last_tid: TID,
     post_sender: Sender<Message>,
-    request_handler: Option<RequestHandlerObject>,
+    request_mgr: RequestManager,
 }
 
 impl LocalNode {
@@ -44,7 +44,7 @@ impl LocalNode {
             objects: Vec::new(),
             last_tid: TID_MIN,
             post_sender: tx,
-            request_handler: None,
+            request_mgr: RequestManager::new(),
         }));
         node.lock().unwrap().init();
         node
@@ -87,7 +87,7 @@ impl LocalNode {
     }
 
     pub fn set_request_handler(&mut self, handler: RequestHandlerObject) {
-        self.request_handler = Some(handler.clone());
+        self.request_mgr.add_handler(handler.clone());
     }
 
     pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
@@ -280,18 +280,8 @@ impl LocalNode {
 
         // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
 
-        let req_esv = req_msg.esv();
-        if self.request_handler.is_some() {
-            for req_msg_prop in req_msg.properties() {
-                // let request_handler = self.request_handler.unwrap();
-                // let result = request_handler
-                //     .lock()
-                //     .unwrap()
-                //     .property_request_received(req_esv, req_msg_prop);
-                // if result {
-                //     return Some(ResponseErrorMessage::from(req_msg));
-                // }
-            }
+        if !self.request_mgr.notify(req_msg) {
+            return Some(ResponseErrorMessage::from(req_msg));
         }
 
         None
