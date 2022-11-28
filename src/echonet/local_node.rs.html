@@ -303,6 +303,22 @@
 <span id="303">303</span>
 <span id="304">304</span>
 <span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -581,6 +597,22 @@
 
         <span class="kw">if </span>!are_all_properties_available {
             <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+        }
+
+        <span class="comment">// (D) Processing when the controlled property exists but the stipulated service processing functions are not available
+
+        </span><span class="kw">let </span>req_esv = req_msg.esv();
+        <span class="kw">if </span><span class="self">self</span>.request_handler.is_some() {
+            <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties() {
+                <span class="comment">// let request_handler = self.request_handler.unwrap();
+                // let result = request_handler
+                //     .lock()
+                //     .unwrap()
+                //     .property_request_received(req_esv, req_msg_prop);
+                // if result {
+                //     return Some(ResponseErrorMessage::from(req_msg));
+                // }
+            </span>}
         }
 
         <span class="prelude-val">None
