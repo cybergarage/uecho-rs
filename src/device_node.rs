@@ -15,6 +15,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use crate::handler::*;
 use crate::local_node::LocalNode;
 use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
@@ -43,6 +44,11 @@ impl DeviceNode {
     pub fn add_object(&mut self, obj: Object) -> bool {
         let mut node = self.node.lock().unwrap();
         node.add_object(obj)
+    }
+
+    pub fn set_request_handler(&mut self, handler: RequestHandlerObject) {
+        let mut node = self.node.lock().unwrap();
+        node.set_request_handler(handler.clone());
     }
 
     pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
