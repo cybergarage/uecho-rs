@@ -26,4 +26,4 @@ net2 = "0.2"
 
 [[bin]]
 name = "uechosearch"
-path = "examples/uechosearch.rs"
+path = "examples/uechosearch/uechosearch.rs"
