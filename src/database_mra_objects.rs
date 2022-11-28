@@ -23,9 +23,9 @@ impl Object {
         name: String,
         data_type: String,
         data_size: usize,
-        get_rule: PropertyAttr,
-        set_rule: PropertyAttr,
-        anno_rule: PropertyAttr,
+        get_rule: PropertyRule,
+        set_rule: PropertyRule,
+        anno_rule: PropertyRule,
     ) {
         let mut prop = Property::new();
         prop.set_code(code);
@@ -39,14 +39,14 @@ impl Object {
     }
 }
 
-fn property_string_to_attribute(attr: &str) -> PropertyAttr {
+fn property_string_to_attribute(attr: &str) -> PropertyRule {
     if attr == "required" {
-        return PropertyAttr::Required;
+        return PropertyRule::Required;
     }
     if attr == "optional" {
-        return PropertyAttr::Optional;
+        return PropertyRule::Optional;
     }
-    PropertyAttr::Prohibited
+    PropertyRule::Prohibited
 }
 
 impl StandardDatabase {

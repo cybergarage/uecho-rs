@@ -32,8 +32,8 @@ pub type PropertyCode = u8;
 pub type PropertyData = Vec<u8>;
 
 #[derive(Copy, Clone)]
-/// PropertyAttr represents an ECHONET-Lite property access rule for an ECHONET-Lite property.
-pub enum PropertyAttr {
+/// PropertyRule represents an ECHONET-Lite property access rule for an ECHONET-Lite property.
+pub enum PropertyRule {
     Prohibited = 0,
     Required = 1,
     Optional = 2,
@@ -69,9 +69,9 @@ pub struct Property {
     name: String,
     typ: String,
     capacity: usize,
-    read_attr: PropertyAttr,
-    write_attr: PropertyAttr,
-    anno_attr: PropertyAttr,
+    read_attr: PropertyRule,
+    write_attr: PropertyRule,
+    anno_attr: PropertyRule,
 }
 
 impl Property {
@@ -82,9 +82,9 @@ impl Property {
             name: String::from(""),
             typ: String::from(""),
             capacity: 0,
-            read_attr: PropertyAttr::Prohibited,
-            write_attr: PropertyAttr::Prohibited,
-            anno_attr: PropertyAttr::Prohibited,
+            read_attr: PropertyRule::Prohibited,
+            write_attr: PropertyRule::Prohibited,
+            anno_attr: PropertyRule::Prohibited,
         }
     }
 
@@ -124,77 +124,77 @@ impl Property {
         self.capacity
     }
 
-    pub fn set_read_attribute(&mut self, attr: PropertyAttr) -> &mut Self {
+    pub fn set_read_attribute(&mut self, attr: PropertyRule) -> &mut Self {
         self.read_attr = attr;
         self
     }
 
-    pub fn read_attribute(&self) -> PropertyAttr {
+    pub fn read_attribute(&self) -> PropertyRule {
         self.read_attr
     }
 
-    pub fn set_write_attribute(&mut self, attr: PropertyAttr) -> &mut Self {
+    pub fn set_write_attribute(&mut self, attr: PropertyRule) -> &mut Self {
         self.write_attr = attr;
         self
     }
 
-    pub fn write_attribute(&self) -> PropertyAttr {
+    pub fn write_attribute(&self) -> PropertyRule {
         self.write_attr
     }
-    pub fn set_anno_attribute(&mut self, attr: PropertyAttr) -> &mut Self {
+    pub fn set_anno_attribute(&mut self, attr: PropertyRule) -> &mut Self {
         self.anno_attr = attr;
         self
     }
 
-    pub fn anno_attribute(&self) -> PropertyAttr {
+    pub fn anno_attribute(&self) -> PropertyRule {
         self.anno_attr
     }
 
     pub fn is_read_required(&self) -> bool {
         match self.read_attr {
-            PropertyAttr::Prohibited => return false,
-            PropertyAttr::Required => return true,
-            PropertyAttr::Optional => return false,
+            PropertyRule::Prohibited => return false,
+            PropertyRule::Required => return true,
+            PropertyRule::Optional => return false,
         };
     }
 
     pub fn is_write_required(&self) -> bool {
         match self.write_attr {
-            PropertyAttr::Prohibited => return false,
-            PropertyAttr::Required => return true,
-            PropertyAttr::Optional => return false,
+            PropertyRule::Prohibited => return false,
+            PropertyRule::Required => return true,
+            PropertyRule::Optional => return false,
         };
     }
 
     pub fn is_announce_required(&self) -> bool {
         match self.anno_attr {
-            PropertyAttr::Prohibited => return false,
-            PropertyAttr::Required => return true,
-            PropertyAttr::Optional => return false,
+            PropertyRule::Prohibited => return false,
+            PropertyRule::Required => return true,
+            PropertyRule::Optional => return false,
         };
     }
 
     pub fn is_readable(&self) -> bool {
         match self.read_attr {
-            PropertyAttr::Prohibited => return false,
-            PropertyAttr::Required => return true,
-            PropertyAttr::Optional => return true,
+            PropertyRule::Prohibited => return false,
+            PropertyRule::Required => return true,
+            PropertyRule::Optional => return true,
         };
     }
 
     pub fn is_writable(&self) -> bool {
         match self.write_attr {
-            PropertyAttr::Prohibited => return false,
-            PropertyAttr::Required => return true,
-            PropertyAttr::Optional => return true,
+            PropertyRule::Prohibited => return false,
+            PropertyRule::Required => return true,
+            PropertyRule::Optional => return true,
         };
     }
 
     pub fn is_announceable(&self) -> bool {
         match self.anno_attr {
-            PropertyAttr::Prohibited => return false,
-            PropertyAttr::Required => return true,
-            PropertyAttr::Optional => return true,
+            PropertyRule::Prohibited => return false,
+            PropertyRule::Required => return true,
+            PropertyRule::Optional => return true,
         };
     }
 
