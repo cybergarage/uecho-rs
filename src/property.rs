@@ -32,10 +32,34 @@ pub type PropertyCode = u8;
 pub type PropertyData = Vec<u8>;
 
 #[derive(Copy, Clone)]
+/// PropertyAttr represents an ECHONET-Lite property access rule for an ECHONET-Lite property.
 pub enum PropertyAttr {
     Prohibited = 0,
     Required = 1,
     Optional = 2,
+}
+
+/// PropertyEnum represents an ECHONET-Lite property enumerated data for an ECHONET-Lite property.
+pub struct PropertyEnum {
+    code: i32,
+    name: String,
+    desc: String,
+}
+
+impl Clone for PropertyEnum {
+    fn clone(&self) -> PropertyEnum {
+        PropertyEnum {
+            code: self.code,
+            name: self.name.clone(),
+            desc: self.desc.clone(),
+        }
+    }
+}
+
+impl Hash for PropertyEnum {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.code.hash(state);
+    }
 }
 
 /// Each ECHONET-Lite object has properties. Property represents an ECHONET-Lite property in an ECHONET-Lite object.
