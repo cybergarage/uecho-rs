@@ -33,7 +33,7 @@ impl Manager {
         }
     }
 
-    pub fn add_observer(&mut self, observer: ObserverEntity) -> bool {
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         if !self.ucast_mgr.add_observer(observer.clone()) {
             return false;
         }

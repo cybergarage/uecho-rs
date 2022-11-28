@@ -14,7 +14,7 @@
 
 pub use self::default::PORT;
 pub use self::manager::Manager;
-pub use self::observer::{Observer, ObserverEntity};
+pub use self::observer::{Observer, ObserverObject};
 
 mod default;
 mod error;
