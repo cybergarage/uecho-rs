@@ -215,6 +215,9 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -237,9 +240,10 @@
 <span class="kw">use </span>std::collections::HashMap;
 <span class="kw">use </span>std::hash::{Hash, Hasher};
 
-<span class="kw">pub type </span>ObjectCode = u32;
+<span class="doccomment">/// ObjectCode represents an ECHONET-Lite object code.
+</span><span class="kw">pub type </span>ObjectCode = u32;
 
-<span class="doccomment">/// Each ECHONET-Lite node has objects. Object represents an ECHONET-Lite Object in a ECHONET-Lite node.
+<span class="doccomment">/// Each ECHONET-Lite node has objects. Object represents an ECHONET-Lite Object in an ECHONET-Lite node.
 </span><span class="kw">pub struct </span>Object {
     codes: [u8; <span class="number">3</span>],
     name: String,
@@ -263,26 +267,26 @@
         obj
     }
 
-    <span class="kw">pub fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) -&gt; bool {
+    <span class="kw">pub fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.codes[<span class="number">0</span>] = ((code &amp; <span class="number">0xFF0000</span>) &gt;&gt; <span class="number">16</span>) <span class="kw">as </span>u8;
         <span class="self">self</span>.codes[<span class="number">1</span>] = ((code &amp; <span class="number">0x00FF00</span>) &gt;&gt; <span class="number">8</span>) <span class="kw">as </span>u8;
         <span class="self">self</span>.codes[<span class="number">2</span>] = (code &amp; <span class="number">0x0000FF</span>) <span class="kw">as </span>u8;
-        <span class="bool-val">true
+        <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>set_class_group_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u8) -&gt; bool {
+    <span class="kw">pub fn </span>set_class_group_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u8) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.codes[<span class="number">0</span>] = code;
-        <span class="bool-val">true
+        <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>set_class_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u8) -&gt; bool {
+    <span class="kw">pub fn </span>set_class_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u8) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.codes[<span class="number">1</span>] = code;
-        <span class="bool-val">true
+        <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>set_instance_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u8) -&gt; bool {
+    <span class="kw">pub fn </span>set_instance_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u8) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.codes[<span class="number">2</span>] = code;
-        <span class="bool-val">true
+        <span class="self">self
     </span>}
 
     <span class="kw">pub fn </span>code(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ObjectCode {
@@ -305,17 +309,19 @@
         <span class="self">self</span>.codes[<span class="number">2</span>]
     }
 
-    <span class="kw">pub fn </span>set_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: String) {
+    <span class="kw">pub fn </span>set_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: String) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.name = name;
-    }
+        <span class="self">self
+    </span>}
 
     <span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>String {
         <span class="kw-2">&amp;</span><span class="self">self</span>.name
     }
 
-    <span class="kw">pub fn </span>set_class_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: String) {
+    <span class="kw">pub fn </span>set_class_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: String) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.class_name = name;
-    }
+        <span class="self">self
+    </span>}
 
     <span class="kw">pub fn </span>class_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>String {
         <span class="kw-2">&amp;</span><span class="self">self</span>.class_name

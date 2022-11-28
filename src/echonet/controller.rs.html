@@ -140,8 +140,6 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -167,15 +165,13 @@
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// Controller represents a ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
+<span class="doccomment">/// Controller represents an ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
 /// # Examples
 /// ```no_run
 /// use std::{thread, time};
 ///
-/// use echonet::Controller;
-/// use echonet::Property;
-/// use echonet::protocol::Esv;
-/// use echonet::protocol::Message;
+/// use echonet::{Controller, Property};
+/// use echonet::protocol::{Esv, Message};
 ///
 /// let mut ctrl = Controller::new();
 /// ctrl.start();

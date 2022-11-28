@@ -283,6 +283,94 @@
 <span id="283">283</span>
 <span id="284">284</span>
 <span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -299,7 +387,9 @@
 
 </span><span class="attribute">#![allow(dead_code)]
 
-</span><span class="kw">use </span>std::hash::{Hash, Hasher};
+</span><span class="kw">use </span>std::collections::hash_map::Values;
+<span class="kw">use </span>std::collections::HashMap;
+<span class="kw">use </span>std::hash::{Hash, Hasher};
 
 <span class="kw">use </span><span class="kw">crate</span>::protocol;
 <span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
@@ -311,28 +401,94 @@
 <span class="kw">pub const </span>PROPERTY_MAP_FORMAT2_SIZE: i32 = <span class="number">18</span>;
 <span class="kw">pub const </span>PROPERTY_MAP_FORMAT_MAX_SIZE: i32 = PROPERTY_MAP_FORMAT2_SIZE;
 
-<span class="doccomment">/// PropertyCode represents an ECHONET-Lite property code in a ECHONET-Lite object.
+<span class="doccomment">/// PropertyCode represents an ECHONET-Lite property code in an ECHONET-Lite property.
 </span><span class="kw">pub type </span>PropertyCode = u8;
-<span class="doccomment">/// PropertyData represents an ECHONET-Lite property date in a ECHONET-Lite object.
+
+<span class="doccomment">/// PropertyData represents an ECHONET-Lite property data in an ECHONET-Lite property.
 </span><span class="kw">pub type </span>PropertyData = Vec&lt;u8&gt;;
 
+<span class="doccomment">/// PropertyEnumCode represents an ECHONET-Lite data (EDT) code in an ECHONET-Lite property.
+</span><span class="kw">pub type </span>PropertyEnumCode = u32;
+
 <span class="attribute">#[derive(Copy, Clone)]
-</span><span class="kw">pub enum </span>PropertyAttr {
+</span><span class="doccomment">/// PropertyRule represents an ECHONET-Lite property access rule for an ECHONET-Lite property.
+</span><span class="kw">pub enum </span>PropertyRule {
     Prohibited = <span class="number">0</span>,
     Required = <span class="number">1</span>,
     Optional = <span class="number">2</span>,
 }
 
-<span class="doccomment">/// Each ECHONET-Lite object has properties. Property represents an ECHONET-Lite property in a ECHONET-Lite object.
+<span class="doccomment">/// PropertyEnum represents an ECHONET-Lite property enumerated data for an ECHONET-Lite property.
+</span><span class="kw">pub struct </span>PropertyEnum {
+    code: PropertyEnumCode,
+    name: String,
+    desc: String,
+}
+
+<span class="kw">impl </span>PropertyEnum {
+    <span class="kw">pub fn </span>new() -&gt; PropertyEnum {
+        PropertyEnum {
+            code: <span class="number">0</span>,
+            name: String::from(<span class="string">&quot;&quot;</span>),
+            desc: String::from(<span class="string">&quot;&quot;</span>),
+        }
+    }
+
+    <span class="kw">pub fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyEnumCode) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.code = code;
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>code(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyEnumCode {
+        <span class="self">self</span>.code
+    }
+
+    <span class="kw">pub fn </span>set_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: String) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.name = name;
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>String {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.name
+    }
+
+    <span class="kw">pub fn </span>set_description(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc: String) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.desc = desc;
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>String {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.name
+    }
+}
+
+<span class="kw">impl </span>Clone <span class="kw">for </span>PropertyEnum {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyEnum {
+        PropertyEnum {
+            code: <span class="self">self</span>.code,
+            name: <span class="self">self</span>.name.clone(),
+            desc: <span class="self">self</span>.desc.clone(),
+        }
+    }
+}
+
+<span class="kw">impl </span>Hash <span class="kw">for </span>PropertyEnum {
+    <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
+        <span class="self">self</span>.code.hash(state);
+    }
+}
+
+<span class="doccomment">/// Each ECHONET-Lite object has properties. Property represents an ECHONET-Lite property in an ECHONET-Lite object.
 </span><span class="kw">pub struct </span>Property {
     code: PropertyCode,
     data: PropertyData,
     name: String,
     typ: String,
     capacity: usize,
-    read_attr: PropertyAttr,
-    write_attr: PropertyAttr,
-    anno_attr: PropertyAttr,
+    read_attr: PropertyRule,
+    write_attr: PropertyRule,
+    anno_attr: PropertyRule,
+    enums: HashMap&lt;PropertyEnumCode, PropertyEnum&gt;,
 }
 
 <span class="kw">impl </span>Property {
@@ -343,9 +499,10 @@
             name: String::from(<span class="string">&quot;&quot;</span>),
             typ: String::from(<span class="string">&quot;&quot;</span>),
             capacity: <span class="number">0</span>,
-            read_attr: PropertyAttr::Prohibited,
-            write_attr: PropertyAttr::Prohibited,
-            anno_attr: PropertyAttr::Prohibited,
+            read_attr: PropertyRule::Prohibited,
+            write_attr: PropertyRule::Prohibited,
+            anno_attr: PropertyRule::Prohibited,
+            enums: HashMap::new(),
         }
     }
 
@@ -385,77 +542,77 @@
         <span class="self">self</span>.capacity
     }
 
-    <span class="kw">pub fn </span>set_read_attribute(<span class="kw-2">&amp;mut </span><span class="self">self</span>, attr: PropertyAttr) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    <span class="kw">pub fn </span>set_read_attribute(<span class="kw-2">&amp;mut </span><span class="self">self</span>, attr: PropertyRule) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.read_attr = attr;
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>read_attribute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyAttr {
+    <span class="kw">pub fn </span>read_attribute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyRule {
         <span class="self">self</span>.read_attr
     }
 
-    <span class="kw">pub fn </span>set_write_attribute(<span class="kw-2">&amp;mut </span><span class="self">self</span>, attr: PropertyAttr) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    <span class="kw">pub fn </span>set_write_attribute(<span class="kw-2">&amp;mut </span><span class="self">self</span>, attr: PropertyRule) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.write_attr = attr;
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>write_attribute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyAttr {
+    <span class="kw">pub fn </span>write_attribute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyRule {
         <span class="self">self</span>.write_attr
     }
-    <span class="kw">pub fn </span>set_anno_attribute(<span class="kw-2">&amp;mut </span><span class="self">self</span>, attr: PropertyAttr) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    <span class="kw">pub fn </span>set_anno_attribute(<span class="kw-2">&amp;mut </span><span class="self">self</span>, attr: PropertyRule) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.anno_attr = attr;
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>anno_attribute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyAttr {
+    <span class="kw">pub fn </span>anno_attribute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyRule {
         <span class="self">self</span>.anno_attr
     }
 
     <span class="kw">pub fn </span>is_read_required(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.read_attr {
-            PropertyAttr::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
-            PropertyAttr::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            PropertyAttr::Optional =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Optional =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         };
     }
 
     <span class="kw">pub fn </span>is_write_required(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.write_attr {
-            PropertyAttr::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
-            PropertyAttr::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            PropertyAttr::Optional =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Optional =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         };
     }
 
     <span class="kw">pub fn </span>is_announce_required(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.anno_attr {
-            PropertyAttr::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
-            PropertyAttr::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            PropertyAttr::Optional =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Optional =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         };
     }
 
     <span class="kw">pub fn </span>is_readable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.read_attr {
-            PropertyAttr::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
-            PropertyAttr::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            PropertyAttr::Optional =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Optional =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
         };
     }
 
     <span class="kw">pub fn </span>is_writable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.write_attr {
-            PropertyAttr::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
-            PropertyAttr::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            PropertyAttr::Optional =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Optional =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
         };
     }
 
     <span class="kw">pub fn </span>is_announceable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.anno_attr {
-            PropertyAttr::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
-            PropertyAttr::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            PropertyAttr::Optional =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Prohibited =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
+            PropertyRule::Required =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            PropertyRule::Optional =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
         };
     }
 
@@ -540,11 +697,25 @@
         }
         <span class="bool-val">true
     </span>}
+
+    <span class="kw">pub fn </span>add_enum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, e: PropertyEnum) -&gt; bool {
+        <span class="kw">let </span>code = e.code();
+        <span class="self">self</span>.enums.insert(code, e);
+        <span class="bool-val">true
+    </span>}
+
+    <span class="kw">pub fn </span>enums(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Values&lt;<span class="lifetime">&#39;_</span>, PropertyEnumCode, PropertyEnum&gt; {
+        <span class="self">self</span>.enums.values()
+    }
+
+    <span class="kw">pub fn </span>find_enum(<span class="kw-2">&amp;</span><span class="self">self</span>, code: PropertyEnumCode) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PropertyEnum&gt; {
+        <span class="self">self</span>.enums.get(<span class="kw-2">&amp;</span>code)
+    }
 }
 
 <span class="kw">impl </span>Clone <span class="kw">for </span>Property {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Property {
-        Property {
+        <span class="kw">let </span><span class="kw-2">mut </span>prop = Property {
             code: <span class="self">self</span>.code,
             data: <span class="self">self</span>.data.clone(),
             name: <span class="self">self</span>.name.clone(),
@@ -553,7 +724,12 @@
             read_attr: <span class="self">self</span>.read_attr,
             write_attr: <span class="self">self</span>.write_attr,
             anno_attr: <span class="self">self</span>.anno_attr,
+            enums: HashMap::new(),
+        };
+        <span class="kw">for </span>e <span class="kw">in </span><span class="self">self</span>.enums() {
+            prop.add_enum(e.clone());
         }
+        prop
     }
 }
 

@@ -67,6 +67,21 @@
 <span id="67">67</span>
 <span id="68">68</span>
 <span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -86,7 +101,22 @@
 //!
 //! ## What is uEcho ?
 //!
-//! The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences. However, the developer has only to set basic listeners to implement the devices and controllers because the `uecho-rs` handles other requests such as read and notification requests automatically.
+//! To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
+//!
+//! The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. Using the `uecho-rs`, the developer has only to set basic listeners to implement the devices and controllers because the `uecho-rs` handles other requests such as read and notification requests automatically.
+//!
+//! ## Getting Started
+//!
+//! The examples are available for [ECHONET-Lite][enet] controller and device implementations using the `uecho-rs`, check out [the examples folder in GitHub](https://github.com/cybergarage/uecho-rs/tree/master/examples).
+//!
+//! ## Getting Help
+//!
+//! - [Generated Docs (latest version)](https://docs.rs/echonet/latest/echonet/)
+//! - [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
+//!
+//! ## License
+//!
+//! This project is licensed under the Apache-2.0 License.
 //!
 //! [enet]:http://echonet.jp/english/
 
@@ -105,7 +135,7 @@
 <span class="kw">pub use </span><span class="self">self</span>::local_node::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::manufacture::{Manufacture, ManufactureCode};
 <span class="kw">pub use </span><span class="self">self</span>::object::Object;
-<span class="kw">pub use </span><span class="self">self</span>::property::Property;
+<span class="kw">pub use </span><span class="self">self</span>::property::{Property, PropertyEnum, PropertyRule};
 <span class="kw">pub use </span><span class="self">self</span>::remote_node::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span>class;

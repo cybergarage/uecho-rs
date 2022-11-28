@@ -122,10 +122,10 @@
 
 </span><span class="kw">pub const </span>FORMAT1_PROPERTY_HEADER_SIZE: usize = <span class="number">2</span>;
 
-<span class="doccomment">/// PropertyCode represents an ECHONET-Lite property code (EPC) in a ECHONET-Lite message.
+<span class="doccomment">/// PropertyCode represents an ECHONET-Lite property code (EPC) in an ECHONET-Lite message.
 </span><span class="kw">pub type </span>PropertyCode = u8;
 
-<span class="doccomment">/// Each ECHONET-Lite message has properties. Property represents a ECHONET-Lite property of a message packet as specified in the ECHONET-Lite specification.
+<span class="doccomment">/// Each ECHONET-Lite message has properties. Property represents an ECHONET-Lite property of a message packet as specified in the ECHONET-Lite specification.
 </span><span class="kw">pub struct </span>Property {
     code: PropertyCode,
     data: Vec&lt;u8&gt;,
