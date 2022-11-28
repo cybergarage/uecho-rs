@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::sync::Arc;
-use std::sync::Mutex;
-
+use crate::object::ObjectCode;
 use crate::protocol::{Esv, Message, Property};
+use std::sync::{Arc, Mutex};
 
 /// RequestHandler defines a request message handler interface.
 pub trait RequestHandler {
-    fn property_request_received(&mut self, esv: Esv, prop: &Property) -> bool;
+    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool;
 }
 
 /// RequestHandlerObject represents a request message handler object.
@@ -44,10 +43,14 @@ impl RequestManager {
     }
 
     pub fn notify(&self, msg: &Message) -> bool {
+        let deoj = msg.deoj();
         let esv = msg.esv();
         for handler in self.handlers.iter() {
             for prop in msg.properties() {
-                handler.lock().unwrap().property_request_received(esv, prop);
+                handler
+                    .lock()
+                    .unwrap()
+                    .property_request_received(deoj, esv, prop);
             }
         }
         true

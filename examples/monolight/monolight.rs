@@ -16,10 +16,10 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use echonet::protocol::{Esv, Property};
-use echonet::{Device, RequestHandler};
+use echonet::{Device, ObjectCode, RequestHandler};
 
 pub struct MonoLight {
-    pub device: Device,
+    device: Device,
 }
 
 impl MonoLight {
@@ -41,7 +41,7 @@ impl MonoLight {
 }
 
 impl RequestHandler for MonoLight {
-    fn property_request_received(&mut self, esv: Esv, prop: &Property) -> bool {
+    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
         true
     }
 }
