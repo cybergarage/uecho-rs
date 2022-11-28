@@ -69,10 +69,10 @@
 <span class="kw">use </span>std::sync::Mutex;
 
 <span class="kw">use </span>echonet::protocol::{Esv, Property};
-<span class="kw">use </span>echonet::{Device, RequestHandler};
+<span class="kw">use </span>echonet::{Device, ObjectCode, RequestHandler};
 
 <span class="kw">pub struct </span>MonoLight {
-    <span class="kw">pub </span>device: Device,
+    device: Device,
 }
 
 <span class="kw">impl </span>MonoLight {
@@ -94,7 +94,7 @@
 }
 
 <span class="kw">impl </span>RequestHandler <span class="kw">for </span>MonoLight {
-    <span class="kw">fn </span>property_request_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, esv: Esv, prop: <span class="kw-2">&amp;</span>Property) -&gt; bool {
+    <span class="kw">fn </span>property_request_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deoj: ObjectCode, esv: Esv, prop: <span class="kw-2">&amp;</span>Property) -&gt; bool {
         <span class="bool-val">true
     </span>}
 }
