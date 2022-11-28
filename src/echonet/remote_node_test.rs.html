@@ -53,7 +53,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>node = RemoteNode::new();
         <span class="kw">for </span>n <span class="kw">in </span><span class="number">1</span>..<span class="number">10 </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>obj = Object::new();
-            <span class="macro">assert!</span>(obj.set_code(n));
+            obj.set_code(n);
             <span class="macro">assert!</span>(node.add_object(obj));
         }
     }
