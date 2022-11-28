@@ -14,6 +14,8 @@
 
 #![allow(dead_code)]
 
+use std::collections::hash_map::Values;
+use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 
 use crate::protocol;
@@ -26,10 +28,14 @@ pub const PROPERTY_MAP_FORMAT1_MAX_SIZE: i32 = 15;
 pub const PROPERTY_MAP_FORMAT2_SIZE: i32 = 18;
 pub const PROPERTY_MAP_FORMAT_MAX_SIZE: i32 = PROPERTY_MAP_FORMAT2_SIZE;
 
-/// PropertyCode represents an ECHONET-Lite property code in an ECHONET-Lite object.
+/// PropertyCode represents an ECHONET-Lite property code in an ECHONET-Lite property.
 pub type PropertyCode = u8;
-/// PropertyData represents an ECHONET-Lite property date in an ECHONET-Lite object.
+
+/// PropertyData represents an ECHONET-Lite property data in an ECHONET-Lite property.
 pub type PropertyData = Vec<u8>;
+
+/// PropertyEnumCode represents an ECHONET-Lite data (EDT) code in an ECHONET-Lite property.
+pub type PropertyEnumCode = u32;
 
 #[derive(Copy, Clone)]
 /// PropertyRule represents an ECHONET-Lite property access rule for an ECHONET-Lite property.
@@ -41,9 +47,46 @@ pub enum PropertyRule {
 
 /// PropertyEnum represents an ECHONET-Lite property enumerated data for an ECHONET-Lite property.
 pub struct PropertyEnum {
-    code: i32,
+    code: PropertyEnumCode,
     name: String,
     desc: String,
+}
+
+impl PropertyEnum {
+    pub fn new() -> PropertyEnum {
+        PropertyEnum {
+            code: 0,
+            name: String::from(""),
+            desc: String::from(""),
+        }
+    }
+
+    pub fn set_code(&mut self, code: PropertyEnumCode) -> &mut Self {
+        self.code = code;
+        self
+    }
+
+    pub fn code(&self) -> PropertyEnumCode {
+        self.code
+    }
+
+    pub fn set_name(&mut self, name: String) -> &mut Self {
+        self.name = name;
+        self
+    }
+
+    pub fn name(&self) -> &String {
+        &self.name
+    }
+
+    pub fn set_description(&mut self, desc: String) -> &mut Self {
+        self.desc = desc;
+        self
+    }
+
+    pub fn description(&self) -> &String {
+        &self.name
+    }
 }
 
 impl Clone for PropertyEnum {
@@ -72,6 +115,7 @@ pub struct Property {
     read_attr: PropertyRule,
     write_attr: PropertyRule,
     anno_attr: PropertyRule,
+    enums: HashMap<PropertyEnumCode, PropertyEnum>,
 }
 
 impl Property {
@@ -85,6 +129,7 @@ impl Property {
             read_attr: PropertyRule::Prohibited,
             write_attr: PropertyRule::Prohibited,
             anno_attr: PropertyRule::Prohibited,
+            enums: HashMap::new(),
         }
     }
 
@@ -279,11 +324,25 @@ impl Property {
         }
         true
     }
+
+    pub fn add_enum(&mut self, e: PropertyEnum) -> bool {
+        let code = e.code();
+        self.enums.insert(code, e);
+        true
+    }
+
+    pub fn enums(&self) -> Values<'_, PropertyEnumCode, PropertyEnum> {
+        self.enums.values()
+    }
+
+    pub fn find_enum(&self, code: PropertyEnumCode) -> Option<&PropertyEnum> {
+        self.enums.get(&code)
+    }
 }
 
 impl Clone for Property {
     fn clone(&self) -> Property {
-        Property {
+        let mut prop = Property {
             code: self.code,
             data: self.data.clone(),
             name: self.name.clone(),
@@ -292,7 +351,12 @@ impl Clone for Property {
             read_attr: self.read_attr,
             write_attr: self.write_attr,
             anno_attr: self.anno_attr,
+            enums: HashMap::new(),
+        };
+        for e in self.enums() {
+            prop.add_enum(e.clone());
         }
+        prop
     }
 }
 
