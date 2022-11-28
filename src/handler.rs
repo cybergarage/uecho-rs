@@ -20,7 +20,7 @@ use crate::protocol::Property;
 
 /// RequestHandler defines a request message handler interface.
 pub trait RequestHandler {
-    fn message_received(&mut self, esv: Esv, prop: &Property);
+    fn property_request_received(&mut self, esv: Esv, prop: &Property) -> bool;
 }
 
 /// RequestHandlerObject represents a request message handler object.
