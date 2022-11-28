@@ -23,7 +23,7 @@ mod tests {
         let mut node = RemoteNode::new();
         for n in 1..10 {
             let mut obj = Object::new();
-            assert!(obj.set_code(n));
+            obj.set_code(n);
             assert!(node.add_object(obj));
         }
     }
