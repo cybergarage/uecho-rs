@@ -19,6 +19,7 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use crate::handler::*;
 use crate::message::ResponseErrorMessage;
 use crate::node_profile::*;
 use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
@@ -32,6 +33,7 @@ pub struct LocalNode {
     objects: Vec<Object>,
     last_tid: TID,
     post_sender: Sender<Message>,
+    request_handler: Option<RequestHandlerObject>,
 }
 
 impl LocalNode {
@@ -42,6 +44,7 @@ impl LocalNode {
             objects: Vec::new(),
             last_tid: TID_MIN,
             post_sender: tx,
+            request_handler: None,
         }));
         node.lock().unwrap().init();
         node
@@ -81,6 +84,10 @@ impl LocalNode {
 
     pub fn node_profile_object(&mut self) -> Option<&mut Object> {
         self.find_object_mut(NODE_PROFILE_OBJECT_CODE)
+    }
+
+    pub fn set_request_handler(&mut self, handler: RequestHandlerObject) {
+        self.request_handler = Some(handler.clone());
     }
 
     pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
