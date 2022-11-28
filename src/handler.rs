@@ -15,8 +15,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::protocol::Esv;
-use crate::protocol::Property;
+use crate::protocol::{Esv, Message, Property};
 
 /// RequestHandler defines a request message handler interface.
 pub trait RequestHandler {
@@ -25,3 +24,32 @@ pub trait RequestHandler {
 
 /// RequestHandlerObject represents a request message handler object.
 pub type RequestHandlerObject = Arc<Mutex<dyn RequestHandler + Send>>;
+
+pub type RequestHandlers = Vec<RequestHandlerObject>;
+
+pub struct RequestManager {
+    handlers: RequestHandlers,
+}
+
+impl RequestManager {
+    pub fn new() -> RequestManager {
+        RequestManager {
+            handlers: Vec::new(),
+        }
+    }
+
+    pub fn add_handler(&mut self, observer: RequestHandlerObject) -> bool {
+        self.handlers.push(observer);
+        true
+    }
+
+    pub fn notify(&self, msg: &Message) -> bool {
+        let esv = msg.esv();
+        for handler in self.handlers.iter() {
+            for prop in msg.properties() {
+                handler.lock().unwrap().property_request_received(esv, prop);
+            }
+        }
+        true
+    }
+}
