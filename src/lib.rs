@@ -51,7 +51,7 @@ pub use self::device::Device;
 pub use self::handler::{RequestHandler, RequestHandlerObject};
 pub use self::local_node::*;
 pub use self::manufacture::{Manufacture, ManufactureCode};
-pub use self::object::Object;
+pub use self::object::{Object, ObjectCode};
 pub use self::property::{Property, PropertyEnum, PropertyRule};
 pub use self::remote_node::*;
 
