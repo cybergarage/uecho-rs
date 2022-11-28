@@ -42,7 +42,7 @@ use crate::object::*;
 use crate::property::*;
 
 impl Object {
-    fn add_standard_property(&mut self, code: PropertyCode, name: String, data_type: String, data_size: usize, get_rule: PropertyRule, set_rule: PropertyRule, anno_rule: PropertyRule) {
+    fn add_standard_property(&mut self, code: PropertyCode, name: String, data_type: String, data_size: usize, get_rule: PropertyRule, set_rule: PropertyRule, anno_rule: PropertyRule, enums: &mut Vec<PropertyEnum>) {
         let mut prop = Property::new();
         prop.set_code(code);
         prop.set_name(name);
@@ -51,6 +51,10 @@ impl Object {
         prop.set_read_attribute(get_rule);
         prop.set_write_attribute(set_rule);
         prop.set_anno_attribute(anno_rule);
+        for e in enums.into_iter() {
+            prop.add_enum(e.clone());
+        }
+        enums.clear();
         self.add_property(prop);
     }
 }
@@ -74,7 +78,16 @@ impl StandardDatabase {
         obj
     }
 
+    fn create_standard_property_enum(&mut self, code: PropertyEnumCode, name: String, desc: String) -> PropertyEnum {
+        let mut e = PropertyEnum::new();
+        e.set_code(code);
+        e.set_name(name);
+        e.set_description(desc);
+        e
+    }
+
     pub fn init_objects(&mut self) {
+      let mut prop_enums = Vec::new();
 HEADER
 
 my $mra_definitions_file = $mra_root_dir . "/mraData/definitions/definitions.json";
@@ -143,12 +156,17 @@ foreach my $device_json_file(@device_json_files){
           my $name = %{$enum}{'name'};
           my $descs = %{$enum}{'descriptions'};
           my $desc = %{$descs}{'en'};
-          if (0< length($data_ref)) {
+          if (0< length($edt)) {
+            printf("        prop_enums.push(self.create_standard_property_enum(%s, \"%s\".to_string(), \"%s\".to_string()));\n", 
+            $edt,
+            $name,
+            $desc,
+            );
           }
         }
       }
     }
-    printf("        obj.add_standard_property(%s, \"%s\".to_string(), \"%s\".to_string(), %d, property_string_to_attribute(\"%s\"), property_string_to_attribute(\"%s\"), property_string_to_attribute(\"%s\"));\n",
+    printf("        obj.add_standard_property(%s, \"%s\".to_string(), \"%s\".to_string(), %d, property_string_to_attribute(\"%s\"), property_string_to_attribute(\"%s\"), property_string_to_attribute(\"%s\"), &mut prop_enums);\n",
       $epc,
       $name,
       $data_type,
