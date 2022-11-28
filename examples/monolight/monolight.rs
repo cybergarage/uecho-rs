@@ -12,10 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use echonet::Device;
+use std::sync::Arc;
+use std::sync::Mutex;
+
+use echonet::protocol::{Esv, Property};
+use echonet::{Device, RequestHandler};
+
+pub struct MonoLight {
+    pub device: Device,
+}
+
+impl MonoLight {
+    pub fn new() -> Arc<Mutex<MonoLight>> {
+        let m = Arc::new(Mutex::new(MonoLight {
+            device: Device::new(0x029101),
+        }));
+        m.lock().unwrap().device.set_request_handler(m.clone());
+        m
+    }
+
+    fn start(&mut self) -> bool {
+        self.device.start()
+    }
+
+    fn stop(&mut self) -> bool {
+        self.device.stop()
+    }
+}
+
+impl RequestHandler for MonoLight {
+    fn property_request_received(&mut self, esv: Esv, prop: &Property) -> bool {
+        true
+    }
+}
 
 fn main() {
-    let mut dev = Device::new(0x029101);
-    dev.start();
-    dev.stop();
+    let ml = MonoLight::new();
+    ml.lock().unwrap().start();
+    ml.lock().unwrap().stop();
 }
