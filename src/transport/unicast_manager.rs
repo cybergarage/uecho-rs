@@ -61,7 +61,7 @@ impl UnicastManager {
                 continue;
             }
             if udp_server.ifaddr().unwrap().ip() == addr {
-                return false;
+                return true;
             }
         }
         false
