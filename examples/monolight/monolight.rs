@@ -19,7 +19,7 @@ use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
 use echonet::{Device, ObjectCode, RequestHandler};
 
-/// MonoLight represents a mono functional lighting of the Echonet-Lite standard devide.
+/// MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide.
 pub struct MonoLight {
     device: Device,
 }
