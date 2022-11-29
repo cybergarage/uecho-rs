@@ -55,7 +55,20 @@ impl Manager {
         self.ucast_mgr.has_interface(addr)
     }
 
+    pub fn is_running(&self) -> bool {
+        if !self.mcast_mgr.is_running() {
+            return false;
+        }
+        if !self.ucast_mgr.is_running() {
+            return false;
+        }
+        true
+    }
+
     pub fn start(&mut self) -> bool {
+        if self.is_running() {
+            return true;
+        }
         if !self.mcast_mgr.start() {
             self.stop();
             return false;

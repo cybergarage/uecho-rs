@@ -302,6 +302,7 @@ impl Observer for Arc<Mutex<LocalNode>> {
         if node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }
+        info!("message_received {}", req_msg);
         let res_msg = node.message_received(req_msg);
         if res_msg.is_some() {
             let mut res_msg = res_msg.unwrap();
