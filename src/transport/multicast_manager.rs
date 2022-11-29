@@ -57,10 +57,10 @@ impl MulticastManager {
 
     pub fn has_interface(&self, addr: IpAddr) -> bool {
         for mcast_server in self.mcast_servers.iter() {
-            if mcast_server.local_addr().is_err() {
+            if mcast_server.ifaddr().is_err() {
                 continue;
             }
-            if mcast_server.local_addr().unwrap().ip() == addr {
+            if mcast_server.ifaddr().unwrap().ip() == addr {
                 return false;
             }
         }

@@ -35,5 +35,11 @@ fn controller() {
 
     thread::sleep(time::Duration::from_secs(5));
 
+    for remote_node in ctrl.nodes() {
+        for obj in remote_node.objects() {
+            for obj_prop in obj.properties() {}
+        }
+    }
+
     assert!(node.lock().unwrap().stop());
 }
