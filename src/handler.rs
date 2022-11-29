@@ -45,8 +45,9 @@ impl RequestManager {
     pub fn property_request_received(&self, msg: &Message) -> bool {
         let deoj = msg.deoj();
         let esv = msg.esv();
-        let mut all_requests_accepted = true;
+        let mut request_accepted = false;
         for handler in self.handlers.iter() {
+            let mut all_requests_accepted = true;
             for prop in msg.properties() {
                 if !handler
                     .lock()
@@ -56,7 +57,10 @@ impl RequestManager {
                     all_requests_accepted = false;
                 }
             }
+            if all_requests_accepted {
+                request_accepted = true
+            }
         }
-        all_requests_accepted
+        request_accepted
     }
 }
