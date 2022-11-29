@@ -50,7 +50,7 @@ mod tests {
             let mut msg = Message::new();
             msg.set_esv(Esv::ReadRequest);
             for _ in 0..TEST_OBSERVER_COUNT {
-                let server_addr = server.local_addr();
+                let server_addr = server.ifaddr();
                 assert!(server_addr.is_ok());
                 assert!(server.send(server_addr.unwrap(), &msg));
                 thread::sleep(time::Duration::from_secs(1));
