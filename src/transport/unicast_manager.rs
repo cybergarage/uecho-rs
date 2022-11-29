@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::net::SocketAddr;
+use std::net::{IpAddr, SocketAddr};
 
 use crate::protocol::Message;
 use crate::transport::interface::*;
@@ -53,6 +53,18 @@ impl UnicastManager {
             return false;
         }
         true
+    }
+
+    pub fn has_interface(&self, addr: IpAddr) -> bool {
+        for udp_server in self.udp_servers.iter() {
+            if udp_server.local_addr().is_err() {
+                continue;
+            }
+            if udp_server.local_addr().unwrap().ip() == addr {
+                return false;
+            }
+        }
+        false
     }
 
     pub fn start(&mut self) -> bool {
