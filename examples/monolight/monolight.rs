@@ -16,8 +16,10 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use echonet::protocol::{Esv, Property};
+use echonet::util::Bytes;
 use echonet::{Device, ObjectCode, RequestHandler};
 
+/// MonoLight represents a mono functional lighting of the Echonet-Lite standard devide.
 pub struct MonoLight {
     device: Device,
 }
@@ -45,6 +47,33 @@ impl RequestHandler for MonoLight {
         // Ignore all messages to other objects in the same node.
         if deoj != self.device.code() {
             return false;
+        }
+
+        match esv {
+            Esv::WriteRequest | Esv::WriteReadRequest => {
+                let prop_code = prop.code();
+                let prop_bytes = prop.data();
+                match prop_code {
+                    0x80 /* Operating status */ => {
+                        let prop_u32 = Bytes::to_u32(prop_bytes);
+                        match prop_u32 {
+                            0x30 /* On */=> {
+                                self.device.set_property(prop_code, prop_bytes);
+                            }
+                            0x31 /* Off */=> {
+                                self.device.set_property(prop_code, prop_bytes);
+                            }
+                            _ => {
+                                return false;
+                            }
+                        }
+                    }
+                    _ => {
+                        return false;
+                    }
+                }
+            }
+            _ => {}
         }
         true
     }
