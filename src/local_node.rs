@@ -280,7 +280,7 @@ impl LocalNode {
 
         // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
 
-        if !self.request_mgr.notify(req_msg) {
+        if !self.request_mgr.property_request_received(req_msg) {
             return Some(ResponseErrorMessage::from(req_msg));
         }
 
