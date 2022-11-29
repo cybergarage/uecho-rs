@@ -68,7 +68,7 @@ impl UnicastServer {
         true
     }
 
-    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+    pub fn ifaddr(&self) -> io::Result<SocketAddr> {
         self.socket.read().unwrap().local_addr()
     }
 

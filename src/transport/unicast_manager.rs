@@ -57,10 +57,10 @@ impl UnicastManager {
 
     pub fn has_interface(&self, addr: IpAddr) -> bool {
         for udp_server in self.udp_servers.iter() {
-            if udp_server.local_addr().is_err() {
+            if udp_server.ifaddr().is_err() {
                 continue;
             }
-            if udp_server.local_addr().unwrap().ip() == addr {
+            if udp_server.ifaddr().unwrap().ip() == addr {
                 return false;
             }
         }
