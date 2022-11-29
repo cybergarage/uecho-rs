@@ -30,12 +30,16 @@ impl TestController {
 
 pub struct TestDevice {
     dev: Device,
+    num_on_req: u32,
+    num_off_req: u32,
 }
 
 impl TestDevice {
     pub fn new(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<TestDevice>> {
         let m = Arc::new(Mutex::new(TestDevice {
             dev: Device::new_with_node(0x05FD, node), // Switch (supporting JEM-A/HA terminals)
+            num_on_req: 0,
+            num_off_req: 0,
         }));
         m.lock().unwrap().dev.set_request_handler(m.clone());
         m
@@ -66,9 +70,11 @@ impl RequestHandler for TestDevice {
                         let prop_u32 = Bytes::to_u32(prop_bytes);
                         match prop_u32 {
                             0x30 /* On */=> {
+                                self.num_on_req+= 1;
                                 self.dev.set_property(prop_code, prop_bytes);
                             }
                             0x31 /* Off */=> {
+                                self.num_off_req+= 1;
                                 self.dev.set_property(prop_code, prop_bytes);
                             }
                             _ => {
