@@ -26,11 +26,10 @@ fn controller() {
     let node = LocalNode::new();
 
     let mut dev = test::TestDevice::new(node.clone());
+    assert!(dev.lock().unwrap().start());
 
     let mut ctrl = test::TestController::new(node.clone());
-
-    assert!(node.lock().unwrap().start());
-
+    assert!(ctrl.start());
     assert!(ctrl.search());
 
     thread::sleep(time::Duration::from_secs(5));
@@ -44,5 +43,6 @@ fn controller() {
         }
     }
 
-    assert!(node.lock().unwrap().stop());
+    assert!(dev.lock().unwrap().stop());
+    assert!(ctrl.stop());
 }
