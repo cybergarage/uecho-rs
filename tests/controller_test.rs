@@ -36,6 +36,9 @@ fn controller() {
     thread::sleep(time::Duration::from_secs(5));
 
     for remote_node in ctrl.nodes() {
+        if !node.lock().unwrap().has_interface(remote_node.addr()) {
+            continue;
+        }
         for obj in remote_node.objects() {
             for obj_prop in obj.properties() {}
         }
