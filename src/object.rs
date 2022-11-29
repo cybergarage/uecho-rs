@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::database::*;
-use crate::property::*;
-use crate::util::Bytes;
 use std::cmp::PartialEq;
 use std::collections::hash_map::Values;
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
+
+use crate::database::StandardDatabase;
+use crate::message::{ResponseErrorMessage, ResponseMessage};
+use crate::property::{Property, PropertyCode, PropertyData};
+use crate::protocol::{Esv, Message};
+use crate::util::Bytes;
 
 /// ObjectCode represents an ECHONET-Lite object code.
 pub type ObjectCode = u32;
@@ -184,6 +187,43 @@ impl Object {
             Some(prop) => prop.equals_data(data),
             None => false,
         }
+    }
+
+    pub fn message_received(&self, req_msg: &Message) -> Option<Message> {
+        let mut res_msg = ResponseMessage::from(req_msg);
+        match req_msg.esv() {
+            // 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
+            // 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
+            Esv::WriteRequestResponseRequired | Esv::NotificationResponseRequired => {
+                for req_prop in req_msg.properties() {
+                    let mut res_prop = crate::protocol::Property::new();
+                    res_prop.set_code(req_prop.code());
+                    res_msg.add_property(res_prop);
+                }
+            }
+            // 4.2.3.3 Property value read service [0x62,0x72,0x52]
+            // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
+            Esv::ReadRequest | Esv::NotificationRequest => {
+                for req_prop in req_msg.properties() {
+                    let obj_prop = self.find_property(req_prop.code());
+                    if obj_prop.is_none() {
+                        return Some(ResponseErrorMessage::from(req_msg));
+                    }
+                    let obj_prop = obj_prop.unwrap();
+                    res_msg.add_property(crate::protocol::Property::from(
+                        obj_prop.code(),
+                        obj_prop.data().clone(),
+                    ));
+                }
+            }
+            // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
+            // Esv::WriteReadRequest => {
+            // }
+            _ => {
+                return None;
+            }
+        }
+        Some(res_msg)
     }
 }
 
