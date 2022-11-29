@@ -11,6 +11,7 @@ license = "Apache-2.0"
 description = "Portable development framework for ECHONET Lite"
 categories = ["network-programming"]
 keywords = ["echonet", "echonet-lite"]
+default-run = "uechosearch"
 
 [dependencies]
 log = "0.4"
