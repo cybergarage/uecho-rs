@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use log::*;
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -70,10 +71,12 @@ impl RequestHandler for TestDevice {
                         let prop_u32 = Bytes::to_u32(prop_bytes);
                         match prop_u32 {
                             0x30 /* On */=> {
+                                info!("On");
                                 self.num_on_req+= 1;
                                 self.dev.set_property(prop_code, prop_bytes);
                             }
                             0x31 /* Off */=> {
+                                info!("Off");
                                 self.num_off_req+= 1;
                                 self.dev.set_property(prop_code, prop_bytes);
                             }
