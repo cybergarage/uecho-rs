@@ -17,7 +17,7 @@ use std::{thread, time};
 use echonet::log::logger;
 use echonet::LocalNode;
 
-mod mock;
+mod test;
 
 #[test]
 fn controller() {
@@ -25,14 +25,14 @@ fn controller() {
 
     let node = LocalNode::new();
 
-    let mut dev = mock::TestDevice::new(node.clone());
-    assert!(dev.start());
+    let mut dev = test::TestDevice::new(node.clone());
+    assert!(dev.lock().unwrap().start());
 
-    let mut ctrl = mock::TestController::new(node.clone());
+    let mut ctrl = test::TestController::new(node.clone());
     assert!(ctrl.start());
     assert!(ctrl.search());
     thread::sleep(time::Duration::from_secs(0));
     assert!(ctrl.stop());
 
-    assert!(dev.stop());
+    assert!(dev.lock().unwrap().stop());
 }
