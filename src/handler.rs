@@ -43,6 +43,10 @@ impl RequestManager {
     }
 
     pub fn property_request_received(&self, msg: &Message) -> bool {
+        if self.handlers.len() == 0 {
+            return true;
+        }
+
         let deoj = msg.deoj();
         let esv = msg.esv();
         let mut request_accepted = false;
