@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::net::SocketAddr;
+use std::net::{IpAddr, SocketAddr};
 
 use crate::protocol::Message;
 use crate::transport::multicast_manager::MulticastManager;
@@ -49,6 +49,10 @@ impl Manager {
 
     pub fn notify(&self, msg: &Message) -> bool {
         self.mcast_mgr.notify(msg)
+    }
+
+    pub fn has_interface(&self, addr: IpAddr) -> bool {
+        self.ucast_mgr.has_interface(addr)
     }
 
     pub fn start(&mut self) -> bool {
