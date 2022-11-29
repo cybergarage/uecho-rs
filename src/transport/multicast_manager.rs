@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::net::IpAddr;
+
 use crate::protocol::Message;
 use crate::transport::interface::*;
 use crate::transport::multicast_server::MulticastServer;
@@ -51,6 +53,18 @@ impl MulticastManager {
             return false;
         }
         true
+    }
+
+    pub fn has_interface(&self, addr: IpAddr) -> bool {
+        for mcast_server in self.mcast_servers.iter() {
+            if mcast_server.local_addr().is_err() {
+                continue;
+            }
+            if mcast_server.local_addr().unwrap().ip() == addr {
+                return false;
+            }
+        }
+        false
     }
 
     pub fn start(&mut self) -> bool {
