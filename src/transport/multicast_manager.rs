@@ -61,7 +61,7 @@ impl MulticastManager {
                 continue;
             }
             if mcast_server.ifaddr().unwrap().ip() == addr {
-                return false;
+                return true;
             }
         }
         false
