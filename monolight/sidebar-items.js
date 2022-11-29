@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["main",""]],"struct":[["MonoLight",""]]};
+window.SIDEBAR_ITEMS = {"fn":[["main",""]],"struct":[["MonoLight","MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide."]]};
