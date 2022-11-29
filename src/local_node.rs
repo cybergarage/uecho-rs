@@ -147,8 +147,10 @@ impl LocalNode {
     }
 
     pub fn start(&mut self) -> bool {
-        if !self.transport_mgr.start() {
-            return false;
+        if !self.transport_mgr.is_running() {
+            if !self.transport_mgr.start() {
+                return false;
+            }
         }
         if !self.annouce() {
             return false;
