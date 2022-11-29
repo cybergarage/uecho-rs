@@ -591,7 +591,7 @@
 
         <span class="comment">// (D) Processing when the controlled property exists but the stipulated service processing functions are not available
 
-        </span><span class="kw">if </span>!<span class="self">self</span>.request_mgr.notify(req_msg) {
+        </span><span class="kw">if </span>!<span class="self">self</span>.request_mgr.property_request_received(req_msg) {
             <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
         }
 
