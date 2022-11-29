@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use log::*;
-use std::net::SocketAddr;
+use std::net::{IpAddr, SocketAddr};
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
@@ -140,6 +140,10 @@ impl LocalNode {
         let instance_list_prop = instance_list_prop.unwrap();
         let mut msg = self.create_annouce_property_message(node_profile_obj, instance_list_prop);
         self.notify(&mut msg)
+    }
+
+    pub fn has_interface(&self, addr: IpAddr) -> bool {
+        self.transport_mgr.has_interface(addr)
     }
 
     pub fn start(&mut self) -> bool {
