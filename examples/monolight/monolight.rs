@@ -42,6 +42,10 @@ impl MonoLight {
 
 impl RequestHandler for MonoLight {
     fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+        // Ignore all messages to other objects in the same node.
+        if deoj != self.device.code() {
+            return false;
+        }
         true
     }
 }
