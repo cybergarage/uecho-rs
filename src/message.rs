@@ -47,21 +47,27 @@ impl ResponseErrorMessage {
     pub fn from(req_msg: &Message) -> Message {
         let mut msg = Message::new();
         match req_msg.esv() {
+            // 4.2.3.1 Property value write service (no response required) [0x60, 0x50]
             Esv::WriteRequest => {
                 msg.set_esv(Esv::WriteRequestError);
             }
+            // 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
             Esv::WriteRequestResponseRequired => {
                 msg.set_esv(Esv::WriteRequestResponseRequiredError);
             }
+            // 4.2.3.3 Property value read service [0x62,0x72,0x52]
             Esv::ReadRequest => {
                 msg.set_esv(Esv::ReadRequestError);
             }
+            // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
+            // Esv::WriteReadRequest => {
+            //     msg.set_esv(Esv::WriteReadRequestError);
+            // }
+            // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
             Esv::NotificationRequest => {
                 msg.set_esv(Esv::NotificationRequestError);
             }
-            Esv::WriteReadRequest => {
-                msg.set_esv(Esv::WriteReadRequestError);
-            }
+            // 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
             Esv::NotificationResponseRequired => {
                 msg.set_esv(Esv::NotificationRequestError);
             }
@@ -69,13 +75,48 @@ impl ResponseErrorMessage {
                 msg.set_esv(Esv::Unknown);
             }
         }
-        msg.set_esv(Esv::ReadRequest);
         msg.set_seoj(req_msg.deoj());
         msg.set_deoj(req_msg.seoj());
         for n in 0..req_msg.opc() {
             let req_prop = req_msg.property(n);
             msg.add_property(req_prop.clone());
         }
+        msg
+    }
+}
+
+pub struct ResponseMessage {}
+
+impl ResponseMessage {
+    pub fn from(req_msg: &Message) -> Message {
+        let mut msg = Message::new();
+        match req_msg.esv() {
+            // 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
+            Esv::WriteRequestResponseRequired => {
+                msg.set_esv(Esv::WriteResponse);
+            }
+            // 4.2.3.3 Property value read service [0x62,0x72,0x52]
+            Esv::ReadRequest => {
+                msg.set_esv(Esv::ReadResponse);
+            }
+            // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
+            // Esv::WriteReadRequest => {
+            //     msg.set_esv(Esv::WriteReadRequestError);
+            // }
+            // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
+            Esv::NotificationRequest => {
+                msg.set_esv(Esv::Notification);
+            }
+            // 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
+            Esv::NotificationResponseRequired => {
+                msg.set_esv(Esv::NotificationResponse);
+            }
+            _ => {
+                msg.set_esv(Esv::Unknown);
+            }
+        }
+        msg.set_seoj(req_msg.deoj());
+        msg.set_deoj(req_msg.seoj());
         msg
     }
 }
