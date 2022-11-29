@@ -204,7 +204,7 @@ impl LocalNode {
         node_prof.update(&obj_codes);
     }
 
-    fn response_for_request_message(&self, req_msg: &Message) -> Option<Message> {
+    fn message_received(&self, req_msg: &Message) -> Option<Message> {
         // Part II ECHONET Lite Communication Middleware Specifications
         // 4.2.2 Basic Sequences for Object Control in General
 
@@ -278,13 +278,17 @@ impl LocalNode {
             return Some(ResponseErrorMessage::from(req_msg));
         }
 
-        // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
+        // (F) Processing when the controlled property exists, the stipulated service processing functions are available and also the EDT size matches
+
+        // Verifies whether the request message is allowed by the registered request handlers.
 
         if !self.request_mgr.property_request_received(req_msg) {
             return Some(ResponseErrorMessage::from(req_msg));
         }
 
-        None
+        // Generates a response message for the valid request message and returns the response message.
+
+        dst_obj.message_received(req_msg)
     }
 }
 
@@ -294,7 +298,7 @@ impl Observer for Arc<Mutex<LocalNode>> {
         if node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }
-        let res_msg = node.response_for_request_message(req_msg);
+        let res_msg = node.message_received(req_msg);
         if res_msg.is_some() {
             let mut res_msg = res_msg.unwrap();
             if res_msg.esv().is_response() {
