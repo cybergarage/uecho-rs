@@ -42,17 +42,21 @@ impl RequestManager {
         true
     }
 
-    pub fn notify(&self, msg: &Message) -> bool {
+    pub fn property_request_received(&self, msg: &Message) -> bool {
         let deoj = msg.deoj();
         let esv = msg.esv();
+        let mut all_requests_accepted = true;
         for handler in self.handlers.iter() {
             for prop in msg.properties() {
-                handler
+                if !handler
                     .lock()
                     .unwrap()
-                    .property_request_received(deoj, esv, prop);
+                    .property_request_received(deoj, esv, prop)
+                {
+                    all_requests_accepted = false;
+                }
             }
         }
-        true
+        all_requests_accepted
     }
 }
