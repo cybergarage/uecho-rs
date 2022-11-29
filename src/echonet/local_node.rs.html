@@ -309,6 +309,10 @@
 <span id="309">309</span>
 <span id="310">310</span>
 <span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -515,7 +519,7 @@
         node_prof.update(<span class="kw-2">&amp;</span>obj_codes);
     }
 
-    <span class="kw">fn </span>response_for_request_message(<span class="kw-2">&amp;</span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
+    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;</span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
         <span class="comment">// Part II ECHONET Lite Communication Middleware Specifications
         // 4.2.2 Basic Sequences for Object Control in General
 
@@ -589,14 +593,18 @@
             <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
         }
 
-        <span class="comment">// (D) Processing when the controlled property exists but the stipulated service processing functions are not available
+        <span class="comment">// (F) Processing when the controlled property exists, the stipulated service processing functions are available and also the EDT size matches
+
+        // Verifies whether the request message is allowed by the registered request handlers.
 
         </span><span class="kw">if </span>!<span class="self">self</span>.request_mgr.property_request_received(req_msg) {
             <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
         }
 
-        <span class="prelude-val">None
-    </span>}
+        <span class="comment">// Generates a response message for the valid request message and returns the response message.
+
+        </span>dst_obj.message_received(req_msg)
+    }
 }
 
 <span class="kw">impl </span>Observer <span class="kw">for </span>Arc&lt;Mutex&lt;LocalNode&gt;&gt; {
@@ -605,7 +613,7 @@
         <span class="kw">if </span>node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }
-        <span class="kw">let </span>res_msg = node.response_for_request_message(req_msg);
+        <span class="kw">let </span>res_msg = node.message_received(req_msg);
         <span class="kw">if </span>res_msg.is_some() {
             <span class="kw">let </span><span class="kw-2">mut </span>res_msg = res_msg.unwrap();
             <span class="kw">if </span>res_msg.esv().is_response() {

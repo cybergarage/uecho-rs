@@ -106,6 +106,7 @@
 <span id="106">106</span>
 <span id="107">107</span>
 <span id="108">108</span>
+<span id="109">109</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -146,9 +147,10 @@
         }
     }
 
-    <span class="kw">pub fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode) {
-        <span class="self">self</span>.code = code
-    }
+    <span class="kw">pub fn </span>set_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.code = code;
+        <span class="self">self
+    </span>}
 
     <span class="kw">pub fn </span>code(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyCode {
         <span class="self">self</span>.code

@@ -139,6 +139,47 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -188,35 +229,76 @@
     <span class="kw">pub fn </span>from(req_msg: <span class="kw-2">&amp;</span>Message) -&gt; Message {
         <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
         <span class="kw">match </span>req_msg.esv() {
-            Esv::WriteRequest =&gt; {
+            <span class="comment">// 4.2.3.1 Property value write service (no response required) [0x60, 0x50]
+            </span>Esv::WriteRequest =&gt; {
                 msg.set_esv(Esv::WriteRequestError);
             }
-            Esv::WriteRequestResponseRequired =&gt; {
+            <span class="comment">// 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
+            </span>Esv::WriteRequestResponseRequired =&gt; {
                 msg.set_esv(Esv::WriteRequestResponseRequiredError);
             }
-            Esv::ReadRequest =&gt; {
+            <span class="comment">// 4.2.3.3 Property value read service [0x62,0x72,0x52]
+            </span>Esv::ReadRequest =&gt; {
                 msg.set_esv(Esv::ReadRequestError);
             }
-            Esv::NotificationRequest =&gt; {
+            <span class="comment">// 4.2.3.4 Property value write &amp; read service [0x6E,0x7E,0x5E]
+            // Esv::WriteReadRequest =&gt; {
+            //     msg.set_esv(Esv::WriteReadRequestError);
+            // }
+            // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
+            </span>Esv::NotificationRequest =&gt; {
                 msg.set_esv(Esv::NotificationRequestError);
             }
-            Esv::WriteReadRequest =&gt; {
-                msg.set_esv(Esv::WriteReadRequestError);
-            }
-            Esv::NotificationResponseRequired =&gt; {
+            <span class="comment">// 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
+            </span>Esv::NotificationResponseRequired =&gt; {
                 msg.set_esv(Esv::NotificationRequestError);
             }
             <span class="kw">_ </span>=&gt; {
                 msg.set_esv(Esv::Unknown);
             }
         }
-        msg.set_esv(Esv::ReadRequest);
         msg.set_seoj(req_msg.deoj());
         msg.set_deoj(req_msg.seoj());
         <span class="kw">for </span>n <span class="kw">in </span><span class="number">0</span>..req_msg.opc() {
             <span class="kw">let </span>req_prop = req_msg.property(n);
             msg.add_property(req_prop.clone());
         }
+        msg
+    }
+}
+
+<span class="kw">pub struct </span>ResponseMessage {}
+
+<span class="kw">impl </span>ResponseMessage {
+    <span class="kw">pub fn </span>from(req_msg: <span class="kw-2">&amp;</span>Message) -&gt; Message {
+        <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+        <span class="kw">match </span>req_msg.esv() {
+            <span class="comment">// 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
+            </span>Esv::WriteRequestResponseRequired =&gt; {
+                msg.set_esv(Esv::WriteResponse);
+            }
+            <span class="comment">// 4.2.3.3 Property value read service [0x62,0x72,0x52]
+            </span>Esv::ReadRequest =&gt; {
+                msg.set_esv(Esv::ReadResponse);
+            }
+            <span class="comment">// 4.2.3.4 Property value write &amp; read service [0x6E,0x7E,0x5E]
+            // Esv::WriteReadRequest =&gt; {
+            //     msg.set_esv(Esv::WriteReadRequestError);
+            // }
+            // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
+            </span>Esv::NotificationRequest =&gt; {
+                msg.set_esv(Esv::Notification);
+            }
+            <span class="comment">// 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
+            </span>Esv::NotificationResponseRequired =&gt; {
+                msg.set_esv(Esv::NotificationResponse);
+            }
+            <span class="kw">_ </span>=&gt; {
+                msg.set_esv(Esv::Unknown);
+            }
+        }
+        msg.set_seoj(req_msg.deoj());
+        msg.set_deoj(req_msg.seoj());
         msg
     }
 }

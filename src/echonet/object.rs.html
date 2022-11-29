@@ -218,6 +218,46 @@
 <span id="218">218</span>
 <span id="219">219</span>
 <span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -232,13 +272,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span><span class="kw">crate</span>::database::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::property::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
-<span class="kw">use </span>std::cmp::PartialEq;
+</span><span class="kw">use </span>std::cmp::PartialEq;
 <span class="kw">use </span>std::collections::hash_map::Values;
 <span class="kw">use </span>std::collections::HashMap;
 <span class="kw">use </span>std::hash::{Hash, Hasher};
+
+<span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
+<span class="kw">use </span><span class="kw">crate</span>::message::{ResponseErrorMessage, ResponseMessage};
+<span class="kw">use </span><span class="kw">crate</span>::property::{Property, PropertyCode, PropertyData};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message};
+<span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
 
 <span class="doccomment">/// ObjectCode represents an ECHONET-Lite object code.
 </span><span class="kw">pub type </span>ObjectCode = u32;
@@ -404,6 +447,43 @@
             <span class="prelude-val">Some</span>(prop) =&gt; prop.equals_data(data),
             <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
         }
+    }
+
+    <span class="kw">pub fn </span>message_received(<span class="kw-2">&amp;</span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>res_msg = ResponseMessage::from(req_msg);
+        <span class="kw">match </span>req_msg.esv() {
+            <span class="comment">// 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
+            // 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
+            </span>Esv::WriteRequestResponseRequired | Esv::NotificationResponseRequired =&gt; {
+                <span class="kw">for </span>req_prop <span class="kw">in </span>req_msg.properties() {
+                    <span class="kw">let </span><span class="kw-2">mut </span>res_prop = <span class="kw">crate</span>::protocol::Property::new();
+                    res_prop.set_code(req_prop.code());
+                    res_msg.add_property(res_prop);
+                }
+            }
+            <span class="comment">// 4.2.3.3 Property value read service [0x62,0x72,0x52]
+            // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
+            </span>Esv::ReadRequest | Esv::NotificationRequest =&gt; {
+                <span class="kw">for </span>req_prop <span class="kw">in </span>req_msg.properties() {
+                    <span class="kw">let </span>obj_prop = <span class="self">self</span>.find_property(req_prop.code());
+                    <span class="kw">if </span>obj_prop.is_none() {
+                        <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+                    }
+                    <span class="kw">let </span>obj_prop = obj_prop.unwrap();
+                    res_msg.add_property(<span class="kw">crate</span>::protocol::Property::from(
+                        obj_prop.code(),
+                        obj_prop.data().clone(),
+                    ));
+                }
+            }
+            <span class="comment">// 4.2.3.4 Property value write &amp; read service [0x6E,0x7E,0x5E]
+            // Esv::WriteReadRequest =&gt; {
+            // }
+            </span><span class="kw">_ </span>=&gt; {
+                <span class="kw">return </span><span class="prelude-val">None</span>;
+            }
+        }
+        <span class="prelude-val">Some</span>(res_msg)
     }
 }
 
