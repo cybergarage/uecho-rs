@@ -15,7 +15,7 @@
 use std::{thread, time};
 
 use echonet::log::logger;
-use echonet::LocalNode;
+use echonet::Node;
 
 mod test;
 
@@ -23,7 +23,7 @@ mod test;
 fn controller() {
     logger::init();
 
-    let node = LocalNode::new();
+    let node = Node::new();
 
     let mut dev = test::TestDevice::new(node.clone());
     assert!(dev.lock().unwrap().start());

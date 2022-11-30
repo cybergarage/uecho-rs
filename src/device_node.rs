@@ -16,7 +16,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::handler::*;
-use crate::local_node::LocalNode;
+use crate::node::Node;
 use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
 use crate::protocol::Message;
@@ -24,16 +24,16 @@ use crate::remote_node::RemoteNode;
 use crate::transport::{Observer, ObserverObject};
 
 pub struct DeviceNode {
-    node: Arc<Mutex<LocalNode>>,
+    node: Arc<Mutex<Node>>,
     pub remote_nodes: Vec<RemoteNode>,
 }
 
 impl DeviceNode {
     pub fn new() -> Arc<Mutex<DeviceNode>> {
-        DeviceNode::new_with_node(LocalNode::new())
+        DeviceNode::new_with_node(Node::new())
     }
 
-    pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<DeviceNode>> {
+    pub fn new_with_node(node: Arc<Mutex<Node>>) -> Arc<Mutex<DeviceNode>> {
         let ctrl = Arc::new(Mutex::new(DeviceNode {
             node: node,
             remote_nodes: Vec::new(),
@@ -56,7 +56,7 @@ impl DeviceNode {
         node.add_observer(observer.clone())
     }
 
-    pub fn local_node(&self) -> Arc<Mutex<LocalNode>> {
+    pub fn node(&self) -> Arc<Mutex<Node>> {
         self.node.clone()
     }
 

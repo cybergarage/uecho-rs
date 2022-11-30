@@ -19,7 +19,7 @@ use std::sync::Mutex;
 
 use crate::device_node::DeviceNode;
 use crate::handler::*;
-use crate::local_node::LocalNode;
+use crate::node::Node;
 use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
 use crate::super_object::*;
@@ -117,7 +117,7 @@ impl Device {
     }
 
     /// Create a new device with the node to which it belongs.
-    pub fn new_with_node(code: ObjectCode, node: Arc<Mutex<LocalNode>>) -> Device {
+    pub fn new_with_node(code: ObjectCode, node: Arc<Mutex<Node>>) -> Device {
         let mut dev = Device {
             code: code,
             node: DeviceNode::new_with_node(node),
@@ -164,9 +164,9 @@ impl Device {
     }
 
     /// Returns the parent local node to which the device belongs.
-    pub fn node(&self) -> Arc<Mutex<LocalNode>> {
+    pub fn node(&self) -> Arc<Mutex<Node>> {
         let dev_node = self.node.lock().unwrap();
-        dev_node.local_node()
+        dev_node.node()
     }
 
     // Returns the parent local node to which the device belongs.
@@ -202,11 +202,10 @@ impl Device {
         }
         dev_node.add_observer(Arc::new(Mutex::new(self.node.clone())));
 
-        let local_node = dev_node.local_node();
-        local_node
-            .lock()
+        let node = dev_node.node();
+        node.lock()
             .unwrap()
-            .add_observer(Arc::new(Mutex::new(local_node.clone())));
+            .add_observer(Arc::new(Mutex::new(node.clone())));
 
         dev_node.set_property(
             self.code,

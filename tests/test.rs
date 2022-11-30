@@ -16,7 +16,7 @@ use log::*;
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use echonet::{Controller, Device, LocalNode, ObjectCode, RequestHandler};
+use echonet::{Controller, Device, Node, ObjectCode, RequestHandler};
 
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
@@ -24,7 +24,7 @@ use echonet::util::Bytes;
 pub struct TestController {}
 
 impl TestController {
-    pub fn new(node: Arc<Mutex<LocalNode>>) -> Controller {
+    pub fn new(node: Arc<Mutex<Node>>) -> Controller {
         Controller::new_with_node(node)
     }
 }
@@ -36,7 +36,7 @@ pub struct TestDevice {
 }
 
 impl TestDevice {
-    pub fn new(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<TestDevice>> {
+    pub fn new(node: Arc<Mutex<Node>>) -> Arc<Mutex<TestDevice>> {
         let m = Arc::new(Mutex::new(TestDevice {
             dev: Device::new_with_node(0x05FD, node), // Switch (supporting JEM-A/HA terminals)
             num_on_req: 0,
