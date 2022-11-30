@@ -139,7 +139,6 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
-<span id="142">142</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -159,7 +158,7 @@
 <span class="kw">use </span>std::sync::Mutex;
 
 <span class="kw">use </span><span class="kw">crate</span>::controller_node::ControllerNode;
-<span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
+<span class="kw">use </span><span class="kw">crate</span>::node::Node;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
@@ -220,7 +219,7 @@
     }
 
     <span class="doccomment">/// Create a new controller with the node to which it belongs.
-    </span><span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Controller {
+    </span><span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;Node&gt;&gt;) -&gt; Controller {
         Controller {
             node: ControllerNode::new_with_node(node),
         }
@@ -267,11 +266,10 @@
         }
         ctrl.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
 
-        <span class="kw">let </span>local_node = ctrl.local_node();
-        local_node
-            .lock()
+        <span class="kw">let </span>node = ctrl.node();
+        node.lock()
             .unwrap()
-            .add_observer(Arc::new(Mutex::new(local_node.clone())));
+            .add_observer(Arc::new(Mutex::new(node.clone())));
 
         <span class="bool-val">true
     </span>}

@@ -155,8 +155,8 @@
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
 <span class="kw">use </span><span class="kw">crate</span>::message::SearchMessage;
+<span class="kw">use </span><span class="kw">crate</span>::node::Node;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::{NodeProfile, NODE_PROFILE_OBJECT_CODE};
 <span class="kw">use </span><span class="kw">crate</span>::object::ObjectCode;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
@@ -166,16 +166,16 @@
 <span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverObject};
 
 <span class="kw">pub struct </span>ControllerNode {
-    node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;,
+    node: Arc&lt;Mutex&lt;Node&gt;&gt;,
     <span class="kw">pub </span>remote_nodes: Vec&lt;RemoteNode&gt;,
 }
 
 <span class="kw">impl </span>ControllerNode {
     <span class="kw">pub fn </span>new() -&gt; Arc&lt;Mutex&lt;ControllerNode&gt;&gt; {
-        ControllerNode::new_with_node(LocalNode::new())
+        ControllerNode::new_with_node(Node::new())
     }
 
-    <span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Arc&lt;Mutex&lt;ControllerNode&gt;&gt; {
+    <span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;Node&gt;&gt;) -&gt; Arc&lt;Mutex&lt;ControllerNode&gt;&gt; {
         <span class="kw">let </span>ctrl = Arc::new(Mutex::new(ControllerNode {
             node: node,
             remote_nodes: Vec::new(),
@@ -205,7 +205,7 @@
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">pub fn </span>local_node(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;Mutex&lt;LocalNode&gt;&gt; {
+    <span class="kw">pub fn </span>node(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;Mutex&lt;Node&gt;&gt; {
         <span class="self">self</span>.node.clone()
     }
 

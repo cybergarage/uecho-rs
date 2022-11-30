@@ -272,7 +272,6 @@
 <span id="272">272</span>
 <span id="273">273</span>
 <span id="274">274</span>
-<span id="275">275</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -294,7 +293,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::device_node::DeviceNode;
 <span class="kw">use </span><span class="kw">crate</span>::handler::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::local_node::LocalNode;
+<span class="kw">use </span><span class="kw">crate</span>::node::Node;
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
 <span class="kw">use </span><span class="kw">crate</span>::property::PropertyCode;
 <span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
@@ -392,7 +391,7 @@
     }
 
     <span class="doccomment">/// Create a new device with the node to which it belongs.
-    </span><span class="kw">pub fn </span>new_with_node(code: ObjectCode, node: Arc&lt;Mutex&lt;LocalNode&gt;&gt;) -&gt; Device {
+    </span><span class="kw">pub fn </span>new_with_node(code: ObjectCode, node: Arc&lt;Mutex&lt;Node&gt;&gt;) -&gt; Device {
         <span class="kw">let </span><span class="kw-2">mut </span>dev = Device {
             code: code,
             node: DeviceNode::new_with_node(node),
@@ -439,9 +438,9 @@
     }
 
     <span class="doccomment">/// Returns the parent local node to which the device belongs.
-    </span><span class="kw">pub fn </span>node(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;Mutex&lt;LocalNode&gt;&gt; {
+    </span><span class="kw">pub fn </span>node(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;Mutex&lt;Node&gt;&gt; {
         <span class="kw">let </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
-        dev_node.local_node()
+        dev_node.node()
     }
 
     <span class="comment">// Returns the parent local node to which the device belongs.
@@ -477,11 +476,10 @@
         }
         dev_node.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
 
-        <span class="kw">let </span>local_node = dev_node.local_node();
-        local_node
-            .lock()
+        <span class="kw">let </span>node = dev_node.node();
+        node.lock()
             .unwrap()
-            .add_observer(Arc::new(Mutex::new(local_node.clone())));
+            .add_observer(Arc::new(Mutex::new(node.clone())));
 
         dev_node.set_property(
             <span class="self">self</span>.code,
