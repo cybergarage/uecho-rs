@@ -211,6 +211,12 @@ impl Node {
     }
 
     fn message_received(&self, req_msg: &Message) -> Option<Message> {
+        // Handles only request messages.
+
+        if req_msg.esv().is_response() {
+            return None;
+        }
+
         // Part II ECHONET Lite Communication Middleware Specifications
         // 4.2.2 Basic Sequences for Object Control in General
 
