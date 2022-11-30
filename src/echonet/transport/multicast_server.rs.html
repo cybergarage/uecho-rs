@@ -247,7 +247,7 @@
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">pub fn </span>local_addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SocketAddr&gt; {
+    <span class="kw">pub fn </span>ifaddr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SocketAddr&gt; {
         <span class="self">self</span>.socket.read().unwrap().local_addr()
     }
 

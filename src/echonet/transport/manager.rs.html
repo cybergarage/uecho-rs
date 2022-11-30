@@ -69,6 +69,23 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -83,7 +100,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span>std::net::SocketAddr;
+</span><span class="kw">use </span>std::net::{IpAddr, SocketAddr};
 
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::transport::multicast_manager::MulticastManager;
@@ -122,7 +139,24 @@
         <span class="self">self</span>.mcast_mgr.notify(msg)
     }
 
+    <span class="kw">pub fn </span>has_interface(<span class="kw-2">&amp;</span><span class="self">self</span>, addr: IpAddr) -&gt; bool {
+        <span class="self">self</span>.ucast_mgr.has_interface(addr)
+    }
+
+    <span class="kw">pub fn </span>is_running(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">if </span>!<span class="self">self</span>.mcast_mgr.is_running() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="kw">if </span>!<span class="self">self</span>.ucast_mgr.is_running() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="bool-val">true
+    </span>}
+
     <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">if </span><span class="self">self</span>.is_running() {
+            <span class="kw">return </span><span class="bool-val">true</span>;
+        }
         <span class="kw">if </span>!<span class="self">self</span>.mcast_mgr.start() {
             <span class="self">self</span>.stop();
             <span class="kw">return </span><span class="bool-val">false</span>;

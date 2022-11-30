@@ -64,6 +64,10 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -109,6 +113,10 @@
     </span>}
 
     <span class="kw">pub fn </span>property_request_received(<span class="kw-2">&amp;</span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) -&gt; bool {
+        <span class="kw">if </span><span class="self">self</span>.handlers.len() == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="bool-val">true</span>;
+        }
+
         <span class="kw">let </span>deoj = msg.deoj();
         <span class="kw">let </span>esv = msg.esv();
         <span class="kw">let </span><span class="kw-2">mut </span>request_accepted = <span class="bool-val">false</span>;

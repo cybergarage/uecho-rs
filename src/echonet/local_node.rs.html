@@ -313,6 +313,13 @@
 <span id="313">313</span>
 <span id="314">314</span>
 <span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -328,7 +335,7 @@
 // limitations under the License.
 
 </span><span class="kw">use </span>log::<span class="kw-2">*</span>;
-<span class="kw">use </span>std::net::SocketAddr;
+<span class="kw">use </span>std::net::{IpAddr, SocketAddr};
 <span class="kw">use </span>std::sync::mpsc;
 <span class="kw">use </span>std::sync::mpsc::{Receiver, Sender};
 <span class="kw">use </span>std::sync::Arc;
@@ -457,9 +464,15 @@
         <span class="self">self</span>.notify(<span class="kw-2">&amp;mut </span>msg)
     }
 
+    <span class="kw">pub fn </span>has_interface(<span class="kw-2">&amp;</span><span class="self">self</span>, addr: IpAddr) -&gt; bool {
+        <span class="self">self</span>.transport_mgr.has_interface(addr)
+    }
+
     <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.start() {
-            <span class="kw">return </span><span class="bool-val">false</span>;
+        <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.is_running() {
+            <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.start() {
+                <span class="kw">return </span><span class="bool-val">false</span>;
+            }
         }
         <span class="kw">if </span>!<span class="self">self</span>.annouce() {
             <span class="kw">return </span><span class="bool-val">false</span>;
@@ -613,6 +626,7 @@
         <span class="kw">if </span>node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }
+        <span class="macro">info!</span>(<span class="string">&quot;message_received {}&quot;</span>, req_msg);
         <span class="kw">let </span>res_msg = node.message_received(req_msg);
         <span class="kw">if </span>res_msg.is_some() {
             <span class="kw">let </span><span class="kw-2">mut </span>res_msg = res_msg.unwrap();
