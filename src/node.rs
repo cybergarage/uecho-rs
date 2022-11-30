@@ -27,8 +27,8 @@ use crate::transport::Manager;
 use crate::transport::*;
 use crate::{object::*, Property};
 
-/// LocalNode represents an ECHONET-Lite node in the controller and device nodes.
-pub struct LocalNode {
+/// Node represents an ECHONET-Lite node which contains ECHONET-Lite objects such the profiles and the devices.
+pub struct Node {
     transport_mgr: Manager,
     objects: Vec<Object>,
     last_tid: TID,
@@ -36,10 +36,10 @@ pub struct LocalNode {
     request_mgr: RequestManager,
 }
 
-impl LocalNode {
-    pub fn new() -> Arc<Mutex<LocalNode>> {
+impl Node {
+    pub fn new() -> Arc<Mutex<Node>> {
         let (tx, _): (Sender<Message>, Receiver<Message>) = mpsc::channel();
-        let node = Arc::new(Mutex::new(LocalNode {
+        let node = Arc::new(Mutex::new(Node {
             transport_mgr: Manager::new(),
             objects: Vec::new(),
             last_tid: TID_MIN,
@@ -298,7 +298,7 @@ impl LocalNode {
     }
 }
 
-impl Observer for Arc<Mutex<LocalNode>> {
+impl Observer for Arc<Mutex<Node>> {
     fn message_received(&mut self, req_msg: &Message) {
         let mut node = self.lock().unwrap();
         if node.is_last_message_response(req_msg) {

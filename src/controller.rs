@@ -17,7 +17,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::controller_node::ControllerNode;
-use crate::local_node::LocalNode;
+use crate::node::Node;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::protocol::Message;
@@ -78,7 +78,7 @@ impl Controller {
     }
 
     /// Create a new controller with the node to which it belongs.
-    pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Controller {
+    pub fn new_with_node(node: Arc<Mutex<Node>>) -> Controller {
         Controller {
             node: ControllerNode::new_with_node(node),
         }
@@ -125,11 +125,10 @@ impl Controller {
         }
         ctrl.add_observer(Arc::new(Mutex::new(self.node.clone())));
 
-        let local_node = ctrl.local_node();
-        local_node
-            .lock()
+        let node = ctrl.node();
+        node.lock()
             .unwrap()
-            .add_observer(Arc::new(Mutex::new(local_node.clone())));
+            .add_observer(Arc::new(Mutex::new(node.clone())));
 
         true
     }

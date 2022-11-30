@@ -18,8 +18,8 @@ use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::local_node::LocalNode;
 use crate::message::SearchMessage;
+use crate::node::Node;
 use crate::node_profile::{NodeProfile, NODE_PROFILE_OBJECT_CODE};
 use crate::object::ObjectCode;
 use crate::protocol::Message;
@@ -29,16 +29,16 @@ use crate::transport::PORT;
 use crate::transport::{Observer, ObserverObject};
 
 pub struct ControllerNode {
-    node: Arc<Mutex<LocalNode>>,
+    node: Arc<Mutex<Node>>,
     pub remote_nodes: Vec<RemoteNode>,
 }
 
 impl ControllerNode {
     pub fn new() -> Arc<Mutex<ControllerNode>> {
-        ControllerNode::new_with_node(LocalNode::new())
+        ControllerNode::new_with_node(Node::new())
     }
 
-    pub fn new_with_node(node: Arc<Mutex<LocalNode>>) -> Arc<Mutex<ControllerNode>> {
+    pub fn new_with_node(node: Arc<Mutex<Node>>) -> Arc<Mutex<ControllerNode>> {
         let ctrl = Arc::new(Mutex::new(ControllerNode {
             node: node,
             remote_nodes: Vec::new(),
@@ -68,7 +68,7 @@ impl ControllerNode {
         true
     }
 
-    pub fn local_node(&self) -> Arc<Mutex<LocalNode>> {
+    pub fn node(&self) -> Arc<Mutex<Node>> {
         self.node.clone()
     }
 
