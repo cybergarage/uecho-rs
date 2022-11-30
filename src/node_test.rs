@@ -15,12 +15,12 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::local_node::*;
+    use crate::node::*;
     use crate::node_profile::*;
 
     #[test]
-    fn local_node() {
-        let node = LocalNode::new();
+    fn node() {
+        let node = Node::new();
         let mut node = node.lock().unwrap();
         let obj = node.find_object(NODE_PROFILE_OBJECT_CODE);
         assert!(obj.is_some());
