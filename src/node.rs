@@ -22,10 +22,11 @@ use std::sync::Mutex;
 use crate::handler::*;
 use crate::message::ResponseErrorMessage;
 use crate::node_profile::*;
+use crate::object::*;
+use crate::property::Property;
 use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
 use crate::transport::Manager;
 use crate::transport::*;
-use crate::{object::*, Property};
 
 /// Node represents an ECHONET-Lite node which contains ECHONET-Lite objects such the profiles and the devices.
 pub struct Node {
@@ -327,6 +328,32 @@ impl Observer for Arc<Mutex<Node>> {
             } else {
                 warn!("invalid ESV response ({}): {}", res_msg.esv(), res_msg)
             }
+        }
+    }
+}
+
+impl RequestHandler for Arc<Mutex<Node>> {
+    fn property_request_received(
+        &mut self,
+        deoj: ObjectCode,
+        esv: Esv,
+        prop: &crate::protocol::Property,
+    ) -> bool {
+        if deoj != NODE_PROFILE_OBJECT_CODE {
+            return false;
+        }
+        match esv {
+            Esv::ReadRequest | Esv::NotificationRequest => match prop.code() {
+                NODE_PROFILE_CLASS_OPERATING_STATUS => true,
+                NODE_PROFILE_CLASS_VERSION_INFORMATION => true,
+                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES => true,
+                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES => true,
+                NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION => true,
+                NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S => true,
+                NODE_PROFILE_CLASS_SELF_NODE_CLASS_LIST_S => true,
+                _ => false,
+            },
+            _ => false,
         }
     }
 }
