@@ -93,9 +93,9 @@ impl DeviceNode {
         Some(prop.unwrap().data().clone())
     }
 
-    // pub fn is_running(&self) -> bool {
-    //     self.node.is_running()
-    // }
+    pub fn is_running(&self) -> bool {
+        self.node.lock().unwrap().is_running()
+    }
 
     pub fn start(&mut self) -> bool {
         let mut node = self.node.lock().unwrap();
