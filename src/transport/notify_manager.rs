@@ -18,8 +18,15 @@ use crate::transport::observer::*;
 pub trait NotifytManager {
     fn observers(&mut self) -> &mut Observers;
 
-    fn add_observer(&mut self, observer: ObserverObject) -> bool {
-        self.observers().push(observer);
+    fn add_observer(&mut self, new_observer: ObserverObject) -> bool {
+        for observer in self.observers().iter() {
+            let new_observer = new_observer.lock().unwrap();
+            let observer = observer.lock().unwrap();
+            if ::core::ptr::eq(&new_observer, &observer) {
+                return true;
+            }
+        }
+        self.observers().push(new_observer);
         true
     }
 
