@@ -202,11 +202,16 @@ impl Device {
         }
         dev_node.add_observer(Arc::new(Mutex::new(self.node.clone())));
 
+        // Sets default Node Observer and RequestHandler
         let node = dev_node.node();
         node.lock()
             .unwrap()
             .add_observer(Arc::new(Mutex::new(node.clone())));
+        node.lock()
+            .unwrap()
+            .set_request_handler(Arc::new(Mutex::new(node.clone())));
 
+        // Sets mandatory properties
         dev_node.set_property(
             self.code,
             DEVICE_OPERATING_STATUS,
@@ -217,6 +222,7 @@ impl Device {
 
     /// Stops the device.
     pub fn stop(&mut self) -> bool {
+        // Sets mandatory properties
         let mut dev_node = self.node.lock().unwrap();
         dev_node.set_property(
             self.code,
