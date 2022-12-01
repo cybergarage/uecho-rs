@@ -100,6 +100,10 @@ impl ControllerNode {
         node.post_message(SocketAddr::new(remote_node.addr(), PORT), msg)
     }
 
+    pub fn is_running(&self) -> bool {
+        self.node.lock().unwrap().is_running()
+    }
+
     pub fn start(&mut self) -> bool {
         let mut node = self.node.lock().unwrap();
         if !node.start() {
