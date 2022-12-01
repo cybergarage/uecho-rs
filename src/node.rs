@@ -146,6 +146,10 @@ impl Node {
         self.transport_mgr.has_interface(addr)
     }
 
+    pub fn is_running(&self) -> bool {
+        self.transport_mgr.is_running()
+    }
+
     pub fn start(&mut self) -> bool {
         if !self.transport_mgr.is_running() {
             if !self.transport_mgr.start() {
