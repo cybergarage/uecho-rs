@@ -54,7 +54,7 @@ pub struct DefaultNotifytManager {
 impl DefaultNotifytManager {
     pub fn new() -> DefaultNotifytManager {
         DefaultNotifytManager {
-            observers: observers_new(),
+            observers: Vec::new(),
         }
     }
 }

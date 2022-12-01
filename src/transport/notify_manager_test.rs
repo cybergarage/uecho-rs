@@ -43,6 +43,19 @@ mod tests {
     use crate::transport::notify_manager_test::*;
 
     #[test]
+    fn notify_manager_add() {
+        const TEST_OBSERVER_COUNT: i32 = 10;
+        let counter = Arc::new(Mutex::new(0));
+        let observer = TestNotifyCounter::new(counter.clone());
+        let observer = Arc::new(Mutex::new(observer));
+        let mut mgr = DefaultNotifytManager::new();
+        assert!(mgr.start());
+        for _ in 0..TEST_OBSERVER_COUNT {
+            assert!(mgr.add_observer(observer.clone()));
+        }
+        assert!(mgr.stop());
+    }
+
     #[test]
     fn notify_manager_received() {
         const TEST_OBSERVER_COUNT: i32 = 10;
