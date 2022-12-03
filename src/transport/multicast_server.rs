@@ -151,7 +151,7 @@ impl MulticastServer {
                             socket.read().unwrap().local_addr().ok().unwrap(),
                             msg
                         );
-                        msg.set_from(remote_addr.ip());
+                        msg.set_from(remote_addr.clone());
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(e) => {
