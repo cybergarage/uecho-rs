@@ -52,6 +52,9 @@ impl Manager {
     }
 
     pub fn has_interface(&self, addr: IpAddr) -> bool {
+        if self.mcast_mgr.has_interface(addr) {
+            return true;
+        }
         self.ucast_mgr.has_interface(addr)
     }
 
