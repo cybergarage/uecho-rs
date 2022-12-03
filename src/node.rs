@@ -87,8 +87,8 @@ impl Node {
         self.find_object_mut(NODE_PROFILE_OBJECT_CODE)
     }
 
-    pub fn set_request_handler(&mut self, handler: RequestHandlerObject) {
-        self.request_mgr.add_handler(handler.clone());
+    pub fn add_request_handler(&mut self, handler: RequestHandlerObject) -> bool {
+        self.request_mgr.add_handler(handler.clone())
     }
 
     pub fn add_observer(&mut self, observer: ObserverObject) -> bool {

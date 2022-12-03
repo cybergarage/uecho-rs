@@ -48,7 +48,7 @@ impl DeviceNode {
 
     pub fn set_request_handler(&mut self, handler: RequestHandlerObject) {
         let mut node = self.node.lock().unwrap();
-        node.set_request_handler(handler.clone());
+        node.add_request_handler(handler.clone());
     }
 
     pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
