@@ -91,7 +91,7 @@ fn node() {
                 Ok(res_meg) => {
                     assert_eq!(res_meg.esv(), Esv::ReadResponse);
                     assert_eq!(res_meg.opc(), 1);
-                    let prop = res_meg.property(n);
+                    let prop = res_meg.property(0);
                     assert_eq!(Bytes::to_u32(prop.data()), res_stats[n] as u32);
                 }
                 Err(e) => {
