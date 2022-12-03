@@ -17,6 +17,7 @@ use std::{thread, time};
 
 use echonet::log::Logger;
 use echonet::protocol::{Esv, Message, Property};
+use echonet::util::Bytes;
 use echonet::Node;
 
 mod test;
@@ -67,6 +68,7 @@ fn node() {
             match rx.recv_timeout(Duration::from_secs(1)) {
                 Ok(res_meg) => {
                     assert_eq!(res_meg.esv(), Esv::WriteResponse);
+                    assert_eq!(res_meg.opc(), 0);
                 }
                 Err(e) => {
                     panic!("{}", e);
@@ -85,6 +87,9 @@ fn node() {
             match rx.recv_timeout(Duration::from_secs(1)) {
                 Ok(res_meg) => {
                     assert_eq!(res_meg.esv(), Esv::ReadResponse);
+                    assert_eq!(res_meg.opc(), 1);
+                    let prop = res_meg.property(n);
+                    assert_eq!(Bytes::to_u32(prop.data()), res_stats[n] as u32);
                 }
                 Err(e) => {
                     panic!("{}", e);
