@@ -32,7 +32,7 @@ fn node() {
     assert!(ctrl.start());
     assert!(ctrl.search());
 
-    thread::sleep(time::Duration::from_secs(5));
+    thread::sleep(time::Duration::from_secs(100));
 
     for remote_node in ctrl.nodes() {
         if !node.lock().unwrap().has_interface(remote_node.addr().ip()) {
