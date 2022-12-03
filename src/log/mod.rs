@@ -12,19 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[cfg(test)]
-mod tests {
+pub use self::logger::Logger;
 
-    use crate::controller::*;
-    use crate::log::Logger;
-
-    #[test]
-    fn controller() {
-        Logger::init();
-
-        let mut ctrl = Controller::new();
-        assert!(ctrl.start());
-        assert!(ctrl.search());
-        assert!(ctrl.stop());
-    }
-}
+mod logger;
