@@ -32,7 +32,7 @@ impl UnicastManager {
 
     pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         for udp_server in self.udp_servers.iter_mut() {
-            if udp_server.add_observer(observer.clone()) {
+            if !udp_server.add_observer(observer.clone()) {
                 return false;
             }
         }
