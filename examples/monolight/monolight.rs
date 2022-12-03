@@ -15,6 +15,9 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use std::io::Error;
+use std::sync::atomic::{AtomicBool, Ordering};
+
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
 use echonet::{Device, ObjectCode, RequestHandler};
@@ -79,8 +82,17 @@ impl RequestHandler for MonoLight {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Error> {
     let ml = MonoLight::new();
-    ml.lock().unwrap().start();
-    ml.lock().unwrap().stop();
+    let mut ml = ml.lock().unwrap();
+    ml.start();
+
+    let term = Arc::new(AtomicBool::new(false));
+    signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&term))?;
+    while !term.load(Ordering::Relaxed) {
+    }
+
+    ml.stop();
+
+    Ok(())
 }
