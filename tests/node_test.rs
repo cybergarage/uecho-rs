@@ -30,6 +30,7 @@ fn node() {
 
     let mut dev = test::TestDevice::new(node.clone());
     assert!(dev.lock().unwrap().start());
+    let dev_obj_code = dev.lock().unwrap().code();
 
     let mut ctrl = test::TestController::new(node.clone());
     assert!(ctrl.start());
@@ -46,8 +47,6 @@ fn node() {
 
     assert!(found_local_node);
 
-    return;
-
     for remote_node in ctrl.nodes() {
         if !node.lock().unwrap().has_interface(remote_node.addr().ip()) {
             continue;
@@ -60,6 +59,7 @@ fn node() {
             // Writes a property value (Esv::WriteRequestResponseRequired).
 
             let mut req_msg = Message::new();
+            req_msg.set_deoj(dev_obj_code);
             req_msg.set_esv(Esv::WriteRequestResponseRequired);
             let mut prop = Property::new();
             prop.set_code(0x80);
@@ -67,10 +67,10 @@ fn node() {
             req_msg.add_property(prop);
 
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
-            match rx.recv_timeout(Duration::from_secs(1)) {
+            match rx.recv_timeout(Duration::from_secs(60)) {
                 Ok(res_meg) => {
                     assert_eq!(res_meg.esv(), Esv::WriteResponse);
-                    assert_eq!(res_meg.opc(), 0);
+                    assert_eq!(res_meg.opc(), 1);
                 }
                 Err(e) => {
                     panic!("{}", e);
@@ -80,13 +80,14 @@ fn node() {
             // Reads a property value (Esv::ReadRequest).
 
             let mut req_msg = Message::new();
+            req_msg.set_deoj(dev_obj_code);
             req_msg.set_esv(Esv::ReadRequest);
             let mut prop = Property::new();
             prop.set_code(0x80);
             req_msg.add_property(prop);
 
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
-            match rx.recv_timeout(Duration::from_secs(1)) {
+            match rx.recv_timeout(Duration::from_secs(60)) {
                 Ok(res_meg) => {
                     assert_eq!(res_meg.esv(), Esv::ReadResponse);
                     assert_eq!(res_meg.opc(), 1);
