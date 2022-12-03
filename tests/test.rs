@@ -77,12 +77,10 @@ impl RequestHandler for TestDevice {
                             0x30 /* On */=> {
                                 info!("On");
                                 self.num_on_req+= 1;
-                                self.dev.set_property(prop_code, prop_bytes);
                             }
                             0x31 /* Off */=> {
                                 info!("Off");
                                 self.num_off_req+= 1;
-                                self.dev.set_property(prop_code, prop_bytes);
                             }
                             _ => {
                                 return false;
