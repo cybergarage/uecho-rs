@@ -33,5 +33,9 @@ name = "uechosearch"
 path = "examples/uechosearch/uechosearch.rs"
 
 [[bin]]
+name = "uechopost"
+path = "examples/uechopost/uechopost.rs"
+
+[[bin]]
 name = "monolight"
 path = "examples/monolight/monolight.rs"
