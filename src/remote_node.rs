@@ -14,7 +14,7 @@
 
 use std::cmp::PartialEq;
 use std::hash::{Hash, Hasher};
-use std::net::{IpAddr, Ipv4Addr};
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 use crate::message::NodeProfileMessage;
 use crate::object::{Object, ObjectCode};
@@ -22,14 +22,14 @@ use crate::protocol::Message;
 
 /// RemoteNode represents an ECHONET-Lite node discovered by Controller. The remote node has the standard objects and properties defined by the ECHONET CONSORTIUM.
 pub struct RemoteNode {
-    addr: IpAddr,
+    addr: SocketAddr,
     objects: Vec<Object>,
 }
 
 impl RemoteNode {
     pub fn new() -> RemoteNode {
         RemoteNode {
-            addr: IpAddr::V4(Ipv4Addr::UNSPECIFIED),
+            addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), 0),
             objects: Vec::new(),
         }
     }
@@ -43,11 +43,11 @@ impl RemoteNode {
         node
     }
 
-    pub fn addr(&self) -> IpAddr {
+    pub fn addr(&self) -> SocketAddr {
         self.addr
     }
 
-    pub fn set_addr(&mut self, addr: IpAddr) {
+    pub fn set_addr(&mut self, addr: SocketAddr) {
         self.addr = addr
     }
 

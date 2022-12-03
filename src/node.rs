@@ -322,7 +322,7 @@ impl Observer for Arc<Mutex<Node>> {
             let mut res_msg = res_msg.unwrap();
             if res_msg.esv().is_response() {
                 if res_msg.esv().is_unicast_response() {
-                    node.send_message(SocketAddr::new(req_msg.from(), PORT), &mut res_msg);
+                    node.send_message(SocketAddr::new(req_msg.from().ip(), PORT), &mut res_msg);
                 } else {
                     node.notify(&mut res_msg);
                 }
