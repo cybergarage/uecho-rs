@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["logger",""]]};
+window.SIDEBAR_ITEMS = {"struct":[["Logger","Logger represents a default logger instance."]]};

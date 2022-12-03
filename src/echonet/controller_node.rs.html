@@ -232,13 +232,13 @@
     <span class="kw">pub fn </span>send_message(<span class="kw-2">&amp;</span><span class="self">self</span>, remote_node: <span class="kw-2">&amp;</span>RemoteNode, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; bool {
         msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
-        node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
+        node.send_message(SocketAddr::new(remote_node.addr().ip(), PORT), msg)
     }
 
     <span class="kw">pub fn </span>post_message(<span class="kw-2">&amp;</span><span class="self">self</span>, remote_node: <span class="kw-2">&amp;</span>RemoteNode, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; Receiver&lt;Message&gt; {
         msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         <span class="kw">let </span><span class="kw-2">mut </span>node = <span class="self">self</span>.node.lock().unwrap();
-        node.post_message(SocketAddr::new(remote_node.addr(), PORT), msg)
+        node.post_message(SocketAddr::new(remote_node.addr().ip(), PORT), msg)
     }
 
     <span class="kw">pub fn </span>is_running(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
