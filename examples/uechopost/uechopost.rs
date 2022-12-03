@@ -25,16 +25,19 @@ use echonet::Controller;
 use hex;
 
 fn usages() {
-    eprintln!("uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> <EDT (hex)>)?");
+    eprintln!("Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> <EDT (hex)>)?");
 }
 
 fn main() {
+    let mut program_name = String::new();
     let ipaddr_none = IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0));
     let mut node_addr = ipaddr_none.clone();
     let mut esv = Esv::Unknown;
-    let mut obj = 0;
+    let mut obj_code = 0;
     let mut epcs = Vec::new();
     let mut edts = Vec::new();
+
+    // Parses specified arguments.
 
     for arg in env::args() {
         match arg.as_str() {
@@ -42,6 +45,10 @@ fn main() {
                 Logger::init();
             }
             &_ => {
+                if program_name.len() == 0 {
+                    program_name = arg.clone();
+                    continue;
+                }
                 if node_addr == ipaddr_none {
                     let arg_addr = arg.parse();
                     if arg_addr.is_err() {
@@ -68,14 +75,14 @@ fn main() {
                     }
                     continue;
                 }
-                if obj == 0 {
+                if obj_code == 0 {
                     let arg_obj = hex::decode(arg.clone());
                     if arg_obj.is_err() {
                         usages();
                         eprintln!("Object code error: {}", arg);
                         return;
                     }
-                    obj = Bytes::to_u32(&arg_obj.unwrap());
+                    obj_code = Bytes::to_u32(&arg_obj.unwrap());
                     continue;
                 }
                 if epcs.len() == edts.len() {
@@ -103,11 +110,47 @@ fn main() {
         }
     }
 
+    // Checks specified arguments.
+
+    if node_addr == ipaddr_none {
+        usages();
+        eprintln!("IP address is missing");
+        return;
+    }
+
+    if esv == Esv::Unknown {
+        usages();
+        eprintln!("ESV is missing");
+        return;
+    }
+
+    if obj_code == 0 {
+        usages();
+        eprintln!("Object code is missing");
+        return;
+    }
+
+    if epcs.len() == 0 {
+        usages();
+        eprintln!("EPC is missing");
+        return;
+    }
+
+    if edts.len() == 0 || epcs.len() != edts.len() {
+        usages();
+        eprintln!("EDT is missing");
+        return;
+    }
+
+    // Starts a new controller.
+
     let mut ctrl = Controller::new();
     ctrl.start();
     ctrl.search();
 
     thread::sleep(time::Duration::from_secs(2));
+
+    // Posts a message to the specified controller.
 
     for node in ctrl.nodes().iter() {
         if node.addr().ip() != node_addr {
@@ -116,7 +159,7 @@ fn main() {
 
         let mut req_msg = Message::new();
         req_msg.set_esv(esv);
-        req_msg.set_deoj(obj);
+        req_msg.set_deoj(obj_code);
         for (n, epc) in epcs.iter().enumerate() {
             let mut prop = Property::new();
             prop.set_code(*epc);
