@@ -32,7 +32,16 @@ fn node() {
     assert!(ctrl.start());
     assert!(ctrl.search());
 
-    thread::sleep(time::Duration::from_secs(100));
+    thread::sleep(time::Duration::from_secs(2));
+
+    let mut found_local_node = false;
+    for remote_node in ctrl.nodes() {
+        if node.lock().unwrap().has_interface(remote_node.addr().ip()) {
+            found_local_node = true;
+        }
+    }
+
+    assert!(found_local_node);
 
     for remote_node in ctrl.nodes() {
         if !node.lock().unwrap().has_interface(remote_node.addr().ip()) {
