@@ -105,6 +105,11 @@
 <span id="105">105</span>
 <span id="106">106</span>
 <span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -123,11 +128,13 @@
 <span class="kw">use </span>std::io::Error;
 <span class="kw">use </span>std::sync::atomic::{AtomicBool, Ordering};
 <span class="kw">use </span>std::sync::{Arc, Mutex};
+<span class="kw">use </span>std::{thread, time};
 
 <span class="kw">use </span>echonet::log::Logger;
 <span class="kw">use </span>echonet::protocol::{Esv, Property};
 <span class="kw">use </span>echonet::util::Bytes;
 <span class="kw">use </span>echonet::{Device, ObjectCode, RequestHandler};
+<span class="kw">use </span>log::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide.
 </span><span class="kw">pub struct </span>MonoLight {
@@ -168,10 +175,10 @@
                         <span class="kw">let </span>prop_u32 = Bytes::to_u32(prop_bytes);
                         <span class="kw">match </span>prop_u32 {
                             <span class="number">0x30 </span><span class="comment">/* On */</span>=&gt; {
-                                <span class="self">self</span>.device.set_property(prop_code, prop_bytes);
+                                <span class="macro">info!</span>(<span class="string">&quot;On&quot;</span>);
                             }
                             <span class="number">0x31 </span><span class="comment">/* Off */</span>=&gt; {
-                                <span class="self">self</span>.device.set_property(prop_code, prop_bytes);
+                                <span class="macro">info!</span>(<span class="string">&quot;Off&quot;</span>);
                             }
                             <span class="kw">_ </span>=&gt; {
                                 <span class="kw">return </span><span class="bool-val">false</span>;
@@ -190,6 +197,7 @@
 }
 
 <span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    Logger::init();
     <span class="kw">for </span>arg <span class="kw">in </span>env::args() {
         <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, arg);
         <span class="kw">match </span>arg.as_str() {
@@ -206,7 +214,9 @@
 
     <span class="kw">let </span>term = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(<span class="kw-2">&amp;</span>term))<span class="question-mark">?</span>;
-    <span class="kw">while </span>!term.load(Ordering::Relaxed) {}
+    <span class="kw">while </span>!term.load(Ordering::Relaxed) {
+        thread::sleep(time::Duration::from_secs(<span class="number">1</span>));
+    }
 
     ml.stop();
 
