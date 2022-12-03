@@ -25,6 +25,7 @@ socket2 = "0.4.5"
 nix = "0.25.0" 
 net2 = "0.2"
 clap = "4.0.29"
+signal-hook = "0.3.14"
 
 [[bin]]
 name = "uechosearch"
