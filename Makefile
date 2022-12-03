@@ -38,4 +38,4 @@ search:
 	cargo run --bin uechosearch
 
 mono:
-	cargo run --bin monolight
+	cargo run --bin monolight -v
