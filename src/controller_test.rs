@@ -16,11 +16,11 @@
 mod tests {
 
     use crate::controller::*;
-    use crate::log::logger;
+    use cybergarage::log::DefaultLogger;
 
     #[test]
     fn controller() {
-        logger::init();
+        DefaultLogger::init();
 
         let mut ctrl = Controller::new();
         assert!(ctrl.start());

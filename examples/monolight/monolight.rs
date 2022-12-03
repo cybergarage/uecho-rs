@@ -89,8 +89,7 @@ fn main() -> Result<(), Error> {
 
     let term = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&term))?;
-    while !term.load(Ordering::Relaxed) {
-    }
+    while !term.load(Ordering::Relaxed) {}
 
     ml.stop();
 
