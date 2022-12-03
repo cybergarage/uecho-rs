@@ -20,7 +20,7 @@ use echonet::Node;
 mod test;
 
 #[test]
-fn controller() {
+fn node() {
     logger::init();
 
     let node = Node::new();
