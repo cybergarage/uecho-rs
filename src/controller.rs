@@ -123,12 +123,19 @@ impl Controller {
         if !ctrl.start() {
             return false;
         }
-        ctrl.add_observer(Arc::new(Mutex::new(self.node.clone())));
+
+        if !ctrl.add_observer(Arc::new(Mutex::new(self.node.clone()))) {
+            return false;
+        }
 
         let node = ctrl.node();
-        node.lock()
+        if !node
+            .lock()
             .unwrap()
-            .add_observer(Arc::new(Mutex::new(node.clone())));
+            .add_observer(Arc::new(Mutex::new(node.clone())))
+        {
+            return false;
+        }
 
         true
     }
