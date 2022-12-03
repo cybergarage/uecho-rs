@@ -4,10 +4,10 @@
 -  Support write and read request protocol (0x6E)
 
 ## v1.0.0 (2022-xx-x)
-- Add Device module that represents an ECHONET-Lite device node
+- Add Device module that simulates an ECHONET-Lite device node
 - Add a controller example that posts a message to other nodes as uechopost
 
-## v0.9.3 (2022-11-27)
+## v0.9.3 (2022-12-03)
 - Improved Controller to bind multiple interfaces
 - Improved Controller not to bind unavailable interfaces
 
