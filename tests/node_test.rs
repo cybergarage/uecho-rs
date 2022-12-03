@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::time::Duration;
 use std::{thread, time};
 
 use echonet::log::Logger;
+use echonet::protocol::{Esv, Message, Property};
 use echonet::Node;
 
 mod test;
@@ -47,8 +49,47 @@ fn node() {
         if !node.lock().unwrap().has_interface(remote_node.addr().ip()) {
             continue;
         }
-        for obj in remote_node.objects() {
-            for obj_prop in obj.properties() {}
+
+        let req_stats = vec![0x30 as u8, 0x31];
+        let res_stats = vec![0x30 as u8, 0x31];
+
+        for (n, req_stat) in req_stats.iter().enumerate() {
+            // Writes a property value (Esv::WriteRequestResponseRequired).
+
+            let mut req_msg = Message::new();
+            req_msg.set_esv(Esv::WriteRequestResponseRequired);
+            let mut prop = Property::new();
+            prop.set_code(0x80);
+            prop.set_data(vec![*req_stat]);
+            req_msg.add_property(prop);
+
+            let rx = ctrl.post_message(&remote_node, &mut req_msg);
+            match rx.recv_timeout(Duration::from_secs(1)) {
+                Ok(res_meg) => {
+                    assert_eq!(res_meg.esv(), Esv::WriteResponse);
+                }
+                Err(e) => {
+                    panic!("{}", e);
+                }
+            };
+
+            // Reads a property value (Esv::ReadRequest).
+
+            let mut req_msg = Message::new();
+            req_msg.set_esv(Esv::ReadRequest);
+            let mut prop = Property::new();
+            prop.set_code(0x80);
+            req_msg.add_property(prop);
+
+            let rx = ctrl.post_message(&remote_node, &mut req_msg);
+            match rx.recv_timeout(Duration::from_secs(1)) {
+                Ok(res_meg) => {
+                    assert_eq!(res_meg.esv(), Esv::ReadResponse);
+                }
+                Err(e) => {
+                    panic!("{}", e);
+                }
+            };
         }
     }
 
