@@ -26,7 +26,7 @@ use hex;
 
 fn usages() {
     println!(
-        "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> <EDT (hex)>)?"
+        "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
     );
     println!(" -h : Print this message");
     println!(" -d : Enable debug output");
@@ -152,23 +152,25 @@ fn main() {
 
     thread::sleep(time::Duration::from_secs(2));
 
-    // Posts a message to the specified controller.
+    // Genarates the specified message.
+
+    let mut req_msg = Message::new();
+    req_msg.set_esv(esv);
+    req_msg.set_deoj(obj_code);
+    for (n, epc) in epcs.iter().enumerate() {
+        let mut prop = Property::new();
+        prop.set_code(*epc);
+        if n < edts.len() {
+            prop.set_data(edts[n].clone());
+        }
+        req_msg.add_property(prop);
+    }
+
+    // Posts the specified message to the specified controller.
 
     for node in ctrl.nodes().iter() {
         if node.addr().ip() != node_addr {
             continue;
-        }
-
-        let mut req_msg = Message::new();
-        req_msg.set_esv(esv);
-        req_msg.set_deoj(obj_code);
-        for (n, epc) in epcs.iter().enumerate() {
-            let mut prop = Property::new();
-            prop.set_code(*epc);
-            if n < edts.len() {
-                prop.set_data(edts[n].clone());
-            }
-            req_msg.add_property(prop);
         }
 
         let rx = ctrl.post_message(&node, &mut req_msg);
