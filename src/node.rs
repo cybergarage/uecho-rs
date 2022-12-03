@@ -184,6 +184,9 @@ impl Node {
     }
 
     fn is_last_message_response(&self, msg: &Message) -> bool {
+        if msg.esv().is_request() {
+            return false;
+        }
         if msg.tid() != self.last_tid {
             return false;
         }
