@@ -5,6 +5,7 @@
 
 ## v1.0.0 (2022-xx-x)
 - Add Device module that represents an ECHONET-Lite device node
+- Add a controller example that posts a message to other nodes as uechopost
 
 ## v0.9.3 (2022-11-27)
 - Improved Controller to bind multiple interfaces
