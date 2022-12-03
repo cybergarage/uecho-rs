@@ -18,7 +18,7 @@ use std::string::String;
 use std::time::Duration;
 use std::{thread, time};
 
-use cybergarage::log::DefaultLogger;
+use echonet::log::Logger;
 use echonet::protocol::{Esv, Message, Property};
 use echonet::util::Bytes;
 use echonet::{Controller, ManufactureCode, StandardDatabase};
@@ -28,7 +28,7 @@ fn main() -> Result<(), Error> {
         print!("{}", arg);
         match arg.as_str() {
             "-v" => {
-                DefaultLogger::init();
+                Logger::init();
             }
             &_ => {}
         }

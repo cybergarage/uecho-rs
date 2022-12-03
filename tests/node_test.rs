@@ -14,14 +14,14 @@
 
 use std::{thread, time};
 
-use cybergarage::log::DefaultLogger;
+use echonet::log::Logger;
 use echonet::Node;
 
 mod test;
 
 #[test]
 fn node() {
-    DefaultLogger::init();
+    Logger::init();
 
     let node = Node::new();
 

@@ -12,19 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[cfg(test)]
-mod tests {
+use cybergarage;
 
-    use crate::controller::*;
-    use crate::log::Logger;
+/// Logger represents a default logger instance.
+pub struct Logger {}
 
-    #[test]
-    fn controller() {
-        Logger::init();
-
-        let mut ctrl = Controller::new();
-        assert!(ctrl.start());
-        assert!(ctrl.search());
-        assert!(ctrl.stop());
+impl Logger {
+    pub fn init() {
+        cybergarage::log::DefaultLogger::init();
     }
 }

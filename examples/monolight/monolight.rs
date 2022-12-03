@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::sync::Arc;
-use std::sync::Mutex;
-
+use std::env;
 use std::io::Error;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 
+use echonet::log::Logger;
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
 use echonet::{Device, ObjectCode, RequestHandler};
@@ -83,6 +83,16 @@ impl RequestHandler for MonoLight {
 }
 
 fn main() -> Result<(), Error> {
+    for arg in env::args() {
+        print!("{}", arg);
+        match arg.as_str() {
+            "-v" => {
+                Logger::init();
+            }
+            &_ => {}
+        }
+    }
+
     let ml = MonoLight::new();
     let mut ml = ml.lock().unwrap();
     ml.start();
