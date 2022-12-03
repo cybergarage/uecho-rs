@@ -91,13 +91,13 @@ impl ControllerNode {
     pub fn send_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> bool {
         msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         let mut node = self.node.lock().unwrap();
-        node.send_message(SocketAddr::new(remote_node.addr(), PORT), msg)
+        node.send_message(SocketAddr::new(remote_node.addr().ip(), PORT), msg)
     }
 
     pub fn post_message(&self, remote_node: &RemoteNode, msg: &mut Message) -> Receiver<Message> {
         msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         let mut node = self.node.lock().unwrap();
-        node.post_message(SocketAddr::new(remote_node.addr(), PORT), msg)
+        node.post_message(SocketAddr::new(remote_node.addr().ip(), PORT), msg)
     }
 
     pub fn is_running(&self) -> bool {
