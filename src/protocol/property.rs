@@ -47,12 +47,17 @@ impl Property {
         self.code
     }
 
-    pub fn size(&self) -> usize {
-        self.data.len()
+    pub fn set_data(&mut self, data: Vec<u8>) -> &mut Self {
+        self.data = data.clone();
+        self
     }
 
     pub fn data(&self) -> &Vec<u8> {
         &self.data
+    }
+
+    pub fn size(&self) -> usize {
+        self.data.len()
     }
 
     pub fn parse(&mut self, msg: &[u8]) -> bool {
