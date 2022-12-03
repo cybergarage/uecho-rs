@@ -25,7 +25,9 @@ use echonet::Controller;
 use hex;
 
 fn usages() {
-    eprintln!("Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> <EDT (hex)>)?");
+    eprintln!(
+        "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> <EDT (hex)>)?"
+    );
 }
 
 fn main() {
@@ -59,6 +61,16 @@ fn main() {
                     node_addr = arg_addr.unwrap();
                     continue;
                 }
+                if obj_code == 0 {
+                    let arg_obj = hex::decode(arg.clone());
+                    if arg_obj.is_err() {
+                        usages();
+                        eprintln!("Object code error: {}", arg);
+                        return;
+                    }
+                    obj_code = Bytes::to_u32(&arg_obj.unwrap());
+                    continue;
+                }
                 if esv == Esv::Unknown {
                     let arg_esv = hex::decode(arg.clone());
                     if arg_esv.is_err() {
@@ -73,16 +85,6 @@ fn main() {
                         eprintln!("ESV error: {}", arg);
                         return;
                     }
-                    continue;
-                }
-                if obj_code == 0 {
-                    let arg_obj = hex::decode(arg.clone());
-                    if arg_obj.is_err() {
-                        usages();
-                        eprintln!("Object code error: {}", arg);
-                        return;
-                    }
-                    obj_code = Bytes::to_u32(&arg_obj.unwrap());
                     continue;
                 }
                 if epcs.len() == edts.len() {
@@ -136,12 +138,6 @@ fn main() {
         return;
     }
 
-    if edts.len() == 0 || epcs.len() != edts.len() {
-        usages();
-        eprintln!("EDT is missing");
-        return;
-    }
-
     // Starts a new controller.
 
     let mut ctrl = Controller::new();
@@ -163,7 +159,9 @@ fn main() {
         for (n, epc) in epcs.iter().enumerate() {
             let mut prop = Property::new();
             prop.set_code(*epc);
-            prop.set_data(edts[n].clone());
+            if n < edts.len() {
+                prop.set_data(edts[n].clone());
+            }
             req_msg.add_property(prop);
         }
 
