@@ -311,12 +311,10 @@ impl Node {
 
 impl Observer for Arc<Mutex<Node>> {
     fn message_received(&mut self, req_msg: &Message) {
-        info!("message_received 1 {}", req_msg);
         let mut node = self.lock().unwrap();
         if node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }
-        info!("message_received 2 {}", req_msg);
         let res_msg = node.message_received(req_msg);
         if res_msg.is_some() {
             let mut res_msg = res_msg.unwrap();
