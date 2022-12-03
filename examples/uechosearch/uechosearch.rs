@@ -25,7 +25,6 @@ use echonet::{Controller, ManufactureCode, StandardDatabase};
 
 fn main() -> Result<(), Error> {
     for arg in env::args() {
-        print!("{}", arg);
         match arg.as_str() {
             "-v" => {
                 Logger::init();
