@@ -36,6 +36,8 @@
 //!
 //! [enet]:http://echonet.jp/english/
 
+/// Logger function module.
+pub mod log;
 /// Messaging protocol encoder and decoder module.
 pub mod protocol;
 /// Messaging transport manager module (Internal).
