@@ -1,8 +1,14 @@
 # Changelog
 
+## v1.1.0 (2022-xx-x)
+-  Support write and read request protocol (0x6E)
+
 ## v1.0.0 (2022-xx-x)
-- Added Device that represents an ECHONET-Lite device node
-- Improved transport::Manager not to bind unavailable interfaces
+- Add Device module that represents an ECHONET-Lite device node
+
+## v0.9.3 (2022-11-27)
+- Improved Controller to bind multiple interfaces
+- Improved Controller not to bind unavailable interfaces
 
 ## v0.9.2 (2022-11-27)
 - Update Controller to add the standard node profile object as default
