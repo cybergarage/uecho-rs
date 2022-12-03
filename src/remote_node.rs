@@ -36,7 +36,7 @@ impl RemoteNode {
 
     pub fn from_message(msg: &Message) -> RemoteNode {
         let mut node = RemoteNode {
-            addr: msg.addr(),
+            addr: msg.from(),
             objects: Vec::new(),
         };
         node.parse(msg);
