@@ -218,7 +218,7 @@ impl Node {
         node_prof.update(&obj_codes);
     }
 
-    fn message_received(&self, req_msg: &Message) -> Option<Message> {
+    fn message_received(&mut self, req_msg: &Message) -> Option<Message> {
         // Handles only request messages.
 
         if req_msg.esv().is_response() {
@@ -304,6 +304,27 @@ impl Node {
 
         if !self.request_mgr.property_request_received(req_msg) {
             return Some(ResponseErrorMessage::from(req_msg));
+        }
+
+        // Writes request property data to the property.
+
+        let dst_obj = self.find_object_mut(dst_obj_code);
+        if dst_obj.is_none() {
+            return None;
+        }
+        let dst_obj = dst_obj.unwrap();
+        match req_msg.esv() {
+            Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
+                for req_msg_prop in req_msg.properties() {
+                    let dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
+                    if dst_prop.is_none() {
+                        continue;
+                    }
+                    let dst_prop = dst_prop.unwrap();
+                    dst_prop.set_data(&req_msg_prop.data().clone());
+                }
+            }
+            _ => {}
         }
 
         // Generates a response message for the valid request message and returns the response message.
