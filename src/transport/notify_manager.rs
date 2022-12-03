@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use log::*;
-
 use crate::protocol::Message;
 use crate::transport::observer::*;
 
@@ -34,10 +32,8 @@ pub trait NotifytManager {
     }
 
     fn notify(&mut self, msg: &Message) -> bool {
-        info!("notify num_observers = {}", self.num_observers());
-        for (n, observer) in self.observers().iter().enumerate() {
+        for observer in self.observers().iter() {
             let mut observer = observer.lock().unwrap();
-            info!("notify observer[{}]", n);
             observer.message_received(msg);
         }
         true
