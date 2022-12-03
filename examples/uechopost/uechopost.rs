@@ -25,9 +25,11 @@ use echonet::Controller;
 use hex;
 
 fn usages() {
-    eprintln!(
+    println!(
         "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> <EDT (hex)>)?"
     );
+    println!(" -h : Print this message");
+    println!(" -d : Enable debug output");
 }
 
 fn main() {
@@ -45,6 +47,10 @@ fn main() {
         match arg.as_str() {
             "-v" => {
                 Logger::init();
+            }
+            "-h" => {
+                usages();
+                return;
             }
             &_ => {
                 if program_name.len() == 0 {
@@ -176,9 +182,8 @@ fn main() {
         };
 
         ctrl.stop();
+        return;
     }
-
-    eprintln!("Remote node ({}) is not found", node_addr);
 
     ctrl.stop();
 }
