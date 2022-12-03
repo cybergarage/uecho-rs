@@ -359,6 +359,27 @@
 <span id="359">359</span>
 <span id="360">360</span>
 <span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -579,7 +600,7 @@
         node_prof.update(<span class="kw-2">&amp;</span>obj_codes);
     }
 
-    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;</span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
+    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
         <span class="comment">// Handles only request messages.
 
         </span><span class="kw">if </span>req_msg.esv().is_response() {
@@ -665,6 +686,27 @@
 
         </span><span class="kw">if </span>!<span class="self">self</span>.request_mgr.property_request_received(req_msg) {
             <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+        }
+
+        <span class="comment">// Writes request property data to the property.
+
+        </span><span class="kw">let </span>dst_obj = <span class="self">self</span>.find_object_mut(dst_obj_code);
+        <span class="kw">if </span>dst_obj.is_none() {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        }
+        <span class="kw">let </span>dst_obj = dst_obj.unwrap();
+        <span class="kw">match </span>req_msg.esv() {
+            Esv::WriteRequest | Esv::WriteRequestResponseRequired =&gt; {
+                <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties() {
+                    <span class="kw">let </span>dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
+                    <span class="kw">if </span>dst_prop.is_none() {
+                        <span class="kw">continue</span>;
+                    }
+                    <span class="kw">let </span>dst_prop = dst_prop.unwrap();
+                    dst_prop.set_data(<span class="kw-2">&amp;</span>req_msg_prop.data().clone());
+                }
+            }
+            <span class="kw">_ </span>=&gt; {}
         }
 
         <span class="comment">// Generates a response message for the valid request message and returns the response message.
