@@ -69,8 +69,6 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -98,15 +96,13 @@
     <span class="kw">use </span><span class="kw">crate</span>::transport::interface::<span class="kw-2">*</span>;
     <span class="kw">use </span><span class="kw">crate</span>::transport::unicast_server::<span class="kw-2">*</span>;
 
-    <span class="kw">use </span><span class="kw">crate</span>::log::logger;
+    <span class="kw">use </span><span class="kw">crate</span>::log::Logger;
     <span class="kw">use </span><span class="kw">crate</span>::transport::notify_manager_test::<span class="kw-2">*</span>;
 
     <span class="attribute">#[test]
     </span><span class="kw">fn </span>unicast_server() {
-        logger::init();
-
         <span class="kw">fn </span>test_udp_server(ifaddr: IpAddr) {
-            logger::init();
+            Logger::init();
 
             <span class="kw">const </span>TEST_OBSERVER_COUNT: i32 = <span class="number">5</span>;
             <span class="kw">let </span>counter = Arc::new(Mutex::new(<span class="number">0</span>));

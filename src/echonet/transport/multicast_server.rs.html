@@ -328,7 +328,7 @@
                             socket.read().unwrap().local_addr().ok().unwrap(),
                             msg
                         );
-                        msg.set_addr(remote_addr.ip());
+                        msg.set_from(remote_addr.clone());
                         notifier.lock().unwrap().notify(<span class="kw-2">&amp;</span>msg);
                     }
                     <span class="prelude-val">Err</span>(e) =&gt; {

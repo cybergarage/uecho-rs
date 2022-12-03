@@ -132,7 +132,7 @@
 
     <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
         <span class="kw">for </span>mcast_server <span class="kw">in </span><span class="self">self</span>.mcast_servers.iter_mut() {
-            <span class="kw">if </span>mcast_server.add_observer(observer.clone()) {
+            <span class="kw">if </span>!mcast_server.add_observer(observer.clone()) {
                 <span class="kw">return </span><span class="bool-val">false</span>;
             }
         }

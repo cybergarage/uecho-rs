@@ -330,6 +330,35 @@
 <span id="330">330</span>
 <span id="331">331</span>
 <span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -354,10 +383,11 @@
 <span class="kw">use </span><span class="kw">crate</span>::handler::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::message::ResponseErrorMessage;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::property::Property;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
 <span class="kw">use </span><span class="kw">crate</span>::transport::Manager;
 <span class="kw">use </span><span class="kw">crate</span>::transport::<span class="kw-2">*</span>;
-<span class="kw">use crate</span>::{object::<span class="kw-2">*</span>, Property};
 
 <span class="doccomment">/// Node represents an ECHONET-Lite node which contains ECHONET-Lite objects such the profiles and the devices.
 </span><span class="kw">pub struct </span>Node {
@@ -418,8 +448,8 @@
         <span class="self">self</span>.find_object_mut(NODE_PROFILE_OBJECT_CODE)
     }
 
-    <span class="kw">pub fn </span>set_request_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: RequestHandlerObject) {
-        <span class="self">self</span>.request_mgr.add_handler(handler.clone());
+    <span class="kw">pub fn </span>add_request_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: RequestHandlerObject) -&gt; bool {
+        <span class="self">self</span>.request_mgr.add_handler(handler.clone())
     }
 
     <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
@@ -515,6 +545,9 @@
     }
 
     <span class="kw">fn </span>is_last_message_response(<span class="kw-2">&amp;</span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) -&gt; bool {
+        <span class="kw">if </span>msg.esv().is_request() {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
         <span class="kw">if </span>msg.tid() != <span class="self">self</span>.last_tid {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
@@ -646,19 +679,44 @@
         <span class="kw">if </span>node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }
-        <span class="macro">info!</span>(<span class="string">&quot;message_received {}&quot;</span>, req_msg);
         <span class="kw">let </span>res_msg = node.message_received(req_msg);
         <span class="kw">if </span>res_msg.is_some() {
             <span class="kw">let </span><span class="kw-2">mut </span>res_msg = res_msg.unwrap();
             <span class="kw">if </span>res_msg.esv().is_response() {
                 <span class="kw">if </span>res_msg.esv().is_unicast_response() {
-                    node.send_message(SocketAddr::new(req_msg.addr(), PORT), <span class="kw-2">&amp;mut </span>res_msg);
+                    node.send_message(SocketAddr::new(req_msg.from().ip(), PORT), <span class="kw-2">&amp;mut </span>res_msg);
                 } <span class="kw">else </span>{
                     node.notify(<span class="kw-2">&amp;mut </span>res_msg);
                 }
             } <span class="kw">else </span>{
                 <span class="macro">warn!</span>(<span class="string">&quot;invalid ESV response ({}): {}&quot;</span>, res_msg.esv(), res_msg)
             }
+        }
+    }
+}
+
+<span class="kw">impl </span>RequestHandler <span class="kw">for </span>Arc&lt;Mutex&lt;Node&gt;&gt; {
+    <span class="kw">fn </span>property_request_received(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        deoj: ObjectCode,
+        esv: Esv,
+        prop: <span class="kw-2">&amp;</span><span class="kw">crate</span>::protocol::Property,
+    ) -&gt; bool {
+        <span class="kw">if </span>deoj != NODE_PROFILE_OBJECT_CODE {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="kw">match </span>esv {
+            Esv::ReadRequest | Esv::NotificationRequest =&gt; <span class="kw">match </span>prop.code() {
+                NODE_PROFILE_CLASS_OPERATING_STATUS =&gt; <span class="bool-val">true</span>,
+                NODE_PROFILE_CLASS_VERSION_INFORMATION =&gt; <span class="bool-val">true</span>,
+                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES =&gt; <span class="bool-val">true</span>,
+                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES =&gt; <span class="bool-val">true</span>,
+                NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION =&gt; <span class="bool-val">true</span>,
+                NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S =&gt; <span class="bool-val">true</span>,
+                NODE_PROFILE_CLASS_SELF_NODE_CLASS_LIST_S =&gt; <span class="bool-val">true</span>,
+                <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
+            },
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
     }
 }

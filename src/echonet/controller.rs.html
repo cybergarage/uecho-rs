@@ -139,6 +139,13 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -264,12 +271,19 @@
         <span class="kw">if </span>!ctrl.start() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
-        ctrl.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
+
+        <span class="kw">if </span>!ctrl.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone()))) {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
 
         <span class="kw">let </span>node = ctrl.node();
-        node.lock()
+        <span class="kw">if </span>!node
+            .lock()
             .unwrap()
-            .add_observer(Arc::new(Mutex::new(node.clone())));
+            .add_observer(Arc::new(Mutex::new(node.clone())))
+        {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
 
         <span class="bool-val">true
     </span>}

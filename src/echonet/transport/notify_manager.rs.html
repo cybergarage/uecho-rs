@@ -63,6 +63,12 @@
 <span id="63">63</span>
 <span id="64">64</span>
 <span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -83,24 +89,30 @@
 <span class="kw">pub trait </span>NotifytManager {
     <span class="kw">fn </span>observers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Observers;
 
-    <span class="kw">fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_observer: ObserverObject) -&gt; bool {
-        <span class="kw">for </span>observer <span class="kw">in </span><span class="self">self</span>.observers().iter() {
-            <span class="kw">let </span>new_observer = new_observer.lock().unwrap();
-            <span class="kw">let </span>observer = observer.lock().unwrap();
-            <span class="kw">if </span>::core::ptr::eq(<span class="kw-2">&amp;</span>new_observer, <span class="kw-2">&amp;</span>observer) {
-                <span class="kw">return </span><span class="bool-val">true</span>;
-            }
-        }
-        <span class="self">self</span>.observers().push(new_observer);
+    <span class="kw">fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
+        <span class="comment">// FIXME: FIX not to register the same observer
+        // for reg_observer in self.observers().iter() {
+        //     let new_observer = observer.lock().unwrap();
+        //     let observer = reg_observer.lock().unwrap();
+        //     if ::core::ptr::eq(&amp;new_observer, &amp;observer) {
+        //         return true;
+        //     }
+        // }
+        </span><span class="self">self</span>.observers().push(observer);
         <span class="bool-val">true
     </span>}
 
     <span class="kw">fn </span>notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) -&gt; bool {
         <span class="kw">for </span>observer <span class="kw">in </span><span class="self">self</span>.observers().iter() {
-            observer.lock().unwrap().message_received(msg)
+            <span class="kw">let </span><span class="kw-2">mut </span>observer = observer.lock().unwrap();
+            observer.message_received(msg);
         }
         <span class="bool-val">true
     </span>}
+
+    <span class="kw">fn </span>num_observers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.observers().len()
+    }
 
     <span class="kw">fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="bool-val">true
@@ -118,7 +130,7 @@
 <span class="kw">impl </span>DefaultNotifytManager {
     <span class="kw">pub fn </span>new() -&gt; DefaultNotifytManager {
         DefaultNotifytManager {
-            observers: observers_new(),
+            observers: Vec::new(),
         }
     }
 }

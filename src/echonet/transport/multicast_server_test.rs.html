@@ -96,13 +96,13 @@
     <span class="kw">use </span><span class="kw">crate</span>::transport::interface::<span class="kw-2">*</span>;
     <span class="kw">use </span><span class="kw">crate</span>::transport::multicast_server::<span class="kw-2">*</span>;
 
-    <span class="kw">use </span><span class="kw">crate</span>::log::logger;
+    <span class="kw">use </span><span class="kw">crate</span>::log::Logger;
     <span class="kw">use </span><span class="kw">crate</span>::transport::notify_manager_test::<span class="kw-2">*</span>;
 
     <span class="attribute">#[test]
     </span><span class="kw">fn </span>multicast_server() {
         <span class="kw">fn </span>test_multicast_server(ifaddr: IpAddr) {
-            logger::init();
+            Logger::init();
 
             <span class="kw">const </span>TEST_OBSERVER_COUNT: i32 = <span class="number">5</span>;
             <span class="kw">let </span>counter = Arc::new(Mutex::new(<span class="number">0</span>));

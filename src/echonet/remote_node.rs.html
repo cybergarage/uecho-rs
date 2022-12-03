@@ -130,7 +130,7 @@
 
 </span><span class="kw">use </span>std::cmp::PartialEq;
 <span class="kw">use </span>std::hash::{Hash, Hasher};
-<span class="kw">use </span>std::net::{IpAddr, Ipv4Addr};
+<span class="kw">use </span>std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 <span class="kw">use </span><span class="kw">crate</span>::message::NodeProfileMessage;
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
@@ -138,32 +138,32 @@
 
 <span class="doccomment">/// RemoteNode represents an ECHONET-Lite node discovered by Controller. The remote node has the standard objects and properties defined by the ECHONET CONSORTIUM.
 </span><span class="kw">pub struct </span>RemoteNode {
-    addr: IpAddr,
+    addr: SocketAddr,
     objects: Vec&lt;Object&gt;,
 }
 
 <span class="kw">impl </span>RemoteNode {
     <span class="kw">pub fn </span>new() -&gt; RemoteNode {
         RemoteNode {
-            addr: IpAddr::V4(Ipv4Addr::UNSPECIFIED),
+            addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), <span class="number">0</span>),
             objects: Vec::new(),
         }
     }
 
     <span class="kw">pub fn </span>from_message(msg: <span class="kw-2">&amp;</span>Message) -&gt; RemoteNode {
         <span class="kw">let </span><span class="kw-2">mut </span>node = RemoteNode {
-            addr: msg.addr(),
+            addr: msg.from(),
             objects: Vec::new(),
         };
         node.parse(msg);
         node
     }
 
-    <span class="kw">pub fn </span>addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; IpAddr {
+    <span class="kw">pub fn </span>addr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SocketAddr {
         <span class="self">self</span>.addr
     }
 
-    <span class="kw">pub fn </span>set_addr(<span class="kw-2">&amp;mut </span><span class="self">self</span>, addr: IpAddr) {
+    <span class="kw">pub fn </span>set_addr(<span class="kw-2">&amp;mut </span><span class="self">self</span>, addr: SocketAddr) {
         <span class="self">self</span>.addr = addr
     }
 

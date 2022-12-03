@@ -99,6 +99,18 @@
 <span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -113,19 +125,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span>std::string::String;
+</span><span class="kw">use </span>std::env;
+<span class="kw">use </span>std::io::Error;
+<span class="kw">use </span>std::string::String;
 <span class="kw">use </span>std::time::Duration;
 <span class="kw">use </span>std::{thread, time};
 
-<span class="kw">use </span>echonet::log::<span class="kw-2">*</span>;
+<span class="kw">use </span>echonet::log::Logger;
 <span class="kw">use </span>echonet::protocol::{Esv, Message, Property};
 <span class="kw">use </span>echonet::util::Bytes;
 <span class="kw">use </span>echonet::{Controller, ManufactureCode, StandardDatabase};
 
-<span class="kw">fn </span>main() {
-    <span class="comment">// logger::init();
+<span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    <span class="kw">for </span>arg <span class="kw">in </span>env::args() {
+        <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, arg);
+        <span class="kw">match </span>arg.as_str() {
+            <span class="string">&quot;-v&quot; </span>=&gt; {
+                Logger::init();
+            }
+            <span class="kw-2">&amp;</span><span class="kw">_ </span>=&gt; {}
+        }
+    }
 
-    </span><span class="kw">let </span><span class="kw-2">mut </span>ctrl = Controller::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>ctrl = Controller::new();
     ctrl.start();
     ctrl.search();
 
@@ -199,6 +221,8 @@
     }
 
     ctrl.stop();
+
+    <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="uechosearch" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
