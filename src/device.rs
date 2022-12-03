@@ -214,7 +214,7 @@ impl Device {
         if !node
             .lock()
             .unwrap()
-            .set_request_handler(Arc::new(Mutex::new(node.clone())))
+            .add_request_handler(Arc::new(Mutex::new(node.clone())))
         {
             return false;
         }
