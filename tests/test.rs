@@ -46,6 +46,10 @@ impl TestDevice {
         m
     }
 
+    pub fn code(&self) -> ObjectCode {
+        self.dev.code()
+    }
+
     pub fn start(&mut self) -> bool {
         self.dev.start()
     }
@@ -63,7 +67,7 @@ impl RequestHandler for TestDevice {
         }
 
         match esv {
-            Esv::WriteRequest | Esv::WriteReadRequest => {
+            Esv::WriteRequest | Esv::WriteReadRequest | Esv::WriteRequestResponseRequired => {
                 let prop_code = prop.code();
                 let prop_bytes = prop.data();
                 match prop_code {
@@ -92,6 +96,7 @@ impl RequestHandler for TestDevice {
             }
             _ => {}
         }
+
         true
     }
 }
