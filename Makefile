@@ -35,7 +35,7 @@ test: build
 	cargo test -- --test-threads=1
 
 search:
-	cargo run --bin uechosearch
+	cargo run --bin uechosearch -v
 
 mono:
 	cargo run --bin monolight -v
