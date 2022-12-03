@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use std::fmt;
-use std::net::{IpAddr, Ipv4Addr};
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 use crate::protocol::property::*;
 use crate::protocol::Esv;
@@ -60,7 +60,7 @@ pub struct Message {
     deoj: [u8; 3],
     esv: u8,
     properties: Vec<Property>,
-    from: IpAddr,
+    from: SocketAddr,
 }
 
 impl Message {
@@ -72,7 +72,7 @@ impl Message {
             deoj: [0; 3],
             esv: 0,
             properties: Vec::<Property>::new(),
-            from: IpAddr::V4(Ipv4Addr::UNSPECIFIED),
+            from: SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), 0),
         }
     }
 
@@ -144,12 +144,12 @@ impl Message {
         &self.properties[n]
     }
 
-    pub fn set_from(&mut self, addr: IpAddr) -> &mut Self {
+    pub fn set_from(&mut self, addr: SocketAddr) -> &mut Self {
         self.from = addr;
         self
     }
 
-    pub fn from(&self) -> IpAddr {
+    pub fn from(&self) -> SocketAddr {
         self.from
     }
 
