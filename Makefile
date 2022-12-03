@@ -20,7 +20,7 @@
 
 all: test
 
-.PHONY: format
+.PHONY: format search mono
 
 format:
 	cargo fmt
@@ -33,3 +33,9 @@ doc: format
 
 test: build
 	cargo test -- --test-threads=1
+
+search:
+	cargo run --bin uechosearch
+
+mono:
+	cargo run --bin monolight
