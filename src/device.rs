@@ -204,12 +204,20 @@ impl Device {
 
         // Sets default Node Observer and RequestHandler
         let node = dev_node.node();
-        node.lock()
+        if !node
+            .lock()
             .unwrap()
-            .add_observer(Arc::new(Mutex::new(node.clone())));
-        node.lock()
+            .add_observer(Arc::new(Mutex::new(node.clone())))
+        {
+            return false;
+        }
+        if !node
+            .lock()
             .unwrap()
-            .set_request_handler(Arc::new(Mutex::new(node.clone())));
+            .set_request_handler(Arc::new(Mutex::new(node.clone())))
+        {
+            return false;
+        }
 
         // Sets mandatory properties
         dev_node.set_property(
