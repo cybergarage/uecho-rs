@@ -16,11 +16,13 @@ use std::env;
 use std::io::Error;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
+use std::{thread, time};
 
 use echonet::log::Logger;
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
 use echonet::{Device, ObjectCode, RequestHandler};
+use log::Log;
 
 /// MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide.
 pub struct MonoLight {
@@ -83,6 +85,7 @@ impl RequestHandler for MonoLight {
 }
 
 fn main() -> Result<(), Error> {
+    Logger::init();
     for arg in env::args() {
         print!("{}", arg);
         match arg.as_str() {
@@ -99,7 +102,9 @@ fn main() -> Result<(), Error> {
 
     let term = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&term))?;
-    while !term.load(Ordering::Relaxed) {}
+    while !term.load(Ordering::Relaxed) {
+        thread::sleep(time::Duration::from_secs(1));
+    }
 
     ml.stop();
 
