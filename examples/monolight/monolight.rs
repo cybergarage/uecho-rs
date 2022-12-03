@@ -22,7 +22,7 @@ use echonet::log::Logger;
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
 use echonet::{Device, ObjectCode, RequestHandler};
-use log::Log;
+use log::*;
 
 /// MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide.
 pub struct MonoLight {
@@ -63,10 +63,10 @@ impl RequestHandler for MonoLight {
                         let prop_u32 = Bytes::to_u32(prop_bytes);
                         match prop_u32 {
                             0x30 /* On */=> {
-                                self.device.set_property(prop_code, prop_bytes);
+                                info!("On");
                             }
                             0x31 /* Off */=> {
-                                self.device.set_property(prop_code, prop_bytes);
+                                info!("Off");
                             }
                             _ => {
                                 return false;
