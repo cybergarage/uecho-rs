@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::env;
 use std::io::Error;
 use std::string::String;
 use std::time::Duration;
 use std::{thread, time};
-
-use clap::Parser;
 
 use cybergarage::log::DefaultLogger;
 use echonet::protocol::{Esv, Message, Property};
@@ -25,8 +24,15 @@ use echonet::util::Bytes;
 use echonet::{Controller, ManufactureCode, StandardDatabase};
 
 fn main() -> Result<(), Error> {
-    //    let args = Args::parse();
-    DefaultLogger::init();
+    for arg in env::args() {
+        print!("{}", arg);
+        match arg.as_str() {
+            "-v" => {
+                DefaultLogger::init();
+            }
+            &_ => {}
+        }
+    }
 
     let mut ctrl = Controller::new();
     ctrl.start();
