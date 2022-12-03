@@ -25,15 +25,15 @@ mod tests {
     use crate::transport::interface::*;
     use crate::transport::unicast_server::*;
 
-    use crate::log::logger;
     use crate::transport::notify_manager_test::*;
+    use cybergarage::log::DefaultLogger;
 
     #[test]
     fn unicast_server() {
-        logger::init();
+        DefaultLogger::init();
 
         fn test_udp_server(ifaddr: IpAddr) {
-            logger::init();
+            DefaultLogger::init();
 
             const TEST_OBSERVER_COUNT: i32 = 5;
             let counter = Arc::new(Mutex::new(0));
