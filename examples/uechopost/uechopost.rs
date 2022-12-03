@@ -41,7 +41,7 @@ fn main() {
     let mut epcs = Vec::new();
     let mut edts = Vec::new();
 
-    // Parses specified arguments.
+    // Parses specified command line arguments.
 
     for arg in env::args() {
         match arg.as_str() {
@@ -118,7 +118,7 @@ fn main() {
         }
     }
 
-    // Checks specified arguments.
+    // Checks specified command line rguments.
 
     if node_addr == ipaddr_none {
         usages();
@@ -184,6 +184,8 @@ fn main() {
         ctrl.stop();
         return;
     }
+
+    eprintln!("Remote node ({}) is not found", node_addr);
 
     ctrl.stop();
 }
