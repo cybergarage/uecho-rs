@@ -311,17 +311,18 @@ impl Node {
 
 impl Observer for Arc<Mutex<Node>> {
     fn message_received(&mut self, req_msg: &Message) {
+        info!("message_received 1 {}", req_msg);
         let mut node = self.lock().unwrap();
         if node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }
-        info!("message_received {}", req_msg);
+        info!("message_received 2 {}", req_msg);
         let res_msg = node.message_received(req_msg);
         if res_msg.is_some() {
             let mut res_msg = res_msg.unwrap();
             if res_msg.esv().is_response() {
                 if res_msg.esv().is_unicast_response() {
-                    node.send_message(SocketAddr::new(req_msg.addr(), PORT), &mut res_msg);
+                    node.send_message(SocketAddr::new(req_msg.from(), PORT), &mut res_msg);
                 } else {
                     node.notify(&mut res_msg);
                 }

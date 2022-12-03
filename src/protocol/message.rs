@@ -60,7 +60,7 @@ pub struct Message {
     deoj: [u8; 3],
     esv: u8,
     properties: Vec<Property>,
-    addr: IpAddr,
+    from: IpAddr,
 }
 
 impl Message {
@@ -72,7 +72,7 @@ impl Message {
             deoj: [0; 3],
             esv: 0,
             properties: Vec::<Property>::new(),
-            addr: IpAddr::V4(Ipv4Addr::UNSPECIFIED),
+            from: IpAddr::V4(Ipv4Addr::UNSPECIFIED),
         }
     }
 
@@ -144,13 +144,13 @@ impl Message {
         &self.properties[n]
     }
 
-    pub fn set_addr(&mut self, addr: IpAddr) -> &mut Self {
-        self.addr = addr;
+    pub fn set_from(&mut self, addr: IpAddr) -> &mut Self {
+        self.from = addr;
         self
     }
 
-    pub fn addr(&self) -> IpAddr {
-        self.addr
+    pub fn from(&self) -> IpAddr {
+        self.from
     }
 
     pub fn is_format1(&mut self) -> bool {
