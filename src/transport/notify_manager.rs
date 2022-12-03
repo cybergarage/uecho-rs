@@ -38,6 +38,10 @@ pub trait NotifytManager {
         true
     }
 
+    fn num_observers(&mut self) -> usize {
+        self.observers().len()
+    }
+
     fn start(&mut self) -> bool {
         true
     }
