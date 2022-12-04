@@ -97,8 +97,7 @@ fn main() -> Result<(), Error> {
     }
 
     let ml = MonoLight::new();
-    let mut ml = ml.lock().unwrap();
-    ml.start();
+    ml.lock().unwrap().start();
 
     let term = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&term))?;
@@ -106,7 +105,7 @@ fn main() -> Result<(), Error> {
         thread::sleep(time::Duration::from_secs(1));
     }
 
-    ml.stop();
+    ml.lock().unwrap().stop();
 
     Ok(())
 }
