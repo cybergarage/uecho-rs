@@ -20,7 +20,7 @@ use crate::controller_node::ControllerNode;
 use crate::node::Node;
 use crate::node_profile::*;
 use crate::object::*;
-use crate::protocol::Message;
+use crate::protocol::{Message, ObserverObject};
 use crate::remote_node::*;
 
 /// Controller represents an ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
@@ -82,6 +82,11 @@ impl Controller {
         Controller {
             node: ControllerNode::new_with_node(node),
         }
+    }
+
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
+        let mut ctrl = self.node.lock().unwrap();
+        ctrl.add_observer(observer.clone())
     }
 
     /// Returns all searched remote nodes.
