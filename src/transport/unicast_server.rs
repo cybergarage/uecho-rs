@@ -23,7 +23,6 @@ use std::thread;
 use crate::protocol::{Message, ObserverObject};
 use crate::transport::default::*;
 use crate::transport::notifier::*;
-use crate::transport::notify_manager::*;
 use crate::transport::udp_socket::UdpSocket;
 
 pub struct UnicastServer {
