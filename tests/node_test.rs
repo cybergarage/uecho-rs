@@ -67,7 +67,7 @@ fn node() {
             req_msg.add_property(prop);
 
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
-            match rx.recv_timeout(Duration::from_secs(60)) {
+            match rx.recv_timeout(Duration::from_secs(5)) {
                 Ok(res_meg) => {
                     assert_eq!(res_meg.esv(), Esv::WriteResponse);
                     assert_eq!(res_meg.opc(), 1);
@@ -87,7 +87,7 @@ fn node() {
             req_msg.add_property(prop);
 
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
-            match rx.recv_timeout(Duration::from_secs(60)) {
+            match rx.recv_timeout(Duration::from_secs(5)) {
                 Ok(res_meg) => {
                     assert_eq!(res_meg.esv(), Esv::ReadResponse);
                     assert_eq!(res_meg.opc(), 1);
