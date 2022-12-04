@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="933.63348"
+   width="812.53973"
    height="706.8399"
    id="svg2"
    version="1.1"
-   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
    sodipodi:docname="node_msg_handler.svg"
-   inkscape:export-filename="/Users/skonno/Src/uecho-py/doc/img/node_msg_handler.png"
+   inkscape:export-filename="node_msg_handler.png"
    inkscape:export-xdpi="75.790001"
    inkscape:export-ydpi="75.790001"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -162,21 +162,23 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="420.72854"
-     inkscape:cy="479.31738"
+     inkscape:cx="421.73869"
+     inkscape:cy="399.51533"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:window-width="2268"
      inkscape:window-height="1317"
      inkscape:window-x="119"
-     inkscape:window-y="215"
+     inkscape:window-y="187"
      inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid3004"
@@ -213,15 +215,10 @@
     <rect
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect5616-9"
-       width="280"
-       height="640"
-       x="710"
-       y="0.451231" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2.16079;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-opacity:1"
-       d="M 910,52.362183 V 680.45123"
-       id="path3096"
-       inkscape:connector-curvature="0" />
+       width="159.03085"
+       height="640.24915"
+       x="709.87543"
+       y="0.32665229" />
     <path
        style="fill:none;stroke:#000000;stroke-width:2.16079;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-opacity:1"
        d="M 580,52.362183 V 680.45123"
@@ -267,11 +264,6 @@
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">Objects</tspan></text>
     <path
        inkscape:connector-curvature="0"
-       id="path3020"
-       d="M 340,198.36218 H 840"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL)" />
-    <path
-       inkscape:connector-curvature="0"
        id="path3040"
        d="M 130,370.36218 H 290"
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#TriangleInL)" />
@@ -302,12 +294,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="400"
+       x="386"
        y="314.36218"
        id="text4650"><tspan
          sodipodi:role="line"
          id="tspan4652"
-         x="400"
+         x="386"
          y="314.36218"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">Request Message</tspan></text>
     <path
@@ -315,35 +307,17 @@
        id="path3043"
        d="M 790,52.362183 V 680.45123"
        style="fill:none;stroke:#000000;stroke-width:2.16079;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-opacity:1" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.58114;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect3047"
-       width="100"
-       height="50"
-       x="862"
-       y="190.36218" />
     <text
        id="text3049"
        y="22.362183"
-       x="772"
+       x="752"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        xml:space="preserve"><tspan
          sodipodi:role="line"
          id="tspan3106"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start"
-         x="772"
-         y="22.362183">Node</tspan></text>
-    <text
-       id="text3053"
-       y="210.36218"
-       x="878"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start"
-         y="210.36218"
-         x="878"
-         id="tspan3055"
-         sodipodi:role="line">Message</tspan></text>
+         x="752"
+         y="22.362183">Request</tspan></text>
     <rect
        y="492.45123"
        x="570"
@@ -353,93 +327,9 @@
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL)"
-       d="M 340,290.45123 H 840"
+       d="M 340,290.45123 H 759.00818"
        id="path3859"
        inkscape:connector-curvature="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="876"
-       y="228.36218"
-       id="text3045"
-       inkscape:export-filename="/Users/skonno/Src/uecho-py/doc/img/node_msg_handler.png"
-       inkscape:export-xdpi="75.790001"
-       inkscape:export-ydpi="75.790001"><tspan
-         sodipodi:role="line"
-         id="tspan3049"
-         x="876"
-         y="228.36218">Observer</tspan></text>
-    <rect
-       y="270.36218"
-       x="862"
-       height="180.08905"
-       width="100"
-       id="rect3051"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="880"
-       y="354.36218"
-       id="text3054"><tspan
-         sodipodi:role="line"
-         id="tspan3062"
-         x="880"
-         y="354.36218">Property</tspan></text>
-    <text
-       id="text3058"
-       y="372.36218"
-       x="882"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       xml:space="preserve"><tspan
-         y="372.36218"
-         x="882"
-         id="tspan3060"
-         sodipodi:role="line">Handler</tspan></text>
-    <rect
-       y="110.36218"
-       x="742"
-       height="50"
-       width="99.998741"
-       id="rect3068"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.58114;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="758"
-       y="130.36218"
-       id="text3070"><tspan
-         sodipodi:role="line"
-         id="tspan3072"
-         x="758"
-         y="130.36218"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">Message</tspan></text>
-    <text
-       id="text3074"
-       y="148.36218"
-       x="756"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       xml:space="preserve"><tspan
-         y="148.36218"
-         x="756"
-         id="tspan3076"
-         sodipodi:role="line">Observer</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL)"
-       d="M 340,120.36218 H 720"
-       id="path3078"
-       inkscape:connector-curvature="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="872"
-       y="42.362183"
-       id="text3098"><tspan
-         sodipodi:role="line"
-         id="tspan3100"
-         x="872"
-         y="42.362183"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">Observers</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
@@ -452,66 +342,33 @@
          id="tspan3104"
          x="748"
          y="42.362183"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">Observers</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="882"
-       y="22.362183"
-       id="text3108"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start"
-         id="tspan3110"
-         sodipodi:role="line"
-         x="882"
-         y="22.362183">Object</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="394.04062"
-       y="141.67691"
-       id="text3114"><tspan
-         sodipodi:role="line"
-         id="tspan3116"
-         x="394.04062"
-         y="141.67691"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">Request Message</tspan></text>
-    <text
-       id="text3858"
-       y="219.67691"
-       x="394.94925"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start"
-         y="219.67691"
-         x="394.94925"
-         id="tspan3860"
-         sodipodi:role="line">Request Message</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">Handlers</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="773.10681"
-       y="-12.186054"
+       x="713.50781"
+       y="-11.155597"
        id="text6819"><tspan
          sodipodi:role="line"
          id="tspan6817"
-         x="773.10681"
-         y="-12.186054"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">User Functions</tspan></text>
+         x="713.50781"
+         y="-11.155597"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">User Handlers</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="341.10672"
+       x="407.10672"
        y="-12.20636"
        id="text4309"><tspan
          sodipodi:role="line"
          id="tspan4307"
-         x="341.10672"
+         x="407.10672"
          y="-12.20636"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">uEcho (Automacic Handling)</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">uEcho Handlers</tspan></text>
     <path
        inkscape:connector-curvature="0"
        id="path7302"
-       d="M 350,370.45124 H 854"
+       d="M 348.10678,370.45124 H 768.13703"
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#TriangleInL)" />
     <text
        id="text7306"
@@ -527,7 +384,7 @@
     <path
        inkscape:connector-curvature="0"
        id="path10221"
-       d="M 350,430.45124 H 854"
+       d="M 348.15132,430.45124 H 770.15734"
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#TriangleInL)" />
     <text
        id="text10225"
@@ -604,34 +461,7 @@
          y="184.36218"
          x="150"
          id="tspan1073"
-         sodipodi:role="line">[Object Not Found]</tspan></text>
-    <path
-       inkscape:connector-curvature="0"
-       id="path5379"
-       d="M 130,292.36218 H 290"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.98818;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#TriangleInL)" />
-    <text
-       id="text5383"
-       y="316.36218"
-       x="144"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start"
-         y="316.36218"
-         x="144"
-         id="tspan5381"
-         sodipodi:role="line">Error Response</tspan></text>
-    <text
-       id="text5387"
-       y="278.36218"
-       x="144"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.6667px;line-height:125%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Bold';text-align:start;writing-mode:lr-tb;text-anchor:start"
-         y="278.36218"
-         x="144"
-         id="tspan5385"
-         sodipodi:role="line">[Property Not Found]</tspan></text>
+         sodipodi:role="line">[Invalid Request]</tspan></text>
     <text
        id="text6411"
        y="356.36218"
@@ -724,5 +554,12 @@
          x="144"
          id="tspan13127"
          sodipodi:role="line">[Response Required]</tspan></text>
+    <rect
+       y="276.43582"
+       x="779.25879"
+       height="174.15256"
+       width="19.685545"
+       id="rect1548"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:3.98818;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
   </g>
 </svg>
