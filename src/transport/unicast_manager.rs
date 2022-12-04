@@ -14,8 +14,9 @@
 
 use std::net::{IpAddr, SocketAddr};
 
-use crate::protocol::{Message, ObserverObject};
+use crate::protocol::Message;
 use crate::transport::interface::*;
+use crate::transport::observer::ObserverObject;
 use crate::transport::unicast_server::UnicastServer;
 
 pub struct UnicastManager {
