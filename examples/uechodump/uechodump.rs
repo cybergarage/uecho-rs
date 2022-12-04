@@ -19,7 +19,8 @@ use std::sync::{Arc, Mutex};
 use std::{thread, time};
 
 use echonet::log::Logger;
-use echonet::protocol::{Message, Observer};
+use echonet::protocol::Message;
+use echonet::transport::Observer;
 use echonet::Controller;
 
 /// MyController listens Echonet-Lite multicast protocol messages.

@@ -15,7 +15,6 @@
 pub use self::error::*;
 pub use self::esv::*;
 pub use self::message::{Message, TID, TID_MAX, TID_MIN};
-pub use self::observer::{Observer, ObserverObject};
 pub use self::property::*;
 pub use self::result::*;
 
@@ -23,7 +22,6 @@ mod error;
 mod esv;
 mod message;
 mod message_handler;
-mod observer;
 mod property;
 mod result;
 

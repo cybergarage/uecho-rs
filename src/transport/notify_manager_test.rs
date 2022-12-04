@@ -17,7 +17,8 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::protocol::{Message, Observer};
+use crate::protocol::Message;
+use crate::transport::Observer;
 
 pub struct TestNotifyCounter {
     pub counter: Arc<Mutex<i32>>,

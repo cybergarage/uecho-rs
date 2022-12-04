@@ -20,8 +20,9 @@ use crate::controller_node::ControllerNode;
 use crate::node::Node;
 use crate::node_profile::*;
 use crate::object::*;
-use crate::protocol::{Message, ObserverObject};
+use crate::protocol::Message;
 use crate::remote_node::*;
+use crate::transport::ObserverObject;
 
 /// Controller represents an ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
 /// # Examples
