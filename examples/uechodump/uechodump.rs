@@ -62,9 +62,8 @@ fn main() -> Result<(), Error> {
         }
     }
 
-    let ml = MyController::new();
-    let mut ctrl = ml.lock().unwrap();
-    ctrl.start();
+    let ctrl = MyController::new();
+    ctrl.lock().unwrap().start();
 
     let term = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&term))?;
@@ -72,7 +71,7 @@ fn main() -> Result<(), Error> {
         thread::sleep(time::Duration::from_secs(1));
     }
 
-    ctrl.stop();
+    ctrl.lock().unwrap().stop();
 
     Ok(())
 }
