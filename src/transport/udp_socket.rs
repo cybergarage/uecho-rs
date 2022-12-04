@@ -137,3 +137,9 @@ impl UdpSocket {
         self.sock.as_ref().unwrap().join_multicast_v6(multiaddr, 0)
     }
 }
+
+impl Drop for UdpSocket {
+    fn drop(&mut self) {
+        self.close();
+    }
+}
