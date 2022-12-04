@@ -8,7 +8,7 @@ The `uecho-rs` supports your original standard devices of [ECHONET Lite][enet] s
 
 ### 1. Creating Device Node
 
-To create your original device, use `echonet::Device` as the following at first.
+To create your original device, use `echonet::Device` with a device object code as the following at first.
 
 
 ```
