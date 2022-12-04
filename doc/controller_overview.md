@@ -79,7 +79,7 @@ Basically, all messages of [ECHONETLite](http://www.echonet.gr.jp/english/index.
 ```
 let rx = ctrl.post_message(&node, &mut msg);
 match rx.recv_timeout(Duration::from_secs(1)) {
-    Ok(msg) => {
+    Ok(res_msg) => {
         ....
     }
     Err(_e) => {
