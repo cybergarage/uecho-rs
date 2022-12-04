@@ -91,6 +91,7 @@ pub struct ResponseMessage {}
 impl ResponseMessage {
     pub fn from(req_msg: &Message) -> Message {
         let mut msg = Message::new();
+        msg.set_tid(req_msg.tid());
         match req_msg.esv() {
             // 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
             Esv::WriteRequestResponseRequired => {
