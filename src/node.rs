@@ -47,11 +47,14 @@ impl Node {
             post_sender: tx,
             request_mgr: RequestManager::new(),
         }));
-        node.lock().unwrap().init();
+        node.lock().unwrap().initObjects();
+        node.lock()
+            .unwrap()
+            .add_request_handler(Arc::new(Mutex::new(node.clone())));
         node
     }
 
-    pub fn init(&mut self) {
+    fn initObjects(&mut self) {
         self.objects.push(NodeProfile::new());
     }
 
