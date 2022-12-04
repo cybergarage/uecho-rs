@@ -82,7 +82,7 @@ impl UnicastServer {
     }
 
     pub fn close(&self) -> bool {
-        self.socket.write().unwrap().close();
+        self.socket.read().unwrap().close();
         true
     }
 
