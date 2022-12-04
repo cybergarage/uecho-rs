@@ -34,11 +34,16 @@ impl DeviceNode {
     }
 
     pub fn new_with_node(node: Arc<Mutex<Node>>) -> Arc<Mutex<DeviceNode>> {
-        let ctrl = Arc::new(Mutex::new(DeviceNode {
-            node: node,
+        let mut dev = DeviceNode {
+            node: node.clone(),
             remote_nodes: Vec::new(),
-        }));
-        ctrl
+        };
+        dev.add_observer(Arc::new(Mutex::new(node.clone())));
+        let dev = Arc::new(Mutex::new(dev));
+        dev.lock()
+            .unwrap()
+            .add_observer(Arc::new(Mutex::new(dev.clone())));
+        dev
     }
 
     pub fn add_object(&mut self, obj: Object) -> bool {
