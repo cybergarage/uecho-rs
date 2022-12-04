@@ -117,6 +117,11 @@
 <span id="117">117</span>
 <span id="118">118</span>
 <span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -139,8 +144,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
 <span class="kw">use </span><span class="kw">crate</span>::property::PropertyCode;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Observer, ObserverObject};
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::RemoteNode;
-<span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverObject};
 
 <span class="kw">pub struct </span>DeviceNode {
     node: Arc&lt;Mutex&lt;Node&gt;&gt;,
@@ -153,11 +158,16 @@
     }
 
     <span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;Node&gt;&gt;) -&gt; Arc&lt;Mutex&lt;DeviceNode&gt;&gt; {
-        <span class="kw">let </span>ctrl = Arc::new(Mutex::new(DeviceNode {
-            node: node,
+        <span class="kw">let </span><span class="kw-2">mut </span>dev = DeviceNode {
+            node: node.clone(),
             remote_nodes: Vec::new(),
-        }));
-        ctrl
+        };
+        dev.add_observer(Arc::new(Mutex::new(node.clone())));
+        <span class="kw">let </span>dev = Arc::new(Mutex::new(dev));
+        dev.lock()
+            .unwrap()
+            .add_observer(Arc::new(Mutex::new(dev.clone())));
+        dev
     }
 
     <span class="kw">pub fn </span>add_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj: Object) -&gt; bool {

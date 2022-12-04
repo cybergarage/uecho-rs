@@ -64,11 +64,6 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
-<span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -83,13 +78,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
-<span class="kw">use </span><span class="kw">crate</span>::transport::observer::<span class="kw-2">*</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
 
-<span class="kw">pub trait </span>NotifytManager {
-    <span class="kw">fn </span>observers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Observers;
+<span class="kw">pub type </span>Observers = Vec&lt;ObserverObject&gt;;
 
-    <span class="kw">fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
+<span class="doccomment">/// NotifytManager notifies recieved transport messages to the observers.
+</span><span class="kw">pub struct </span>NotifytManager {
+    observers: Observers,
+}
+
+<span class="kw">impl </span>NotifytManager {
+    <span class="kw">pub fn </span>new() -&gt; NotifytManager {
+        NotifytManager {
+            observers: Vec::new(),
+        }
+    }
+    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
         <span class="comment">// FIXME: FIX not to register the same observer
         // for reg_observer in self.observers().iter() {
         //     let new_observer = observer.lock().unwrap();
@@ -98,47 +102,33 @@
         //         return true;
         //     }
         // }
-        </span><span class="self">self</span>.observers().push(observer);
+        </span><span class="self">self</span>.observers.push(observer);
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">fn </span>notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) -&gt; bool {
-        <span class="kw">for </span>observer <span class="kw">in </span><span class="self">self</span>.observers().iter() {
+    <span class="kw">pub fn </span>observers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Observers {
+        <span class="kw">return </span><span class="kw-2">&amp;</span><span class="self">self</span>.observers;
+    }
+
+    <span class="kw">pub fn </span>notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) -&gt; bool {
+        <span class="kw">for </span>observer <span class="kw">in </span><span class="self">self</span>.observers.iter() {
             <span class="kw">let </span><span class="kw-2">mut </span>observer = observer.lock().unwrap();
             observer.message_received(msg);
         }
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">fn </span>num_observers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.observers().len()
+    <span class="kw">pub fn </span>num_observers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.observers.len()
     }
 
-    <span class="kw">fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+    <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+    <span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="bool-val">true
     </span>}
-}
-
-<span class="kw">pub struct </span>DefaultNotifytManager {
-    observers: Observers,
-}
-
-<span class="kw">impl </span>DefaultNotifytManager {
-    <span class="kw">pub fn </span>new() -&gt; DefaultNotifytManager {
-        DefaultNotifytManager {
-            observers: Vec::new(),
-        }
-    }
-}
-
-<span class="kw">impl </span>NotifytManager <span class="kw">for </span>DefaultNotifytManager {
-    <span class="kw">fn </span>observers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Observers {
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>.observers
-    }
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="echonet" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

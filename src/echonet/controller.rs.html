@@ -143,9 +143,6 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
-<span id="148">148</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -168,7 +165,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::node::Node;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Controller represents an ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
@@ -232,6 +229,11 @@
         }
     }
 
+    <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>ctrl = <span class="self">self</span>.node.lock().unwrap();
+        ctrl.add_observer(observer.clone())
+    }
+
     <span class="doccomment">/// Returns all searched remote nodes.
     </span><span class="kw">pub fn </span>nodes(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Vec&lt;RemoteNode&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>nodes = Vec::new();
@@ -271,20 +273,6 @@
         <span class="kw">if </span>!ctrl.start() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
-
-        <span class="kw">if </span>!ctrl.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone()))) {
-            <span class="kw">return </span><span class="bool-val">false</span>;
-        }
-
-        <span class="kw">let </span>node = ctrl.node();
-        <span class="kw">if </span>!node
-            .lock()
-            .unwrap()
-            .add_observer(Arc::new(Mutex::new(node.clone())))
-        {
-            <span class="kw">return </span><span class="bool-val">false</span>;
-        }
-
         <span class="bool-val">true
     </span>}
 
@@ -292,6 +280,12 @@
     </span><span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="kw">let </span><span class="kw-2">mut </span>ctrl = <span class="self">self</span>.node.lock().unwrap();
         ctrl.stop()
+    }
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>Controller {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.stop();
     }
 }
 </code></pre></div>

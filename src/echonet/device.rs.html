@@ -286,6 +286,44 @@
 <span id="286">286</span>
 <span id="287">287</span>
 <span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -381,12 +419,63 @@
 <span class="doccomment">/// Device represents an ECHONET-Lite device node.
 /// # Examples
 /// ```
-/// use echonet::Device;
+/// use std::sync::{Arc, Mutex};
+/// use log::*;
+/// use echonet::protocol::{Esv, Property};
+/// use echonet::util::Bytes;
+/// use echonet::{Device, ObjectCode, RequestHandler};
 ///
-/// let mut dev = Device::new(0x029101);
-/// dev.start();
-/// dev.stop();
-/// ```
+/// pub struct MonoLight {
+///     device: Device,
+/// }
+///
+/// impl MonoLight {
+///     pub fn new() -&gt; Arc&lt;Mutex&lt;MonoLight&gt;&gt; {
+///         let m = Arc::new(Mutex::new(MonoLight {
+///             device: Device::new(0x029101),
+///         }));
+///         m.lock().unwrap().device.set_request_handler(m.clone());
+///         m
+///     }
+/// }
+///
+/// impl RequestHandler for MonoLight {
+///     fn property_request_received(&amp;mut self, deoj: ObjectCode, esv: Esv, prop: &amp;Property) -&gt; bool {
+///         // Ignore all messages to other objects in the same node.
+///         if deoj != self.device.code() {
+///             return false;
+///         }
+///
+///         match esv {
+///             Esv::WriteRequest | Esv::WriteReadRequest =&gt; {
+///                 let prop_code = prop.code();
+///                 let prop_bytes = prop.data();
+///                 match prop_code {
+///                     0x80 /* Operating status */ =&gt; {
+///                         let prop_u32 = Bytes::to_u32(prop_bytes);
+///                         match prop_u32 {
+///                             0x30 /* On */=&gt; {
+///                                 info!(&quot;On&quot;);
+///                             }
+///                             0x31 /* Off */=&gt; {
+///                                 info!(&quot;Off&quot;);
+///                             }
+///                             _ =&gt; {
+///                                 return false;
+///                             }
+///                         }
+///                     }
+///                     _ =&gt; {
+///                         return false;
+///                     }
+///                 }
+///             }
+///             _ =&gt; {}
+///         }
+///         true
+///     }
+/// }
+</span><span class="comment">// ```
 
 </span><span class="kw">pub struct </span>Device {
     code: ObjectCode,
@@ -488,25 +577,6 @@
         <span class="kw">if </span>!dev_node.start() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
-        dev_node.add_observer(Arc::new(Mutex::new(<span class="self">self</span>.node.clone())));
-
-        <span class="comment">// Sets default Node Observer and RequestHandler
-        </span><span class="kw">let </span>node = dev_node.node();
-        <span class="kw">if </span>!node
-            .lock()
-            .unwrap()
-            .add_observer(Arc::new(Mutex::new(node.clone())))
-        {
-            <span class="kw">return </span><span class="bool-val">false</span>;
-        }
-        <span class="kw">if </span>!node
-            .lock()
-            .unwrap()
-            .add_request_handler(Arc::new(Mutex::new(node.clone())))
-        {
-            <span class="kw">return </span><span class="bool-val">false</span>;
-        }
-
         <span class="comment">// Sets mandatory properties
         </span>dev_node.set_property(
             <span class="self">self</span>.code,
@@ -572,6 +642,12 @@
 
     <span class="kw">pub fn </span>fault_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt; {
         <span class="self">self</span>.property(DEVICE_FAULT_STATUS)
+    }
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>Device {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.stop();
     }
 }
 </code></pre></div>

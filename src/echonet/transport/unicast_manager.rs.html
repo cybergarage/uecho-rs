@@ -98,6 +98,11 @@
 <span id="98">98</span>
 <span id="99">99</span>
 <span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -114,10 +119,9 @@
 
 </span><span class="kw">use </span>std::net::{IpAddr, SocketAddr};
 
-<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
 <span class="kw">use </span><span class="kw">crate</span>::transport::interface::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::transport::unicast_server::UnicastServer;
-<span class="kw">use </span><span class="kw">crate</span>::transport::<span class="kw-2">*</span>;
 
 <span class="kw">pub struct </span>UnicastManager {
     udp_servers: Vec&lt;UnicastServer&gt;,
@@ -196,6 +200,12 @@
         }
         <span class="self">self</span>.udp_servers.clear();
         is_all_server_stopped
+    }
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>UnicastManager {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.stop();
     }
 }
 </code></pre></div>

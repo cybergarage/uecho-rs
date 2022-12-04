@@ -109,7 +109,6 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
-<span id="112">112</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -209,8 +208,7 @@
     }
 
     <span class="kw">let </span>ml = MonoLight::new();
-    <span class="kw">let </span><span class="kw-2">mut </span>ml = ml.lock().unwrap();
-    ml.start();
+    ml.lock().unwrap().start();
 
     <span class="kw">let </span>term = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(<span class="kw-2">&amp;</span>term))<span class="question-mark">?</span>;
@@ -218,7 +216,7 @@
         thread::sleep(time::Duration::from_secs(<span class="number">1</span>));
     }
 
-    ml.stop();
+    ml.lock().unwrap().stop();
 
     <span class="prelude-val">Ok</span>(())
 }

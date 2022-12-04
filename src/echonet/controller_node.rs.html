@@ -139,6 +139,11 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -164,10 +169,10 @@
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::{NodeProfile, NODE_PROFILE_OBJECT_CODE};
 <span class="kw">use </span><span class="kw">crate</span>::object::ObjectCode;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Observer, ObserverObject};
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::RemoteNode;
 <span class="kw">use </span><span class="kw">crate</span>::super_object::SUPER_OBJECT_CODE;
 <span class="kw">use </span><span class="kw">crate</span>::transport::PORT;
-<span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverObject};
 
 <span class="kw">pub struct </span>ControllerNode {
     node: Arc&lt;Mutex&lt;Node&gt;&gt;,
@@ -180,10 +185,15 @@
     }
 
     <span class="kw">pub fn </span>new_with_node(node: Arc&lt;Mutex&lt;Node&gt;&gt;) -&gt; Arc&lt;Mutex&lt;ControllerNode&gt;&gt; {
-        <span class="kw">let </span>ctrl = Arc::new(Mutex::new(ControllerNode {
-            node: node,
+        <span class="kw">let </span><span class="kw-2">mut </span>ctrl = ControllerNode {
+            node: node.clone(),
             remote_nodes: Vec::new(),
-        }));
+        };
+        ctrl.add_observer(Arc::new(Mutex::new(node.clone())));
+        <span class="kw">let </span>ctrl = Arc::new(Mutex::new(ctrl));
+        ctrl.lock()
+            .unwrap()
+            .add_observer(Arc::new(Mutex::new(ctrl.clone())));
         ctrl
     }
 

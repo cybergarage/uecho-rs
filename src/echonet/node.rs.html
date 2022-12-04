@@ -380,6 +380,20 @@
 <span id="380">380</span>
 <span id="381">381</span>
 <span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -407,8 +421,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::property::Property;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
-<span class="kw">use </span><span class="kw">crate</span>::transport::Manager;
-<span class="kw">use </span><span class="kw">crate</span>::transport::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Observer, ObserverObject};
+<span class="kw">use </span><span class="kw">crate</span>::transport::{Manager, NotifytManager, PORT};
 
 <span class="doccomment">/// Node represents an ECHONET-Lite node which contains ECHONET-Lite objects such the profiles and the devices.
 </span><span class="kw">pub struct </span>Node {
@@ -417,6 +431,7 @@
     last_tid: TID,
     post_sender: Sender&lt;Message&gt;,
     request_mgr: RequestManager,
+    notify_mgr: NotifytManager,
 }
 
 <span class="kw">impl </span>Node {
@@ -428,12 +443,16 @@
             last_tid: TID_MIN,
             post_sender: tx,
             request_mgr: RequestManager::new(),
+            notify_mgr: NotifytManager::new(),
         }));
-        node.lock().unwrap().init();
+        node.lock().unwrap().init_objects();
+        node.lock()
+            .unwrap()
+            .add_request_handler(Arc::new(Mutex::new(node.clone())));
         node
     }
 
-    <span class="kw">pub fn </span>init(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+    <span class="kw">fn </span>init_objects(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.objects.push(NodeProfile::new());
     }
 
@@ -474,7 +493,7 @@
     }
 
     <span class="kw">pub fn </span>add_observer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, observer: ObserverObject) -&gt; bool {
-        <span class="self">self</span>.transport_mgr.add_observer(observer.clone())
+        <span class="self">self</span>.notify_mgr.add_observer(observer.clone())
     }
 
     <span class="kw">pub fn </span>send_message(<span class="kw-2">&amp;mut </span><span class="self">self</span>, to_addr: SocketAddr, msg: <span class="kw-2">&amp;mut </span>Message) -&gt; bool {
@@ -538,6 +557,9 @@
             <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.start() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
             }
+        }
+        <span class="kw">for </span>observer <span class="kw">in </span><span class="self">self</span>.notify_mgr.observers() {
+            <span class="self">self</span>.transport_mgr.add_observer(observer.clone());
         }
         <span class="kw">if </span>!<span class="self">self</span>.annouce() {
             <span class="kw">return </span><span class="bool-val">false</span>;
@@ -760,6 +782,12 @@
             },
             <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
+    }
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>Node {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.stop();
     }
 }
 </code></pre></div>

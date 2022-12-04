@@ -136,6 +136,10 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -158,11 +162,9 @@
 <span class="kw">use </span>std::sync::{Arc, RwLock};
 <span class="kw">use </span>std::thread;
 
-<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
 <span class="kw">use </span><span class="kw">crate</span>::transport::default::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::transport::notifier::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::transport::notify_manager::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::transport::observer::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::transport::udp_socket::UdpSocket;
 
 <span class="kw">pub struct </span>UnicastServer {
@@ -273,6 +275,12 @@
         }
         <span class="bool-val">true
     </span>}
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>UnicastServer {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.stop();
+    }
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="echonet" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

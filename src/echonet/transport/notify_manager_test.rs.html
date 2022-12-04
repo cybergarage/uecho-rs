@@ -76,6 +76,7 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
+<span id="79">79</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -90,11 +91,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+</span><span class="attribute">#![allow(dead_code)]
+
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
-<span class="kw">use </span><span class="kw">crate</span>::transport::Observer;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, Observer};
 
 <span class="kw">pub struct </span>TestNotifyCounter {
     <span class="kw">pub </span>counter: Arc&lt;Mutex&lt;i32&gt;&gt;,
@@ -126,7 +128,7 @@
         <span class="kw">let </span>counter = Arc::new(Mutex::new(<span class="number">0</span>));
         <span class="kw">let </span>observer = TestNotifyCounter::new(counter.clone());
         <span class="kw">let </span>observer = Arc::new(Mutex::new(observer));
-        <span class="kw">let </span><span class="kw-2">mut </span>mgr = DefaultNotifytManager::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>mgr = NotifytManager::new();
         <span class="macro">assert!</span>(mgr.start());
         <span class="kw">for _ in </span><span class="number">0</span>..TEST_OBSERVER_COUNT {
             <span class="macro">assert!</span>(mgr.add_observer(observer.clone()));
@@ -139,7 +141,7 @@
         <span class="kw">const </span>TEST_OBSERVER_COUNT: i32 = <span class="number">10</span>;
         <span class="kw">let </span>counter = Arc::new(Mutex::new(<span class="number">0</span>));
 
-        <span class="kw">let </span><span class="kw-2">mut </span>mgr = DefaultNotifytManager::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>mgr = NotifytManager::new();
         <span class="macro">assert!</span>(mgr.start());
 
         <span class="kw">for _ in </span><span class="number">0</span>..TEST_OBSERVER_COUNT {

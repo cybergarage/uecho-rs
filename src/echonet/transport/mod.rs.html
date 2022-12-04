@@ -36,7 +36,6 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
-<span id="39">39</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -53,7 +52,7 @@
 
 </span><span class="kw">pub use </span><span class="self">self</span>::default::PORT;
 <span class="kw">pub use </span><span class="self">self</span>::manager::Manager;
-<span class="kw">pub use </span><span class="self">self</span>::observer::{Observer, ObserverObject};
+<span class="kw">pub use </span><span class="self">self</span>::notify_manager::NotifytManager;
 
 <span class="kw">mod </span>default;
 <span class="kw">mod </span>error;
@@ -63,7 +62,6 @@
 <span class="kw">mod </span>multicast_server;
 <span class="kw">mod </span>notifier;
 <span class="kw">mod </span>notify_manager;
-<span class="kw">mod </span>observer;
 <span class="kw">mod </span>result;
 <span class="kw">mod </span>udp_socket;
 <span class="kw">mod </span>unicast_manager;

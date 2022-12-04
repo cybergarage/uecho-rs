@@ -89,6 +89,12 @@
 <span id="89">89</span>
 <span id="90">90</span>
 <span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -106,9 +112,9 @@
 </span><span class="kw">use </span>std::net::{IpAddr, SocketAddr};
 
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::ObserverObject;
 <span class="kw">use </span><span class="kw">crate</span>::transport::multicast_manager::MulticastManager;
 <span class="kw">use </span><span class="kw">crate</span>::transport::unicast_manager::UnicastManager;
-<span class="kw">use </span><span class="kw">crate</span>::transport::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Manager handles all messaging packet between ECHONET-Lite nodes.
 </span><span class="kw">pub struct </span>Manager {
@@ -178,6 +184,12 @@
         <span class="kw">let </span><span class="kw-2">mut </span>ret = <span class="self">self</span>.ucast_mgr.stop();
         ret |= <span class="self">self</span>.mcast_mgr.stop();
         ret
+    }
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>Manager {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.stop();
     }
 }
 </code></pre></div>

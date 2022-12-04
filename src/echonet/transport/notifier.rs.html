@@ -22,6 +22,7 @@
 <span id="22">22</span>
 <span id="23">23</span>
 <span id="24">24</span>
+<span id="25">25</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -39,12 +40,13 @@
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::transport::notify_manager::DefaultNotifytManager;
+<span class="kw">use </span><span class="kw">crate</span>::transport::notify_manager::NotifytManager;
 
-<span class="kw">pub type </span>Notifier = Arc&lt;Mutex&lt;DefaultNotifytManager&gt;&gt;;
+<span class="doccomment">/// Notifier notifies recieved transport messages to the observers.
+</span><span class="kw">pub type </span>Notifier = Arc&lt;Mutex&lt;NotifytManager&gt;&gt;;
 
 <span class="kw">pub fn </span>notifier_new() -&gt; Notifier {
-    Arc::new(Mutex::new(DefaultNotifytManager::new()))
+    Arc::new(Mutex::new(NotifytManager::new()))
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="echonet" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
