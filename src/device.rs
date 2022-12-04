@@ -286,3 +286,9 @@ impl Device {
         self.property(DEVICE_FAULT_STATUS)
     }
 }
+
+impl Drop for Device {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
