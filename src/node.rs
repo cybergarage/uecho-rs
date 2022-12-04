@@ -179,6 +179,9 @@ impl Node {
     }
 
     fn update_message_trandaction_id(&mut self, msg: &mut Message) {
+        if msg.has_tid() {
+            return;
+        }
         msg.set_tid(self.next_tid());
     }
 
