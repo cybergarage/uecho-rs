@@ -143,6 +143,7 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -165,8 +166,9 @@
 <span class="kw">use </span><span class="kw">crate</span>::node::Node;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::remote_node::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::transport::ObserverObject;
 
 <span class="doccomment">/// Controller represents an ECHONET-Lite controller node to communicate other ECHONET-Lite nodes.
 /// # Examples

@@ -77,6 +77,7 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -96,7 +97,8 @@
 </span><span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, Observer};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::transport::Observer;
 
 <span class="kw">pub struct </span>TestNotifyCounter {
     <span class="kw">pub </span>counter: Arc&lt;Mutex&lt;i32&gt;&gt;,

@@ -75,6 +75,7 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -96,7 +97,8 @@
 <span class="kw">use </span>std::{thread, time};
 
 <span class="kw">use </span>echonet::log::Logger;
-<span class="kw">use </span>echonet::protocol::{Message, Observer};
+<span class="kw">use </span>echonet::protocol::Message;
+<span class="kw">use </span>echonet::transport::Observer;
 <span class="kw">use </span>echonet::Controller;
 
 <span class="doccomment">/// MyController listens Echonet-Lite multicast protocol messages.

@@ -103,6 +103,7 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -119,9 +120,10 @@
 
 </span><span class="kw">use </span>std::net::IpAddr;
 
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::transport::interface::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::transport::multicast_server::MulticastServer;
+<span class="kw">use </span><span class="kw">crate</span>::transport::observer::ObserverObject;
 
 <span class="kw">pub struct </span>MulticastManager {
     mcast_servers: Vec&lt;MulticastServer&gt;,

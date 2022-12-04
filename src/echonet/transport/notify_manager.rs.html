@@ -64,6 +64,7 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
+<span id="67">67</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -78,7 +79,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-</span><span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
+</span><span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+<span class="kw">use </span><span class="kw">crate</span>::transport::observer::ObserverObject;
 
 <span class="kw">pub type </span>Observers = Vec&lt;ObserverObject&gt;;
 

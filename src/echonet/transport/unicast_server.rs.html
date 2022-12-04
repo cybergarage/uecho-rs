@@ -140,6 +140,7 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
+<span id="143">143</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -162,9 +163,10 @@
 <span class="kw">use </span>std::sync::{Arc, RwLock};
 <span class="kw">use </span>std::thread;
 
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ObserverObject};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::transport::default::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::transport::notifier::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::transport::observer::ObserverObject;
 <span class="kw">use </span><span class="kw">crate</span>::transport::udp_socket::UdpSocket;
 
 <span class="kw">pub struct </span>UnicastServer {
