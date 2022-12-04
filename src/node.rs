@@ -97,7 +97,7 @@ impl Node {
     }
 
     pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
-        self.transport_mgr.add_observer(observer.clone())
+        self.notify_mgr.add_observer(observer.clone())
     }
 
     pub fn send_message(&mut self, to_addr: SocketAddr, msg: &mut Message) -> bool {
