@@ -98,3 +98,9 @@ impl MulticastManager {
         is_all_server_stopped
     }
 }
+
+impl Drop for MulticastManager {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
