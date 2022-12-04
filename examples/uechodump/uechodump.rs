@@ -52,7 +52,6 @@ impl Observer for MyController {
 }
 
 fn main() -> Result<(), Error> {
-    Logger::init();
     for arg in env::args() {
         print!("{}", arg);
         match arg.as_str() {
