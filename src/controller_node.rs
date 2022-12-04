@@ -39,10 +39,15 @@ impl ControllerNode {
     }
 
     pub fn new_with_node(node: Arc<Mutex<Node>>) -> Arc<Mutex<ControllerNode>> {
-        let ctrl = Arc::new(Mutex::new(ControllerNode {
-            node: node,
+        let mut ctrl = ControllerNode {
+            node: node.clone(),
             remote_nodes: Vec::new(),
-        }));
+        };
+        ctrl.add_observer(Arc::new(Mutex::new(node.clone())));
+        let ctrl = Arc::new(Mutex::new(ctrl));
+        ctrl.lock()
+            .unwrap()
+            .add_observer(Arc::new(Mutex::new(ctrl.clone())));
         ctrl
     }
 
