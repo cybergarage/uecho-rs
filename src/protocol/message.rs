@@ -88,6 +88,13 @@ impl Message {
         self
     }
 
+    pub fn has_tid(&self) -> bool {
+        if self.tid() == 0 {
+            return false;
+        }
+        true
+    }
+
     pub fn tid(&self) -> TID {
         ((self.tid[0] as TID) << 8) + (self.tid[1] as TID)
     }
