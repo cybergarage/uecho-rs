@@ -26,55 +26,39 @@ The request message observers of the node and object can listen all request mess
 
 ### Property Message Handler
 
-The `Object::set_request_handler()` can set the following permission handler to an object property to handle valid request messages from other nodes. 
+The `RequestHandler` can set the following permission handler to an object property to handle valid request messages from other nodes. 
 
 ```
-class ObjectRequestHandler(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def property_read_requested(self, prop: Property) -> bool:
-    @abc.abstractmethod
-    def property_write_requested(self, prop: Property, data: bytes) -> bool:
+pub trait RequestHandler {
+    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool;
+}
 ```
 
 The developer handles the request messages from other nodes. The developer should return a true if the request message is valid, otherwise false. In addition, the developer does not need to update the target property data by the request property data because the `uecho-rs` updates the target property by the request property data automatically when the handler returns true. The following example shows to check a write request message and set the valid property data to the target property.
 
 ```
-    def property_read_requested(self, prop: Property) -> bool:
-        if prop.code != 0x80:
-            return False
-        return True
-
-    def property_write_requested(self, prop: Property, data: bytes) -> bool:
-        if prop.code != 0x80:
-            return False
-        if len(prop.data) != 1:
-            return False
-        if (data[0] != 0x30) and (data[0] != 0x31):
-            return False
-        return True
+impl RequestHandler for MyDevice {
+    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+        // Ignore all messages to other objects in the same node.
+        if deoj != self.device.code() {
+            return false;
+        }
+        match esv {
+            Esv::WriteRequest | Esv::WriteReadRequest => {
+                let prop_code = prop.code();
+                let prop_bytes = prop.data();
+                match prop_code {
+                    ....
+                }
+            }
+            _ => {}
+        }
+        true
+    }
+}
 ```
 
-The `Object::set_request_handler()` sets the permission handlers for read and write requests.
-
-### Node Message Listener
-
-The `LocalNode::add_observer()` can set the following observer to get all message for the node from other nodes, thus the message might be invalid.
-
-```
-class Observer(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def message_received(self, msg: Message):
-```
-
-### Object Message Listener
-
-The `Object::add_observer()` can set the following observer to get only valid messages for the object from other nodes.
-
-```
-class Observer(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def message_received(self, msg: Message):
-```
+The `Device::set_request_handler()` sets the permission handlers for handring read and write message requests from other controllers and nodes.
 
 ## References
 
