@@ -16,10 +16,18 @@ use crate::protocol::{Message, ObserverObject};
 
 pub type Observers = Vec<ObserverObject>;
 
-pub trait NotifytManager {
-    fn observers(&mut self) -> &mut Observers;
+/// NotifytManager notifies recieved transport messages to the observers.
+pub struct NotifytManager {
+    observers: Observers,
+}
 
-    fn add_observer(&mut self, observer: ObserverObject) -> bool {
+impl NotifytManager {
+    pub fn new() -> NotifytManager {
+        NotifytManager {
+            observers: Vec::new(),
+        }
+    }
+    pub fn add_observer(&mut self, observer: ObserverObject) -> bool {
         // FIXME: FIX not to register the same observer
         // for reg_observer in self.observers().iter() {
         //     let new_observer = observer.lock().unwrap();
@@ -28,45 +36,27 @@ pub trait NotifytManager {
         //         return true;
         //     }
         // }
-        self.observers().push(observer);
+        self.observers.push(observer);
         true
     }
 
-    fn notify(&mut self, msg: &Message) -> bool {
-        for observer in self.observers().iter() {
+    pub fn notify(&mut self, msg: &Message) -> bool {
+        for observer in self.observers.iter() {
             let mut observer = observer.lock().unwrap();
             observer.message_received(msg);
         }
         true
     }
 
-    fn num_observers(&mut self) -> usize {
-        self.observers().len()
+    pub fn num_observers(&mut self) -> usize {
+        self.observers.len()
     }
 
-    fn start(&mut self) -> bool {
+    pub fn start(&mut self) -> bool {
         true
     }
 
-    fn stop(&mut self) -> bool {
+    pub fn stop(&mut self) -> bool {
         true
-    }
-}
-
-pub struct DefaultNotifytManager {
-    observers: Observers,
-}
-
-impl DefaultNotifytManager {
-    pub fn new() -> DefaultNotifytManager {
-        DefaultNotifytManager {
-            observers: Vec::new(),
-        }
-    }
-}
-
-impl NotifytManager for DefaultNotifytManager {
-    fn observers(&mut self) -> &mut Observers {
-        &mut self.observers
     }
 }

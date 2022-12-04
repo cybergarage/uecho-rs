@@ -13,7 +13,8 @@
 // limitations under the License.
 
 pub use self::default::PORT;
-pub use self::manager::{Manager, Notifier};
+pub use self::manager::Manager;
+pub use self::notify_manager::NotifytManager;
 
 mod default;
 mod error;
