@@ -8,13 +8,13 @@ The controller is a special node of [ECHONETLite][enet] to control other nodes, 
 
 ### 1. Starting Controller
 
-To start a controller, create a controller instanse of `uecho::Controller` and start the controller using `Controller::start()` as the following:
+To start a controller, create a controller instanse of `echonet::Controller` and start the controller using `Controller::start()` as the following:
 
 ```
-from uecho import Controller
+use echonet::Controller;
 
-ctrl = Controller()
-ctrl.start()
+let mut ctrl = Controller::new();
+ctrl.start();
 ```
 
 ### 2. Searching Nodes
@@ -22,7 +22,7 @@ ctrl.start()
 Next, use `Controller::search()` to search other nodes in the local area network as the following:
 
 ```
-ctrl = Controller()
+let mut ctrl = Controller::new()
 ....
 ctrl.search()
 ```
@@ -32,28 +32,32 @@ ctrl.search()
 After the searching, the controller has the found nodes in the `Controller::nodes` property. The [ECHONETLite](http://www.echonet.gr.jp/english/index.htm) node might have multiple objects such as the device or profile objects, and the found node has the objects in the `Object.objects` property. The following example shows all objects in the found nodes.
 
 ```
-ctrl = Controller()
+let mut ctrl = Controller::new()
 ....
-for i, node in enumerate(ctrl.nodes):
-    print("[%d] %s" % (i, node.ip));
-    for j, obj in enumerate(node.objects):
-        print('[%d] %06X ' % (j, obj.code));
+for (i, node) in ctrl.nodes().iter().enumerate() {
+    println!("[{}] {}", i, node.addr());
+    for (j, obj) in node.objects().iter().enumerate() {
+        println!("[{}] {:06X}", j, obj.code());
+        for obj_prop in obj.properties() {
+            ....
+        }
+    }
+}
 ```
 
 ### 4. Creating Request Message
 
-To control the found objects, create the request message using `uecho::Message` as the following.
+To control the found objects, create the request message using `echonet::Message` as the following.
 
 ```
-from uecho import Message, Property, ESV
-
-msg = Message()
-msg.DEOJ = 0xXXXXXX
-msg.ESV = ESV.WRITE_REQUEST
-prop = Property()
-prop.code = 0xXX
-prop.data = ....
-msg.add_property(prop)
+use echonet::protocol::{Esv, Message, Property};
+....
+let mut msg = Message::new();
+msg.set_esv(Esv::ReadRequest);
+msg.set_deoj(obj.code());
+let mut prop = Property::new();
+prop.set_code(obj_prop.code());
+msg.add_property(prop);
 ```
 
 ### 5. Sending Messages
@@ -61,29 +65,33 @@ msg.add_property(prop)
 To send the created request message, use `Controller::send_message()` as the following:
 
 ```
-ctrl = Controller()
+let mut ctrl = Controller::new();
 ....
-node = ctrl.nodes[0]
+let node = ctrl.nodes[0];
 ....
-msg = Message()
+let mut msg = Message::new();
 ....
-ctrl.send_message(msg, node);
+ctrl.send_message(&node, &mut msg);
 ```
 
 Basically, all messages of [ECHONETLite](http://www.echonet.gr.jp/english/index.htm) is async. To handle the async response message, use `Controller::post_message()` instead of `Controller::send_message()` as the following:
 
 ```
-res_msg = ctrl.post_message(msg, node);
-if res_msg is not None:
-    print("%02X" % res_msg.ESV)
-    for prop in res_msg.properties:
-        print("%02X %s " % ((prop.code), prop.data.hex().upper()))
+let rx = ctrl.post_message(&node, &mut msg);
+match rx.recv_timeout(Duration::from_secs(1)) {
+    Ok(msg) => {
+        ....
+    }
+    Err(_e) => {
+        ....
+    }
+};
 ```
 
 ## Next Steps
 
 Let's check the following documentation to know the controller functions of uEcho in more detail.
 
-- [Examples](./examples.md)
+- [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
 
 [enet]:http://echonet.jp/english/
