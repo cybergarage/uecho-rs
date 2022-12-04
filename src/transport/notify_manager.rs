@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::protocol::Message;
-use crate::transport::observer::*;
+use crate::protocol::{Message, ObserverObject};
+
+pub type Observers = Vec<ObserverObject>;
 
 pub trait NotifytManager {
     fn observers(&mut self) -> &mut Observers;

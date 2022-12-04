@@ -20,8 +20,8 @@ use crate::node::Node;
 use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
 use crate::protocol::Message;
+use crate::protocol::{Observer, ObserverObject};
 use crate::remote_node::RemoteNode;
-use crate::transport::{Observer, ObserverObject};
 
 pub struct DeviceNode {
     node: Arc<Mutex<Node>>,
