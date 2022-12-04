@@ -26,7 +26,7 @@ use crate::object::*;
 use crate::property::Property;
 use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
 use crate::protocol::{Observer, ObserverObject};
-use crate::transport::{Manager, PORT};
+use crate::transport::{Manager, NotifytManager, PORT};
 
 /// Node represents an ECHONET-Lite node which contains ECHONET-Lite objects such the profiles and the devices.
 pub struct Node {
@@ -35,6 +35,7 @@ pub struct Node {
     last_tid: TID,
     post_sender: Sender<Message>,
     request_mgr: RequestManager,
+    notify_mgr: NotifytManager,
 }
 
 impl Node {
@@ -46,15 +47,16 @@ impl Node {
             last_tid: TID_MIN,
             post_sender: tx,
             request_mgr: RequestManager::new(),
+            notify_mgr: NotifytManager::new(),
         }));
-        node.lock().unwrap().initObjects();
+        node.lock().unwrap().init_objects();
         node.lock()
             .unwrap()
             .add_request_handler(Arc::new(Mutex::new(node.clone())));
         node
     }
 
-    fn initObjects(&mut self) {
+    fn init_objects(&mut self) {
         self.objects.push(NodeProfile::new());
     }
 
@@ -159,6 +161,9 @@ impl Node {
             if !self.transport_mgr.start() {
                 return false;
             }
+        }
+        for observer in self.notify_mgr.observers() {
+            self.transport_mgr.add_observer(observer.clone());
         }
         if !self.annouce() {
             return false;
