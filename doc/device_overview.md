@@ -6,7 +6,7 @@ The `uecho-rs` supports your original standard devices of [ECHONET Lite][enet] s
 
 ## Creating Devices
 
-### 1. Creating Device Node
+### 1. Creating Device
 
 To create your original device, use `echonet::Device` with a device object code as the following at first.
 
@@ -26,7 +26,7 @@ impl MyDevice {
 }
 ```
 
-The new node has the specified device object and the node profile class object. The node profile object is updated automatically when new devices are added into the node or the any properties in the node are changed.
+The new device has the specified device object and the node profile class object. The node profile object is updated automatically when new devices are added into the node or the any properties in the node are changed.
 
 ### 2. Handling Request Messages 
 
