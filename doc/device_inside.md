@@ -14,11 +14,11 @@ The node profile object is a standard profile object, [ECHONET Lite][enet] node 
 - Class code: 0xF0
 - Instance code: 0x01 (general node)
 
-The `uecho-py` updates the node profile class objects automatically when the children objects in the node are changed, and so the developer doesn't need to update the node profile object yourself.
+The `uecho-rs` updates the node profile class objects automatically when the children objects in the node are changed, and so the developer doesn't need to update the node profile object yourself.
 
 ## Device Message Handler and Observer
 
-The `uecho-py` handles all request messages from other nodes automatically, the developer need only control request message permissions from other nodes and controllers to the target object properties using the object property handlers of the `uecho-py`. However, the developer can set some request message observers into the node and objects to listen the raw messages of [ECHONET Lite][enet] too. The following figure shows the message handling sequence of `uecho-py`.
+The `uecho-rs` handles all request messages from other nodes automatically, the developer need only control request message permissions from other nodes and controllers to the target object properties using the object property handlers of the `uecho-rs`. However, the developer can set some request message observers into the node and objects to listen the raw messages of [ECHONET Lite][enet] too. The following figure shows the message handling sequence of `uecho-rs`.
 
 ![Node Observers](img/node_msg_handler.png)
 
@@ -36,7 +36,7 @@ class ObjectRequestHandler(metaclass=abc.ABCMeta):
     def property_write_requested(self, prop: Property, data: bytes) -> bool:
 ```
 
-The developer handles the request messages from other nodes. The developer should return a true if the request message is valid, otherwise false. In addition, the developer does not need to update the target property data by the request property data because the `uecho-py` updates the target property by the request property data automatically when the handler returns true. The following example shows to check a write request message and set the valid property data to the target property.
+The developer handles the request messages from other nodes. The developer should return a true if the request message is valid, otherwise false. In addition, the developer does not need to update the target property data by the request property data because the `uecho-rs` updates the target property by the request property data automatically when the handler returns true. The following example shows to check a write request message and set the valid property data to the target property.
 
 ```
     def property_read_requested(self, prop: Property) -> bool:
