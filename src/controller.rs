@@ -146,3 +146,9 @@ impl Controller {
         ctrl.stop()
     }
 }
+
+impl Drop for Controller {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
