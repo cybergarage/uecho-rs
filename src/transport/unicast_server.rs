@@ -136,3 +136,9 @@ impl UnicastServer {
         true
     }
 }
+
+impl Drop for UnicastServer {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
