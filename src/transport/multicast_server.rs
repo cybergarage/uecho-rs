@@ -175,3 +175,9 @@ impl MulticastServer {
         true
     }
 }
+
+impl Drop for MulticastServer {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
