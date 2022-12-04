@@ -29,11 +29,11 @@ pub struct MyController {
 
 impl MyController {
     pub fn new() -> Arc<Mutex<MyController>> {
-        let m = Arc::new(Mutex::new(MyController {
+        let ctrl = Arc::new(Mutex::new(MyController {
             ctrl: Controller::new(),
         }));
-        m.lock().unwrap().ctrl.add_observer(m.clone());
-        m
+        ctrl.lock().unwrap().ctrl.add_observer(ctrl.clone());
+        ctrl
     }
 
     fn start(&mut self) -> bool {
@@ -63,8 +63,8 @@ fn main() -> Result<(), Error> {
     }
 
     let ml = MyController::new();
-    let mut ml = ml.lock().unwrap();
-    ml.start();
+    let mut ctrl = ml.lock().unwrap();
+    ctrl.start();
 
     let term = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&term))?;
@@ -72,7 +72,7 @@ fn main() -> Result<(), Error> {
         thread::sleep(time::Duration::from_secs(1));
     }
 
-    ml.stop();
+    ctrl.stop();
 
     Ok(())
 }
