@@ -46,6 +46,7 @@ pub struct ResponseErrorMessage {}
 impl ResponseErrorMessage {
     pub fn from(req_msg: &Message) -> Message {
         let mut msg = Message::new();
+        msg.set_tid(req_msg.tid());
         match req_msg.esv() {
             // 4.2.3.1 Property value write service (no response required) [0x60, 0x50]
             Esv::WriteRequest => {
