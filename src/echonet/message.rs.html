@@ -180,6 +180,8 @@
 <span id="180">180</span>
 <span id="181">181</span>
 <span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -228,6 +230,7 @@
 <span class="kw">impl </span>ResponseErrorMessage {
     <span class="kw">pub fn </span>from(req_msg: <span class="kw-2">&amp;</span>Message) -&gt; Message {
         <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+        msg.set_tid(req_msg.tid());
         <span class="kw">match </span>req_msg.esv() {
             <span class="comment">// 4.2.3.1 Property value write service (no response required) [0x60, 0x50]
             </span>Esv::WriteRequest =&gt; {
@@ -272,6 +275,7 @@
 <span class="kw">impl </span>ResponseMessage {
     <span class="kw">pub fn </span>from(req_msg: <span class="kw-2">&amp;</span>Message) -&gt; Message {
         <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+        msg.set_tid(req_msg.tid());
         <span class="kw">match </span>req_msg.esv() {
             <span class="comment">// 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
             </span>Esv::WriteRequestResponseRequired =&gt; {

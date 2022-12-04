@@ -37,6 +37,26 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -54,8 +74,10 @@
 </span><span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
 
-    <span class="kw">use </span><span class="kw">crate</span>::message::{NodeProfileMessage, SearchMessage};
-    <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+    <span class="kw">use </span><span class="kw">crate</span>::message::{
+        NodeProfileMessage, ResponseErrorMessage, ResponseMessage, SearchMessage,
+    };
+    <span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message};
     <span class="kw">use </span>hex;
 
     <span class="attribute">#[test]
@@ -74,6 +96,24 @@
         <span class="kw">let </span><span class="kw-2">mut </span>profile_msg = NodeProfileMessage::from_message(<span class="kw-2">&amp;</span>msg);
         <span class="macro">assert!</span>(profile_msg.parse());
         <span class="macro">assert_eq!</span>(profile_msg.object_codes().len(), <span class="number">1</span>);
+    }
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>response_message() {
+        <span class="kw">let </span>req_msg =
+            Message::from_bytes(<span class="kw-2">&amp;</span>hex::decode(<span class="string">&quot;108100330EF0010EF0016201D600&quot;</span>).ok().unwrap());
+        <span class="kw">let </span>res_msg = ResponseMessage::from(<span class="kw-2">&amp;</span>req_msg);
+        <span class="macro">assert_eq!</span>(res_msg.esv(), Esv::ReadResponse);
+        <span class="macro">assert_eq!</span>(res_msg.tid(), <span class="number">0x0033</span>);
+    }
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>error_response_message() {
+        <span class="kw">let </span>req_msg =
+            Message::from_bytes(<span class="kw-2">&amp;</span>hex::decode(<span class="string">&quot;108100330EF0010EF0016201D600&quot;</span>).ok().unwrap());
+        <span class="kw">let </span>res_msg = ResponseErrorMessage::from(<span class="kw-2">&amp;</span>req_msg);
+        <span class="macro">assert_eq!</span>(res_msg.esv(), Esv::ReadRequestError);
+        <span class="macro">assert_eq!</span>(res_msg.tid(), <span class="number">0x0033</span>);
     }
 }
 </code></pre></div>

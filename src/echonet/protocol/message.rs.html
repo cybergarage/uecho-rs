@@ -291,6 +291,13 @@
 <span id="291">291</span>
 <span id="292">292</span>
 <span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -379,6 +386,13 @@
         <span class="self">self</span>.tid[<span class="number">0</span>] = ((tid &amp; <span class="number">0xFF00</span>) &gt;&gt; <span class="number">8</span>) <span class="kw">as </span>u8;
         <span class="self">self</span>.tid[<span class="number">1</span>] = (tid &amp; <span class="number">0x00FF</span>) <span class="kw">as </span>u8;
         <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>has_tid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">if </span><span class="self">self</span>.tid() == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+        <span class="bool-val">true
     </span>}
 
     <span class="kw">pub fn </span>tid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TID {
