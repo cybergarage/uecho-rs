@@ -128,20 +128,6 @@ impl Controller {
         if !ctrl.start() {
             return false;
         }
-
-        if !ctrl.add_observer(Arc::new(Mutex::new(self.node.clone()))) {
-            return false;
-        }
-
-        let node = ctrl.node();
-        if !node
-            .lock()
-            .unwrap()
-            .add_observer(Arc::new(Mutex::new(node.clone())))
-        {
-            return false;
-        }
-
         true
     }
 
