@@ -17,6 +17,7 @@ use std::sync::Mutex;
 
 use crate::transport::notify_manager::DefaultNotifytManager;
 
+/// Notifier notifies recieved transport messages to the observers.
 pub type Notifier = Arc<Mutex<DefaultNotifytManager>>;
 
 pub fn notifier_new() -> Notifier {
