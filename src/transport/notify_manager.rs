@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::protocol::{Message, ObserverObject};
+use crate::protocol::Message;
+use crate::transport::observer::ObserverObject;
 
 pub type Observers = Vec<ObserverObject>;
 

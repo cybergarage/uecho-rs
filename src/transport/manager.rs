@@ -15,8 +15,8 @@
 use std::net::{IpAddr, SocketAddr};
 
 use crate::protocol::Message;
-use crate::protocol::ObserverObject;
 use crate::transport::multicast_manager::MulticastManager;
+use crate::transport::observer::ObserverObject;
 use crate::transport::unicast_manager::UnicastManager;
 
 /// Manager handles all messaging packet between ECHONET-Lite nodes.

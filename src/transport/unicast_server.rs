@@ -20,9 +20,10 @@ use std::net::{IpAddr, SocketAddr};
 use std::sync::{Arc, RwLock};
 use std::thread;
 
-use crate::protocol::{Message, ObserverObject};
+use crate::protocol::Message;
 use crate::transport::default::*;
 use crate::transport::notifier::*;
+use crate::transport::observer::ObserverObject;
 use crate::transport::udp_socket::UdpSocket;
 
 pub struct UnicastServer {

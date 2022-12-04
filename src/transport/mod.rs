@@ -15,6 +15,7 @@
 pub use self::default::PORT;
 pub use self::manager::Manager;
 pub use self::notify_manager::NotifytManager;
+pub use self::observer::{Observer, ObserverObject};
 
 mod default;
 mod error;
@@ -24,6 +25,7 @@ mod multicast_manager;
 mod multicast_server;
 mod notifier;
 mod notify_manager;
+mod observer;
 mod result;
 mod udp_socket;
 mod unicast_manager;

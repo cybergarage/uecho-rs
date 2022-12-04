@@ -14,9 +14,10 @@
 
 use std::net::IpAddr;
 
-use crate::protocol::{Message, ObserverObject};
+use crate::protocol::Message;
 use crate::transport::interface::*;
 use crate::transport::multicast_server::MulticastServer;
+use crate::transport::observer::ObserverObject;
 
 pub struct MulticastManager {
     mcast_servers: Vec<MulticastServer>,
