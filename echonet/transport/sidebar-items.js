@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["PORT",""]],"struct":[["Manager","Manager handles all messaging packet between ECHONET-Lite nodes."]],"trait":[["Observer","Observer defines a messaging packet interface between ECHONET-Lite nodes."]],"type":[["ObserverObject",""]]};
+window.SIDEBAR_ITEMS = {"constant":[["PORT",""]],"struct":[["Manager","Manager handles all messaging packet between ECHONET-Lite nodes."],["NotifytManager","NotifytManager notifies recieved transport messages to the observers."]]};

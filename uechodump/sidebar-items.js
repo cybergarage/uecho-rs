@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["main",""]],"struct":[["MyController","MyController listens Echonet-Lite multicast protocol messages."]]};
