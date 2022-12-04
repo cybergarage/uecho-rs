@@ -98,3 +98,9 @@ impl UnicastManager {
         is_all_server_stopped
     }
 }
+
+impl Drop for UnicastManager {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
