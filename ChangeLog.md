@@ -3,7 +3,7 @@
 ## v1.1.0 (2022-xx-x)
 -  Support write and read request protocol (0x6E)
 
-## v1.0.0 (2022-xx-x)
+## v1.0.0 (2022-12-05)
 - Add Device module that simulates an ECHONET-Lite device node
 - Add a controller example that posts a message to other nodes as uechopost
 
