@@ -39,3 +39,6 @@ search:
 
 mono:
 	cargo run --bin monolight -v
+
+dump:
+	cargo run --bin monolight -v
