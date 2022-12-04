@@ -380,3 +380,9 @@ impl RequestHandler for Arc<Mutex<Node>> {
         }
     }
 }
+
+impl Drop for Node {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
