@@ -23,10 +23,10 @@ use crate::node::Node;
 use crate::node_profile::{NodeProfile, NODE_PROFILE_OBJECT_CODE};
 use crate::object::ObjectCode;
 use crate::protocol::Message;
+use crate::protocol::{Observer, ObserverObject};
 use crate::remote_node::RemoteNode;
 use crate::super_object::SUPER_OBJECT_CODE;
 use crate::transport::PORT;
-use crate::transport::{Observer, ObserverObject};
 
 pub struct ControllerNode {
     node: Arc<Mutex<Node>>,

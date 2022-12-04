@@ -25,8 +25,8 @@ use crate::node_profile::*;
 use crate::object::*;
 use crate::property::Property;
 use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
-use crate::transport::Manager;
-use crate::transport::*;
+use crate::protocol::{Observer, ObserverObject};
+use crate::transport::{Manager, PORT};
 
 /// Node represents an ECHONET-Lite node which contains ECHONET-Lite objects such the profiles and the devices.
 pub struct Node {

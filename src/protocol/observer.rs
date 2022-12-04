@@ -23,4 +23,3 @@ pub trait Observer {
 }
 
 pub type ObserverObject = Arc<Mutex<dyn Observer + Send>>;
-pub type Observers = Vec<ObserverObject>;
