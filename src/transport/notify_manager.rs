@@ -40,6 +40,10 @@ impl NotifytManager {
         true
     }
 
+    pub fn observers(&self) -> &Observers {
+        return &self.observers;
+    }
+
     pub fn notify(&mut self, msg: &Message) -> bool {
         for observer in self.observers.iter() {
             let mut observer = observer.lock().unwrap();
