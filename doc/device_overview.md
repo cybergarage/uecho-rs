@@ -10,7 +10,7 @@ The `uecho-py` supports your original standard devices of [ECHONET Lite][enet] s
 
 ### 1. Creating Node
 
-To create your original device, use `uecho::LocalNode` as the following at first.
+To create your original device, use `echonet::LocalNode` as the following at first.
 
 
 ```
@@ -23,7 +23,7 @@ The new node has only a node profile class object, and it has no device object. 
 
 ### 2. Creating Device Object
 
-To add your device objects into the created node, create a new device object using `uecho::Device` or `uecho::std::StandardDevice`, and add the created device object into the node as the following.
+To add your device objects into the created node, create a new device object using `echonet::Device` or `echonet::std::StandardDevice`, and add the created device object into the node as the following.
 
 ```
 from uecho import LocalNode
@@ -34,7 +34,7 @@ dev = StandardDevice(0x029101) # Mono functional lighting class
 node.add_object(dev)
 ```
 
-The `uecho::Device` creates a null device object with no properties, so you must add your own properties. In contrast, The `uecho::std::StandardDevice` creates a standard device object with the specified object code and adds the standard properties of the ECHONET device object specification [\[1\]][enet-spec] into the device object automatically.
+The `echonet::Device` creates a null device object with no properties, so you must add your own properties. In contrast, The `echonet::std::StandardDevice` creates a standard device object with the specified object code and adds the standard properties of the ECHONET device object specification [\[1\]][enet-spec] into the device object automatically.
 
 ### 3. Handling Request Messages 
 
