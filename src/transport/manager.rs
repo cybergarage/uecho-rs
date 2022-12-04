@@ -89,3 +89,9 @@ impl Manager {
         ret
     }
 }
+
+impl Drop for Manager {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
