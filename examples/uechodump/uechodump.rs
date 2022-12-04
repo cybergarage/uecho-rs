@@ -19,10 +19,8 @@ use std::sync::{Arc, Mutex};
 use std::{thread, time};
 
 use echonet::log::Logger;
-use echonet::protocol::{Esv, Property};
-use echonet::util::Bytes;
+use echonet::protocol::{Message, Observer};
 use echonet::Controller;
-use log::*;
 
 /// MyController listens Echonet-Lite multicast protocol messages.
 pub struct MyController {
@@ -34,6 +32,7 @@ impl MyController {
         let m = Arc::new(Mutex::new(MyController {
             ctrl: Controller::new(),
         }));
+        m.lock().unwrap().ctrl.add_observer(m.clone());
         m
     }
 
@@ -43,6 +42,12 @@ impl MyController {
 
     fn stop(&mut self) -> bool {
         self.ctrl.stop()
+    }
+}
+
+impl Observer for MyController {
+    fn message_received(&mut self, msg: &Message) {
+        println!("{} : {}", msg.from().ip(), msg);
     }
 }
 
