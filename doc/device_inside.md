@@ -43,22 +43,28 @@ impl RequestHandler for MyDevice {
         if deoj != self.device.code() {
             return false;
         }
-        match esv {
-            Esv::WriteRequest | Esv::WriteReadRequest => {
-                let prop_code = prop.code();
-                let prop_bytes = prop.data();
-                match prop_code {
-                    ....
+        match prop_code {
+            0x80 /* Operating status */ => {
+                let prop_u32 = Bytes::to_u32(prop_bytes);
+                match prop_u32 {
+                    0x30 /* On */=> {
+                        return true;
+                    }
+                    0x31 /* Off */=> {
+                        return true;
+                    }
+                    _ => {
+                        return false;
+                    }
                 }
             }
-            _ => {}
+            _ => {
+                return false;
+            }
         }
-        true
     }
 }
 ```
-
-The `Device::set_request_handler()` sets the permission handlers for handring read and write message requests from other controllers and nodes.
 
 ## References
 
