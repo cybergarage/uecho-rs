@@ -15,8 +15,10 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::message::{ NodeProfileMessage, SearchMessage, ResponseMessage, ResponseErrorMessage};
-    use crate::protocol::{Message, Esv};
+    use crate::message::{
+        NodeProfileMessage, ResponseErrorMessage, ResponseMessage, SearchMessage,
+    };
+    use crate::protocol::{Esv, Message};
     use hex;
 
     #[test]
@@ -39,7 +41,8 @@ mod tests {
 
     #[test]
     fn response_message() {
-        let req_msg = Message::from_bytes(&hex::decode("108100330EF0010EF0016201D600").ok().unwrap());
+        let req_msg =
+            Message::from_bytes(&hex::decode("108100330EF0010EF0016201D600").ok().unwrap());
         let res_msg = ResponseMessage::from(&req_msg);
         assert_eq!(res_msg.esv(), Esv::ReadResponse);
         assert_eq!(res_msg.tid(), 0x0033);
@@ -47,7 +50,8 @@ mod tests {
 
     #[test]
     fn error_response_message() {
-        let req_msg = Message::from_bytes(&hex::decode("108100330EF0010EF0016201D600").ok().unwrap());
+        let req_msg =
+            Message::from_bytes(&hex::decode("108100330EF0010EF0016201D600").ok().unwrap());
         let res_msg = ResponseErrorMessage::from(&req_msg);
         assert_eq!(res_msg.esv(), Esv::ReadRequestError);
         assert_eq!(res_msg.tid(), 0x0033);
