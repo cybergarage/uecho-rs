@@ -93,12 +93,63 @@ pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 /// Device represents an ECHONET-Lite device node.
 /// # Examples
 /// ```
-/// use echonet::Device;
+/// use std::sync::{Arc, Mutex};
+/// use log::*;
+/// use echonet::protocol::{Esv, Property};
+/// use echonet::util::Bytes;
+/// use echonet::{Device, ObjectCode, RequestHandler};
 ///
-/// let mut dev = Device::new(0x029101);
-/// dev.start();
-/// dev.stop();
-/// ```
+/// pub struct MonoLight {
+///     device: Device,
+/// }
+///
+/// impl MonoLight {
+///     pub fn new() -> Arc<Mutex<MonoLight>> {
+///         let m = Arc::new(Mutex::new(MonoLight {
+///             device: Device::new(0x029101),
+///         }));
+///         m.lock().unwrap().device.set_request_handler(m.clone());
+///         m
+///     }
+/// }
+///
+/// impl RequestHandler for MonoLight {
+///     fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+///         // Ignore all messages to other objects in the same node.
+///         if deoj != self.device.code() {
+///             return false;
+///         }
+///
+///         match esv {
+///             Esv::WriteRequest | Esv::WriteReadRequest => {
+///                 let prop_code = prop.code();
+///                 let prop_bytes = prop.data();
+///                 match prop_code {
+///                     0x80 /* Operating status */ => {
+///                         let prop_u32 = Bytes::to_u32(prop_bytes);
+///                         match prop_u32 {
+///                             0x30 /* On */=> {
+///                                 info!("On");
+///                             }
+///                             0x31 /* Off */=> {
+///                                 info!("Off");
+///                             }
+///                             _ => {
+///                                 return false;
+///                             }
+///                         }
+///                     }
+///                     _ => {
+///                         return false;
+///                     }
+///                 }
+///             }
+///             _ => {}
+///         }
+///         true
+///     }
+/// }
+// ```
 
 pub struct Device {
     code: ObjectCode,
