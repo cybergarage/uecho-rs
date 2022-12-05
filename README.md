@@ -11,9 +11,13 @@ The `uecho-rs` is a portable, cross-platform development framework for Rust deve
 
 To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
 
-The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. 
+The `uecho-rs` supports to control devices of [ECHONET-Lite][enet] or create the standard devices of the specification easily. The `uecho-rs` provides the followingmajor components:
 
-![](doc/img/framework.png)
+- [ECHONET-Lite][enet] controller to find and control [ECHONET-Lite][enet] nodes.
+- [ECHONET-Lite][enet] device framework to implement user [ECHONET-Lite][enet] devices.
+- Decoder and Encoder for [ECHONET-Lite][enet] messaging protocol.
+- Standard device object database based on the ECHONET Consortium [Machine Readable Appendix][mra].
+
 
 Using the `uecho-rs`, the developer has only to set basic listeners to implement the devices and controllers because the `uecho-rs` handles other requests such as read and notification requests automatically.
 
@@ -48,4 +52,4 @@ The examples are available for [ECHONET-Lite][enet] controller and device implem
 This project is licensed under the Apache-2.0 License.
 
 [enet]:http://echonet.jp/english/
-
+[mra]:https://echonet.jp/spec_mra_rp1_en/
