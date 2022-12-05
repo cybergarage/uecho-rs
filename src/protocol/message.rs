@@ -60,6 +60,8 @@ pub struct Message {
     deoj: [u8; 3],
     esv: u8,
     properties: Vec<Property>,
+    set_properties: Vec<Property>,
+    get_properties: Vec<Property>,
     from: SocketAddr,
 }
 
@@ -72,6 +74,8 @@ impl Message {
             deoj: [0; 3],
             esv: 0,
             properties: Vec::<Property>::new(),
+            set_properties: Vec::<Property>::new(),
+            get_properties: Vec::<Property>::new(),
             from: SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), 0),
         }
     }
@@ -136,6 +140,14 @@ impl Message {
 
     pub fn opc(&self) -> usize {
         self.properties.len()
+    }
+
+    pub fn opc_set(&self) -> usize {
+        self.set_properties.len()
+    }
+
+    pub fn opc_get(&self) -> usize {
+        self.get_properties.len()
     }
 
     pub fn add_property(&mut self, prop: Property) -> &mut Self {
@@ -248,6 +260,19 @@ impl Message {
         true
     }
 
+    fn add_property_bytes(&self, msg_bytes: &mut Vec<u8>, props: &Vec<Property>) {
+        msg_bytes.push(props.len() as u8);
+        for prop in props {
+            msg_bytes.push(prop.code());
+            let pdc = prop.size();
+            msg_bytes.push(pdc as u8);
+            let prop_data = prop.data();
+            for j in 0..pdc {
+                msg_bytes.push(prop_data[j]);
+            }
+        }
+    }
+
     pub fn bytes(&self) -> Vec<u8> {
         let mut msg_bytes: Vec<u8> = Vec::new();
 
@@ -263,16 +288,13 @@ impl Message {
         msg_bytes.push(self.deoj[2]);
         msg_bytes.push(self.esv);
 
-        let opc = self.opc();
-        msg_bytes.push(opc as u8);
-        for i in 0..opc {
-            let prop = self.property(i);
-            msg_bytes.push(prop.code());
-            let pdc = prop.size();
-            msg_bytes.push(pdc as u8);
-            let prop_data = prop.data();
-            for j in 0..pdc {
-                msg_bytes.push(prop_data[j]);
+        match self.esv() {
+            Esv::WriteReadRequest | Esv::WriteReadResponse => {
+                self.add_property_bytes(&mut msg_bytes, &self.set_properties);
+                self.add_property_bytes(&mut msg_bytes, &self.get_properties);
+            }
+            _ => {
+                self.add_property_bytes(&mut msg_bytes, &self.properties);
             }
         }
         msg_bytes
