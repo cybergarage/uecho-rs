@@ -217,16 +217,45 @@ impl Message {
         self.deoj = [msg[3], msg[4], msg[5]];
         self.esv = msg[6];
 
-        let opc = msg[7] as usize;
-        let mut prop_msg_offset = FORMAT1_HEADER_SIZE;
-        for _n in 0..opc {
-            let prop_msg = &(*msg)[prop_msg_offset..];
-            let mut prop = Property::new();
-            if !prop.parse(prop_msg) {
-                return false;
+        fn parse_property_bytes(
+            props: &mut Vec<Property>,
+            msg: &[u8],
+            prop_msg_offset: &mut usize,
+        ) -> bool {
+            let opc = msg[*prop_msg_offset] as usize;
+            *prop_msg_offset += 1 as usize;
+            for _n in 0..opc {
+                let prop_msg = &(*msg)[*prop_msg_offset..];
+                let mut prop = Property::new();
+                if !prop.parse(prop_msg) {
+                    return false;
+                }
+                *prop_msg_offset += FORMAT1_PROPERTY_HEADER_SIZE + prop.size();
+                props.push(prop);
             }
-            prop_msg_offset += FORMAT1_PROPERTY_HEADER_SIZE + prop.size();
-            self.properties.push(prop);
+
+            true
+        }
+
+        let prop_msg = &(*msg)[7..];
+        let mut prop_msg_offset = 0 as usize;
+        match self.esv() {
+            Esv::WriteReadRequest | Esv::WriteReadResponse => {
+                let properties = &mut self.set_properties;
+                if !parse_property_bytes(properties, prop_msg, &mut prop_msg_offset) {
+                    return false;
+                }
+                let properties = &mut self.get_properties;
+                if !parse_property_bytes(properties, prop_msg, &mut prop_msg_offset) {
+                    return false;
+                }
+            }
+            _ => {
+                let properties = &mut self.properties;
+                if !parse_property_bytes(properties, prop_msg, &mut prop_msg_offset) {
+                    return false;
+                }
+            }
         }
 
         true
