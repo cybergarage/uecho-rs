@@ -81,10 +81,10 @@ impl ResponseErrorMessage {
         match msg.esv() {
             // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
             Esv::WriteReadRequestError => {
-                for req_prop in req_msg.set_properties().iter() {
+                for req_prop in req_msg.properties_set().iter() {
                     msg.add_property(req_prop.clone());
                 }
-                for req_prop in req_msg.set_properties().iter() {
+                for req_prop in req_msg.properties_set().iter() {
                     msg.add_property(req_prop.clone());
                 }
             }

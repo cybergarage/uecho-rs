@@ -111,10 +111,10 @@ fn node() {
             let mut prop = Property::new();
             prop.set_code(0x80);
             prop.set_data(vec![*req_stat]);
-            req_msg.add_set_property(prop);
+            req_msg.add_property_set(prop);
             let mut prop = Property::new();
             prop.set_code(0x80);
-            req_msg.add_get_property(prop);
+            req_msg.add_property_get(prop);
 
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
             match rx.recv_timeout(Duration::from_secs(5)) {
@@ -123,7 +123,7 @@ fn node() {
                     assert_eq!(res_meg.opc(), 0);
                     assert_eq!(res_meg.opc_set(), 1);
                     assert_eq!(res_meg.opc_get(), 1);
-                    let prop = res_meg.get_property(0);
+                    let prop = res_meg.property_get(0);
                     assert_eq!(Bytes::to_u32(prop.data()), res_stats[n] as u32);
                 }
                 Err(e) => {
