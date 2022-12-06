@@ -46,7 +46,6 @@ pub struct ResponseErrorMessage {}
 impl ResponseErrorMessage {
     pub fn from(req_msg: &Message) -> Message {
         let mut msg = Message::new();
-        msg.set_tid(req_msg.tid());
         match req_msg.esv() {
             // 4.2.3.1 Property value write service (no response required) [0x60, 0x50]
             Esv::WriteRequest => {
@@ -61,9 +60,9 @@ impl ResponseErrorMessage {
                 msg.set_esv(Esv::ReadRequestError);
             }
             // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
-            // Esv::WriteReadRequest => {
-            //     msg.set_esv(Esv::WriteReadRequestError);
-            // }
+            Esv::WriteReadRequest => {
+                msg.set_esv(Esv::WriteReadRequestError);
+            }
             // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
             Esv::NotificationRequest => {
                 msg.set_esv(Esv::NotificationRequestError);
@@ -76,11 +75,24 @@ impl ResponseErrorMessage {
                 msg.set_esv(Esv::Unknown);
             }
         }
+        msg.set_tid(req_msg.tid());
         msg.set_seoj(req_msg.deoj());
         msg.set_deoj(req_msg.seoj());
-        for n in 0..req_msg.opc() {
-            let req_prop = req_msg.property(n);
-            msg.add_property(req_prop.clone());
+        match msg.esv() {
+            // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
+            Esv::WriteReadRequestError => {
+                for req_prop in req_msg.set_properties().iter() {
+                    msg.add_property(req_prop.clone());
+                }
+                for req_prop in req_msg.set_properties().iter() {
+                    msg.add_property(req_prop.clone());
+                }
+            }
+            _ => {
+                for req_prop in req_msg.properties().iter() {
+                    msg.add_property(req_prop.clone());
+                }
+            }
         }
         msg
     }
