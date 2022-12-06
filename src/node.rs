@@ -255,58 +255,73 @@ impl Node {
             return None;
         }
 
-        let mut are_all_properties_available = true;
-        for req_msg_prop in req_msg.properties() {
-            // (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
-            let dst_prop = dst_obj.find_property(req_msg_prop.code());
-            if dst_prop.is_none() {
-                are_all_properties_available = false;
-                break;
+        fn is_valid_request_message(
+            dst_obj: &Object,
+            req_esv: Esv,
+            req_msg_props: &Vec<crate::protocol::Property>,
+        ) -> bool {
+            for req_msg_prop in req_msg_props.iter() {
+                // (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
+                let dst_prop = dst_obj.find_property(req_msg_prop.code());
+                if dst_prop.is_none() {
+                    return false;
+                }
+                // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
+                let dst_prop = dst_prop.unwrap();
+                match req_esv {
+                    Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
+                        if !dst_prop.is_writable() {
+                            return false;
+                        }
+                    }
+                    Esv::ReadRequest
+                    | Esv::NotificationRequest
+                    | Esv::NotificationResponseRequired => {
+                        if !dst_prop.is_readable() {
+                            return false;
+                        }
+                    }
+                    Esv::WriteReadRequest => {
+                        if !dst_prop.is_writable() {
+                            return false;
+                        }
+                        if !dst_prop.is_readable() {
+                            return false;
+                        }
+                    }
+                    _ => {
+                        return false;
+                    }
+                }
+                // (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
+                match req_esv {
+                    Esv::WriteRequest
+                    | Esv::WriteRequestResponseRequired
+                    | Esv::WriteReadRequest => {
+                        if 0 < dst_prop.capacity() && (dst_prop.capacity() < req_msg_prop.size()) {
+                            return false;
+                        }
+                    }
+                    _ => {}
+                }
             }
-            // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
-            let dst_prop = dst_prop.unwrap();
-            match req_msg.esv() {
-                Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
-                    if !dst_prop.is_writable() {
-                        are_all_properties_available = false;
-                        break;
-                    }
-                }
-                Esv::ReadRequest | Esv::NotificationRequest | Esv::NotificationResponseRequired => {
-                    if !dst_prop.is_readable() {
-                        are_all_properties_available = false;
-                        break;
-                    }
-                }
-                Esv::WriteReadRequest => {
-                    if !dst_prop.is_writable() {
-                        are_all_properties_available = false;
-                        break;
-                    }
-                    if !dst_prop.is_readable() {
-                        are_all_properties_available = false;
-                        break;
-                    }
-                }
-                _ => {
-                    are_all_properties_available = false;
-                    break;
-                }
-            }
-            // (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
-            match req_msg.esv() {
-                Esv::WriteRequest | Esv::WriteRequestResponseRequired | Esv::WriteReadRequest => {
-                    if 0 < dst_prop.capacity() && (dst_prop.capacity() < req_msg_prop.size()) {
-                        are_all_properties_available = false;
-                        break;
-                    }
-                }
-                _ => {}
-            }
+            true
         }
 
-        if !are_all_properties_available {
-            return Some(ResponseErrorMessage::from(req_msg));
+        match req_msg.esv() {
+            Esv::WriteReadRequest => {
+                if !is_valid_request_message(dst_obj, Esv::WriteRequest, req_msg.set_properties()) {
+                    return Some(ResponseErrorMessage::from(req_msg));
+                }
+                if !is_valid_request_message(dst_obj, Esv::ReadRequest, req_msg.get_properties()) {
+                    return Some(ResponseErrorMessage::from(req_msg));
+                }
+            }
+            _ => {
+                if !is_valid_request_message(dst_obj, req_msg.esv(), req_msg.properties()) {
+                    return Some(ResponseErrorMessage::from(req_msg));
+                }
+            }
         }
 
         // (F) Processing when the controlled property exists, the stipulated service processing functions are available and also the EDT size matches
@@ -327,6 +342,16 @@ impl Node {
         match req_msg.esv() {
             Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
                 for req_msg_prop in req_msg.properties() {
+                    let dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
+                    if dst_prop.is_none() {
+                        continue;
+                    }
+                    let dst_prop = dst_prop.unwrap();
+                    dst_prop.set_data(&req_msg_prop.data().clone());
+                }
+            }
+            Esv::WriteReadRequest => {
+                for req_msg_prop in req_msg.set_properties() {
                     let dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
                     if dst_prop.is_none() {
                         continue;
