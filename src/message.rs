@@ -114,9 +114,9 @@ impl ResponseMessage {
                 msg.set_esv(Esv::ReadResponse);
             }
             // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
-            // Esv::WriteReadRequest => {
-            //     msg.set_esv(Esv::WriteReadRequestError);
-            // }
+            Esv::WriteReadRequest => {
+                msg.set_esv(Esv::WriteReadResponse);
+            }
             // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
             Esv::NotificationRequest => {
                 msg.set_esv(Esv::Notification);
