@@ -155,6 +155,16 @@ impl Message {
         self
     }
 
+    pub fn add_set_property(&mut self, prop: Property) -> &mut Self {
+        self.set_properties.push(prop);
+        self
+    }
+
+    pub fn add_get_property(&mut self, prop: Property) -> &mut Self {
+        self.get_properties.push(prop);
+        self
+    }
+
     pub fn properties(&self) -> &Vec<Property> {
         &self.properties
     }
