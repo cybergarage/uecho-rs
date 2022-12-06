@@ -181,6 +181,14 @@ impl Message {
         &self.properties[n]
     }
 
+    pub fn set_property(&self, n: usize) -> &Property {
+        &self.set_properties[n]
+    }
+
+    pub fn get_property(&self, n: usize) -> &Property {
+        &self.get_properties[n]
+    }
+
     pub fn set_from(&mut self, addr: SocketAddr) -> &mut Self {
         self.from = addr;
         self
