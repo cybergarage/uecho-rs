@@ -349,6 +349,32 @@
 <span id="349">349</span>
 <span id="350">350</span>
 <span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -506,12 +532,38 @@
         <span class="self">self
     </span>}
 
+    <span class="kw">pub fn </span>add_property_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, prop: Property) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.set_properties.push(prop);
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>add_property_get(<span class="kw-2">&amp;mut </span><span class="self">self</span>, prop: Property) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.get_properties.push(prop);
+        <span class="self">self
+    </span>}
+
     <span class="kw">pub fn </span>properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Vec&lt;Property&gt; {
         <span class="kw-2">&amp;</span><span class="self">self</span>.properties
     }
 
+    <span class="kw">pub fn </span>properties_set(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Vec&lt;Property&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.set_properties
+    }
+
+    <span class="kw">pub fn </span>properties_get(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Vec&lt;Property&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.get_properties
+    }
+
     <span class="kw">pub fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, n: usize) -&gt; <span class="kw-2">&amp;</span>Property {
         <span class="kw-2">&amp;</span><span class="self">self</span>.properties[n]
+    }
+
+    <span class="kw">pub fn </span>property_set(<span class="kw-2">&amp;</span><span class="self">self</span>, n: usize) -&gt; <span class="kw-2">&amp;</span>Property {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.set_properties[n]
+    }
+
+    <span class="kw">pub fn </span>property_get(<span class="kw-2">&amp;</span><span class="self">self</span>, n: usize) -&gt; <span class="kw-2">&amp;</span>Property {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.get_properties[n]
     }
 
     <span class="kw">pub fn </span>set_from(<span class="kw-2">&amp;mut </span><span class="self">self</span>, addr: SocketAddr) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
@@ -591,7 +643,7 @@
         <span class="kw">let </span>prop_msg = <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>msg)[<span class="number">7</span>..];
         <span class="kw">let </span><span class="kw-2">mut </span>prop_msg_offset = <span class="number">0 </span><span class="kw">as </span>usize;
         <span class="kw">match </span><span class="self">self</span>.esv() {
-            Esv::WriteReadRequest | Esv::WriteReadResponse =&gt; {
+            Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError =&gt; {
                 <span class="kw">let </span>properties = <span class="kw-2">&amp;mut </span><span class="self">self</span>.set_properties;
                 <span class="kw">if </span>!parse_property_bytes(properties, prop_msg, <span class="kw-2">&amp;mut </span>prop_msg_offset) {
                     <span class="kw">return </span><span class="bool-val">false</span>;

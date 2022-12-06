@@ -397,6 +397,31 @@
 <span id="397">397</span>
 <span id="398">398</span>
 <span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -654,58 +679,73 @@
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
-        <span class="kw">let </span><span class="kw-2">mut </span>are_all_properties_available = <span class="bool-val">true</span>;
-        <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties() {
-            <span class="comment">// (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
-            </span><span class="kw">let </span>dst_prop = dst_obj.find_property(req_msg_prop.code());
-            <span class="kw">if </span>dst_prop.is_none() {
-                are_all_properties_available = <span class="bool-val">false</span>;
-                <span class="kw">break</span>;
+        <span class="kw">fn </span>is_valid_request_message(
+            dst_obj: <span class="kw-2">&amp;</span>Object,
+            req_esv: Esv,
+            req_msg_props: <span class="kw-2">&amp;</span>Vec&lt;<span class="kw">crate</span>::protocol::Property&gt;,
+        ) -&gt; bool {
+            <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg_props.iter() {
+                <span class="comment">// (C) Processing when the controlled property exists but the controlled property doesn’t exist or can be processed only partially
+                </span><span class="kw">let </span>dst_prop = dst_obj.find_property(req_msg_prop.code());
+                <span class="kw">if </span>dst_prop.is_none() {
+                    <span class="kw">return </span><span class="bool-val">false</span>;
+                }
+                <span class="comment">// (D) Processing when the controlled property exists but the stipulated service processing functions are not available
+                </span><span class="kw">let </span>dst_prop = dst_prop.unwrap();
+                <span class="kw">match </span>req_esv {
+                    Esv::WriteRequest | Esv::WriteRequestResponseRequired =&gt; {
+                        <span class="kw">if </span>!dst_prop.is_writable() {
+                            <span class="kw">return </span><span class="bool-val">false</span>;
+                        }
+                    }
+                    Esv::ReadRequest
+                    | Esv::NotificationRequest
+                    | Esv::NotificationResponseRequired =&gt; {
+                        <span class="kw">if </span>!dst_prop.is_readable() {
+                            <span class="kw">return </span><span class="bool-val">false</span>;
+                        }
+                    }
+                    Esv::WriteReadRequest =&gt; {
+                        <span class="kw">if </span>!dst_prop.is_writable() {
+                            <span class="kw">return </span><span class="bool-val">false</span>;
+                        }
+                        <span class="kw">if </span>!dst_prop.is_readable() {
+                            <span class="kw">return </span><span class="bool-val">false</span>;
+                        }
+                    }
+                    <span class="kw">_ </span>=&gt; {
+                        <span class="kw">return </span><span class="bool-val">false</span>;
+                    }
+                }
+                <span class="comment">// (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
+                </span><span class="kw">match </span>req_esv {
+                    Esv::WriteRequest
+                    | Esv::WriteRequestResponseRequired
+                    | Esv::WriteReadRequest =&gt; {
+                        <span class="kw">if </span><span class="number">0 </span>&lt; dst_prop.capacity() &amp;&amp; (dst_prop.capacity() &lt; req_msg_prop.size()) {
+                            <span class="kw">return </span><span class="bool-val">false</span>;
+                        }
+                    }
+                    <span class="kw">_ </span>=&gt; {}
+                }
             }
-            <span class="comment">// (D) Processing when the controlled property exists but the stipulated service processing functions are not available
-            </span><span class="kw">let </span>dst_prop = dst_prop.unwrap();
-            <span class="kw">match </span>req_msg.esv() {
-                Esv::WriteRequest | Esv::WriteRequestResponseRequired =&gt; {
-                    <span class="kw">if </span>!dst_prop.is_writable() {
-                        are_all_properties_available = <span class="bool-val">false</span>;
-                        <span class="kw">break</span>;
-                    }
-                }
-                Esv::ReadRequest | Esv::NotificationRequest | Esv::NotificationResponseRequired =&gt; {
-                    <span class="kw">if </span>!dst_prop.is_readable() {
-                        are_all_properties_available = <span class="bool-val">false</span>;
-                        <span class="kw">break</span>;
-                    }
-                }
-                Esv::WriteReadRequest =&gt; {
-                    <span class="kw">if </span>!dst_prop.is_writable() {
-                        are_all_properties_available = <span class="bool-val">false</span>;
-                        <span class="kw">break</span>;
-                    }
-                    <span class="kw">if </span>!dst_prop.is_readable() {
-                        are_all_properties_available = <span class="bool-val">false</span>;
-                        <span class="kw">break</span>;
-                    }
-                }
-                <span class="kw">_ </span>=&gt; {
-                    are_all_properties_available = <span class="bool-val">false</span>;
-                    <span class="kw">break</span>;
-                }
-            }
-            <span class="comment">// (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
-            </span><span class="kw">match </span>req_msg.esv() {
-                Esv::WriteRequest | Esv::WriteRequestResponseRequired | Esv::WriteReadRequest =&gt; {
-                    <span class="kw">if </span><span class="number">0 </span>&lt; dst_prop.capacity() &amp;&amp; (dst_prop.capacity() &lt; req_msg_prop.size()) {
-                        are_all_properties_available = <span class="bool-val">false</span>;
-                        <span class="kw">break</span>;
-                    }
-                }
-                <span class="kw">_ </span>=&gt; {}
-            }
-        }
+            <span class="bool-val">true
+        </span>}
 
-        <span class="kw">if </span>!are_all_properties_available {
-            <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+        <span class="kw">match </span>req_msg.esv() {
+            Esv::WriteReadRequest =&gt; {
+                <span class="kw">if </span>!is_valid_request_message(dst_obj, Esv::WriteRequest, req_msg.properties_set()) {
+                    <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+                }
+                <span class="kw">if </span>!is_valid_request_message(dst_obj, Esv::ReadRequest, req_msg.properties_get()) {
+                    <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+                }
+            }
+            <span class="kw">_ </span>=&gt; {
+                <span class="kw">if </span>!is_valid_request_message(dst_obj, req_msg.esv(), req_msg.properties()) {
+                    <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
+                }
+            }
         }
 
         <span class="comment">// (F) Processing when the controlled property exists, the stipulated service processing functions are available and also the EDT size matches
@@ -726,6 +766,16 @@
         <span class="kw">match </span>req_msg.esv() {
             Esv::WriteRequest | Esv::WriteRequestResponseRequired =&gt; {
                 <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties() {
+                    <span class="kw">let </span>dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
+                    <span class="kw">if </span>dst_prop.is_none() {
+                        <span class="kw">continue</span>;
+                    }
+                    <span class="kw">let </span>dst_prop = dst_prop.unwrap();
+                    dst_prop.set_data(<span class="kw-2">&amp;</span>req_msg_prop.data().clone());
+                }
+            }
+            Esv::WriteReadRequest =&gt; {
+                <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties_set() {
                     <span class="kw">let </span>dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
                     <span class="kw">if </span>dst_prop.is_none() {
                         <span class="kw">continue</span>;
