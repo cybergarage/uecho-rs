@@ -109,6 +109,15 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -133,27 +142,36 @@
 <span class="kw">use </span>echonet::protocol::{Esv, Property};
 <span class="kw">use </span>echonet::util::Bytes;
 <span class="kw">use </span>echonet::{Device, ObjectCode, RequestHandler};
-<span class="kw">use </span>log::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide.
 </span><span class="kw">pub struct </span>MonoLight {
     device: Device,
+    on: bool,
 }
 
 <span class="kw">impl </span>MonoLight {
     <span class="kw">pub fn </span>new() -&gt; Arc&lt;Mutex&lt;MonoLight&gt;&gt; {
         <span class="kw">let </span>m = Arc::new(Mutex::new(MonoLight {
             device: Device::new(<span class="number">0x029101</span>),
+            on: <span class="bool-val">false</span>,
         }));
         m.lock().unwrap().device.set_request_handler(m.clone());
         m
     }
 
-    <span class="kw">fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+    <span class="kw">pub fn </span>turn_on(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.on = <span class="bool-val">true</span>;
+    }
+
+    <span class="kw">pub fn </span>turn_off(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.on = <span class="bool-val">false</span>;
+    }
+
+    <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.device.start()
     }
 
-    <span class="kw">fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+    <span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.device.stop()
     }
 }
@@ -174,24 +192,24 @@
                         <span class="kw">let </span>prop_u32 = Bytes::to_u32(prop_bytes);
                         <span class="kw">match </span>prop_u32 {
                             <span class="number">0x30 </span><span class="comment">/* On */</span>=&gt; {
-                                <span class="macro">info!</span>(<span class="string">&quot;On&quot;</span>);
+                                <span class="self">self</span>.turn_on();
+                                <span class="kw">return </span><span class="bool-val">true</span>;
                             }
                             <span class="number">0x31 </span><span class="comment">/* Off */</span>=&gt; {
-                                <span class="macro">info!</span>(<span class="string">&quot;Off&quot;</span>);
+                                <span class="self">self</span>.turn_off();
+                                <span class="kw">return </span><span class="bool-val">true</span>;
                             }
                             <span class="kw">_ </span>=&gt; {
-                                <span class="kw">return </span><span class="bool-val">false</span>;
                             }
                         }
                     }
                     <span class="kw">_ </span>=&gt; {
-                        <span class="kw">return </span><span class="bool-val">false</span>;
                     }
                 }
             }
             <span class="kw">_ </span>=&gt; {}
         }
-        <span class="bool-val">true
+        <span class="bool-val">false
     </span>}
 }
 

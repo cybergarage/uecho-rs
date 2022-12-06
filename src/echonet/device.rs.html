@@ -324,6 +324,13 @@
 <span id="324">324</span>
 <span id="325">325</span>
 <span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -420,22 +427,31 @@
 /// # Examples
 /// ```
 /// use std::sync::{Arc, Mutex};
-/// use log::*;
 /// use echonet::protocol::{Esv, Property};
 /// use echonet::util::Bytes;
 /// use echonet::{Device, ObjectCode, RequestHandler};
 ///
 /// pub struct MonoLight {
 ///     device: Device,
+///     on: bool,
 /// }
 ///
 /// impl MonoLight {
 ///     pub fn new() -&gt; Arc&lt;Mutex&lt;MonoLight&gt;&gt; {
 ///         let m = Arc::new(Mutex::new(MonoLight {
 ///             device: Device::new(0x029101),
+///             on: false,
 ///         }));
 ///         m.lock().unwrap().device.set_request_handler(m.clone());
 ///         m
+///     }
+///
+///     pub fn turn_on(&amp;mut self) {
+///         self.on = true;
+///     }
+///
+///     pub fn turn_off(&amp;mut self) {
+///         self.on = false;
 ///     }
 /// }
 ///
@@ -455,24 +471,22 @@
 ///                         let prop_u32 = Bytes::to_u32(prop_bytes);
 ///                         match prop_u32 {
 ///                             0x30 /* On */=&gt; {
-///                                 info!(&quot;On&quot;);
+///                                 self.turn_on();
+///                                 return true;
 ///                             }
 ///                             0x31 /* Off */=&gt; {
-///                                 info!(&quot;Off&quot;);
+///                                 self.turn_off();
+///                                 return true;
 ///                             }
-///                             _ =&gt; {
-///                                 return false;
-///                             }
+///                             _ =&gt; {}
 ///                         }
 ///                     }
-///                     _ =&gt; {
-///                         return false;
-///                     }
+///                     _ =&gt; {}
 ///                 }
 ///             }
 ///             _ =&gt; {}
 ///         }
-///         true
+///         false
 ///     }
 /// }
 </span><span class="comment">// ```
