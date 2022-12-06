@@ -266,7 +266,7 @@ impl Message {
         let prop_msg = &(*msg)[7..];
         let mut prop_msg_offset = 0 as usize;
         match self.esv() {
-            Esv::WriteReadRequest | Esv::WriteReadResponse => {
+            Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError => {
                 let properties = &mut self.set_properties;
                 if !parse_property_bytes(properties, prop_msg, &mut prop_msg_offset) {
                     return false;
