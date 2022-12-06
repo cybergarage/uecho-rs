@@ -101,6 +101,36 @@ fn node() {
                 }
             };
         }
+
+        for (n, req_stat) in req_stats.iter().enumerate() {
+            // Writes and reads a property value (Esv::WriteReadRequest).
+
+            let mut req_msg = Message::new();
+            req_msg.set_deoj(dev_obj_code);
+            req_msg.set_esv(Esv::WriteReadRequest);
+            let mut prop = Property::new();
+            prop.set_code(0x80);
+            prop.set_data(vec![*req_stat]);
+            req_msg.add_set_property(prop);
+            let mut prop = Property::new();
+            prop.set_code(0x80);
+            req_msg.add_get_property(prop);
+
+            let rx = ctrl.post_message(&remote_node, &mut req_msg);
+            match rx.recv_timeout(Duration::from_secs(5)) {
+                Ok(res_meg) => {
+                    assert_eq!(res_meg.esv(), Esv::WriteReadResponse);
+                    assert_eq!(res_meg.opc(), 0);
+                    assert_eq!(res_meg.opc_set(), 1);
+                    assert_eq!(res_meg.opc_get(), 1);
+                    let prop = res_meg.get_property(0);
+                    assert_eq!(Bytes::to_u32(prop.data()), res_stats[n] as u32);
+                }
+                Err(e) => {
+                    panic!("{}", e);
+                }
+            };
+        }
     }
 
     assert!(dev.lock().unwrap().stop());
