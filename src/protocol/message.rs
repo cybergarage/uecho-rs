@@ -159,6 +159,14 @@ impl Message {
         &self.properties
     }
 
+    pub fn set_properties(&self) -> &Vec<Property> {
+        &self.set_properties
+    }
+
+    pub fn get_properties(&self) -> &Vec<Property> {
+        &self.get_properties
+    }
+
     pub fn property(&self, n: usize) -> &Property {
         &self.properties[n]
     }
