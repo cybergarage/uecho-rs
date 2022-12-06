@@ -221,7 +221,7 @@ impl Object {
                 for req_prop in req_msg.set_properties() {
                     let mut res_prop = crate::protocol::Property::new();
                     res_prop.set_code(req_prop.code());
-                    res_msg.add_property(res_prop);
+                    res_msg.add_set_property(res_prop);
                 }
                 for req_prop in req_msg.get_properties() {
                     let obj_prop = self.find_property(req_prop.code());
@@ -229,7 +229,7 @@ impl Object {
                         return Some(ResponseErrorMessage::from(req_msg));
                     }
                     let obj_prop = obj_prop.unwrap();
-                    res_msg.add_property(crate::protocol::Property::from(
+                    res_msg.add_get_property(crate::protocol::Property::from(
                         obj_prop.code(),
                         obj_prop.data().clone(),
                     ));
