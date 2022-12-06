@@ -1,7 +1,7 @@
 # Changelog
 
 ## v1.1.0 (2022-xx-x)
--  Support write and read request protocol (0x6E)
+-  Support write and read request protocols (0x6E, 0x7E, 0x5E)
 
 ## v1.0.0 (2022-12-05)
 - Add Device module that simulates an ECHONET-Lite device node
