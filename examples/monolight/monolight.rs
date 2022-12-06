@@ -22,27 +22,36 @@ use echonet::log::Logger;
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
 use echonet::{Device, ObjectCode, RequestHandler};
-use log::*;
 
 /// MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide.
 pub struct MonoLight {
     device: Device,
+    on: bool,
 }
 
 impl MonoLight {
     pub fn new() -> Arc<Mutex<MonoLight>> {
         let m = Arc::new(Mutex::new(MonoLight {
             device: Device::new(0x029101),
+            on: false,
         }));
         m.lock().unwrap().device.set_request_handler(m.clone());
         m
     }
 
-    fn start(&mut self) -> bool {
+    pub fn turn_on(&mut self) {
+        self.on = true;
+    }
+
+    pub fn turn_off(&mut self) {
+        self.on = false;
+    }
+
+    pub fn start(&mut self) -> bool {
         self.device.start()
     }
 
-    fn stop(&mut self) -> bool {
+    pub fn stop(&mut self) -> bool {
         self.device.stop()
     }
 }
@@ -63,24 +72,24 @@ impl RequestHandler for MonoLight {
                         let prop_u32 = Bytes::to_u32(prop_bytes);
                         match prop_u32 {
                             0x30 /* On */=> {
-                                info!("On");
+                                self.turn_on();
+                                return true;
                             }
                             0x31 /* Off */=> {
-                                info!("Off");
+                                self.turn_off();
+                                return true;
                             }
                             _ => {
-                                return false;
                             }
                         }
                     }
                     _ => {
-                        return false;
                     }
                 }
             }
             _ => {}
         }
-        true
+        false
     }
 }
 
