@@ -155,12 +155,12 @@ impl Message {
         self
     }
 
-    pub fn add_set_property(&mut self, prop: Property) -> &mut Self {
+    pub fn add_property_set(&mut self, prop: Property) -> &mut Self {
         self.set_properties.push(prop);
         self
     }
 
-    pub fn add_get_property(&mut self, prop: Property) -> &mut Self {
+    pub fn add_property_get(&mut self, prop: Property) -> &mut Self {
         self.get_properties.push(prop);
         self
     }
@@ -169,11 +169,11 @@ impl Message {
         &self.properties
     }
 
-    pub fn set_properties(&self) -> &Vec<Property> {
+    pub fn properties_set(&self) -> &Vec<Property> {
         &self.set_properties
     }
 
-    pub fn get_properties(&self) -> &Vec<Property> {
+    pub fn properties_get(&self) -> &Vec<Property> {
         &self.get_properties
     }
 
@@ -181,11 +181,11 @@ impl Message {
         &self.properties[n]
     }
 
-    pub fn set_property(&self, n: usize) -> &Property {
+    pub fn property_set(&self, n: usize) -> &Property {
         &self.set_properties[n]
     }
 
-    pub fn get_property(&self, n: usize) -> &Property {
+    pub fn property_get(&self, n: usize) -> &Property {
         &self.get_properties[n]
     }
 

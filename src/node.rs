@@ -310,10 +310,10 @@ impl Node {
 
         match req_msg.esv() {
             Esv::WriteReadRequest => {
-                if !is_valid_request_message(dst_obj, Esv::WriteRequest, req_msg.set_properties()) {
+                if !is_valid_request_message(dst_obj, Esv::WriteRequest, req_msg.properties_set()) {
                     return Some(ResponseErrorMessage::from(req_msg));
                 }
-                if !is_valid_request_message(dst_obj, Esv::ReadRequest, req_msg.get_properties()) {
+                if !is_valid_request_message(dst_obj, Esv::ReadRequest, req_msg.properties_get()) {
                     return Some(ResponseErrorMessage::from(req_msg));
                 }
             }
@@ -351,7 +351,7 @@ impl Node {
                 }
             }
             Esv::WriteReadRequest => {
-                for req_msg_prop in req_msg.set_properties() {
+                for req_msg_prop in req_msg.properties_set() {
                     let dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
                     if dst_prop.is_none() {
                         continue;
