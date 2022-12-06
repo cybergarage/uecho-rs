@@ -298,6 +298,57 @@
 <span id="298">298</span>
 <span id="299">299</span>
 <span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -360,6 +411,8 @@
     deoj: [u8; <span class="number">3</span>],
     esv: u8,
     properties: Vec&lt;Property&gt;,
+    set_properties: Vec&lt;Property&gt;,
+    get_properties: Vec&lt;Property&gt;,
     from: SocketAddr,
 }
 
@@ -372,6 +425,8 @@
             deoj: [<span class="number">0</span>; <span class="number">3</span>],
             esv: <span class="number">0</span>,
             properties: Vec::&lt;Property&gt;::new(),
+            set_properties: Vec::&lt;Property&gt;::new(),
+            get_properties: Vec::&lt;Property&gt;::new(),
             from: SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), <span class="number">0</span>),
         }
     }
@@ -436,6 +491,14 @@
 
     <span class="kw">pub fn </span>opc(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="self">self</span>.properties.len()
+    }
+
+    <span class="kw">pub fn </span>opc_set(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.set_properties.len()
+    }
+
+    <span class="kw">pub fn </span>opc_get(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.get_properties.len()
     }
 
     <span class="kw">pub fn </span>add_property(<span class="kw-2">&amp;mut </span><span class="self">self</span>, prop: Property) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
@@ -505,16 +568,45 @@
         <span class="self">self</span>.deoj = [msg[<span class="number">3</span>], msg[<span class="number">4</span>], msg[<span class="number">5</span>]];
         <span class="self">self</span>.esv = msg[<span class="number">6</span>];
 
-        <span class="kw">let </span>opc = msg[<span class="number">7</span>] <span class="kw">as </span>usize;
-        <span class="kw">let </span><span class="kw-2">mut </span>prop_msg_offset = FORMAT1_HEADER_SIZE;
-        <span class="kw">for </span>_n <span class="kw">in </span><span class="number">0</span>..opc {
-            <span class="kw">let </span>prop_msg = <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>msg)[prop_msg_offset..];
-            <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
-            <span class="kw">if </span>!prop.parse(prop_msg) {
-                <span class="kw">return </span><span class="bool-val">false</span>;
+        <span class="kw">fn </span>parse_property_bytes(
+            props: <span class="kw-2">&amp;mut </span>Vec&lt;Property&gt;,
+            msg: <span class="kw-2">&amp;</span>[u8],
+            prop_msg_offset: <span class="kw-2">&amp;mut </span>usize,
+        ) -&gt; bool {
+            <span class="kw">let </span>opc = msg[<span class="kw-2">*</span>prop_msg_offset] <span class="kw">as </span>usize;
+            <span class="kw-2">*</span>prop_msg_offset += <span class="number">1 </span><span class="kw">as </span>usize;
+            <span class="kw">for </span>_n <span class="kw">in </span><span class="number">0</span>..opc {
+                <span class="kw">let </span>prop_msg = <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>msg)[<span class="kw-2">*</span>prop_msg_offset..];
+                <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
+                <span class="kw">if </span>!prop.parse(prop_msg) {
+                    <span class="kw">return </span><span class="bool-val">false</span>;
+                }
+                <span class="kw-2">*</span>prop_msg_offset += FORMAT1_PROPERTY_HEADER_SIZE + prop.size();
+                props.push(prop);
             }
-            prop_msg_offset += FORMAT1_PROPERTY_HEADER_SIZE + prop.size();
-            <span class="self">self</span>.properties.push(prop);
+
+            <span class="bool-val">true
+        </span>}
+
+        <span class="kw">let </span>prop_msg = <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>msg)[<span class="number">7</span>..];
+        <span class="kw">let </span><span class="kw-2">mut </span>prop_msg_offset = <span class="number">0 </span><span class="kw">as </span>usize;
+        <span class="kw">match </span><span class="self">self</span>.esv() {
+            Esv::WriteReadRequest | Esv::WriteReadResponse =&gt; {
+                <span class="kw">let </span>properties = <span class="kw-2">&amp;mut </span><span class="self">self</span>.set_properties;
+                <span class="kw">if </span>!parse_property_bytes(properties, prop_msg, <span class="kw-2">&amp;mut </span>prop_msg_offset) {
+                    <span class="kw">return </span><span class="bool-val">false</span>;
+                }
+                <span class="kw">let </span>properties = <span class="kw-2">&amp;mut </span><span class="self">self</span>.get_properties;
+                <span class="kw">if </span>!parse_property_bytes(properties, prop_msg, <span class="kw-2">&amp;mut </span>prop_msg_offset) {
+                    <span class="kw">return </span><span class="bool-val">false</span>;
+                }
+            }
+            <span class="kw">_ </span>=&gt; {
+                <span class="kw">let </span>properties = <span class="kw-2">&amp;mut </span><span class="self">self</span>.properties;
+                <span class="kw">if </span>!parse_property_bytes(properties, prop_msg, <span class="kw-2">&amp;mut </span>prop_msg_offset) {
+                    <span class="kw">return </span><span class="bool-val">false</span>;
+                }
+            }
         }
 
         <span class="bool-val">true
@@ -548,6 +640,19 @@
         <span class="bool-val">true
     </span>}
 
+    <span class="kw">fn </span>add_property_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, msg_bytes: <span class="kw-2">&amp;mut </span>Vec&lt;u8&gt;, props: <span class="kw-2">&amp;</span>Vec&lt;Property&gt;) {
+        msg_bytes.push(props.len() <span class="kw">as </span>u8);
+        <span class="kw">for </span>prop <span class="kw">in </span>props {
+            msg_bytes.push(prop.code());
+            <span class="kw">let </span>pdc = prop.size();
+            msg_bytes.push(pdc <span class="kw">as </span>u8);
+            <span class="kw">let </span>prop_data = prop.data();
+            <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..pdc {
+                msg_bytes.push(prop_data[j]);
+            }
+        }
+    }
+
     <span class="kw">pub fn </span>bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;u8&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>msg_bytes: Vec&lt;u8&gt; = Vec::new();
 
@@ -563,16 +668,13 @@
         msg_bytes.push(<span class="self">self</span>.deoj[<span class="number">2</span>]);
         msg_bytes.push(<span class="self">self</span>.esv);
 
-        <span class="kw">let </span>opc = <span class="self">self</span>.opc();
-        msg_bytes.push(opc <span class="kw">as </span>u8);
-        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..opc {
-            <span class="kw">let </span>prop = <span class="self">self</span>.property(i);
-            msg_bytes.push(prop.code());
-            <span class="kw">let </span>pdc = prop.size();
-            msg_bytes.push(pdc <span class="kw">as </span>u8);
-            <span class="kw">let </span>prop_data = prop.data();
-            <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..pdc {
-                msg_bytes.push(prop_data[j]);
+        <span class="kw">match </span><span class="self">self</span>.esv() {
+            Esv::WriteReadRequest | Esv::WriteReadResponse =&gt; {
+                <span class="self">self</span>.add_property_bytes(<span class="kw-2">&amp;mut </span>msg_bytes, <span class="kw-2">&amp;</span><span class="self">self</span>.set_properties);
+                <span class="self">self</span>.add_property_bytes(<span class="kw-2">&amp;mut </span>msg_bytes, <span class="kw-2">&amp;</span><span class="self">self</span>.get_properties);
+            }
+            <span class="kw">_ </span>=&gt; {
+                <span class="self">self</span>.add_property_bytes(<span class="kw-2">&amp;mut </span>msg_bytes, <span class="kw-2">&amp;</span><span class="self">self</span>.properties);
             }
         }
         msg_bytes
