@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.1.0 (2022-xx-x)
+## v1.1.0 (2022-12-07)
 -  Support write and read request protocols (0x6E, 0x7E, 0x5E)
 
 ## v1.0.0 (2022-12-05)
