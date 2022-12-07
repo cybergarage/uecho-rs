@@ -9,9 +9,9 @@ The `uecho-rs` is a portable, cross-platform development framework for Rust deve
 
 ## What is uEcho ?
 
-To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
+The `uecho-rs` is a comprehensive framework for [ECHONET-Lite][enet] development in Rust. To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer had to understand and implement the communication middleware specification such as the message format and base sequences.
 
-The `uecho-rs` provides the following major components to control [ECHONET-Lite][enet] devices and create the standard specification devices. 
+The `uecho-rs` provides the following major components to control [ECHONET-Lite][enet] devices and create the standard [ECHONET-Lite][enet] devices easily without in-depth [ECHONET-Lite][enet] specification understanding. 
 
 - [ECHONET-Lite][enet] controller to find and control [ECHONET-Lite][enet] nodes.
 - [ECHONET-Lite][enet] device framework to implement any standard [ECHONET-Lite][enet] devices.
