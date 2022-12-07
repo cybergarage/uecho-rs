@@ -14,9 +14,9 @@ To implement IoT controllers or devices of [ECHONET-Lite][enet], the developer h
 The `uecho-rs` provides the following major components to control [ECHONET-Lite][enet] devices and create the standard specification devices. 
 
 - [ECHONET-Lite][enet] controller to find and control [ECHONET-Lite][enet] nodes.
-- [ECHONET-Lite][enet] device framework to implement user [ECHONET-Lite][enet] devices.
+- [ECHONET-Lite][enet] device framework to implement any standard [ECHONET-Lite][enet] devices.
 - Decoder and Encoder for [ECHONET-Lite][enet] messaging protocol.
-- Standard device database based on [Machine Readable Appendix][mra] of the ECHONET Consortium.
+- Standard device database based on [Machine Readable Appendix][mra] and [Manufacturer code List][mcl] provided by [the ECHONET Consortium][eneto].
 
 The `uecho-rs` handles all [ECHONET-Lite][enet] requests such as read, write and notification requests automatically. Therefore, Rust developers can implement the standard device and controller applications using the `uecho-rs` easily by simply implementing the request message validators.
 
@@ -51,4 +51,6 @@ The examples are available for [ECHONET-Lite][enet] controller and device implem
 This project is licensed under the Apache-2.0 License.
 
 [enet]:http://echonet.jp/english/
+[eneto]:https://echonet.jp/organization_en/
 [mra]:https://echonet.jp/spec_mra_rp1_en/
+[mcl]:https://echonet.jp/spec-en/
