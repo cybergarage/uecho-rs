@@ -1,11 +1,15 @@
 # Changelog
 
+## v1.1.1 (2022-xx-x)
+- Improve device to set default standard properties.
+- Improve controller search functions.
+
 ## v1.1.0 (2022-12-07)
--  Support write and read request protocols (0x6E, 0x7E, 0x5E)
+-  Supported write and read request protocols (0x6E, 0x7E, 0x5E)
 
 ## v1.0.0 (2022-12-05)
-- Add Device module that simulates an ECHONET-Lite device node
-- Add a controller example that posts a message to other nodes as uechopost
+- Added Device module that simulates an ECHONET-Lite device node
+- Added a controller example that posts a message to other nodes as uechopost
 
 ## v0.9.3 (2022-12-03)
 - Improved Controller to bind multiple interfaces
