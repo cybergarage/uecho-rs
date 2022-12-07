@@ -98,14 +98,14 @@ pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 /// use echonet::util::Bytes;
 /// use echonet::{Device, ObjectCode, RequestHandler};
 ///
-/// pub struct MonoLight {
+/// pub struct MyDevice {
 ///     device: Device,
 ///     on: bool,
 /// }
 ///
-/// impl MonoLight {
-///     pub fn new() -> Arc<Mutex<MonoLight>> {
-///         let m = Arc::new(Mutex::new(MonoLight {
+/// impl MyDevice {
+///     pub fn new() -> Arc<Mutex<MyDevice>> {
+///         let m = Arc::new(Mutex::new(MyDevice {
 ///             device: Device::new(0x029101),
 ///             on: false,
 ///         }));
@@ -122,7 +122,7 @@ pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 ///     }
 /// }
 ///
-/// impl RequestHandler for MonoLight {
+/// impl RequestHandler for MyDevice {
 ///     fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
 ///         // Ignore all messages to other objects in the same node.
 ///         if deoj != self.device.code() {

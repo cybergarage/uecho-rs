@@ -44,13 +44,23 @@ pub const TID_MAX: TID = 65535;
 /// msg.add_property(prop);
 ///
 /// let msg = Message::from_bytes(&msg.bytes());
-/// let opc = msg.opc();
-/// for n in 0..opc {
-///     let prop = msg.property(n);
-///     println!("[{}] {}", n, hex::encode(prop.data()));
-/// }
-/// for (n, prop) in msg.properties().iter().enumerate() {
-///     println!("[{}] {}", n, hex::encode(prop.data()));
+/// match msg.esv() {
+///     Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError => {
+///         let opc = msg.opc_set();
+///         for (n, prop) in msg.properties_set().iter().enumerate() {
+///             println!("[{}] {}", n, hex::encode(prop.data()));
+///         }
+///         let opc = msg.opc_get();
+///         for (n, prop) in msg.properties_get().iter().enumerate() {
+///             println!("[{}] {}", n, hex::encode(prop.data()));
+///         }
+///     }
+///     _ => {
+///         let opc = msg.opc();
+///         for (n, prop) in msg.properties().iter().enumerate() {
+///             println!("[{}] {}", n, hex::encode(prop.data()));
+///         }
+///     }
 /// }
 /// ```
 pub struct Message {

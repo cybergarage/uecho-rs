@@ -17,6 +17,70 @@ use crate::protocol::{Esv, Message, Property};
 use std::sync::{Arc, Mutex};
 
 /// RequestHandler defines a request message handler interface.
+/// # Examples
+/// ```
+/// use std::sync::{Arc, Mutex};
+/// use echonet::{Device, ObjectCode, RequestHandler};
+/// use echonet::protocol::{Esv, Property};
+/// use echonet::util::Bytes;
+///
+/// pub struct MyDevice {
+///     device: Device,
+///     on: bool,
+/// }
+///
+/// impl MyDevice {
+///     pub fn new() -> Arc<Mutex<MyDevice>> {
+///         let m = Arc::new(Mutex::new(MyDevice {
+///             device: Device::new(0x029101),
+///             on: false,
+///         }));
+///         m.lock().unwrap().device.set_request_handler(m.clone());
+///         m
+///     }
+///
+///     pub fn turn_on(&mut self) {
+///         self.on = true;
+///     }
+///
+///     pub fn turn_off(&mut self) {
+///         self.on = false;
+///     }
+/// }
+///
+/// impl RequestHandler for MyDevice {
+///     fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+///         match esv {
+///             Esv::WriteRequest | Esv::WriteReadRequest => {
+///                 let prop_code = prop.code();
+///                 let prop_bytes = prop.data();
+///                 match prop_code {
+///                     0x80 /* Operating status */ => {
+///                         let prop_u32 = Bytes::to_u32(prop_bytes);
+///                         match prop_u32 {
+///                             0x30 /* On */=> {
+///                                 self.turn_on();
+///                                 return true;
+///                             }
+///                             0x31 /* Off */=> {
+///                                 self.turn_off();
+///                                 return true;
+///                             }
+///                             _ => {
+///                             }
+///                         }
+///                     }
+///                     _ => {
+///                     }
+///                 }
+///             }
+///             _ => {}
+///         }
+///         false
+///     }
+/// }
+/// ```
+
 pub trait RequestHandler {
     fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool;
 }
