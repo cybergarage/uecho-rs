@@ -431,14 +431,14 @@
 /// use echonet::util::Bytes;
 /// use echonet::{Device, ObjectCode, RequestHandler};
 ///
-/// pub struct MonoLight {
+/// pub struct MyDevice {
 ///     device: Device,
 ///     on: bool,
 /// }
 ///
-/// impl MonoLight {
-///     pub fn new() -&gt; Arc&lt;Mutex&lt;MonoLight&gt;&gt; {
-///         let m = Arc::new(Mutex::new(MonoLight {
+/// impl MyDevice {
+///     pub fn new() -&gt; Arc&lt;Mutex&lt;MyDevice&gt;&gt; {
+///         let m = Arc::new(Mutex::new(MyDevice {
 ///             device: Device::new(0x029101),
 ///             on: false,
 ///         }));
@@ -455,7 +455,7 @@
 ///     }
 /// }
 ///
-/// impl RequestHandler for MonoLight {
+/// impl RequestHandler for MyDevice {
 ///     fn property_request_received(&amp;mut self, deoj: ObjectCode, esv: Esv, prop: &amp;Property) -&gt; bool {
 ///         // Ignore all messages to other objects in the same node.
 ///         if deoj != self.device.code() {
