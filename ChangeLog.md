@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.1.1 (2022-xx-x)
+## v1.1.1 (2022-xx-xx)
 - Improve device to set default standard properties
 - Improve controller search functions
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
