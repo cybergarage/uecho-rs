@@ -5,14 +5,14 @@
 <span class="kw">use </span>echonet::util::Bytes;
 <span class="kw">use </span>echonet::{Device, ObjectCode, RequestHandler};
 
-<span class="kw">pub struct </span>MonoLight {
+<span class="kw">pub struct </span>MyDevice {
     device: Device,
     on: bool,
 }
 
-<span class="kw">impl </span>MonoLight {
-    <span class="kw">pub fn </span>new() -&gt; Arc&lt;Mutex&lt;MonoLight&gt;&gt; {
-        <span class="kw">let </span>m = Arc::new(Mutex::new(MonoLight {
+<span class="kw">impl </span>MyDevice {
+    <span class="kw">pub fn </span>new() -&gt; Arc&lt;Mutex&lt;MyDevice&gt;&gt; {
+        <span class="kw">let </span>m = Arc::new(Mutex::new(MyDevice {
             device: Device::new(<span class="number">0x029101</span>),
             on: <span class="bool-val">false</span>,
         }));
@@ -29,7 +29,7 @@
     }
 }
 
-<span class="kw">impl </span>RequestHandler <span class="kw">for </span>MonoLight {
+<span class="kw">impl </span>RequestHandler <span class="kw">for </span>MyDevice {
     <span class="kw">fn </span>property_request_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deoj: ObjectCode, esv: Esv, prop: <span class="kw-2">&amp;</span>Property) -&gt; bool {
         <span class="comment">// Ignore all messages to other objects in the same node.
         </span><span class="kw">if </span>deoj != <span class="self">self</span>.device.code() {

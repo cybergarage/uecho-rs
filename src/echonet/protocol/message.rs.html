@@ -375,6 +375,16 @@
 <span id="375">375</span>
 <span id="376">376</span>
 <span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -421,13 +431,23 @@
 /// msg.add_property(prop);
 ///
 /// let msg = Message::from_bytes(&amp;msg.bytes());
-/// let opc = msg.opc();
-/// for n in 0..opc {
-///     let prop = msg.property(n);
-///     println!(&quot;[{}] {}&quot;, n, hex::encode(prop.data()));
-/// }
-/// for (n, prop) in msg.properties().iter().enumerate() {
-///     println!(&quot;[{}] {}&quot;, n, hex::encode(prop.data()));
+/// match msg.esv() {
+///     Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError =&gt; {
+///         let opc = msg.opc_set();
+///         for (n, prop) in msg.properties_set().iter().enumerate() {
+///             println!(&quot;[{}] {}&quot;, n, hex::encode(prop.data()));
+///         }
+///         let opc = msg.opc_get();
+///         for (n, prop) in msg.properties_get().iter().enumerate() {
+///             println!(&quot;[{}] {}&quot;, n, hex::encode(prop.data()));
+///         }
+///     }
+///     _ =&gt; {
+///         let opc = msg.opc();
+///         for (n, prop) in msg.properties().iter().enumerate() {
+///             println!(&quot;[{}] {}&quot;, n, hex::encode(prop.data()));
+///         }
+///     }
 /// }
 /// ```
 </span><span class="kw">pub struct </span>Message {
