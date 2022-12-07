@@ -23,7 +23,7 @@
 //!
 //! - [ECHONET-Lite][enet] controller to find and control [ECHONET-Lite][enet] nodes.
 //! - [ECHONET-Lite][enet] device framework to implement any standard [ECHONET-Lite][enet] devices.
-//! - Decoder and Encoder for [ECHONET-Lite][enet] messaging protocol.
+//! - Decoder and Encoder for [ECHONET-Lite][enet] messaging packet.
 //! - Standard device database based on [Machine Readable Appendix][mra] and [Manufacturer code List][mcl] provided by [the ECHONET Consortium][eneto].
 //!
 //! The `uecho-rs` handles all [ECHONET-Lite][enet] requests such as read, write and notification requests automatically. Therefore, Rust developers can implement the standard device and controller applications using the `uecho-rs` easily by simply implementing the request message validators.
@@ -57,7 +57,7 @@
 
 /// Logger function module.
 pub mod log;
-/// Messaging protocol encoder and decoder module.
+/// messaging packet encoder and decoder module.
 pub mod protocol;
 /// Messaging transport manager module (Internal).
 pub mod transport;
