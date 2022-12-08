@@ -57,7 +57,12 @@ impl Node {
     }
 
     fn init_objects(&mut self) {
-        self.objects.push(NodeProfile::new());
+        self.init_node_profile_object();
+    }
+
+    pub fn init_node_profile_object(&mut self) {
+        let mut prof = NodeProfile::new();
+        self.add_object(prof);
     }
 
     pub fn add_object(&mut self, obj: Object) -> bool {
