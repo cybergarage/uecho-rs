@@ -319,18 +319,6 @@
 <span id="319">319</span>
 <span id="320">320</span>
 <span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
-<span id="332">332</span>
-<span id="333">333</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -591,24 +579,12 @@
         <span class="kw">if </span>!dev_node.start() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
-        <span class="comment">// Sets mandatory properties
-        </span>dev_node.set_property(
-            <span class="self">self</span>.code,
-            DEVICE_OPERATING_STATUS,
-            <span class="kw-2">&amp;</span>[OBJECT_OPERATING_STATUS_ON],
-        );
         <span class="bool-val">true
     </span>}
 
     <span class="doccomment">/// Stops the device.
     </span><span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="comment">// Sets mandatory properties
-        </span><span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
-        dev_node.set_property(
-            <span class="self">self</span>.code,
-            DEVICE_OPERATING_STATUS,
-            <span class="kw-2">&amp;</span>[OBJECT_OPERATING_STATUS_OFF],
-        );
+        <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
         dev_node.stop()
     }
 }

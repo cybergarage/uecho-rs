@@ -422,6 +422,55 @@
 <span id="422">422</span>
 <span id="423">423</span>
 <span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -447,8 +496,9 @@
 <span class="kw">use </span><span class="kw">crate</span>::message::ResponseErrorMessage;
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::property::Property;
+<span class="kw">use </span><span class="kw">crate</span>::property::{Property, PropertyCode};
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
+<span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::transport::{Manager, NotifytManager, PORT};
 <span class="kw">use </span><span class="kw">crate</span>::transport::{Observer, ObserverObject};
 
@@ -481,7 +531,12 @@
     }
 
     <span class="kw">fn </span>init_objects(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.objects.push(NodeProfile::new());
+        <span class="self">self</span>.init_node_profile_object();
+    }
+
+    <span class="kw">pub fn </span>init_node_profile_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span><span class="kw-2">mut </span>prof = NodeProfile::new();
+        <span class="self">self</span>.add_object(prof);
     }
 
     <span class="kw">pub fn </span>add_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj: Object) -&gt; bool {
@@ -511,6 +566,17 @@
         }
         <span class="prelude-val">None
     </span>}
+
+    <span class="kw">fn </span>set_object_properties_data(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode, data: <span class="kw-2">&amp;</span>[u8]) {
+        <span class="kw">for </span>obj <span class="kw">in </span><span class="self">self</span>.objects.iter_mut() {
+            obj.set_property_data(code, data);
+        }
+    }
+
+    <span class="kw">fn </span>set_object_properties_byte(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode, v: u8) {
+        <span class="kw">let </span>data: <span class="kw-2">&amp;</span>[u8] = <span class="kw-2">&amp;</span>[v];
+        <span class="self">self</span>.set_object_properties_data(code, data);
+    }
 
     <span class="kw">pub fn </span>node_profile_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Object&gt; {
         <span class="self">self</span>.find_object_mut(NODE_PROFILE_OBJECT_CODE)
@@ -581,14 +647,24 @@
     }
 
     <span class="kw">pub fn </span>start(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.is_running() {
+        <span class="comment">// Starts the transport manager
+
+        </span><span class="kw">if </span>!<span class="self">self</span>.transport_mgr.is_running() {
             <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.start() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
             }
         }
-        <span class="kw">for </span>observer <span class="kw">in </span><span class="self">self</span>.notify_mgr.observers() {
+
+        <span class="comment">// Turns on child objects
+
+        </span><span class="self">self</span>.set_object_properties_byte(OBJECT_OPERATING_STATUS, OBJECT_OPERATING_STATUS_ON);
+
+        <span class="comment">// Sets registerd observers to the transport manager.
+
+        </span><span class="kw">for </span>observer <span class="kw">in </span><span class="self">self</span>.notify_mgr.observers() {
             <span class="self">self</span>.transport_mgr.add_observer(observer.clone());
         }
+
         <span class="kw">if </span>!<span class="self">self</span>.annouce() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
@@ -596,7 +672,13 @@
     </span>}
 
     <span class="kw">pub fn </span>stop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">if </span>!<span class="self">self</span>.transport_mgr.stop() {
+        <span class="comment">// Turns off child objects
+
+        </span><span class="self">self</span>.set_object_properties_byte(OBJECT_OPERATING_STATUS, OBJECT_OPERATING_STATUS_OFF);
+
+        <span class="comment">// Stops the transport manager
+
+        </span><span class="kw">if </span>!<span class="self">self</span>.transport_mgr.stop() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
         <span class="bool-val">true
@@ -653,14 +735,30 @@
         node_prof.update(<span class="kw-2">&amp;</span>obj_codes);
     }
 
-    <span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
+    <span class="comment">// fn is_local_message(&amp;mut self, msg: &amp;Message) -&gt; bool {
+    //     self.transport_mgr.has_interface(msg.from().ip())
+    // }
+
+    // fn has_only_node_profile_object(&amp;self) -&gt; bool {
+    //     if 1 &lt; self.objects.len() {
+    //         return false;
+    //     }
+    //     true
+    // }
+
+    </span><span class="kw">fn </span>message_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
         <span class="comment">// Handles only request messages.
 
         </span><span class="kw">if </span>req_msg.esv().is_response() {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
-        <span class="comment">// Part II ECHONET Lite Communication Middleware Specifications
+        <span class="comment">// FIXME: Ignores local message when the node has only the node profile object.
+        // if self.is_local_message(&amp;req_msg) &amp;&amp; self.has_only_node_profile_object() {
+        //     return None;
+        // }
+
+        // Part II ECHONET Lite Communication Middleware Specifications
         // 4.2.2 Basic Sequences for Object Control in General
 
         </span><span class="kw">let </span>dst_obj_code = req_msg.deoj();
