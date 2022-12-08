@@ -229,12 +229,28 @@ impl Node {
         node_prof.update(&obj_codes);
     }
 
+    // fn is_local_message(&mut self, msg: &Message) -> bool {
+    //     self.transport_mgr.has_interface(msg.from().ip())
+    // }
+
+    // fn has_only_node_profile_object(&self) -> bool {
+    //     if 1 < self.objects.len() {
+    //         return false;
+    //     }
+    //     true
+    // }
+
     fn message_received(&mut self, req_msg: &Message) -> Option<Message> {
         // Handles only request messages.
 
         if req_msg.esv().is_response() {
             return None;
         }
+
+        // FIXME: Ignores local message when the node has only the node profile object.
+        // if self.is_local_message(&req_msg) && self.has_only_node_profile_object() {
+        //     return None;
+        // }
 
         // Part II ECHONET Lite Communication Middleware Specifications
         // 4.2.2 Basic Sequences for Object Control in General
