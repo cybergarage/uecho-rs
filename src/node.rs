@@ -23,8 +23,9 @@ use crate::handler::*;
 use crate::message::ResponseErrorMessage;
 use crate::node_profile::*;
 use crate::object::*;
-use crate::property::Property;
+use crate::property::{Property, PropertyCode};
 use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
+use crate::super_object::*;
 use crate::transport::{Manager, NotifytManager, PORT};
 use crate::transport::{Observer, ObserverObject};
 
@@ -91,6 +92,17 @@ impl Node {
             }
         }
         None
+    }
+
+    fn set_object_properties_data(&mut self, code: PropertyCode, data: &[u8]) {
+        for obj in self.objects.iter_mut() {
+            obj.set_property_data(code, data);
+        }
+    }
+
+    fn set_object_properties_byte(&mut self, code: PropertyCode, v: u8) {
+        let data: &[u8] = &[v];
+        self.set_object_properties_data(code, data);
     }
 
     pub fn node_profile_object(&mut self) -> Option<&mut Object> {
@@ -162,14 +174,24 @@ impl Node {
     }
 
     pub fn start(&mut self) -> bool {
+        // Starts the transport manager
+
         if !self.transport_mgr.is_running() {
             if !self.transport_mgr.start() {
                 return false;
             }
         }
+
+        // Turns on child objects
+
+        self.set_object_properties_byte(OBJECT_OPERATING_STATUS, OBJECT_OPERATING_STATUS_ON);
+
+        // Sets registerd observers to the transport manager.
+
         for observer in self.notify_mgr.observers() {
             self.transport_mgr.add_observer(observer.clone());
         }
+
         if !self.annouce() {
             return false;
         }
@@ -177,6 +199,12 @@ impl Node {
     }
 
     pub fn stop(&mut self) -> bool {
+        // Turns off child objects
+
+        self.set_object_properties_byte(OBJECT_OPERATING_STATUS, OBJECT_OPERATING_STATUS_OFF);
+
+        // Stops the transport manager
+
         if !self.transport_mgr.stop() {
             return false;
         }
