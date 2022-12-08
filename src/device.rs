@@ -258,24 +258,12 @@ impl Device {
         if !dev_node.start() {
             return false;
         }
-        // Sets mandatory properties
-        dev_node.set_property(
-            self.code,
-            DEVICE_OPERATING_STATUS,
-            &[OBJECT_OPERATING_STATUS_ON],
-        );
         true
     }
 
     /// Stops the device.
     pub fn stop(&mut self) -> bool {
-        // Sets mandatory properties
         let mut dev_node = self.node.lock().unwrap();
-        dev_node.set_property(
-            self.code,
-            DEVICE_OPERATING_STATUS,
-            &[OBJECT_OPERATING_STATUS_OFF],
-        );
         dev_node.stop()
     }
 }
