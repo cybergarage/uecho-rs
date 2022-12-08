@@ -14,6 +14,7 @@
 
 #![allow(dead_code)]
 
+use log::*;
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -90,7 +91,7 @@ pub const DEVICE_NO_FAULT_OCCURRED: u8 = 0x42;
 pub const DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = 0x00;
 pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 
-/// Device represents an ECHONET-Lite device node.
+/// Device represents an ECHONET-Lite device node. The device is created with a standard device object code, and the object is automatically added the standard properties which are specified in APPENDIX Detailed Requirements for ECHONET Device Objects by the ECHONET Consortium.
 /// # Examples
 /// ```
 /// use std::sync::{Arc, Mutex};
@@ -164,7 +165,7 @@ pub struct Device {
 }
 
 impl Device {
-    /// Create a new device.
+    /// Creates a new device with a specified object code. The object is automatically added the standard properties which are specified in APPENDIX Detailed Requirements for ECHONET Device Objects by the ECHONET Consortium.
     pub fn new(code: ObjectCode) -> Device {
         let mut dev = Device {
             code: code,
@@ -174,7 +175,7 @@ impl Device {
         dev
     }
 
-    /// Create a new device with the node to which it belongs.
+    /// Creates a new device with a specified object code and  node to which it belongs. The functions is used when a node has multiple devices.
     pub fn new_with_node(code: ObjectCode, node: Arc<Mutex<Node>>) -> Device {
         let mut dev = Device {
             code: code,
@@ -188,7 +189,9 @@ impl Device {
         let mut obj = Object::new();
         obj.set_code(code);
         obj.add_standard_properties(SUPER_OBJECT_CODE);
-        obj.add_standard_properties(code);
+        if !obj.add_standard_properties(code) {
+            warn!("Standard object properties {:06X} are not found", code);
+        }
         let mut dev_node = self.node.lock().unwrap();
         dev_node.add_object(obj);
 
