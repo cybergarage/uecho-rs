@@ -30,7 +30,7 @@ The `RequestHandler` can set the following permission handler to an object prope
 
 ```
 pub trait RequestHandler {
-    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool;
+    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool;
 }
 ```
 
@@ -38,7 +38,7 @@ The developer handles the request messages from other nodes. The developer shoul
 
 ```
 impl RequestHandler for MyDevice {
-    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
         // Ignore all messages to other objects in the same node.
         if deoj != self.device.code() {
             return false;

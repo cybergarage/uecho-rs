@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::object::ObjectCode;
+use crate::object::Object;
 use crate::protocol::{Esv, Message, Property};
 use std::sync::{Arc, Mutex};
 
@@ -20,7 +20,7 @@ use std::sync::{Arc, Mutex};
 /// # Examples
 /// ```
 /// use std::sync::{Arc, Mutex};
-/// use echonet::{Device, ObjectCode, RequestHandler};
+/// use echonet::{Device, ObjectCode, Object, RequestHandler};
 /// use echonet::protocol::{Esv, Property};
 /// use echonet::util::Bytes;
 ///
@@ -49,7 +49,7 @@ use std::sync::{Arc, Mutex};
 /// }
 ///
 /// impl RequestHandler for MyDevice {
-///     fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+///     fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
 ///         match esv {
 ///             Esv::WriteRequest | Esv::WriteReadRequest => {
 ///                 let prop_code = prop.code();
@@ -82,7 +82,7 @@ use std::sync::{Arc, Mutex};
 /// ```
 
 pub trait RequestHandler {
-    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool;
+    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool;
 }
 
 /// RequestHandlerObject represents a request message handler object.
@@ -106,12 +106,11 @@ impl RequestManager {
         true
     }
 
-    pub fn property_request_received(&self, msg: &Message) -> bool {
+    pub fn property_request_received(&mut self, deoj: &mut Object, msg: &Message) -> bool {
         if self.handlers.len() == 0 {
             return true;
         }
 
-        let deoj = msg.deoj();
         let esv = msg.esv();
         let mut request_accepted = false;
         for handler in self.handlers.iter() {

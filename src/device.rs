@@ -18,10 +18,10 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use crate::device_node::DeviceNode;
-use crate::handler::*;
 use crate::node::Node;
 use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
+use crate::request_handler::*;
 use crate::super_object::*;
 use crate::util::Bytes;
 
@@ -96,7 +96,7 @@ pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 /// use std::sync::{Arc, Mutex};
 /// use echonet::protocol::{Esv, Property};
 /// use echonet::util::Bytes;
-/// use echonet::{Device, ObjectCode, RequestHandler};
+/// use echonet::{Device, Object, ObjectCode, RequestHandler};
 ///
 /// pub struct MyDevice {
 ///     device: Device,
@@ -123,9 +123,9 @@ pub const DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 /// }
 ///
 /// impl RequestHandler for MyDevice {
-///     fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+///     fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
 ///         // Ignore all messages to other objects in the same node.
-///         if deoj != self.device.code() {
+///         if deoj.code() != self.device.code() {
 ///             return false;
 ///         }
 ///

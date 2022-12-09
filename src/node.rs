@@ -19,12 +19,12 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::handler::*;
 use crate::message::ResponseErrorMessage;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::property::{Property, PropertyCode};
 use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
+use crate::request_handler::*;
 use crate::super_object::*;
 use crate::transport::{Manager, NotifytManager, PORT};
 use crate::transport::{Observer, ObserverObject};
@@ -377,8 +377,35 @@ impl Node {
 
         // Verifies whether the request message is allowed by the registered request handlers.
 
-        if !self.request_mgr.property_request_received(req_msg) {
+        let dst_obj = self.find_object_mut(dst_obj_code);
+        if dst_obj.is_none() {
+            return None;
+        }
+        let dst_obj = dst_obj.unwrap();
+
+        // FIXME: rustc --explain E0499
+        // if !self.request_mgr.property_request_received(dst_copy_obj, req_msg) {
+        let mut dst_copy_obj = dst_obj.clone();
+        if !self
+            .request_mgr
+            .property_request_received(&mut dst_copy_obj, req_msg)
+        {
             return Some(ResponseErrorMessage::from(req_msg));
+        }
+
+        let dst_obj = self.find_object_mut(dst_obj_code);
+        if dst_obj.is_none() {
+            return None;
+        }
+        let dst_obj = dst_obj.unwrap();
+
+        for dst_copy_prop in dst_copy_obj.properties() {
+            let dst_prop = dst_obj.find_property_mut(dst_copy_prop.code());
+            if dst_prop.is_none() {
+                continue;
+            }
+            let dst_prop = dst_prop.unwrap();
+            dst_prop.set_data(dst_copy_prop.data());
         }
 
         // Writes request property data to the property.
@@ -388,6 +415,7 @@ impl Node {
             return None;
         }
         let dst_obj = dst_obj.unwrap();
+
         match req_msg.esv() {
             Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
                 for req_msg_prop in req_msg.properties() {
@@ -443,11 +471,11 @@ impl Observer for Arc<Mutex<Node>> {
 impl RequestHandler for Arc<Mutex<Node>> {
     fn property_request_received(
         &mut self,
-        deoj: ObjectCode,
+        deoj: &mut Object,
         esv: Esv,
         prop: &crate::protocol::Property,
     ) -> bool {
-        if deoj != NODE_PROFILE_OBJECT_CODE {
+        if deoj.code() != NODE_PROFILE_OBJECT_CODE {
             return false;
         }
         match esv {

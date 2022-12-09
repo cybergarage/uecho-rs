@@ -21,7 +21,7 @@ use std::{thread, time};
 use echonet::log::Logger;
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
-use echonet::{Device, ObjectCode, RequestHandler};
+use echonet::{Device, Object, RequestHandler};
 
 /// MonoLight represents a mono functional lighting device of a Echonet-Lite standard devide.
 pub struct MonoLight {
@@ -57,9 +57,9 @@ impl MonoLight {
 }
 
 impl RequestHandler for MonoLight {
-    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
         // Ignore all messages to other objects in the same node.
-        if deoj != self.device.code() {
+        if deoj.code() != self.device.code() {
             return false;
         }
 
