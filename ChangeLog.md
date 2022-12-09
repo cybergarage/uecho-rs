@@ -6,7 +6,7 @@
 - Improve device to set default standard properties
 
 ## v1.2.0 (2022-12-10)
-- Update RequestHandler to pass a mutable destination object to write property data by the handler
+- Update RequestHandler to pass a mutable destination object to write and return a latest property data for read reuests data by the request handler
 - Updated Device::new() to output warnings when the standart object is not found
 
 ## v1.1.0 (2022-12-07)
