@@ -97,7 +97,6 @@ impl UdpSocket {
         if res.is_err() {
             warn!("close {:?}", res.err());
         }
-        thread::sleep(Duration::from_secs(1));
     }
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
