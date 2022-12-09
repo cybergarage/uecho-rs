@@ -16,7 +16,7 @@ use log::*;
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use echonet::{Controller, Device, Node, ObjectCode, RequestHandler};
+use echonet::{Controller, Device, Node, Object, ObjectCode, RequestHandler};
 
 use echonet::protocol::{Esv, Property};
 use echonet::util::Bytes;
@@ -60,9 +60,9 @@ impl TestDevice {
 }
 
 impl RequestHandler for TestDevice {
-    fn property_request_received(&mut self, deoj: ObjectCode, esv: Esv, prop: &Property) -> bool {
+    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
         // Ignore all messages to other objects in the same node.
-        if deoj != self.dev.code() {
+        if deoj.code() != self.dev.code() {
             return false;
         }
 
@@ -76,10 +76,12 @@ impl RequestHandler for TestDevice {
                         match prop_u32 {
                             0x30 /* On */=> {
                                 info!("On");
+                                deoj.set_property_byte(prop_code, 0x30);
                                 self.num_on_req+= 1;
                             }
                             0x31 /* Off */=> {
                                 info!("Off");
+                                deoj.set_property_byte(prop_code, 0x31);
                                 self.num_off_req+= 1;
                             }
                             _ => {

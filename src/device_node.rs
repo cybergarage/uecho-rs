@@ -15,12 +15,12 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use crate::handler::*;
 use crate::node::Node;
 use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;
+use crate::request_handler::*;
 use crate::transport::{Observer, ObserverObject};
 
 pub struct DeviceNode {
