@@ -514,7 +514,7 @@
         obj.set_code(code);
         obj.add_standard_properties(SUPER_OBJECT_CODE);
         <span class="kw">if </span>!obj.add_standard_properties(code) {
-            <span class="macro">warn!</span>(<span class="string">&quot;Standard object properties {:06X} are not found&quot;</span>, code);
+            <span class="macro">warn!</span>(<span class="string">&quot;Standard object properties ({:06X}) are not found&quot;</span>, code);
         }
         <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
         dev_node.add_object(obj);

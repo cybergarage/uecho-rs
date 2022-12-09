@@ -191,6 +191,16 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -366,15 +376,25 @@
             <span class="kw">continue</span>;
         }
 
-        <span class="kw">let </span>rx = ctrl.post_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>req_msg);
-        <span class="kw">match </span>rx.recv_timeout(Duration::from_secs(<span class="number">1</span>)) {
-            <span class="prelude-val">Ok</span>(res_msg) =&gt; {
-                <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, res_msg);
+        <span class="kw">match </span>req_msg.esv() {
+            Esv::WriteRequest | Esv::NotificationRequest =&gt; {
+                ctrl.send_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>req_msg);
             }
-            <span class="prelude-val">Err</span>(e) =&gt; {
-                <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, e);
+            Esv::WriteRequestResponseRequired | Esv::ReadRequest | Esv::WriteReadRequest =&gt; {
+                <span class="kw">let </span>rx = ctrl.post_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>req_msg);
+                <span class="kw">match </span>rx.recv_timeout(Duration::from_secs(<span class="number">1</span>)) {
+                    <span class="prelude-val">Ok</span>(res_msg) =&gt; {
+                        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, res_msg);
+                    }
+                    <span class="prelude-val">Err</span>(e) =&gt; {
+                        <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, e);
+                    }
+                };
             }
-        };
+            <span class="kw">_ </span>=&gt; {
+                <span class="macro">eprintln!</span>(<span class="string">&quot;ESV ({:X}) is not request&quot;</span>, req_msg.esv() <span class="kw">as </span>u8);
+            }
+        }
 
         ctrl.stop();
         <span class="kw">return</span>;
