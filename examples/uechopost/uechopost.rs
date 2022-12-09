@@ -173,15 +173,25 @@ fn main() {
             continue;
         }
 
-        let rx = ctrl.post_message(&node, &mut req_msg);
-        match rx.recv_timeout(Duration::from_secs(1)) {
-            Ok(res_msg) => {
-                println!("{}", res_msg);
+        match req_msg.esv() {
+            Esv::WriteRequest | Esv::NotificationRequest => {
+                ctrl.send_message(&node, &mut req_msg);
             }
-            Err(e) => {
-                eprintln!("{}", e);
+            Esv::WriteRequestResponseRequired | Esv::ReadRequest | Esv::WriteReadRequest => {
+                let rx = ctrl.post_message(&node, &mut req_msg);
+                match rx.recv_timeout(Duration::from_secs(1)) {
+                    Ok(res_msg) => {
+                        println!("{}", res_msg);
+                    }
+                    Err(e) => {
+                        eprintln!("{}", e);
+                    }
+                };
             }
-        };
+            _ => {
+                eprintln!("ESV ({:X}) is not request", req_msg.esv() as u8);
+            }
+        }
 
         ctrl.stop();
         return;
