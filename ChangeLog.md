@@ -1,9 +1,12 @@
 # Changelog
 
-## v1.2.x (2022-xx-xx)
+## v1.3.x (2022-xx-xx)
 - Improve controller search functions
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
+
+## v1.2.x (2022-xx-xx)
 - Improve device to set default standard properties
+- Update uechopost not to wait when the specified request message does not require the response messages
 
 ## v1.2.0 (2022-12-10)
 - Update RequestHandler to pass a mutable destination object to write and return a latest property data for read reuests data by the request handler
