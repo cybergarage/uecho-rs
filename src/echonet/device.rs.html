@@ -319,6 +319,9 @@
 <span id="319">319</span>
 <span id="320">320</span>
 <span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -335,14 +338,15 @@
 
 </span><span class="attribute">#![allow(dead_code)]
 
-</span><span class="kw">use </span>std::sync::Arc;
+</span><span class="kw">use </span>log::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::sync::Mutex;
 
 <span class="kw">use </span><span class="kw">crate</span>::device_node::DeviceNode;
-<span class="kw">use </span><span class="kw">crate</span>::handler::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::node::Node;
 <span class="kw">use </span><span class="kw">crate</span>::object::{Object, ObjectCode};
 <span class="kw">use </span><span class="kw">crate</span>::property::PropertyCode;
+<span class="kw">use </span><span class="kw">crate</span>::request_handler::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
 
@@ -411,13 +415,13 @@
 <span class="kw">pub const </span>DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = <span class="number">0x00</span>;
 <span class="kw">pub const </span>DEVICE_MANUFACTURER_EXPERIMENT: u32 = OBJECT_MANUFACTURER_EXPERIMENT;
 
-<span class="doccomment">/// Device represents an ECHONET-Lite device node.
+<span class="doccomment">/// Device represents an ECHONET-Lite device node. The device is created with a standard device object code, and the object is automatically added the standard properties which are specified in APPENDIX Detailed Requirements for ECHONET Device Objects by the ECHONET Consortium.
 /// # Examples
 /// ```
 /// use std::sync::{Arc, Mutex};
 /// use echonet::protocol::{Esv, Property};
 /// use echonet::util::Bytes;
-/// use echonet::{Device, ObjectCode, RequestHandler};
+/// use echonet::{Device, Object, ObjectCode, RequestHandler};
 ///
 /// pub struct MyDevice {
 ///     device: Device,
@@ -444,9 +448,9 @@
 /// }
 ///
 /// impl RequestHandler for MyDevice {
-///     fn property_request_received(&amp;mut self, deoj: ObjectCode, esv: Esv, prop: &amp;Property) -&gt; bool {
+///     fn property_request_received(&amp;mut self, deoj: &amp;mut Object, esv: Esv, prop: &amp;Property) -&gt; bool {
 ///         // Ignore all messages to other objects in the same node.
-///         if deoj != self.device.code() {
+///         if deoj.code() != self.device.code() {
 ///             return false;
 ///         }
 ///
@@ -485,7 +489,7 @@
 }
 
 <span class="kw">impl </span>Device {
-    <span class="doccomment">/// Create a new device.
+    <span class="doccomment">/// Creates a new device with a specified object code. The object is automatically added the standard properties which are specified in APPENDIX Detailed Requirements for ECHONET Device Objects by the ECHONET Consortium.
     </span><span class="kw">pub fn </span>new(code: ObjectCode) -&gt; Device {
         <span class="kw">let </span><span class="kw-2">mut </span>dev = Device {
             code: code,
@@ -495,7 +499,7 @@
         dev
     }
 
-    <span class="doccomment">/// Create a new device with the node to which it belongs.
+    <span class="doccomment">/// Creates a new device with a specified object code and  node to which it belongs. The functions is used when a node has multiple devices.
     </span><span class="kw">pub fn </span>new_with_node(code: ObjectCode, node: Arc&lt;Mutex&lt;Node&gt;&gt;) -&gt; Device {
         <span class="kw">let </span><span class="kw-2">mut </span>dev = Device {
             code: code,
@@ -509,7 +513,9 @@
         <span class="kw">let </span><span class="kw-2">mut </span>obj = Object::new();
         obj.set_code(code);
         obj.add_standard_properties(SUPER_OBJECT_CODE);
-        obj.add_standard_properties(code);
+        <span class="kw">if </span>!obj.add_standard_properties(code) {
+            <span class="macro">warn!</span>(<span class="string">&quot;Standard object properties {:06X} are not found&quot;</span>, code);
+        }
         <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
         dev_node.add_object(obj);
 

@@ -172,12 +172,12 @@
 <span class="kw">pub use </span><span class="self">self</span>::controller::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::database::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::device::Device;
-<span class="kw">pub use </span><span class="self">self</span>::handler::{RequestHandler, RequestHandlerObject};
 <span class="kw">pub use </span><span class="self">self</span>::manufacture::{Manufacture, ManufactureCode};
 <span class="kw">pub use </span><span class="self">self</span>::node::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::object::{Object, ObjectCode};
 <span class="kw">pub use </span><span class="self">self</span>::property::{Property, PropertyEnum, PropertyRule};
 <span class="kw">pub use </span><span class="self">self</span>::remote_node::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><span class="self">self</span>::request_handler::{RequestHandler, RequestHandlerObject};
 
 <span class="kw">mod </span>class;
 <span class="kw">mod </span>controller;
@@ -188,7 +188,6 @@
 <span class="kw">mod </span>device;
 <span class="kw">mod </span>device_node;
 <span class="kw">mod </span>error;
-<span class="kw">mod </span>handler;
 <span class="kw">mod </span>manufacture;
 <span class="kw">mod </span>message;
 <span class="kw">mod </span>node;
@@ -197,6 +196,7 @@
 <span class="kw">mod </span>profile;
 <span class="kw">mod </span>property;
 <span class="kw">mod </span>remote_node;
+<span class="kw">mod </span>request_handler;
 <span class="kw">mod </span>super_object;
 
 <span class="kw">mod </span>controller_test;
