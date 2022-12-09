@@ -322,7 +322,7 @@ impl Property {
     }
 
     pub fn set_integer_data(&mut self, val: u32, byte_size: usize) -> &mut Self {
-        let mut buf = Vec::<u8>::with_capacity(byte_size);
+        let mut buf = vec![0; byte_size];
         Bytes::from_u32(val, &mut buf);
         self.set_data(&buf);
         self
