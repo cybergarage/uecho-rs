@@ -190,7 +190,7 @@ impl Device {
         obj.set_code(code);
         obj.add_standard_properties(SUPER_OBJECT_CODE);
         if !obj.add_standard_properties(code) {
-            warn!("Standard object properties {:06X} are not found", code);
+            warn!("Standard object properties ({:06X}) are not found", code);
         }
         let mut dev_node = self.node.lock().unwrap();
         dev_node.add_object(obj);
