@@ -3,9 +3,10 @@
 ## v1.2.x (2022-xx-xx)
 - Improve controller search functions
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
-
-## v1.2.0 (2022-xx-xx)
 - Improve device to set default standard properties
+
+## v1.2.0 (2022-12-10)
+- Update RequestHandler to pass a mutable destination object to write property data by the handler
 - Updated Device::new() to output warnings when the standart object is not found
 
 ## v1.1.0 (2022-12-07)
