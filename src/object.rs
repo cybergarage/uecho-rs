@@ -117,6 +117,7 @@ impl Object {
     pub fn add_property(&mut self, prop: Property) -> bool {
         let code = prop.code();
         self.properties.entry(code).or_insert(prop);
+        self.update_property_maps();
         true
     }
 
@@ -192,6 +193,13 @@ impl Object {
         }
     }
 
+    pub fn equals_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
+        match self.find_property_mut(code) {
+            Some(prop) => prop.equals_data(data),
+            None => false,
+        }
+    }
+
     pub fn add_standard_properties(&mut self, code: ObjectCode) -> bool {
         let db = StandardDatabase::shared();
         let std_obj = db.find_object(code & 0xFFFF00);
@@ -228,11 +236,58 @@ impl Object {
         }
     }
 
-    pub fn equals_property_data(&mut self, code: PropertyCode, data: &[u8]) -> bool {
-        match self.find_property_mut(code) {
-            Some(prop) => prop.equals_data(data),
-            None => false,
+    fn update_property_maps(&mut self) {
+        // Annex 1 Property Map Description Format
+        fn to_property_map_bytes<'a>(maps: &'a Vec<u8>, map_bytes: &'a mut Vec<u8>) -> &'a [u8] {
+            map_bytes.clear();
+            map_bytes.push(maps.len() as u8);
+            if maps.len() <= OBJECT_PROPERTY_MAP_FORMAT1_MAX_SIZE {
+                for prop_code in maps.iter() {
+                    map_bytes.push(*prop_code);
+                }
+            } else {
+                for _n in 0..OBJECT_PROPERTY_MAP_FORMAT2_SIZE {
+                    map_bytes.push(0x00 as u8);
+                }
+                for prop_code in maps.iter() {
+                    // 1 <= prop_map_row <= 16
+                    let prop_map_row = ((*prop_code - 0x80) & 0x0F) + 1;
+                    // 0 <= prop_map_bit <= 7
+                    let prop_map_bit = (((*prop_code - 0x80) & 0xF0) >> 4) & 0x0F;
+                    map_bytes[prop_map_row as usize] |= (0x01 << prop_map_bit) & 0x0F;
+                }
+            }
+            map_bytes
         }
+
+        let mut get_map = Vec::new();
+        let mut set_map = Vec::new();
+        let mut anno_map = Vec::new();
+        for prop in self.properties.values() {
+            if prop.is_readable() {
+                get_map.push(prop.code());
+            }
+            if prop.is_writable() {
+                set_map.push(prop.code());
+            }
+            if prop.is_announceable() {
+                anno_map.push(prop.code());
+            }
+        }
+
+        let mut map_bytes: Vec<u8> = Vec::new();
+        self.set_property_data(
+            OBJECT_GET_PROPERTY_MAP,
+            to_property_map_bytes(&get_map, &mut map_bytes),
+        );
+        self.set_property_data(
+            OBJECT_SET_PROPERTY_MAP,
+            to_property_map_bytes(&set_map, &mut map_bytes),
+        );
+        self.set_property_data(
+            OBJECT_ANNO_PROPERTY_MAP,
+            to_property_map_bytes(&anno_map, &mut map_bytes),
+        );
     }
 
     pub fn message_received(&self, req_msg: &Message) -> Option<Message> {
