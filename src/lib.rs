@@ -103,3 +103,4 @@ mod object_test;
 mod profile_test;
 mod property_test;
 mod remote_node_test;
+mod node_profile_test;
