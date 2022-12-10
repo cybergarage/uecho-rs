@@ -6,6 +6,7 @@
 
 ## v1.2.2 (2022-12-11)
 - Improve standard objects to set more default standard properties
+- Add a multiple device example on Raspberry Pi Sense HAT
 
 ## v1.2.1 (2022-12-10)
 - Update standard device objects to add extra device and definitions
