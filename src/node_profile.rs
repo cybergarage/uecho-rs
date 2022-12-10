@@ -101,7 +101,7 @@ impl NodeProfile<'_> {
             .find_property_mut(NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES);
         if num_instances_prop.is_some() {
             let num_instances_prop = num_instances_prop.unwrap();
-            num_instances_prop.set_integer_data(num_obj_codes.into(), 3);
+            num_instances_prop.set_int_data(num_obj_codes.into(), 3);
         }
 
         // Number of self-node classes (0xD4)
@@ -110,7 +110,7 @@ impl NodeProfile<'_> {
             .find_property_mut(NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES);
         if num_classes_prop.is_some() {
             let num_classes_prop = num_classes_prop.unwrap();
-            num_classes_prop.set_integer_data(num_class_codes.into(), 2);
+            num_classes_prop.set_int_data(num_class_codes.into(), 2);
         }
 
         // Instance list notification (0xD5)
