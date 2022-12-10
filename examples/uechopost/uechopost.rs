@@ -29,7 +29,7 @@ fn usages() {
         "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
     );
     println!(" -h : Print this message");
-    println!(" -d : Enable debug output");
+    println!(" -v : Enable debug output");
 }
 
 fn main() {
