@@ -7611,6 +7611,20 @@ impl StandardDatabase {
         );
         self.add_object(obj);
 
+        // Air pressure sensor (0x002D)
+        let mut obj = self.create_standard_object("Air pressure sensor".to_string(), 0x00, 0x2D);
+        obj.add_standard_property(
+            0xE0,
+            "Air pressure measurement".to_string(),
+            "number".to_string(),
+            2,
+            property_string_to_attribute("required"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        self.add_object(obj);
+
         // Bath heating status sensor (0x0016)
         let mut obj =
             self.create_standard_object("Bath heating status sensor".to_string(), 0x00, 0x16);
