@@ -80,7 +80,9 @@ my_dev.lock().unwrap().device.start();
 Let's check the following documentation to know the device functions of the `uecho-rs` in more detail.
 
 - [Inside of uEcho Device](https://github.com/cybergarage/uecho-rs/blob/master/doc/device_inside.md)
-- [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
+- Examples
+  - [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
+  - [Usage examples (For Raspberry Pi Sense HAT)](https://github.com/cybergarage/uecho-rs-sensehat)
 
 ## References
 
