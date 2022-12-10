@@ -15,14 +15,14 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::protocol::Esv;
+    use crate::protocol::ESV;
     use strum::IntoEnumIterator;
 
     #[test]
     fn esv() {
-        for esv in Esv::iter() {
-            let u8esv = Esv::to_u8(esv);
-            assert_eq!(esv, Esv::from_u8(u8esv));
+        for esv in ESV::iter() {
+            let u8esv = ESV::to_u8(esv);
+            assert_eq!(esv, ESV::from_u8(u8esv));
         }
     }
 }

@@ -41,7 +41,7 @@ mod tests {
         msg.set_deoj(test_deoj);
         assert_eq!(msg.deoj(), test_deoj);
 
-        let test_esv = Esv::WriteRequest;
+        let test_esv = ESV::WriteRequest;
         msg.set_esv(test_esv);
         assert_eq!(msg.esv(), test_esv);
     }
@@ -57,7 +57,7 @@ mod tests {
             assert_eq!(msg.tid(), 0x0101);
             assert_eq!(msg.seoj(), 0x0A0B0C0);
             assert_eq!(msg.deoj(), 0x0D0E0F0);
-            assert_eq!(msg.esv(), Esv::Notification);
+            assert_eq!(msg.esv(), ESV::Notification);
 
             let opc = msg.opc();
             for i in 0..opc {
@@ -91,7 +91,7 @@ mod tests {
             0xD0,
             0xE0,
             0xF0,
-            Esv::to_u8(Esv::Notification),
+            ESV::to_u8(ESV::Notification),
             3,
             1,
             1,

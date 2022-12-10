@@ -18,7 +18,7 @@ use strum_macros::EnumIter;
 
 /// ESV represents an ECHONET-Lite service (ESV) code as specified in the ECHONET-Lite specification.
 #[derive(Copy, Clone, PartialEq, Debug, EnumIter)]
-pub enum Esv {
+pub enum ESV {
     Unknown = 0x00,
     WriteRequest = 0x60,
     WriteRequestResponseRequired = 0x61,
@@ -38,63 +38,63 @@ pub enum Esv {
     WriteReadRequestError = 0x5E,
 }
 
-impl Esv {
-    pub fn from_u8(x: u8) -> Esv {
-        for esv in Esv::iter() {
+impl ESV {
+    pub fn from_u8(x: u8) -> ESV {
+        for esv in ESV::iter() {
             if x == (esv as u8) {
                 return esv;
             }
         }
-        Esv::Unknown
+        ESV::Unknown
     }
 
-    pub fn to_u8(esv: Esv) -> u8 {
+    pub fn to_u8(esv: ESV) -> u8 {
         esv as u8
     }
 
     pub fn is_request(&self) -> bool {
         match self {
-            Esv::WriteRequest => return true,
-            Esv::WriteRequestResponseRequired => return true,
-            Esv::ReadRequest => return true,
-            Esv::NotificationRequest => return true,
-            Esv::WriteReadRequest => return true,
-            Esv::NotificationResponseRequired => return true,
+            ESV::WriteRequest => return true,
+            ESV::WriteRequestResponseRequired => return true,
+            ESV::ReadRequest => return true,
+            ESV::NotificationRequest => return true,
+            ESV::WriteReadRequest => return true,
+            ESV::NotificationResponseRequired => return true,
             _ => return false,
         }
     }
 
     pub fn is_response(&self) -> bool {
         match self {
-            Esv::WriteResponse => return true,
-            Esv::ReadResponse => return true,
-            Esv::Notification => return true,
-            Esv::NotificationResponse => return true,
-            Esv::WriteReadResponse => return true,
-            Esv::WriteRequestError => return true,
-            Esv::WriteRequestResponseRequiredError => return true,
-            Esv::ReadRequestError => return true,
-            Esv::NotificationRequestError => return true,
-            Esv::WriteReadRequestError => return true,
+            ESV::WriteResponse => return true,
+            ESV::ReadResponse => return true,
+            ESV::Notification => return true,
+            ESV::NotificationResponse => return true,
+            ESV::WriteReadResponse => return true,
+            ESV::WriteRequestError => return true,
+            ESV::WriteRequestResponseRequiredError => return true,
+            ESV::ReadRequestError => return true,
+            ESV::NotificationRequestError => return true,
+            ESV::WriteReadRequestError => return true,
             _ => return false,
         }
     }
 
     pub fn is_error_response(&self) -> bool {
         match self {
-            Esv::WriteRequestError => return true,
-            Esv::WriteRequestResponseRequiredError => return true,
-            Esv::ReadRequestError => return true,
-            Esv::NotificationRequestError => return true,
-            Esv::WriteReadRequestError => return true,
+            ESV::WriteRequestError => return true,
+            ESV::WriteRequestResponseRequiredError => return true,
+            ESV::ReadRequestError => return true,
+            ESV::NotificationRequestError => return true,
+            ESV::WriteReadRequestError => return true,
             _ => return false,
         }
     }
 
     pub fn is_notification_response(&self) -> bool {
         match self {
-            Esv::Notification => return true,
-            Esv::NotificationResponse => return true,
+            ESV::Notification => return true,
+            ESV::NotificationResponse => return true,
             _ => return false,
         }
     }
@@ -107,7 +107,7 @@ impl Esv {
     }
 }
 
-impl fmt::Display for Esv {
+impl fmt::Display for ESV {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let code = *self as u8;
         let res = f.write_fmt(format_args!("{:02X}", code));

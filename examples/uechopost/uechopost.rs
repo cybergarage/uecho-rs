@@ -19,7 +19,7 @@ use std::time::Duration;
 use std::{thread, time};
 
 use echonet::log::Logger;
-use echonet::protocol::{Esv, Message, Property};
+use echonet::protocol::{Message, Property, ESV};
 use echonet::util::Bytes;
 use echonet::Controller;
 use hex;
@@ -36,7 +36,7 @@ fn main() {
     let mut program_name = String::new();
     let ipaddr_none = IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0));
     let mut node_addr = ipaddr_none.clone();
-    let mut esv = Esv::Unknown;
+    let mut esv = ESV::Unknown;
     let mut obj_code = 0;
     let mut epcs = Vec::new();
     let mut edts = Vec::new();
@@ -77,7 +77,7 @@ fn main() {
                     obj_code = Bytes::to_u32(&arg_obj.unwrap());
                     continue;
                 }
-                if esv == Esv::Unknown {
+                if esv == ESV::Unknown {
                     let arg_esv = hex::decode(arg.clone());
                     if arg_esv.is_err() {
                         usages();
@@ -85,8 +85,8 @@ fn main() {
                         return;
                     }
                     let arg_esv = arg_esv.unwrap();
-                    esv = Esv::from_u8(arg_esv[0]);
-                    if esv == Esv::Unknown {
+                    esv = ESV::from_u8(arg_esv[0]);
+                    if esv == ESV::Unknown {
                         usages();
                         eprintln!("ESV error: {}", arg);
                         return;
@@ -126,7 +126,7 @@ fn main() {
         return;
     }
 
-    if esv == Esv::Unknown {
+    if esv == ESV::Unknown {
         usages();
         eprintln!("ESV is missing");
         return;
@@ -174,10 +174,10 @@ fn main() {
         }
 
         match req_msg.esv() {
-            Esv::WriteRequest | Esv::NotificationRequest => {
+            ESV::WriteRequest | ESV::NotificationRequest => {
                 ctrl.send_message(&node, &mut req_msg);
             }
-            Esv::WriteRequestResponseRequired | Esv::ReadRequest | Esv::WriteReadRequest => {
+            ESV::WriteRequestResponseRequired | ESV::ReadRequest | ESV::WriteReadRequest => {
                 let rx = ctrl.post_message(&node, &mut req_msg);
                 match rx.recv_timeout(Duration::from_secs(1)) {
                     Ok(res_msg) => {

@@ -20,7 +20,7 @@ use std::hash::{Hash, Hasher};
 use crate::database::StandardDatabase;
 use crate::message::{ResponseErrorMessage, ResponseMessage};
 use crate::property::{Property, PropertyCode, PropertyData};
-use crate::protocol::{Esv, Message};
+use crate::protocol::{Message, ESV};
 use crate::super_object::*;
 use crate::util::Bytes;
 
@@ -227,7 +227,7 @@ impl Object {
         match req_msg.esv() {
             // 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
             // 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
-            Esv::WriteRequestResponseRequired | Esv::NotificationResponseRequired => {
+            ESV::WriteRequestResponseRequired | ESV::NotificationResponseRequired => {
                 for req_prop in req_msg.properties() {
                     let mut res_prop = crate::protocol::Property::new();
                     res_prop.set_code(req_prop.code());
@@ -236,7 +236,7 @@ impl Object {
             }
             // 4.2.3.3 Property value read service [0x62,0x72,0x52]
             // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
-            Esv::ReadRequest | Esv::NotificationRequest => {
+            ESV::ReadRequest | ESV::NotificationRequest => {
                 for req_prop in req_msg.properties() {
                     let obj_prop = self.find_property(req_prop.code());
                     if obj_prop.is_none() {
@@ -250,7 +250,7 @@ impl Object {
                 }
             }
             // 4.2.3.4 Property value write & read service [0x6E,0x7E,0x5E]
-            Esv::WriteReadRequest => {
+            ESV::WriteReadRequest => {
                 for req_prop in req_msg.properties_set() {
                     let mut res_prop = crate::protocol::Property::new();
                     res_prop.set_code(req_prop.code());

@@ -30,7 +30,7 @@ use crate::transport::ObserverObject;
 /// use std::{thread, time};
 ///
 /// use echonet::{Controller, Property};
-/// use echonet::protocol::{Esv, Message};
+/// use echonet::protocol::{ESV, Message};
 ///
 /// let mut ctrl = Controller::new();
 /// ctrl.start();
@@ -46,7 +46,7 @@ use crate::transport::ObserverObject;
 ///             }
 ///             print!("[{:02X}] {}:", obj_prop.code(), obj_prop.name());
 ///             let mut msg = Message::new();
-///             msg.set_esv(Esv::ReadRequest);
+///             msg.set_esv(ESV::ReadRequest);
 ///             msg.set_deoj(obj.code());
 ///             let mut prop = Property::new();
 ///             prop.set_code(obj_prop.code());

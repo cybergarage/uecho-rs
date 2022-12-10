@@ -20,8 +20,8 @@ mod tests {
     use std::thread;
     use std::time;
 
-    use crate::protocol::Esv;
     use crate::protocol::Message;
+    use crate::protocol::ESV;
     use crate::transport::interface::*;
     use crate::transport::multicast_server::*;
 
@@ -46,7 +46,7 @@ mod tests {
             thread::sleep(time::Duration::from_secs(5));
 
             let mut msg = Message::new();
-            msg.set_esv(Esv::Notification);
+            msg.set_esv(ESV::Notification);
             for _ in 0..TEST_OBSERVER_COUNT {
                 let server_addr = server.ifaddr();
                 assert!(server_addr.is_ok());
