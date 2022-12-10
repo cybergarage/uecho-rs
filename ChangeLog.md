@@ -1,11 +1,13 @@
 # Changelog
 
-## v1.3.x (2022-xx-xx)
+## v1.2.x (2022-xx-xx)
 - Improve controller search functions
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
 
-## v1.2.x (2022-xx-xx)
-- Improve device to set default standard properties
+## v1.2.1 (2022-12-xx)
+- Improve standard objects to set more default standard properties
+- Update standard device objects to add extra device and definitions
+- Update standard manufactuer codes
 - Update uechopost not to wait when the specified request message does not require the response messages
 
 ## v1.2.0 (2022-12-10)
