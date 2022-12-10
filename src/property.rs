@@ -337,6 +337,10 @@ impl Property {
         &self.data
     }
 
+    pub fn data_as_bytes(&self) -> &[u8] {
+        return &self.data;
+    }
+
     pub fn data_as_byte(&self) -> u8 {
         if self.data.len() <= 0 {
             return 0;
