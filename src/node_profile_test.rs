@@ -26,5 +26,9 @@ mod tests {
         let man_code = obj.property_data_as_int(OBJECT_MANUFACTURER_CODE);
         assert!(man_code.is_some());
         assert_eq!(man_code.unwrap(), OBJECT_MANUFACTURER_EXPERIMENT);
+
+        let obj_id = obj.property_data_as_bytes(NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER);
+        assert!(obj_id.is_some());
+        assert!(0 < obj_id.unwrap().len());
     }
 }
