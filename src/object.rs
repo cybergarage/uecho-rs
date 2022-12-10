@@ -182,6 +182,13 @@ impl Object {
         }
     }
 
+    pub fn property_data_as_int(&mut self, code: PropertyCode) -> Option<u32> {
+        match self.find_property(code) {
+            Some(prop) => return Some(prop.data_as_int()),
+            None => return None,
+        }
+    }
+
     pub fn add_standard_properties(&mut self, code: ObjectCode) -> bool {
         let db = StandardDatabase::shared();
         let std_obj = db.find_object(code & 0xFFFF00);
