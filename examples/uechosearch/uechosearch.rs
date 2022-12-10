@@ -19,7 +19,7 @@ use std::time::Duration;
 use std::{thread, time};
 
 use echonet::log::Logger;
-use echonet::protocol::{Esv, Message, Property};
+use echonet::protocol::{Message, Property, ESV};
 use echonet::util::Bytes;
 use echonet::{Controller, ManufactureCode, StandardDatabase};
 
@@ -40,9 +40,9 @@ fn main() -> Result<(), Error> {
     thread::sleep(time::Duration::from_secs(2));
 
     for (i, node) in ctrl.nodes().iter().enumerate() {
-        // Makes a manufacture code read (Esv::ReadRequest) message.
+        // Makes a manufacture code read (ESV::ReadRequest) message.
         let mut msg = Message::new();
-        msg.set_esv(Esv::ReadRequest);
+        msg.set_esv(ESV::ReadRequest);
         msg.set_deoj(0x0EF001);
         let mut prop = Property::new();
         prop.set_code(0x8A);
@@ -76,9 +76,9 @@ fn main() -> Result<(), Error> {
                     continue;
                 }
 
-                // Makes a property value read (Esv::ReadRequest) message.
+                // Makes a property value read (ESV::ReadRequest) message.
                 let mut msg = Message::new();
-                msg.set_esv(Esv::ReadRequest);
+                msg.set_esv(ESV::ReadRequest);
                 msg.set_deoj(obj.code());
                 let mut prop = Property::new();
                 prop.set_code(obj_prop.code());

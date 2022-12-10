@@ -18,7 +18,7 @@ use std::time::Duration;
 use std::{thread, time};
 
 use echonet::log::Logger;
-use echonet::protocol::{Esv, Message, Property};
+use echonet::protocol::{Message, Property, ESV};
 use echonet::util::Bytes;
 use echonet::Node;
 
@@ -58,11 +58,11 @@ fn node() {
         let res_stats = vec![0x30 as u8, 0x31];
 
         for (n, req_stat) in req_stats.iter().enumerate() {
-            // Writes a property value (Esv::WriteRequestResponseRequired).
+            // Writes a property value (ESV::WriteRequestResponseRequired).
 
             let mut req_msg = Message::new();
             req_msg.set_deoj(dev_obj_code);
-            req_msg.set_esv(Esv::WriteRequestResponseRequired);
+            req_msg.set_esv(ESV::WriteRequestResponseRequired);
             let mut prop = Property::new();
             prop.set_code(0x80);
             prop.set_data(vec![*req_stat]);
@@ -71,7 +71,7 @@ fn node() {
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
             match rx.recv_timeout(Duration::from_secs(5)) {
                 Ok(res_meg) => {
-                    assert_eq!(res_meg.esv(), Esv::WriteResponse);
+                    assert_eq!(res_meg.esv(), ESV::WriteResponse);
                     assert_eq!(res_meg.opc(), 1);
                 }
                 Err(e) => {
@@ -79,11 +79,11 @@ fn node() {
                 }
             };
 
-            // Reads a property value (Esv::ReadRequest).
+            // Reads a property value (ESV::ReadRequest).
 
             let mut req_msg = Message::new();
             req_msg.set_deoj(dev_obj_code);
-            req_msg.set_esv(Esv::ReadRequest);
+            req_msg.set_esv(ESV::ReadRequest);
             let mut prop = Property::new();
             prop.set_code(0x80);
             req_msg.add_property(prop);
@@ -91,7 +91,7 @@ fn node() {
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
             match rx.recv_timeout(Duration::from_secs(5)) {
                 Ok(res_meg) => {
-                    assert_eq!(res_meg.esv(), Esv::ReadResponse);
+                    assert_eq!(res_meg.esv(), ESV::ReadResponse);
                     assert_eq!(res_meg.opc(), 1);
                     let prop = res_meg.property(0);
                     assert_eq!(Bytes::to_u32(prop.data()), res_stats[n] as u32);
@@ -103,11 +103,11 @@ fn node() {
         }
 
         for (n, req_stat) in req_stats.iter().enumerate() {
-            // Writes and reads a property value (Esv::WriteReadRequest).
+            // Writes and reads a property value (ESV::WriteReadRequest).
 
             let mut req_msg = Message::new();
             req_msg.set_deoj(dev_obj_code);
-            req_msg.set_esv(Esv::WriteReadRequest);
+            req_msg.set_esv(ESV::WriteReadRequest);
             let mut prop = Property::new();
             prop.set_code(0x80);
             prop.set_data(vec![*req_stat]);
@@ -119,7 +119,7 @@ fn node() {
             let rx = ctrl.post_message(&remote_node, &mut req_msg);
             match rx.recv_timeout(Duration::from_secs(5)) {
                 Ok(res_meg) => {
-                    assert_eq!(res_meg.esv(), Esv::WriteReadResponse);
+                    assert_eq!(res_meg.esv(), ESV::WriteReadResponse);
                     assert_eq!(res_meg.opc(), 0);
                     assert_eq!(res_meg.opc_set(), 1);
                     assert_eq!(res_meg.opc_get(), 1);

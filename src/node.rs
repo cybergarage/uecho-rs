@@ -23,7 +23,7 @@ use crate::message::ResponseErrorMessage;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::property::{Property, PropertyCode};
-use crate::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
+use crate::protocol::{Message, ESV, TID, TID_MAX, TID_MIN};
 use crate::request_handler::*;
 use crate::super_object::*;
 use crate::transport::{Manager, NotifytManager, PORT};
@@ -137,7 +137,7 @@ impl Node {
 
     fn create_annouce_property_message(&self, obj: &Object, prop: &Property) -> Message {
         let mut msg = Message::new();
-        msg.set_esv(Esv::Notification);
+        msg.set_esv(ESV::Notification);
         msg.set_deoj(NODE_PROFILE_OBJECT_CODE);
         msg.set_seoj(obj.code());
         msg.add_property(prop.into());
@@ -306,7 +306,7 @@ impl Node {
 
         fn is_valid_request_message(
             dst_obj: &Object,
-            req_esv: Esv,
+            req_esv: ESV,
             req_msg_props: &Vec<crate::protocol::Property>,
         ) -> bool {
             for req_msg_prop in req_msg_props.iter() {
@@ -318,19 +318,19 @@ impl Node {
                 // (D) Processing when the controlled property exists but the stipulated service processing functions are not available
                 let dst_prop = dst_prop.unwrap();
                 match req_esv {
-                    Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
+                    ESV::WriteRequest | ESV::WriteRequestResponseRequired => {
                         if !dst_prop.is_writable() {
                             return false;
                         }
                     }
-                    Esv::ReadRequest
-                    | Esv::NotificationRequest
-                    | Esv::NotificationResponseRequired => {
+                    ESV::ReadRequest
+                    | ESV::NotificationRequest
+                    | ESV::NotificationResponseRequired => {
                         if !dst_prop.is_readable() {
                             return false;
                         }
                     }
-                    Esv::WriteReadRequest => {
+                    ESV::WriteReadRequest => {
                         if !dst_prop.is_writable() {
                             return false;
                         }
@@ -344,9 +344,9 @@ impl Node {
                 }
                 // (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
                 match req_esv {
-                    Esv::WriteRequest
-                    | Esv::WriteRequestResponseRequired
-                    | Esv::WriteReadRequest => {
+                    ESV::WriteRequest
+                    | ESV::WriteRequestResponseRequired
+                    | ESV::WriteReadRequest => {
                         if 0 < dst_prop.capacity() && (dst_prop.capacity() < req_msg_prop.size()) {
                             return false;
                         }
@@ -358,11 +358,11 @@ impl Node {
         }
 
         match req_msg.esv() {
-            Esv::WriteReadRequest => {
-                if !is_valid_request_message(dst_obj, Esv::WriteRequest, req_msg.properties_set()) {
+            ESV::WriteReadRequest => {
+                if !is_valid_request_message(dst_obj, ESV::WriteRequest, req_msg.properties_set()) {
                     return Some(ResponseErrorMessage::from(req_msg));
                 }
-                if !is_valid_request_message(dst_obj, Esv::ReadRequest, req_msg.properties_get()) {
+                if !is_valid_request_message(dst_obj, ESV::ReadRequest, req_msg.properties_get()) {
                     return Some(ResponseErrorMessage::from(req_msg));
                 }
             }
@@ -417,7 +417,7 @@ impl Node {
         let dst_obj = dst_obj.unwrap();
 
         match req_msg.esv() {
-            Esv::WriteRequest | Esv::WriteRequestResponseRequired => {
+            ESV::WriteRequest | ESV::WriteRequestResponseRequired => {
                 for req_msg_prop in req_msg.properties() {
                     let dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
                     if dst_prop.is_none() {
@@ -427,7 +427,7 @@ impl Node {
                     dst_prop.set_data(&req_msg_prop.data().clone());
                 }
             }
-            Esv::WriteReadRequest => {
+            ESV::WriteReadRequest => {
                 for req_msg_prop in req_msg.properties_set() {
                     let dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
                     if dst_prop.is_none() {
@@ -472,14 +472,14 @@ impl RequestHandler for Arc<Mutex<Node>> {
     fn property_request_received(
         &mut self,
         deoj: &mut Object,
-        esv: Esv,
+        esv: ESV,
         prop: &crate::protocol::Property,
     ) -> bool {
         if deoj.code() != NODE_PROFILE_OBJECT_CODE {
             return false;
         }
         match esv {
-            Esv::ReadRequest | Esv::NotificationRequest => match prop.code() {
+            ESV::ReadRequest | ESV::NotificationRequest => match prop.code() {
                 NODE_PROFILE_CLASS_OPERATING_STATUS => true,
                 NODE_PROFILE_CLASS_VERSION_INFORMATION => true,
                 NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES => true,

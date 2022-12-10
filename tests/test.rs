@@ -18,7 +18,7 @@ use std::sync::Mutex;
 
 use echonet::{Controller, Device, Node, Object, ObjectCode, RequestHandler};
 
-use echonet::protocol::{Esv, Property};
+use echonet::protocol::{Property, ESV};
 use echonet::util::Bytes;
 
 pub struct TestController {}
@@ -60,14 +60,14 @@ impl TestDevice {
 }
 
 impl RequestHandler for TestDevice {
-    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
+    fn property_request_received(&mut self, deoj: &mut Object, esv: ESV, prop: &Property) -> bool {
         // Ignore all messages to other objects in the same node.
         if deoj.code() != self.dev.code() {
             return false;
         }
 
         match esv {
-            Esv::WriteRequest | Esv::WriteReadRequest | Esv::WriteRequestResponseRequired => {
+            ESV::WriteRequest | ESV::WriteReadRequest | ESV::WriteRequestResponseRequired => {
                 let prop_code = prop.code();
                 let prop_bytes = prop.data();
                 match prop_code {
