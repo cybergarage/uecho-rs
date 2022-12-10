@@ -185,6 +185,7 @@ impl Node {
         // Turns on child objects
 
         self.set_object_properties_byte(OBJECT_OPERATING_STATUS, OBJECT_OPERATING_STATUS_ON);
+        self.set_object_properties_byte(OBJECT_FAULT_STATUS, OBJECT_FAULT_STATUS_OFF);
 
         // Sets registerd observers to the transport manager.
 
