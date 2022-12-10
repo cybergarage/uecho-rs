@@ -23,8 +23,6 @@ use nix::unistd::close;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::os::unix::io::AsRawFd;
-use std::thread;
-use std::time::Duration;
 
 pub struct UdpSocket {
     sock: Option<std::net::UdpSocket>,
