@@ -142,7 +142,6 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
-<span id="145">145</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -168,8 +167,7 @@
 <span class="kw">use </span>std::io;
 <span class="kw">use </span>std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 <span class="kw">use </span>std::os::unix::io::AsRawFd;
-<span class="kw">use </span>std::thread;
-<span class="kw">use </span>std::time::Duration;
+<span class="kw">use </span>std::{thread, time};
 
 <span class="kw">pub struct </span>UdpSocket {
     sock: <span class="prelude-ty">Option</span>&lt;std::net::UdpSocket&gt;,
@@ -242,7 +240,7 @@
         <span class="kw">if </span>res.is_err() {
             <span class="macro">warn!</span>(<span class="string">&quot;close {:?}&quot;</span>, res.err());
         }
-        thread::sleep(Duration::from_secs(<span class="number">1</span>));
+        thread::sleep(time::Duration::from_secs(<span class="number">1</span>));
     }
 
     <span class="kw">pub fn </span>send_to(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8], to_addr: SocketAddr) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {

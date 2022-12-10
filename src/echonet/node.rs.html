@@ -495,10 +495,6 @@
 <span id="495">495</span>
 <span id="496">496</span>
 <span id="497">497</span>
-<span id="498">498</span>
-<span id="499">499</span>
-<span id="500">500</span>
-<span id="501">501</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -524,7 +520,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::property::{Property, PropertyCode};
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message, TID, TID_MAX, TID_MIN};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ESV, TID, TID_MAX, TID_MIN};
 <span class="kw">use </span><span class="kw">crate</span>::request_handler::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::transport::{Manager, NotifytManager, PORT};
@@ -563,8 +559,7 @@
     }
 
     <span class="kw">pub fn </span>init_node_profile_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">let </span><span class="kw-2">mut </span>prof = NodeProfile::new();
-        <span class="self">self</span>.add_object(prof);
+        <span class="self">self</span>.add_object(NodeProfile::new());
     }
 
     <span class="kw">pub fn </span>add_object(<span class="kw-2">&amp;mut </span><span class="self">self</span>, obj: Object) -&gt; bool {
@@ -638,7 +633,7 @@
 
     <span class="kw">fn </span>create_annouce_property_message(<span class="kw-2">&amp;</span><span class="self">self</span>, obj: <span class="kw-2">&amp;</span>Object, prop: <span class="kw-2">&amp;</span>Property) -&gt; Message {
         <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
-        msg.set_esv(Esv::Notification);
+        msg.set_esv(ESV::Notification);
         msg.set_deoj(NODE_PROFILE_OBJECT_CODE);
         msg.set_seoj(obj.code());
         msg.add_property(prop.into());
@@ -686,6 +681,7 @@
         <span class="comment">// Turns on child objects
 
         </span><span class="self">self</span>.set_object_properties_byte(OBJECT_OPERATING_STATUS, OBJECT_OPERATING_STATUS_ON);
+        <span class="self">self</span>.set_object_properties_byte(OBJECT_FAULT_STATUS, OBJECT_FAULT_STATUS_OFF);
 
         <span class="comment">// Sets registerd observers to the transport manager.
 
@@ -807,7 +803,7 @@
 
         <span class="kw">fn </span>is_valid_request_message(
             dst_obj: <span class="kw-2">&amp;</span>Object,
-            req_esv: Esv,
+            req_esv: ESV,
             req_msg_props: <span class="kw-2">&amp;</span>Vec&lt;<span class="kw">crate</span>::protocol::Property&gt;,
         ) -&gt; bool {
             <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg_props.iter() {
@@ -819,19 +815,19 @@
                 <span class="comment">// (D) Processing when the controlled property exists but the stipulated service processing functions are not available
                 </span><span class="kw">let </span>dst_prop = dst_prop.unwrap();
                 <span class="kw">match </span>req_esv {
-                    Esv::WriteRequest | Esv::WriteRequestResponseRequired =&gt; {
+                    ESV::WriteRequest | ESV::WriteRequestResponseRequired =&gt; {
                         <span class="kw">if </span>!dst_prop.is_writable() {
                             <span class="kw">return </span><span class="bool-val">false</span>;
                         }
                     }
-                    Esv::ReadRequest
-                    | Esv::NotificationRequest
-                    | Esv::NotificationResponseRequired =&gt; {
+                    ESV::ReadRequest
+                    | ESV::NotificationRequest
+                    | ESV::NotificationResponseRequired =&gt; {
                         <span class="kw">if </span>!dst_prop.is_readable() {
                             <span class="kw">return </span><span class="bool-val">false</span>;
                         }
                     }
-                    Esv::WriteReadRequest =&gt; {
+                    ESV::WriteReadRequest =&gt; {
                         <span class="kw">if </span>!dst_prop.is_writable() {
                             <span class="kw">return </span><span class="bool-val">false</span>;
                         }
@@ -845,9 +841,9 @@
                 }
                 <span class="comment">// (E) Processing when the controlled property exists and the stipulated service processing functions are available but the EDT size does not match
                 </span><span class="kw">match </span>req_esv {
-                    Esv::WriteRequest
-                    | Esv::WriteRequestResponseRequired
-                    | Esv::WriteReadRequest =&gt; {
+                    ESV::WriteRequest
+                    | ESV::WriteRequestResponseRequired
+                    | ESV::WriteReadRequest =&gt; {
                         <span class="kw">if </span><span class="number">0 </span>&lt; dst_prop.capacity() &amp;&amp; (dst_prop.capacity() &lt; req_msg_prop.size()) {
                             <span class="kw">return </span><span class="bool-val">false</span>;
                         }
@@ -859,11 +855,11 @@
         </span>}
 
         <span class="kw">match </span>req_msg.esv() {
-            Esv::WriteReadRequest =&gt; {
-                <span class="kw">if </span>!is_valid_request_message(dst_obj, Esv::WriteRequest, req_msg.properties_set()) {
+            ESV::WriteReadRequest =&gt; {
+                <span class="kw">if </span>!is_valid_request_message(dst_obj, ESV::WriteRequest, req_msg.properties_set()) {
                     <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
                 }
-                <span class="kw">if </span>!is_valid_request_message(dst_obj, Esv::ReadRequest, req_msg.properties_get()) {
+                <span class="kw">if </span>!is_valid_request_message(dst_obj, ESV::ReadRequest, req_msg.properties_get()) {
                     <span class="kw">return </span><span class="prelude-val">Some</span>(ResponseErrorMessage::from(req_msg));
                 }
             }
@@ -918,7 +914,7 @@
         <span class="kw">let </span>dst_obj = dst_obj.unwrap();
 
         <span class="kw">match </span>req_msg.esv() {
-            Esv::WriteRequest | Esv::WriteRequestResponseRequired =&gt; {
+            ESV::WriteRequest | ESV::WriteRequestResponseRequired =&gt; {
                 <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties() {
                     <span class="kw">let </span>dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
                     <span class="kw">if </span>dst_prop.is_none() {
@@ -928,7 +924,7 @@
                     dst_prop.set_data(<span class="kw-2">&amp;</span>req_msg_prop.data().clone());
                 }
             }
-            Esv::WriteReadRequest =&gt; {
+            ESV::WriteReadRequest =&gt; {
                 <span class="kw">for </span>req_msg_prop <span class="kw">in </span>req_msg.properties_set() {
                     <span class="kw">let </span>dst_prop = dst_obj.find_property_mut(req_msg_prop.code());
                     <span class="kw">if </span>dst_prop.is_none() {
@@ -973,23 +969,19 @@
     <span class="kw">fn </span>property_request_received(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         deoj: <span class="kw-2">&amp;mut </span>Object,
-        esv: Esv,
+        esv: ESV,
         prop: <span class="kw-2">&amp;</span><span class="kw">crate</span>::protocol::Property,
     ) -&gt; bool {
         <span class="kw">if </span>deoj.code() != NODE_PROFILE_OBJECT_CODE {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
         <span class="kw">match </span>esv {
-            Esv::ReadRequest | Esv::NotificationRequest =&gt; <span class="kw">match </span>prop.code() {
-                NODE_PROFILE_CLASS_OPERATING_STATUS =&gt; <span class="bool-val">true</span>,
-                NODE_PROFILE_CLASS_VERSION_INFORMATION =&gt; <span class="bool-val">true</span>,
-                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES =&gt; <span class="bool-val">true</span>,
-                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES =&gt; <span class="bool-val">true</span>,
-                NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION =&gt; <span class="bool-val">true</span>,
-                NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S =&gt; <span class="bool-val">true</span>,
-                NODE_PROFILE_CLASS_SELF_NODE_CLASS_LIST_S =&gt; <span class="bool-val">true</span>,
-                <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
-            },
+            ESV::ReadRequest | ESV::NotificationRequest =&gt; {
+                <span class="kw">if </span>deoj.find_property(prop.code()).is_none() {
+                    <span class="kw">return </span><span class="bool-val">false</span>;
+                }
+                <span class="bool-val">true
+            </span>}
             <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
     }

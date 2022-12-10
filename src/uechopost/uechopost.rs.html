@@ -222,7 +222,7 @@
 <span class="kw">use </span>std::{thread, time};
 
 <span class="kw">use </span>echonet::log::Logger;
-<span class="kw">use </span>echonet::protocol::{Esv, Message, Property};
+<span class="kw">use </span>echonet::protocol::{Message, Property, ESV};
 <span class="kw">use </span>echonet::util::Bytes;
 <span class="kw">use </span>echonet::Controller;
 <span class="kw">use </span>hex;
@@ -239,7 +239,7 @@
     <span class="kw">let </span><span class="kw-2">mut </span>program_name = String::new();
     <span class="kw">let </span>ipaddr_none = IpAddr::V4(Ipv4Addr::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));
     <span class="kw">let </span><span class="kw-2">mut </span>node_addr = ipaddr_none.clone();
-    <span class="kw">let </span><span class="kw-2">mut </span>esv = Esv::Unknown;
+    <span class="kw">let </span><span class="kw-2">mut </span>esv = ESV::Unknown;
     <span class="kw">let </span><span class="kw-2">mut </span>obj_code = <span class="number">0</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>epcs = Vec::new();
     <span class="kw">let </span><span class="kw-2">mut </span>edts = Vec::new();
@@ -280,7 +280,7 @@
                     obj_code = Bytes::to_u32(<span class="kw-2">&amp;</span>arg_obj.unwrap());
                     <span class="kw">continue</span>;
                 }
-                <span class="kw">if </span>esv == Esv::Unknown {
+                <span class="kw">if </span>esv == ESV::Unknown {
                     <span class="kw">let </span>arg_esv = hex::decode(arg.clone());
                     <span class="kw">if </span>arg_esv.is_err() {
                         usages();
@@ -288,8 +288,8 @@
                         <span class="kw">return</span>;
                     }
                     <span class="kw">let </span>arg_esv = arg_esv.unwrap();
-                    esv = Esv::from_u8(arg_esv[<span class="number">0</span>]);
-                    <span class="kw">if </span>esv == Esv::Unknown {
+                    esv = ESV::from_u8(arg_esv[<span class="number">0</span>]);
+                    <span class="kw">if </span>esv == ESV::Unknown {
                         usages();
                         <span class="macro">eprintln!</span>(<span class="string">&quot;ESV error: {}&quot;</span>, arg);
                         <span class="kw">return</span>;
@@ -329,7 +329,7 @@
         <span class="kw">return</span>;
     }
 
-    <span class="kw">if </span>esv == Esv::Unknown {
+    <span class="kw">if </span>esv == ESV::Unknown {
         usages();
         <span class="macro">eprintln!</span>(<span class="string">&quot;ESV is missing&quot;</span>);
         <span class="kw">return</span>;
@@ -377,10 +377,10 @@
         }
 
         <span class="kw">match </span>req_msg.esv() {
-            Esv::WriteRequest | Esv::NotificationRequest =&gt; {
+            ESV::WriteRequest | ESV::NotificationRequest =&gt; {
                 ctrl.send_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>req_msg);
             }
-            Esv::WriteRequestResponseRequired | Esv::ReadRequest | Esv::WriteReadRequest =&gt; {
+            ESV::WriteRequestResponseRequired | ESV::ReadRequest | ESV::WriteReadRequest =&gt; {
                 <span class="kw">let </span>rx = ctrl.post_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>req_msg);
                 <span class="kw">match </span>rx.recv_timeout(Duration::from_secs(<span class="number">1</span>)) {
                     <span class="prelude-val">Ok</span>(res_msg) =&gt; {

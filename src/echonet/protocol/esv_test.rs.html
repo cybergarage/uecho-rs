@@ -43,14 +43,14 @@
 </span><span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
 
-    <span class="kw">use </span><span class="kw">crate</span>::protocol::Esv;
+    <span class="kw">use </span><span class="kw">crate</span>::protocol::ESV;
     <span class="kw">use </span>strum::IntoEnumIterator;
 
     <span class="attribute">#[test]
     </span><span class="kw">fn </span>esv() {
-        <span class="kw">for </span>esv <span class="kw">in </span>Esv::iter() {
-            <span class="kw">let </span>u8esv = Esv::to_u8(esv);
-            <span class="macro">assert_eq!</span>(esv, Esv::from_u8(u8esv));
+        <span class="kw">for </span>esv <span class="kw">in </span>ESV::iter() {
+            <span class="kw">let </span>u8esv = ESV::to_u8(esv);
+            <span class="macro">assert_eq!</span>(esv, ESV::from_u8(u8esv));
         }
     }
 }

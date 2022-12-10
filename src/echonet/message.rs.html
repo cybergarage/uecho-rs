@@ -210,9 +210,9 @@
 
 </span><span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::object::ObjectCode;
-<span class="kw">use </span><span class="kw">crate</span>::protocol::Esv;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::Property;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::ESV;
 <span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
 
 <span class="kw">pub struct </span>SearchMessage {}
@@ -221,7 +221,7 @@
     <span class="kw">pub fn </span>from_object_code(code: ObjectCode) -&gt; Message {
         <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
 
-        msg.set_esv(Esv::ReadRequest);
+        msg.set_esv(ESV::ReadRequest);
         msg.set_seoj(NODE_PROFILE_OBJECT_CODE);
         msg.set_deoj(code);
 
@@ -244,31 +244,31 @@
         <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
         <span class="kw">match </span>req_msg.esv() {
             <span class="comment">// 4.2.3.1 Property value write service (no response required) [0x60, 0x50]
-            </span>Esv::WriteRequest =&gt; {
-                msg.set_esv(Esv::WriteRequestError);
+            </span>ESV::WriteRequest =&gt; {
+                msg.set_esv(ESV::WriteRequestError);
             }
             <span class="comment">// 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
-            </span>Esv::WriteRequestResponseRequired =&gt; {
-                msg.set_esv(Esv::WriteRequestResponseRequiredError);
+            </span>ESV::WriteRequestResponseRequired =&gt; {
+                msg.set_esv(ESV::WriteRequestResponseRequiredError);
             }
             <span class="comment">// 4.2.3.3 Property value read service [0x62,0x72,0x52]
-            </span>Esv::ReadRequest =&gt; {
-                msg.set_esv(Esv::ReadRequestError);
+            </span>ESV::ReadRequest =&gt; {
+                msg.set_esv(ESV::ReadRequestError);
             }
             <span class="comment">// 4.2.3.4 Property value write &amp; read service [0x6E,0x7E,0x5E]
-            </span>Esv::WriteReadRequest =&gt; {
-                msg.set_esv(Esv::WriteReadRequestError);
+            </span>ESV::WriteReadRequest =&gt; {
+                msg.set_esv(ESV::WriteReadRequestError);
             }
             <span class="comment">// 4.2.3.5 Property value notification service [0x63,0x73,0x53]
-            </span>Esv::NotificationRequest =&gt; {
-                msg.set_esv(Esv::NotificationRequestError);
+            </span>ESV::NotificationRequest =&gt; {
+                msg.set_esv(ESV::NotificationRequestError);
             }
             <span class="comment">// 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
-            </span>Esv::NotificationResponseRequired =&gt; {
-                msg.set_esv(Esv::NotificationRequestError);
+            </span>ESV::NotificationResponseRequired =&gt; {
+                msg.set_esv(ESV::NotificationRequestError);
             }
             <span class="kw">_ </span>=&gt; {
-                msg.set_esv(Esv::Unknown);
+                msg.set_esv(ESV::Unknown);
             }
         }
         msg.set_tid(req_msg.tid());
@@ -276,7 +276,7 @@
         msg.set_deoj(req_msg.seoj());
         <span class="kw">match </span>msg.esv() {
             <span class="comment">// 4.2.3.4 Property value write &amp; read service [0x6E,0x7E,0x5E]
-            </span>Esv::WriteReadRequestError =&gt; {
+            </span>ESV::WriteReadRequestError =&gt; {
                 <span class="kw">for </span>req_prop <span class="kw">in </span>req_msg.properties_set().iter() {
                     msg.add_property(req_prop.clone());
                 }
@@ -302,27 +302,27 @@
         msg.set_tid(req_msg.tid());
         <span class="kw">match </span>req_msg.esv() {
             <span class="comment">// 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
-            </span>Esv::WriteRequestResponseRequired =&gt; {
-                msg.set_esv(Esv::WriteResponse);
+            </span>ESV::WriteRequestResponseRequired =&gt; {
+                msg.set_esv(ESV::WriteResponse);
             }
             <span class="comment">// 4.2.3.3 Property value read service [0x62,0x72,0x52]
-            </span>Esv::ReadRequest =&gt; {
-                msg.set_esv(Esv::ReadResponse);
+            </span>ESV::ReadRequest =&gt; {
+                msg.set_esv(ESV::ReadResponse);
             }
             <span class="comment">// 4.2.3.4 Property value write &amp; read service [0x6E,0x7E,0x5E]
-            </span>Esv::WriteReadRequest =&gt; {
-                msg.set_esv(Esv::WriteReadResponse);
+            </span>ESV::WriteReadRequest =&gt; {
+                msg.set_esv(ESV::WriteReadResponse);
             }
             <span class="comment">// 4.2.3.5 Property value notification service [0x63,0x73,0x53]
-            </span>Esv::NotificationRequest =&gt; {
-                msg.set_esv(Esv::Notification);
+            </span>ESV::NotificationRequest =&gt; {
+                msg.set_esv(ESV::Notification);
             }
             <span class="comment">// 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
-            </span>Esv::NotificationResponseRequired =&gt; {
-                msg.set_esv(Esv::NotificationResponse);
+            </span>ESV::NotificationResponseRequired =&gt; {
+                msg.set_esv(ESV::NotificationResponse);
             }
             <span class="kw">_ </span>=&gt; {
-                msg.set_esv(Esv::Unknown);
+                msg.set_esv(ESV::Unknown);
             }
         }
         msg.set_seoj(req_msg.deoj());
@@ -380,7 +380,7 @@
 <span class="kw">impl </span>Message {
     <span class="kw">pub fn </span>is_node_profile_message(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">let </span>esv = <span class="self">self</span>.esv();
-        <span class="kw">if </span>esv != Esv::Notification &amp;&amp; esv != Esv::ReadResponse {
+        <span class="kw">if </span>esv != ESV::Notification &amp;&amp; esv != ESV::ReadResponse {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
         <span class="kw">let </span>dst_obj = <span class="self">self</span>.deoj();

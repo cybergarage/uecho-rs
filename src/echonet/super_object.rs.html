@@ -50,6 +50,10 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -71,6 +75,7 @@
 
 <span class="kw">pub const </span>SUPER_OBJECT_CODE: u32 = <span class="number">0x000000</span>;
 <span class="kw">pub const </span>OBJECT_OPERATING_STATUS: u8 = <span class="number">0x80</span>;
+<span class="kw">pub const </span>OBJECT_FAULT_STATUS: u8 = <span class="number">0x88</span>;
 <span class="kw">pub const </span>OBJECT_MANUFACTURER_CODE: u8 = <span class="number">0x8A</span>;
 <span class="kw">pub const </span>OBJECT_ANNO_PROPERTY_MAP: u8 = <span class="number">0x9D</span>;
 <span class="kw">pub const </span>OBJECT_SET_PROPERTY_MAP: u8 = <span class="number">0x9E</span>;
@@ -78,20 +83,23 @@
 
 <span class="kw">pub const </span>OBJECT_OPERATING_STATUS_ON: u8 = <span class="number">0x30</span>;
 <span class="kw">pub const </span>OBJECT_OPERATING_STATUS_OFF: u8 = <span class="number">0x31</span>;
+<span class="kw">pub const </span>OBJECT_FAULT_STATUS_ON: u8 = <span class="number">0x41</span>;
+<span class="kw">pub const </span>OBJECT_FAULT_STATUS_OFF: u8 = <span class="number">0x42</span>;
 <span class="kw">pub const </span>OBJECT_OPERATING_STATUS_SIZE: usize = <span class="number">1</span>;
 <span class="kw">pub const </span>OBJECT_MANUFACTURER_EXPERIMENT_CODE_MIN: u32 = <span class="number">0xFFFFF0</span>;
 <span class="kw">pub const </span>OBJECT_MANUFACTURER_EXPERIMENT_CODE_MAX: u32 = <span class="number">0xFFFFFF</span>;
 <span class="kw">pub const </span>OBJECT_MANUFACTURER_CODE_SIZE: usize = <span class="number">3</span>;
-<span class="kw">pub const </span>OBJECT_PROPERTY_MAP_MAX_SIZE: usize = <span class="number">16</span>;
-<span class="kw">pub const </span>OBJECT_ANNO_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_MAX_SIZE + <span class="number">1</span>;
-<span class="kw">pub const </span>OBJECT_SET_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_MAX_SIZE + <span class="number">1</span>;
-<span class="kw">pub const </span>OBJECT_GET_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_MAX_SIZE + <span class="number">1</span>;
+<span class="kw">pub const </span>OBJECT_PROPERTY_MAP_FORMAT1_MAX_SIZE: usize = <span class="number">15</span>;
+<span class="kw">pub const </span>OBJECT_ANNO_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_FORMAT1_MAX_SIZE + <span class="number">1</span>;
+<span class="kw">pub const </span>OBJECT_SET_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_FORMAT1_MAX_SIZE + <span class="number">1</span>;
+<span class="kw">pub const </span>OBJECT_GET_PROPERTY_MAP_MAX_SIZE: usize = OBJECT_PROPERTY_MAP_FORMAT1_MAX_SIZE + <span class="number">1</span>;
+<span class="kw">pub const </span>OBJECT_PROPERTY_MAP_FORMAT2_SIZE: usize = <span class="number">16</span>;
 
 <span class="kw">pub const </span>OBJECT_MANUFACTURER_EXPERIMENT: u32 = <span class="number">0xFFFFFF</span>;
 
 <span class="kw">impl </span>Object {
     <span class="kw">pub fn </span>set_manufacturer_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u32) -&gt; bool {
-        <span class="self">self</span>.set_property_integer(
+        <span class="self">self</span>.set_property_int(
             OBJECT_MANUFACTURER_CODE,
             code,
             OBJECT_MANUFACTURER_CODE_SIZE,

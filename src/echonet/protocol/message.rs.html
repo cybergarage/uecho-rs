@@ -403,7 +403,7 @@
 <span class="kw">use </span>std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 <span class="kw">use </span><span class="kw">crate</span>::protocol::property::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::protocol::Esv;
+<span class="kw">use </span><span class="kw">crate</span>::protocol::ESV;
 
 <span class="kw">pub const </span>HEADER_EHD1_ECHONET: u8 = <span class="number">0x10</span>;
 <span class="kw">pub const </span>HEADER_EHD2_FORMAT1: u8 = <span class="number">0x81</span>;
@@ -419,12 +419,12 @@
 /// # Examples
 /// ```
 /// use echonet::protocol::Message;
-/// use echonet::protocol::Esv;
+/// use echonet::protocol::ESV;
 /// use echonet::protocol::Property;
 /// use hex;
 ///
 /// let mut msg = Message::new();
-/// msg.set_esv(Esv::ReadRequest);
+/// msg.set_esv(ESV::ReadRequest);
 /// msg.set_deoj(0x029101);
 /// let mut prop = Property::new();
 /// prop.set_code(0x80);
@@ -432,7 +432,7 @@
 ///
 /// let msg = Message::from_bytes(&amp;msg.bytes());
 /// match msg.esv() {
-///     Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError =&gt; {
+///     ESV::WriteReadRequest | ESV::WriteReadResponse | ESV::WriteReadRequestError =&gt; {
 ///         let opc = msg.opc_set();
 ///         for (n, prop) in msg.properties_set().iter().enumerate() {
 ///             println!(&quot;[{}] {}&quot;, n, hex::encode(prop.data()));
@@ -526,13 +526,13 @@
         <span class="self">self</span>.to_object_code(<span class="kw-2">&amp;</span><span class="self">self</span>.deoj)
     }
 
-    <span class="kw">pub fn </span>set_esv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: Esv) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    <span class="kw">pub fn </span>set_esv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ESV) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.esv = code <span class="kw">as </span>u8;
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>esv(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Esv {
-        Esv::from_u8(<span class="self">self</span>.esv)
+    <span class="kw">pub fn </span>esv(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ESV {
+        ESV::from_u8(<span class="self">self</span>.esv)
     }
 
     <span class="kw">pub fn </span>opc(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -663,7 +663,7 @@
         <span class="kw">let </span>prop_msg = <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>msg)[<span class="number">7</span>..];
         <span class="kw">let </span><span class="kw-2">mut </span>prop_msg_offset = <span class="number">0 </span><span class="kw">as </span>usize;
         <span class="kw">match </span><span class="self">self</span>.esv() {
-            Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError =&gt; {
+            ESV::WriteReadRequest | ESV::WriteReadResponse | ESV::WriteReadRequestError =&gt; {
                 <span class="kw">let </span>properties = <span class="kw-2">&amp;mut </span><span class="self">self</span>.set_properties;
                 <span class="kw">if </span>!parse_property_bytes(properties, prop_msg, <span class="kw-2">&amp;mut </span>prop_msg_offset) {
                     <span class="kw">return </span><span class="bool-val">false</span>;
@@ -741,7 +741,7 @@
         msg_bytes.push(<span class="self">self</span>.esv);
 
         <span class="kw">match </span><span class="self">self</span>.esv() {
-            Esv::WriteReadRequest | Esv::WriteReadResponse =&gt; {
+            ESV::WriteReadRequest | ESV::WriteReadResponse =&gt; {
                 <span class="self">self</span>.add_property_bytes(<span class="kw-2">&amp;mut </span>msg_bytes, <span class="kw-2">&amp;</span><span class="self">self</span>.set_properties);
                 <span class="self">self</span>.add_property_bytes(<span class="kw-2">&amp;mut </span>msg_bytes, <span class="kw-2">&amp;</span><span class="self">self</span>.get_properties);
             }

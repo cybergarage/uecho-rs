@@ -274,6 +274,107 @@
 <span id="274">274</span>
 <span id="275">275</span>
 <span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -295,9 +396,13 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
 <span class="kw">use </span><span class="kw">crate</span>::message::{ResponseErrorMessage, ResponseMessage};
+<span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::property::{Property, PropertyCode, PropertyData};
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ESV};
+<span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
+<span class="kw">use </span><span class="kw">crate</span>::util::UUID;
+<span class="kw">use </span><span class="kw">crate</span>::version::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// ObjectCode represents an ECHONET-Lite object code.
 </span><span class="kw">pub type </span>ObjectCode = u32;
@@ -388,7 +493,8 @@
 
     <span class="kw">pub fn </span>add_property(<span class="kw-2">&amp;mut </span><span class="self">self</span>, prop: Property) -&gt; bool {
         <span class="kw">let </span>code = prop.code();
-        <span class="self">self</span>.properties.insert(code, prop);
+        <span class="self">self</span>.properties.entry(code).or_insert(prop);
+        <span class="self">self</span>.update_property_maps();
         <span class="bool-val">true
     </span>}
 
@@ -430,31 +536,37 @@
         <span class="self">self</span>.set_property_data(code, data)
     }
 
-    <span class="kw">pub fn </span>set_property_integer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode, val: u32, byte_size: usize) -&gt; bool {
-        <span class="kw">let </span><span class="kw-2">mut </span>buf = Vec::&lt;u8&gt;::with_capacity(byte_size);
+    <span class="kw">pub fn </span>set_property_int(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode, val: u32, byte_size: usize) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>buf = <span class="macro">vec!</span>[<span class="number">0</span>; byte_size];
         Bytes::from_u32(val, <span class="kw-2">&amp;mut </span>buf);
         <span class="self">self</span>.set_property_data(code, <span class="kw-2">&amp;</span>buf)
     }
 
-    <span class="kw">pub fn </span>property_data(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: PropertyCode) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PropertyData&gt; {
-        <span class="kw">match </span><span class="self">self</span>.find_property_mut(code) {
+    <span class="kw">pub fn </span>property_data(<span class="kw-2">&amp;</span><span class="self">self</span>, code: PropertyCode) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PropertyData&gt; {
+        <span class="kw">match </span><span class="self">self</span>.find_property(code) {
             <span class="prelude-val">Some</span>(prop) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(prop.data()),
             <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
         }
     }
 
-    <span class="kw">pub fn </span>add_standard_properties(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) -&gt; bool {
-        <span class="kw">let </span>db = StandardDatabase::shared();
-        <span class="kw">let </span>std_obj = db.find_object(code &amp; <span class="number">0xFFFF00</span>);
-        <span class="kw">match </span>std_obj {
-            <span class="prelude-val">Some</span>(obj) =&gt; {
-                <span class="self">self</span>.set_class_name(obj.class_name().clone());
-                <span class="kw">for </span>(_prop_code, prop) <span class="kw">in </span><span class="kw-2">&amp;</span>obj.properties {
-                    <span class="self">self</span>.add_property(prop.clone());
-                }
-                <span class="bool-val">true
-            </span>}
-            <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
+    <span class="kw">pub fn </span>property_data_as_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, code: PropertyCode) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
+        <span class="kw">match </span><span class="self">self</span>.find_property(code) {
+            <span class="prelude-val">Some</span>(prop) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(prop.data_as_bytes()),
+            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="kw">pub fn </span>property_data_as_byte(<span class="kw-2">&amp;</span><span class="self">self</span>, code: PropertyCode) -&gt; <span class="prelude-ty">Option</span>&lt;u8&gt; {
+        <span class="kw">match </span><span class="self">self</span>.find_property(code) {
+            <span class="prelude-val">Some</span>(prop) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(prop.data_as_byte()),
+            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="kw">pub fn </span>property_data_as_int(<span class="kw-2">&amp;</span><span class="self">self</span>, code: PropertyCode) -&gt; <span class="prelude-ty">Option</span>&lt;u32&gt; {
+        <span class="kw">match </span><span class="self">self</span>.find_property(code) {
+            <span class="prelude-val">Some</span>(prop) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(prop.data_as_int()),
+            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
         }
     }
 
@@ -465,12 +577,102 @@
         }
     }
 
+    <span class="kw">pub fn </span>add_standard_properties(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: ObjectCode) -&gt; bool {
+        <span class="kw">let </span>db = StandardDatabase::shared();
+        <span class="kw">let </span>std_obj = db.find_object(code &amp; <span class="number">0xFFFF00</span>);
+        <span class="kw">match </span>std_obj {
+            <span class="prelude-val">Some</span>(obj) =&gt; {
+                <span class="self">self</span>.set_class_name(obj.class_name().clone());
+                <span class="kw">for </span>(prop_code, std_prop) <span class="kw">in </span><span class="kw-2">&amp;</span>obj.properties {
+                    <span class="kw">let </span><span class="kw-2">mut </span>prop = std_prop.clone();
+                    <span class="comment">// Sets default standard property data
+                    </span><span class="kw">match </span><span class="kw-2">*</span>prop_code {
+                        OBJECT_MANUFACTURER_CODE =&gt; {
+                            prop.set_int_data(
+                                OBJECT_MANUFACTURER_EXPERIMENT,
+                                OBJECT_MANUFACTURER_CODE_SIZE,
+                            );
+                        }
+                        NODE_PROFILE_CLASS_VERSION_INFORMATION =&gt; {
+                            <span class="kw">let </span><span class="kw-2">mut </span>ver = <span class="macro">vec!</span>[<span class="number">0 </span><span class="kw">as </span>u8; <span class="number">4</span>];
+                            ver[<span class="number">0</span>] = ECHONET_MAJOR_VERSION;
+                            ver[<span class="number">1</span>] = ECHONET_MINOR_VERSION;
+                            ver[<span class="number">2</span>] = ECHONET_FRAME_FORMAT;
+                            prop.set_data(<span class="kw-2">&amp;</span>ver);
+                        }
+                        NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER =&gt; {
+                            prop.set_data(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
+                        }
+                        <span class="kw">_ </span>=&gt; {}
+                    }
+                    <span class="self">self</span>.add_property(prop);
+                }
+                <span class="bool-val">true
+            </span>}
+            <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
+        }
+    }
+
+    <span class="kw">fn </span>update_property_maps(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="comment">// Annex 1 Property Map Description Format
+        </span><span class="kw">fn </span>to_property_map_bytes&lt;<span class="lifetime">&#39;a</span>&gt;(maps: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Vec&lt;u8&gt;, map_bytes: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;u8&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8] {
+            map_bytes.clear();
+            map_bytes.push(maps.len() <span class="kw">as </span>u8);
+            <span class="kw">if </span>maps.len() &lt;= OBJECT_PROPERTY_MAP_FORMAT1_MAX_SIZE {
+                <span class="kw">for </span>prop_code <span class="kw">in </span>maps.iter() {
+                    map_bytes.push(<span class="kw-2">*</span>prop_code);
+                }
+            } <span class="kw">else </span>{
+                <span class="kw">for </span>_n <span class="kw">in </span><span class="number">0</span>..OBJECT_PROPERTY_MAP_FORMAT2_SIZE {
+                    map_bytes.push(<span class="number">0x00 </span><span class="kw">as </span>u8);
+                }
+                <span class="kw">for </span>prop_code <span class="kw">in </span>maps.iter() {
+                    <span class="comment">// 1 &lt;= prop_map_row &lt;= 16
+                    </span><span class="kw">let </span>prop_map_row = ((<span class="kw-2">*</span>prop_code - <span class="number">0x80</span>) &amp; <span class="number">0x0F</span>) + <span class="number">1</span>;
+                    <span class="comment">// 0 &lt;= prop_map_bit &lt;= 7
+                    </span><span class="kw">let </span>prop_map_bit = (((<span class="kw-2">*</span>prop_code - <span class="number">0x80</span>) &amp; <span class="number">0xF0</span>) &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>;
+                    map_bytes[prop_map_row <span class="kw">as </span>usize] |= (<span class="number">0x01 </span>&lt;&lt; prop_map_bit) &amp; <span class="number">0x0F</span>;
+                }
+            }
+            map_bytes
+        }
+
+        <span class="kw">let </span><span class="kw-2">mut </span>get_map = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>set_map = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>anno_map = Vec::new();
+        <span class="kw">for </span>prop <span class="kw">in </span><span class="self">self</span>.properties.values() {
+            <span class="kw">if </span>prop.is_readable() {
+                get_map.push(prop.code());
+            }
+            <span class="kw">if </span>prop.is_writable() {
+                set_map.push(prop.code());
+            }
+            <span class="kw">if </span>prop.is_announceable() {
+                anno_map.push(prop.code());
+            }
+        }
+
+        <span class="kw">let </span><span class="kw-2">mut </span>map_bytes: Vec&lt;u8&gt; = Vec::new();
+        <span class="self">self</span>.set_property_data(
+            OBJECT_GET_PROPERTY_MAP,
+            to_property_map_bytes(<span class="kw-2">&amp;</span>get_map, <span class="kw-2">&amp;mut </span>map_bytes),
+        );
+        <span class="self">self</span>.set_property_data(
+            OBJECT_SET_PROPERTY_MAP,
+            to_property_map_bytes(<span class="kw-2">&amp;</span>set_map, <span class="kw-2">&amp;mut </span>map_bytes),
+        );
+        <span class="self">self</span>.set_property_data(
+            OBJECT_ANNO_PROPERTY_MAP,
+            to_property_map_bytes(<span class="kw-2">&amp;</span>anno_map, <span class="kw-2">&amp;mut </span>map_bytes),
+        );
+    }
+
     <span class="kw">pub fn </span>message_received(<span class="kw-2">&amp;</span><span class="self">self</span>, req_msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>res_msg = ResponseMessage::from(req_msg);
         <span class="kw">match </span>req_msg.esv() {
             <span class="comment">// 4.2.3.2 Property value write service (response required) [0x61,0x71,0x51]
             // 4.2.3.6 Property value notification service (response required) [0x74, 0x7A]
-            </span>Esv::WriteRequestResponseRequired | Esv::NotificationResponseRequired =&gt; {
+            </span>ESV::WriteRequestResponseRequired | ESV::NotificationResponseRequired =&gt; {
                 <span class="kw">for </span>req_prop <span class="kw">in </span>req_msg.properties() {
                     <span class="kw">let </span><span class="kw-2">mut </span>res_prop = <span class="kw">crate</span>::protocol::Property::new();
                     res_prop.set_code(req_prop.code());
@@ -479,7 +681,7 @@
             }
             <span class="comment">// 4.2.3.3 Property value read service [0x62,0x72,0x52]
             // 4.2.3.5 Property value notification service [0x63,0x73,0x53]
-            </span>Esv::ReadRequest | Esv::NotificationRequest =&gt; {
+            </span>ESV::ReadRequest | ESV::NotificationRequest =&gt; {
                 <span class="kw">for </span>req_prop <span class="kw">in </span>req_msg.properties() {
                     <span class="kw">let </span>obj_prop = <span class="self">self</span>.find_property(req_prop.code());
                     <span class="kw">if </span>obj_prop.is_none() {
@@ -493,7 +695,7 @@
                 }
             }
             <span class="comment">// 4.2.3.4 Property value write &amp; read service [0x6E,0x7E,0x5E]
-            </span>Esv::WriteReadRequest =&gt; {
+            </span>ESV::WriteReadRequest =&gt; {
                 <span class="kw">for </span>req_prop <span class="kw">in </span>req_msg.properties_set() {
                     <span class="kw">let </span><span class="kw-2">mut </span>res_prop = <span class="kw">crate</span>::protocol::Property::new();
                     res_prop.set_code(req_prop.code());

@@ -91,8 +91,8 @@
     <span class="kw">use </span>std::thread;
     <span class="kw">use </span>std::time;
 
-    <span class="kw">use </span><span class="kw">crate</span>::protocol::Esv;
     <span class="kw">use </span><span class="kw">crate</span>::protocol::Message;
+    <span class="kw">use </span><span class="kw">crate</span>::protocol::ESV;
     <span class="kw">use </span><span class="kw">crate</span>::transport::interface::<span class="kw-2">*</span>;
     <span class="kw">use </span><span class="kw">crate</span>::transport::multicast_server::<span class="kw-2">*</span>;
 
@@ -117,7 +117,7 @@
             thread::sleep(time::Duration::from_secs(<span class="number">5</span>));
 
             <span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
-            msg.set_esv(Esv::Notification);
+            msg.set_esv(ESV::Notification);
             <span class="kw">for _ in </span><span class="number">0</span>..TEST_OBSERVER_COUNT {
                 <span class="kw">let </span>server_addr = server.ifaddr();
                 <span class="macro">assert!</span>(server_addr.is_ok());

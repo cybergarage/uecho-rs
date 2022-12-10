@@ -77,7 +77,7 @@
     <span class="kw">use </span><span class="kw">crate</span>::message::{
         NodeProfileMessage, ResponseErrorMessage, ResponseMessage, SearchMessage,
     };
-    <span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message};
+    <span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ESV};
     <span class="kw">use </span>hex;
 
     <span class="attribute">#[test]
@@ -103,7 +103,7 @@
         <span class="kw">let </span>req_msg =
             Message::from_bytes(<span class="kw-2">&amp;</span>hex::decode(<span class="string">&quot;108100330EF0010EF0016201D600&quot;</span>).ok().unwrap());
         <span class="kw">let </span>res_msg = ResponseMessage::from(<span class="kw-2">&amp;</span>req_msg);
-        <span class="macro">assert_eq!</span>(res_msg.esv(), Esv::ReadResponse);
+        <span class="macro">assert_eq!</span>(res_msg.esv(), ESV::ReadResponse);
         <span class="macro">assert_eq!</span>(res_msg.tid(), <span class="number">0x0033</span>);
     }
 
@@ -112,7 +112,7 @@
         <span class="kw">let </span>req_msg =
             Message::from_bytes(<span class="kw-2">&amp;</span>hex::decode(<span class="string">&quot;108100330EF0010EF0016201D600&quot;</span>).ok().unwrap());
         <span class="kw">let </span>res_msg = ResponseErrorMessage::from(<span class="kw-2">&amp;</span>req_msg);
-        <span class="macro">assert_eq!</span>(res_msg.esv(), Esv::ReadRequestError);
+        <span class="macro">assert_eq!</span>(res_msg.esv(), ESV::ReadRequestError);
         <span class="macro">assert_eq!</span>(res_msg.tid(), <span class="number">0x0033</span>);
     }
 }

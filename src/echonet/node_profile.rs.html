@@ -244,7 +244,7 @@
             .find_property_mut(NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES);
         <span class="kw">if </span>num_instances_prop.is_some() {
             <span class="kw">let </span>num_instances_prop = num_instances_prop.unwrap();
-            num_instances_prop.set_integer_data(num_obj_codes.into(), <span class="number">3</span>);
+            num_instances_prop.set_int_data(num_obj_codes.into(), <span class="number">3</span>);
         }
 
         <span class="comment">// Number of self-node classes (0xD4)
@@ -253,7 +253,7 @@
             .find_property_mut(NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES);
         <span class="kw">if </span>num_classes_prop.is_some() {
             <span class="kw">let </span>num_classes_prop = num_classes_prop.unwrap();
-            num_classes_prop.set_integer_data(num_class_codes.into(), <span class="number">2</span>);
+            num_classes_prop.set_int_data(num_class_codes.into(), <span class="number">2</span>);
         }
 
         <span class="comment">// Instance list notification (0xD5)

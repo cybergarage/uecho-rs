@@ -103,6 +103,10 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -146,6 +150,7 @@
 //!   - [Inside of Device](https://github.com/cybergarage/uecho-rs/blob/master/doc/device_inside.md)
 //! - Examples
 //!   - [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
+//!   - [Usage examples (For Raspberry Pi Sense HAT)](https://github.com/cybergarage/uecho-rs-sensehat)
 //!
 //! ## Getting Help
 //!
@@ -178,6 +183,7 @@
 <span class="kw">pub use </span><span class="self">self</span>::property::{Property, PropertyEnum, PropertyRule};
 <span class="kw">pub use </span><span class="self">self</span>::remote_node::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::request_handler::{RequestHandler, RequestHandlerObject};
+<span class="kw">pub use </span><span class="self">self</span>::version::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span>class;
 <span class="kw">mod </span>controller;
@@ -203,10 +209,12 @@
 <span class="kw">mod </span>database_test;
 <span class="kw">mod </span>device_test;
 <span class="kw">mod </span>message_test;
+<span class="kw">mod </span>node_profile_test;
 <span class="kw">mod </span>node_test;
 <span class="kw">mod </span>object_test;
 <span class="kw">mod </span>profile_test;
 <span class="kw">mod </span>property_test;
 <span class="kw">mod </span>remote_node_test;
+<span class="kw">mod </span>version;
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="echonet" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
