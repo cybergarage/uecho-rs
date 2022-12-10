@@ -110,6 +110,23 @@
 <span id="110">110</span>
 <span id="111">111</span>
 <span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -135,11 +152,28 @@
 <span class="kw">use </span>echonet::util::Bytes;
 <span class="kw">use </span>echonet::{Controller, ManufactureCode, StandardDatabase};
 
+<span class="kw">fn </span>usages() {
+    <span class="macro">println!</span>(
+        <span class="string">&quot;Usage: uechopost &lt;IP address&gt; &lt;Object code (hex)&gt; &lt;ESV (hex)&gt; (&lt;EPC (hex)&gt; (&lt;EDT (hex)&gt;)*)?&quot;
+    </span>);
+    <span class="macro">println!</span>(<span class="string">&quot; -h : Print this message&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot; -a : Request all properties&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot; -v : Enable debug output&quot;</span>);
+}
+
 <span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>only_mandatory_properties = <span class="bool-val">true</span>;
     <span class="kw">for </span>arg <span class="kw">in </span>env::args() {
         <span class="kw">match </span>arg.as_str() {
             <span class="string">&quot;-v&quot; </span>=&gt; {
                 Logger::init();
+            }
+            <span class="string">&quot;-a&quot; </span>=&gt; {
+                only_mandatory_properties = <span class="bool-val">false</span>;
+            }
+            <span class="string">&quot;-h&quot; </span>=&gt; {
+                usages();
+                <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
             <span class="kw-2">&amp;</span><span class="kw">_ </span>=&gt; {}
         }
@@ -184,7 +218,7 @@
         </span><span class="kw">for </span>(j, obj) <span class="kw">in </span>node.objects().iter().enumerate() {
             <span class="macro">println!</span>(<span class="string">&quot;    [{}] {:06X} ({})&quot;</span>, j, obj.code(), obj.class_name());
             <span class="kw">for </span>obj_prop <span class="kw">in </span>obj.properties() {
-                <span class="kw">if </span>!obj_prop.is_read_required() {
+                <span class="kw">if </span>only_mandatory_properties &amp;&amp; !obj_prop.is_read_required() {
                     <span class="kw">continue</span>;
                 }
 
