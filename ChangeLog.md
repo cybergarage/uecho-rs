@@ -4,14 +4,12 @@
 - Improve controller search functions
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
 
-## v1.2.2 (2022-12-11)
-- Improve standard objects to set more default standard properties
-- Add a multiple device example on Raspberry Pi Sense HAT
-
 ## v1.2.1 (2022-12-10)
 - Update standard device objects to add extra device and definitions
 - Update standard manufactuer codes
 - Update uechopost not to wait when the specified request message does not require the response messages
+- Improve standard objects to set more default standard properties
+- Add a multiple device example on Raspberry Pi Sense HAT
 
 ## v1.2.0 (2022-12-09)
 - Update RequestHandler to pass a mutable destination object to write and return a latest property data for read reuests data by the request handler
