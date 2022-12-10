@@ -39,7 +39,7 @@ pub const OBJECT_MANUFACTURER_EXPERIMENT: u32 = 0xFFFFFF;
 
 impl Object {
     pub fn set_manufacturer_code(&mut self, code: u32) -> bool {
-        self.set_property_integer(
+        self.set_property_int(
             OBJECT_MANUFACTURER_CODE,
             code,
             OBJECT_MANUFACTURER_CODE_SIZE,
