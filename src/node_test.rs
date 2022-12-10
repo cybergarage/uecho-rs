@@ -17,13 +17,24 @@ mod tests {
 
     use crate::node::*;
     use crate::node_profile::*;
+    use crate::super_object::*;
 
     #[test]
     fn node() {
         let node = Node::new();
         let mut node = node.lock().unwrap();
+
         let obj = node.find_object(NODE_PROFILE_OBJECT_CODE);
         assert!(obj.is_some());
+        let obj = obj.unwrap();
+        let man_code = obj.property_data_as_int(OBJECT_MANUFACTURER_CODE);
+        assert!(man_code.is_some());
+        assert_eq!(man_code.unwrap(), OBJECT_MANUFACTURER_EXPERIMENT);
+        let obj_id = obj.property_data_as_bytes(NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER);
+        assert!(obj_id.is_some());
+        assert!(0 < obj_id.unwrap().len());
+
+
         assert!(node.start());
         assert!(node.stop());
     }
