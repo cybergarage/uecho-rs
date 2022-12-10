@@ -162,8 +162,15 @@ impl Object {
     }
 
     pub fn property_data(&mut self, code: PropertyCode) -> Option<&PropertyData> {
-        match self.find_property_mut(code) {
+        match self.find_property(code) {
             Some(prop) => return Some(prop.data()),
+            None => return None,
+        }
+    }
+
+    pub fn property_data_as_bytes(&mut self, code: PropertyCode) -> Option<&[u8]> {
+        match self.find_property(code) {
+            Some(prop) => return Some(prop.data_as_bytes()),
             None => return None,
         }
     }
