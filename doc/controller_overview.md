@@ -50,10 +50,10 @@ for (i, node) in ctrl.nodes().iter().enumerate() {
 To control the found objects, create the request message using `echonet::Message` as the following.
 
 ```
-use echonet::protocol::{Esv, Message, Property};
+use echonet::protocol::{ESV, Message, Property};
 ....
 let mut msg = Message::new();
-msg.set_esv(Esv::ReadRequest);
+msg.set_esv(ESV::ReadRequest);
 msg.set_deoj(obj.code());
 let mut prop = Property::new();
 prop.set_code(obj_prop.code());

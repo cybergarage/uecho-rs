@@ -44,13 +44,13 @@ impl MyDevice {
 }
 
 impl RequestHandler for MyDevice {
-    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
+    fn property_request_received(&mut self, deoj: &mut Object, esv: ESV, prop: &Property) -> bool {
         // Ignore all messages to other objects in the same node.
         if deoj.code() != self.device.code() {
             return false;
         }
         match esv {
-            Esv::WriteRequest | Esv::WriteReadRequest => {
+            ESV::WriteRequest | ESV::WriteReadRequest => {
                 let prop_code = prop.code();
                 let prop_bytes = prop.data();
                 match prop_code {
