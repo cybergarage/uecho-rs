@@ -13,6 +13,10 @@
 // limitations under the License.
 
 pub use self::bytes::*;
+pub use self::uuid::*;
 
 mod bytes;
 mod bytes_test;
+
+mod uuid;
+mod uuid_test;
