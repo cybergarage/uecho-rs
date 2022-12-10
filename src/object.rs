@@ -19,10 +19,13 @@ use std::hash::{Hash, Hasher};
 
 use crate::database::StandardDatabase;
 use crate::message::{ResponseErrorMessage, ResponseMessage};
+use crate::node_profile::*;
 use crate::property::{Property, PropertyCode, PropertyData};
 use crate::protocol::{Message, ESV};
 use crate::super_object::*;
 use crate::util::Bytes;
+use crate::util::UUID;
+use crate::version::*;
 
 /// ObjectCode represents an ECHONET-Lite object code.
 pub type ObjectCode = u32;
@@ -113,7 +116,7 @@ impl Object {
 
     pub fn add_property(&mut self, prop: Property) -> bool {
         let code = prop.code();
-        self.properties.insert(code, prop);
+        self.properties.entry(code).or_insert(prop);
         true
     }
 
@@ -204,6 +207,16 @@ impl Object {
                                 OBJECT_MANUFACTURER_EXPERIMENT,
                                 OBJECT_MANUFACTURER_CODE_SIZE,
                             );
+                        }
+                        NODE_PROFILE_CLASS_VERSION_INFORMATION => {
+                            let mut ver = vec![0 as u8; 4];
+                            ver[0] = ECHONET_MAJOR_VERSION;
+                            ver[1] = ECHONET_MINOR_VERSION;
+                            ver[2] = ECHONET_FRAME_FORMAT;
+                            prop.set_data(&ver);
+                        }
+                        NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER => {
+                            prop.set_data(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
                         }
                         _ => {}
                     }
