@@ -179,7 +179,7 @@ impl Object {
                     // Sets default standard property data
                     match *prop_code {
                         OBJECT_MANUFACTURER_CODE => {
-                            prop.set_integer_data(
+                            prop.set_int_data(
                                 OBJECT_MANUFACTURER_EXPERIMENT,
                                 OBJECT_MANUFACTURER_CODE_SIZE,
                             );
