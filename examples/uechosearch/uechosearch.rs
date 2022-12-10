@@ -23,11 +23,28 @@ use echonet::protocol::{Message, Property, ESV};
 use echonet::util::Bytes;
 use echonet::{Controller, ManufactureCode, StandardDatabase};
 
+fn usages() {
+    println!(
+        "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
+    );
+    println!(" -h : Print this message");
+    println!(" -a : Request all properties");
+    println!(" -v : Enable debug output");
+}
+
 fn main() -> Result<(), Error> {
+    let mut only_mandatory_properties = true;
     for arg in env::args() {
         match arg.as_str() {
             "-v" => {
                 Logger::init();
+            }
+            "-a" => {
+                only_mandatory_properties = false;
+            }
+            "-h" => {
+                usages();
+                return Ok(());
             }
             &_ => {}
         }
@@ -72,7 +89,7 @@ fn main() -> Result<(), Error> {
         for (j, obj) in node.objects().iter().enumerate() {
             println!("    [{}] {:06X} ({})", j, obj.code(), obj.class_name());
             for obj_prop in obj.properties() {
-                if !obj_prop.is_read_required() {
+                if only_mandatory_properties && !obj_prop.is_read_required() {
                     continue;
                 }
 
