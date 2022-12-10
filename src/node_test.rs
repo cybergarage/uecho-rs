@@ -34,7 +34,6 @@ mod tests {
         assert!(obj_id.is_some());
         assert!(0 < obj_id.unwrap().len());
 
-
         assert!(node.start());
         assert!(node.stop());
     }

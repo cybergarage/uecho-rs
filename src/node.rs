@@ -479,16 +479,12 @@ impl RequestHandler for Arc<Mutex<Node>> {
             return false;
         }
         match esv {
-            ESV::ReadRequest | ESV::NotificationRequest => match prop.code() {
-                NODE_PROFILE_CLASS_OPERATING_STATUS => true,
-                NODE_PROFILE_CLASS_VERSION_INFORMATION => true,
-                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_INSTANCES => true,
-                NODE_PROFILE_CLASS_NUMBER_OF_SELF_NODE_CLASSES => true,
-                NODE_PROFILE_CLASS_INSTANCE_LIST_NOTIFICATION => true,
-                NODE_PROFILE_CLASS_SELF_NODE_INSTANCE_LIST_S => true,
-                NODE_PROFILE_CLASS_SELF_NODE_CLASS_LIST_S => true,
-                _ => false,
-            },
+            ESV::ReadRequest | ESV::NotificationRequest => {
+                if deoj.find_property(prop.code()).is_none() {
+                    return false;
+                }
+                true
+            }
             _ => false,
         }
     }
