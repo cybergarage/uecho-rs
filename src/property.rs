@@ -344,7 +344,7 @@ impl Property {
         return self.data[0];
     }
 
-    pub fn integer_data(&self) -> u32 {
+    pub fn int_data(&self) -> u32 {
         if self.data.len() <= 0 {
             return 0;
         }
