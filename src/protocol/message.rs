@@ -16,7 +16,7 @@ use std::fmt;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 use crate::protocol::property::*;
-use crate::protocol::Esv;
+use crate::protocol::ESV;
 
 pub const HEADER_EHD1_ECHONET: u8 = 0x10;
 pub const HEADER_EHD2_FORMAT1: u8 = 0x81;
@@ -32,12 +32,12 @@ pub const TID_MAX: TID = 65535;
 /// # Examples
 /// ```
 /// use echonet::protocol::Message;
-/// use echonet::protocol::Esv;
+/// use echonet::protocol::ESV;
 /// use echonet::protocol::Property;
 /// use hex;
 ///
 /// let mut msg = Message::new();
-/// msg.set_esv(Esv::ReadRequest);
+/// msg.set_esv(ESV::ReadRequest);
 /// msg.set_deoj(0x029101);
 /// let mut prop = Property::new();
 /// prop.set_code(0x80);
@@ -45,7 +45,7 @@ pub const TID_MAX: TID = 65535;
 ///
 /// let msg = Message::from_bytes(&msg.bytes());
 /// match msg.esv() {
-///     Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError => {
+///     ESV::WriteReadRequest | ESV::WriteReadResponse | ESV::WriteReadRequestError => {
 ///         let opc = msg.opc_set();
 ///         for (n, prop) in msg.properties_set().iter().enumerate() {
 ///             println!("[{}] {}", n, hex::encode(prop.data()));
@@ -139,13 +139,13 @@ impl Message {
         self.to_object_code(&self.deoj)
     }
 
-    pub fn set_esv(&mut self, code: Esv) -> &mut Self {
+    pub fn set_esv(&mut self, code: ESV) -> &mut Self {
         self.esv = code as u8;
         self
     }
 
-    pub fn esv(&self) -> Esv {
-        Esv::from_u8(self.esv)
+    pub fn esv(&self) -> ESV {
+        ESV::from_u8(self.esv)
     }
 
     pub fn opc(&self) -> usize {
@@ -276,7 +276,7 @@ impl Message {
         let prop_msg = &(*msg)[7..];
         let mut prop_msg_offset = 0 as usize;
         match self.esv() {
-            Esv::WriteReadRequest | Esv::WriteReadResponse | Esv::WriteReadRequestError => {
+            ESV::WriteReadRequest | ESV::WriteReadResponse | ESV::WriteReadRequestError => {
                 let properties = &mut self.set_properties;
                 if !parse_property_bytes(properties, prop_msg, &mut prop_msg_offset) {
                     return false;
@@ -354,7 +354,7 @@ impl Message {
         msg_bytes.push(self.esv);
 
         match self.esv() {
-            Esv::WriteReadRequest | Esv::WriteReadResponse => {
+            ESV::WriteReadRequest | ESV::WriteReadResponse => {
                 self.add_property_bytes(&mut msg_bytes, &self.set_properties);
                 self.add_property_bytes(&mut msg_bytes, &self.get_properties);
             }

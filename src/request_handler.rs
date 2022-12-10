@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::object::Object;
-use crate::protocol::{Esv, Message, Property};
+use crate::protocol::{Message, Property, ESV};
 use std::sync::{Arc, Mutex};
 
 /// RequestHandler defines a request message handler interface.
@@ -21,7 +21,7 @@ use std::sync::{Arc, Mutex};
 /// ```
 /// use std::sync::{Arc, Mutex};
 /// use echonet::{Device, ObjectCode, Object, RequestHandler};
-/// use echonet::protocol::{Esv, Property};
+/// use echonet::protocol::{ESV, Property};
 /// use echonet::util::Bytes;
 ///
 /// pub struct MyDevice {
@@ -49,9 +49,9 @@ use std::sync::{Arc, Mutex};
 /// }
 ///
 /// impl RequestHandler for MyDevice {
-///     fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool {
+///     fn property_request_received(&mut self, deoj: &mut Object, esv: ESV, prop: &Property) -> bool {
 ///         match esv {
-///             Esv::WriteRequest | Esv::WriteReadRequest => {
+///             ESV::WriteRequest | ESV::WriteReadRequest => {
 ///                 let prop_code = prop.code();
 ///                 let prop_bytes = prop.data();
 ///                 match prop_code {
@@ -82,7 +82,7 @@ use std::sync::{Arc, Mutex};
 /// ```
 
 pub trait RequestHandler {
-    fn property_request_received(&mut self, deoj: &mut Object, esv: Esv, prop: &Property) -> bool;
+    fn property_request_received(&mut self, deoj: &mut Object, esv: ESV, prop: &Property) -> bool;
 }
 
 /// RequestHandlerObject represents a request message handler object.
