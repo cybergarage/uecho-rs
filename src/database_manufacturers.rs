@@ -42,6 +42,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x0000FB, String::from("CICO CORPORATION"));
         self.add_standard_manufacture(0x0000F8, String::from("CIMX INITIATIVE INC."));
         self.add_standard_manufacture(0x000123, String::from("Contec Co., Ltd."));
+        self.add_standard_manufacture(0x000130, String::from("COOLDESIGN Corporation"));
         self.add_standard_manufacture(0x000067, String::from("CORONA CORPORATION"));
         self.add_standard_manufacture(0x00009C, String::from("Diamond Electric Mfg.Co.,Ltd."));
         self.add_standard_manufacture(
