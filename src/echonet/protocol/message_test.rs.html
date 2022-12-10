@@ -183,7 +183,7 @@
         msg.set_deoj(test_deoj);
         <span class="macro">assert_eq!</span>(msg.deoj(), test_deoj);
 
-        <span class="kw">let </span>test_esv = Esv::WriteRequest;
+        <span class="kw">let </span>test_esv = ESV::WriteRequest;
         msg.set_esv(test_esv);
         <span class="macro">assert_eq!</span>(msg.esv(), test_esv);
     }
@@ -199,7 +199,7 @@
             <span class="macro">assert_eq!</span>(msg.tid(), <span class="number">0x0101</span>);
             <span class="macro">assert_eq!</span>(msg.seoj(), <span class="number">0x0A0B0C0</span>);
             <span class="macro">assert_eq!</span>(msg.deoj(), <span class="number">0x0D0E0F0</span>);
-            <span class="macro">assert_eq!</span>(msg.esv(), Esv::Notification);
+            <span class="macro">assert_eq!</span>(msg.esv(), ESV::Notification);
 
             <span class="kw">let </span>opc = msg.opc();
             <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..opc {
@@ -233,7 +233,7 @@
             <span class="number">0xD0</span>,
             <span class="number">0xE0</span>,
             <span class="number">0xF0</span>,
-            Esv::to_u8(Esv::Notification),
+            ESV::to_u8(ESV::Notification),
             <span class="number">3</span>,
             <span class="number">1</span>,
             <span class="number">1</span>,

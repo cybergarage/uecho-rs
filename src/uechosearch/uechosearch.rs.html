@@ -131,7 +131,7 @@
 <span class="kw">use </span>std::{thread, time};
 
 <span class="kw">use </span>echonet::log::Logger;
-<span class="kw">use </span>echonet::protocol::{Esv, Message, Property};
+<span class="kw">use </span>echonet::protocol::{Message, Property, ESV};
 <span class="kw">use </span>echonet::util::Bytes;
 <span class="kw">use </span>echonet::{Controller, ManufactureCode, StandardDatabase};
 
@@ -152,9 +152,9 @@
     thread::sleep(time::Duration::from_secs(<span class="number">2</span>));
 
     <span class="kw">for </span>(i, node) <span class="kw">in </span>ctrl.nodes().iter().enumerate() {
-        <span class="comment">// Makes a manufacture code read (Esv::ReadRequest) message.
+        <span class="comment">// Makes a manufacture code read (ESV::ReadRequest) message.
         </span><span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
-        msg.set_esv(Esv::ReadRequest);
+        msg.set_esv(ESV::ReadRequest);
         msg.set_deoj(<span class="number">0x0EF001</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
         prop.set_code(<span class="number">0x8A</span>);
@@ -188,9 +188,9 @@
                     <span class="kw">continue</span>;
                 }
 
-                <span class="comment">// Makes a property value read (Esv::ReadRequest) message.
+                <span class="comment">// Makes a property value read (ESV::ReadRequest) message.
                 </span><span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
-                msg.set_esv(Esv::ReadRequest);
+                msg.set_esv(ESV::ReadRequest);
                 msg.set_deoj(obj.code());
                 <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
                 prop.set_code(obj_prop.code());

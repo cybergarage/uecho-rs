@@ -146,7 +146,7 @@
 // limitations under the License.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::object::Object;
-<span class="kw">use </span><span class="kw">crate</span>::protocol::{Esv, Message, Property};
+<span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, Property, ESV};
 <span class="kw">use </span>std::sync::{Arc, Mutex};
 
 <span class="doccomment">/// RequestHandler defines a request message handler interface.
@@ -154,7 +154,7 @@
 /// ```
 /// use std::sync::{Arc, Mutex};
 /// use echonet::{Device, ObjectCode, Object, RequestHandler};
-/// use echonet::protocol::{Esv, Property};
+/// use echonet::protocol::{ESV, Property};
 /// use echonet::util::Bytes;
 ///
 /// pub struct MyDevice {
@@ -182,9 +182,9 @@
 /// }
 ///
 /// impl RequestHandler for MyDevice {
-///     fn property_request_received(&amp;mut self, deoj: &amp;mut Object, esv: Esv, prop: &amp;Property) -&gt; bool {
+///     fn property_request_received(&amp;mut self, deoj: &amp;mut Object, esv: ESV, prop: &amp;Property) -&gt; bool {
 ///         match esv {
-///             Esv::WriteRequest | Esv::WriteReadRequest =&gt; {
+///             ESV::WriteRequest | ESV::WriteReadRequest =&gt; {
 ///                 let prop_code = prop.code();
 ///                 let prop_bytes = prop.data();
 ///                 match prop_code {
@@ -215,7 +215,7 @@
 /// ```
 
 </span><span class="kw">pub trait </span>RequestHandler {
-    <span class="kw">fn </span>property_request_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deoj: <span class="kw-2">&amp;mut </span>Object, esv: Esv, prop: <span class="kw-2">&amp;</span>Property) -&gt; bool;
+    <span class="kw">fn </span>property_request_received(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deoj: <span class="kw-2">&amp;mut </span>Object, esv: ESV, prop: <span class="kw-2">&amp;</span>Property) -&gt; bool;
 }
 
 <span class="doccomment">/// RequestHandlerObject represents a request message handler object.

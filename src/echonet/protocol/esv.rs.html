@@ -137,7 +137,7 @@
 
 <span class="doccomment">/// ESV represents an ECHONET-Lite service (ESV) code as specified in the ECHONET-Lite specification.
 </span><span class="attribute">#[derive(Copy, Clone, PartialEq, Debug, EnumIter)]
-</span><span class="kw">pub enum </span>Esv {
+</span><span class="kw">pub enum </span>ESV {
     Unknown = <span class="number">0x00</span>,
     WriteRequest = <span class="number">0x60</span>,
     WriteRequestResponseRequired = <span class="number">0x61</span>,
@@ -157,63 +157,63 @@
     WriteReadRequestError = <span class="number">0x5E</span>,
 }
 
-<span class="kw">impl </span>Esv {
-    <span class="kw">pub fn </span>from_u8(x: u8) -&gt; Esv {
-        <span class="kw">for </span>esv <span class="kw">in </span>Esv::iter() {
+<span class="kw">impl </span>ESV {
+    <span class="kw">pub fn </span>from_u8(x: u8) -&gt; ESV {
+        <span class="kw">for </span>esv <span class="kw">in </span>ESV::iter() {
             <span class="kw">if </span>x == (esv <span class="kw">as </span>u8) {
                 <span class="kw">return </span>esv;
             }
         }
-        Esv::Unknown
+        ESV::Unknown
     }
 
-    <span class="kw">pub fn </span>to_u8(esv: Esv) -&gt; u8 {
+    <span class="kw">pub fn </span>to_u8(esv: ESV) -&gt; u8 {
         esv <span class="kw">as </span>u8
     }
 
     <span class="kw">pub fn </span>is_request(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self </span>{
-            Esv::WriteRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteRequestResponseRequired =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::ReadRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::NotificationRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteReadRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::NotificationResponseRequired =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteRequestResponseRequired =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::ReadRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::NotificationRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteReadRequest =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::NotificationResponseRequired =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         }
     }
 
     <span class="kw">pub fn </span>is_response(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self </span>{
-            Esv::WriteResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::ReadResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::Notification =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::NotificationResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteReadResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteRequestResponseRequiredError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::ReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::NotificationRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::ReadResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::Notification =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::NotificationResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteReadResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteRequestResponseRequiredError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::ReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::NotificationRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         }
     }
 
     <span class="kw">pub fn </span>is_error_response(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self </span>{
-            Esv::WriteRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteRequestResponseRequiredError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::ReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::NotificationRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::WriteReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteRequestResponseRequiredError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::ReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::NotificationRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::WriteReadRequestError =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         }
     }
 
     <span class="kw">pub fn </span>is_notification_response(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">match </span><span class="self">self </span>{
-            Esv::Notification =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
-            Esv::NotificationResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::Notification =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
+            ESV::NotificationResponse =&gt; <span class="kw">return </span><span class="bool-val">true</span>,
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         }
     }
@@ -226,7 +226,7 @@
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Esv {
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>ESV {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="kw">let </span>code = <span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>u8;
         <span class="kw">let </span>res = f.write_fmt(<span class="macro">format_args!</span>(<span class="string">&quot;{:02X}&quot;</span>, code));
