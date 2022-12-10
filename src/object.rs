@@ -161,28 +161,28 @@ impl Object {
         self.set_property_data(code, &buf)
     }
 
-    pub fn property_data(&mut self, code: PropertyCode) -> Option<&PropertyData> {
+    pub fn property_data(&self, code: PropertyCode) -> Option<&PropertyData> {
         match self.find_property(code) {
             Some(prop) => return Some(prop.data()),
             None => return None,
         }
     }
 
-    pub fn property_data_as_bytes(&mut self, code: PropertyCode) -> Option<&[u8]> {
+    pub fn property_data_as_bytes(&self, code: PropertyCode) -> Option<&[u8]> {
         match self.find_property(code) {
             Some(prop) => return Some(prop.data_as_bytes()),
             None => return None,
         }
     }
 
-    pub fn property_data_as_byte(&mut self, code: PropertyCode) -> Option<u8> {
+    pub fn property_data_as_byte(&self, code: PropertyCode) -> Option<u8> {
         match self.find_property(code) {
             Some(prop) => return Some(prop.data_as_byte()),
             None => return None,
         }
     }
 
-    pub fn property_data_as_int(&mut self, code: PropertyCode) -> Option<u32> {
+    pub fn property_data_as_int(&self, code: PropertyCode) -> Option<u32> {
         match self.find_property(code) {
             Some(prop) => return Some(prop.data_as_int()),
             None => return None,
