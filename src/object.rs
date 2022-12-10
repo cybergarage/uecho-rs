@@ -21,6 +21,7 @@ use crate::database::StandardDatabase;
 use crate::message::{ResponseErrorMessage, ResponseMessage};
 use crate::property::{Property, PropertyCode, PropertyData};
 use crate::protocol::{Esv, Message};
+use crate::super_object::*;
 use crate::util::Bytes;
 
 /// ObjectCode represents an ECHONET-Lite object code.
@@ -154,8 +155,8 @@ impl Object {
         self.set_property_data(code, data)
     }
 
-    pub fn set_property_integer(&mut self, code: PropertyCode, val: u32, byte_size: usize) -> bool {
-        let mut buf = Vec::<u8>::with_capacity(byte_size);
+    pub fn set_property_int(&mut self, code: PropertyCode, val: u32, byte_size: usize) -> bool {
+        let mut buf = vec![0; byte_size];
         Bytes::from_u32(val, &mut buf);
         self.set_property_data(code, &buf)
     }
@@ -173,8 +174,19 @@ impl Object {
         match std_obj {
             Some(obj) => {
                 self.set_class_name(obj.class_name().clone());
-                for (_prop_code, prop) in &obj.properties {
-                    self.add_property(prop.clone());
+                for (prop_code, std_prop) in &obj.properties {
+                    let mut prop = std_prop.clone();
+                    // Sets default standard property data
+                    match *prop_code {
+                        OBJECT_MANUFACTURER_CODE => {
+                            prop.set_integer_data(
+                                OBJECT_MANUFACTURER_EXPERIMENT,
+                                OBJECT_MANUFACTURER_CODE_SIZE,
+                            );
+                        }
+                        _ => {}
+                    }
+                    self.add_property(prop);
                 }
                 true
             }
