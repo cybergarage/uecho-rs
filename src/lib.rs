@@ -74,7 +74,6 @@ pub use self::object::{Object, ObjectCode};
 pub use self::property::{Property, PropertyEnum, PropertyRule};
 pub use self::remote_node::*;
 pub use self::request_handler::{RequestHandler, RequestHandlerObject};
-pub use self::version::*;
 
 mod class;
 mod controller;
