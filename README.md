@@ -40,7 +40,7 @@ The examples are available for [ECHONET-Lite][enet] controller and device implem
   - [Inside of Device](https://github.com/cybergarage/uecho-rs/blob/master/doc/device_inside.md)
 - Examples
   - [Usage examples](https://github.com/cybergarage/uecho-rs/tree/master/examples)
-  - [Usage examples (for Raspberry Pi Sense HAT)](https://github.com/cybergarage/uecho-rs-sensehat)
+  - [Usage examples (For Raspberry Pi Sense HAT)](https://github.com/cybergarage/uecho-rs-sensehat)
 
 ## Getting Help
 
