@@ -5,9 +5,9 @@
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
 
 ## v1.2.1 (2022-12-10)
-- Update standard device objects to add extra device and definitions
+- Update standard device objects to add extra devices and definitions
 - Update standard manufactuer codes
-- Update uechopost not to wait when the specified request message does not require the response messages
+- Update uechopost not to wait when the specified request message does not require the response message
 - Improve standard objects to set more default standard properties
 - Add a multiple device example on Raspberry Pi Sense HAT
 
