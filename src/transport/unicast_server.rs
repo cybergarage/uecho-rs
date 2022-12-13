@@ -72,7 +72,12 @@ impl UnicastServer {
     }
 
     pub fn bind(&mut self, ifaddr: IpAddr) -> bool {
-        let addr: SocketAddr = format!("{}:{}", ifaddr, PORT).parse().unwrap();
+        let addr = format!("{}:{}", ifaddr, PORT).parse();
+        if addr.is_err() {
+            error!("bind {} {}", ifaddr, PORT);
+            return false;
+        }
+        let addr: SocketAddr = addr.unwrap();
         debug!("BIND UDP {}", addr);
         if self.socket.write().unwrap().bind(addr).is_err() {
             return false;
