@@ -79,13 +79,26 @@ impl UdpSocket {
         //     warn!("IP_MULTICAST_LOOP is not supported");
         // }
 
+        let mut sock: Option<std::net::UdpSocket> = None;
+
         // net2::UdpBuilder could enable SO_REUSEADDR and SO_REUSEPORT on macOS and Linux
-        let sock = create_socket_v4(ifaddr);
-        if sock.is_err() {
+        if ifaddr.is_ipv4() {
+            let sock_v4 = create_socket_v4(ifaddr);
+            if sock_v4.is_ok() {
+                sock = Some(sock_v4.unwrap())
+            }
+        } else if ifaddr.is_ipv6() {
+            let sock_v6 = create_socket_v6(ifaddr);
+            if sock_v6.is_ok() {
+                sock = Some(sock_v6.unwrap())
+            }
+        }
+
+        if sock.is_none() {
             return Err(ScoketError::new(&format!("could not bind to {}", ifaddr)));
         }
 
-        self.sock = Some(sock.unwrap());
+        self.sock = sock;
         self.ifaddr = Some(ifaddr);
         Ok(())
     }
