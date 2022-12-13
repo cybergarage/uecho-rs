@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.3.x (2022-xx-xx)
+- Enable IPv6 interfaces
+
 ## v1.2.x (2022-xx-xx)
 - Improve controller search functions
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
