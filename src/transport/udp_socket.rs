@@ -30,8 +30,15 @@ pub struct UdpSocket {
     ifaddr: Option<SocketAddr>,
 }
 
-fn create_socket(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
+fn create_socket_v4(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v4()?
+        .reuse_address(true)?
+        // .reuse_port(true)?
+        .bind(ifaddr)
+}
+
+fn create_socket_v6(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
+    net2::UdpBuilder::new_v6()?
         .reuse_address(true)?
         // .reuse_port(true)?
         .bind(ifaddr)
@@ -73,7 +80,7 @@ impl UdpSocket {
         // }
 
         // net2::UdpBuilder could enable SO_REUSEADDR and SO_REUSEPORT on macOS and Linux
-        let sock = create_socket(ifaddr);
+        let sock = create_socket_v4(ifaddr);
         if sock.is_err() {
             return Err(ScoketError::new(&format!("could not bind to {}", ifaddr)));
         }
