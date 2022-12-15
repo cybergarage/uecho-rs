@@ -142,6 +142,26 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -174,8 +194,15 @@
     ifaddr: <span class="prelude-ty">Option</span>&lt;SocketAddr&gt;,
 }
 
-<span class="kw">fn </span>create_socket(ifaddr: SocketAddr) -&gt; io::Result&lt;std::net::UdpSocket&gt; {
+<span class="kw">fn </span>create_socket_v4(ifaddr: SocketAddr) -&gt; io::Result&lt;std::net::UdpSocket&gt; {
     net2::UdpBuilder::new_v4()<span class="question-mark">?
+        </span>.reuse_address(<span class="bool-val">true</span>)<span class="question-mark">?
+        </span><span class="comment">// .reuse_port(true)?
+        </span>.bind(ifaddr)
+}
+
+<span class="kw">fn </span>create_socket_v6(ifaddr: SocketAddr) -&gt; io::Result&lt;std::net::UdpSocket&gt; {
+    net2::UdpBuilder::new_v6()<span class="question-mark">?
         </span>.reuse_address(<span class="bool-val">true</span>)<span class="question-mark">?
         </span><span class="comment">// .reuse_port(true)?
         </span>.bind(ifaddr)
@@ -216,13 +243,26 @@
         //     warn!(&quot;IP_MULTICAST_LOOP is not supported&quot;);
         // }
 
-        // net2::UdpBuilder could enable SO_REUSEADDR and SO_REUSEPORT on macOS and Linux
-        </span><span class="kw">let </span>sock = create_socket(ifaddr);
-        <span class="kw">if </span>sock.is_err() {
+        </span><span class="kw">let </span><span class="kw-2">mut </span>sock: <span class="prelude-ty">Option</span>&lt;std::net::UdpSocket&gt; = <span class="prelude-val">None</span>;
+
+        <span class="comment">// net2::UdpBuilder could enable SO_REUSEADDR and SO_REUSEPORT on macOS and Linux
+        </span><span class="kw">if </span>ifaddr.is_ipv4() {
+            <span class="kw">let </span>sock_v4 = create_socket_v4(ifaddr);
+            <span class="kw">if </span>sock_v4.is_ok() {
+                sock = <span class="prelude-val">Some</span>(sock_v4.unwrap())
+            }
+        } <span class="kw">else if </span>ifaddr.is_ipv6() {
+            <span class="kw">let </span>sock_v6 = create_socket_v6(ifaddr);
+            <span class="kw">if </span>sock_v6.is_ok() {
+                sock = <span class="prelude-val">Some</span>(sock_v6.unwrap())
+            }
+        }
+
+        <span class="kw">if </span>sock.is_none() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(ScoketError::new(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;could not bind to {}&quot;</span>, ifaddr)));
         }
 
-        <span class="self">self</span>.sock = <span class="prelude-val">Some</span>(sock.unwrap());
+        <span class="self">self</span>.sock = sock;
         <span class="self">self</span>.ifaddr = <span class="prelude-val">Some</span>(ifaddr);
         <span class="prelude-val">Ok</span>(())
     }
