@@ -194,29 +194,6 @@ impl Device {
         }
         let mut dev_node = self.node.lock().unwrap();
         dev_node.add_object(obj);
-
-        // Sets mandatory properties
-
-        let vers: [u8; 4] = [0, 0, DEVICE_DEFAULT_VERSION_APPENDIX, 0];
-        dev_node.set_property(self.code, DEVICE_STANDARD_VERSION, &vers);
-        dev_node.set_property(
-            self.code,
-            DEVICE_MANUFACTURER_FAULT_CODE,
-            &[DEVICE_NO_FAULT_OCCURRED],
-        );
-        dev_node.set_property(
-            self.code,
-            DEVICE_INSTALLATION_LOCATION,
-            &[DEVICE_INSTALLATION_LOCATION_UNKNOWN],
-        );
-        dev_node.set_property(
-            self.code,
-            DEVICE_OPERATING_STATUS,
-            &[OBJECT_OPERATING_STATUS_OFF],
-        );
-        let mut code: [u8; 3] = [0; 3];
-        Bytes::from_u32(DEVICE_MANUFACTURER_EXPERIMENT, &mut code);
-        dev_node.set_property(self.code, DEVICE_MANUFACTURER_CODE, &code);
     }
 
     /// Returns the object code.
