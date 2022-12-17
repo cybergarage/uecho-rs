@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(dead_code)]
+
 pub const ECHONET_MAJOR_VERSION: u8 = 1;
 pub const ECHONET_MINOR_VERSION: u8 = 13;
 pub const ECHONET_FRAME_FORMAT: u8 = 0x01;
