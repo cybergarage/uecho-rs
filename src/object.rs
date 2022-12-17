@@ -211,10 +211,7 @@ impl Object {
                     // Sets default standard property data
                     match *prop_code {
                         OBJECT_MANUFACTURER_CODE => {
-                            prop.set_int_data(
-                                OBJECT_MANUFACTURER_EXPERIMENT,
-                                OBJECT_MANUFACTURER_CODE_SIZE,
-                            );
+                            self.set_manufacturer_code(OBJECT_MANUFACTURER_EXPERIMENT);
                         }
                         NODE_PROFILE_CLASS_VERSION_INFORMATION => {
                             let mut ver = vec![0 as u8; 4];
