@@ -18,6 +18,7 @@ use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 
 use crate::database::StandardDatabase;
+use crate::device::*;
 use crate::message::{ResponseErrorMessage, ResponseMessage};
 use crate::property::{Property, PropertyCode, PropertyData};
 use crate::protocol::{Message, ESV};
@@ -25,7 +26,6 @@ use crate::super_object::*;
 use crate::util::Bytes;
 use crate::util::UUID;
 use crate::version::*;
-use crate::device::*;
 
 /// ObjectCode represents an ECHONET-Lite object code.
 pub type ObjectCode = u32;

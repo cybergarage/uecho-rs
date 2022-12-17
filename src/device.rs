@@ -24,7 +24,6 @@ use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
 use crate::request_handler::*;
 use crate::super_object::*;
-use crate::util::Bytes;
 
 pub const DEVICE_OPERATING_STATUS: u8 = OBJECT_OPERATING_STATUS;
 pub const DEVICE_INSTALLATION_LOCATION: u8 = 0x81;
@@ -258,16 +257,8 @@ impl Device {
         self.set_property(DEVICE_OPERATING_STATUS, &[status_byte])
     }
 
-    pub fn operating_status(&mut self) -> Option<Vec<u8>> {
-        self.property(DEVICE_OPERATING_STATUS)
-    }
-
     pub fn set_installation_location(&mut self, loc: u8) -> bool {
         self.set_property(DEVICE_INSTALLATION_LOCATION, &[loc])
-    }
-
-    pub fn installation_location(&mut self) -> Option<Vec<u8>> {
-        self.property(DEVICE_INSTALLATION_LOCATION)
     }
 
     pub fn set_standard_version(&mut self, ver: u8) -> bool {
@@ -287,10 +278,6 @@ impl Device {
             DEVICE_NO_FAULT_OCCURRED
         };
         self.set_property(DEVICE_FAULT_STATUS, &[status_byte])
-    }
-
-    pub fn fault_status(&mut self) -> Option<Vec<u8>> {
-        self.property(DEVICE_FAULT_STATUS)
     }
 }
 
