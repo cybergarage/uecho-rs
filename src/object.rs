@@ -216,6 +216,9 @@ impl Object {
                         DEVICE_OPERATING_STATUS => {
                             self.set_operating_status(false);
                         }
+                        DEVICE_INSTALLATION_LOCATION => {
+                            self.set_installation_location(DEVICE_INSTALLATION_LOCATION_UNKNOWN);
+                        }
                         DEVICE_FAULT_STATUS => {
                             self.set_operating_status(false);
                         }
