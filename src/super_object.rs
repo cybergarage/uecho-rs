@@ -14,6 +14,7 @@
 
 #![allow(dead_code)]
 
+use crate::device::*;
 use crate::object::Object;
 use crate::property::*;
 
@@ -52,5 +53,18 @@ impl Object {
 
     pub fn manufacturer_code(&mut self) -> &mut Property {
         self.find_property_mut(OBJECT_MANUFACTURER_CODE).unwrap()
+    }
+
+    pub fn set_operating_status(&mut self, status: bool) -> bool {
+        let status_byte: u8 = if status {
+            OBJECT_OPERATING_STATUS_ON
+        } else {
+            OBJECT_OPERATING_STATUS_OFF
+        };
+        self.set_property_byte(DEVICE_OPERATING_STATUS, status_byte)
+    }
+
+    pub fn operating_status(&mut self) -> Option<u8> {
+        self.property_data_as_byte(DEVICE_OPERATING_STATUS)
     }
 }
