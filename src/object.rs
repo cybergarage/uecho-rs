@@ -25,7 +25,6 @@ use crate::protocol::{Message, ESV};
 use crate::super_object::*;
 use crate::util::Bytes;
 use crate::util::UUID;
-use crate::version::*;
 
 /// ObjectCode represents an ECHONET-Lite object code.
 pub type ObjectCode = u32;
@@ -207,7 +206,7 @@ impl Object {
             Some(obj) => {
                 self.set_class_name(obj.class_name().clone());
                 for (prop_code, std_prop) in &obj.properties {
-                    let mut prop = std_prop.clone();
+                    self.add_property(std_prop.clone());
                     // Sets default standard property data
                     match *prop_code {
                         OBJECT_MANUFACTURER_CODE => {
@@ -220,17 +219,16 @@ impl Object {
                             self.set_installation_location(DEVICE_INSTALLATION_LOCATION_UNKNOWN);
                         }
                         DEVICE_FAULT_STATUS => {
-                            self.set_operating_status(false);
+                            self.set_fault_status(false);
                         }
                         DEVICE_STANDARD_VERSION => {
-                            self.set_standard_version(ECHONET_RELEASE_VERSION);
+                            self.set_standard_version(DEVICE_DEFAULT_VERSION_APPENDIX);
                         }
                         DEVICE_IDENTIFICATION_NUMBER => {
                             self.set_id(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
                         }
                         _ => {}
                     }
-                    self.add_property(prop);
                 }
                 true
             }

@@ -30,7 +30,7 @@ mod tests {
         assert_eq!(prop_data.len(), 4);
         assert_eq!(prop_data[2], DEVICE_DEFAULT_VERSION_APPENDIX);
 
-        let prop_data = dev.property(DEVICE_MANUFACTURER_FAULT_CODE);
+        let prop_data = dev.property(DEVICE_FAULT_STATUS);
         assert!(prop_data.is_some());
         let prop_data = prop_data.unwrap();
         assert_eq!(prop_data.len(), 1);
