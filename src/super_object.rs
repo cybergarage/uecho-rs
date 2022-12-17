@@ -102,4 +102,7 @@ impl Object {
     pub fn set_id(&mut self, id: &[u8]) -> bool {
         self.set_property_bytes(DEVICE_IDENTIFICATION_NUMBER, &id)
     }
+    pub fn id(&self) -> Option<&[u8]> {
+        self.property_data_as_bytes(DEVICE_IDENTIFICATION_NUMBER)
+    }
 }
