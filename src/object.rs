@@ -226,7 +226,7 @@ impl Object {
                             self.set_standard_version(ECHONET_RELEASE_VERSION);
                         }
                         DEVICE_IDENTIFICATION_NUMBER => {
-                            prop.set_data(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
+                            self.set_id(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
                         }
                         _ => {}
                     }
