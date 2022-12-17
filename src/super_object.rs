@@ -17,7 +17,6 @@
 use crate::device::*;
 use crate::object::Object;
 use crate::property::*;
-use crate::version::*;
 
 pub const SUPER_OBJECT_CODE: u32 = 0x000000;
 pub const OBJECT_OPERATING_STATUS: u8 = 0x80;
@@ -67,6 +66,19 @@ impl Object {
 
     pub fn operating_status(&mut self) -> Option<u8> {
         self.property_data_as_byte(DEVICE_OPERATING_STATUS)
+    }
+
+    pub fn set_fault_status(&mut self, status: bool) -> bool {
+        let status_byte: u8 = if status {
+            DEVICE_FAULT_OCCURRED
+        } else {
+            DEVICE_NO_FAULT_OCCURRED
+        };
+        self.set_property_byte(DEVICE_FAULT_STATUS, status_byte)
+    }
+
+    pub fn fault_status(&mut self) -> Option<u8> {
+        self.property_data_as_byte(DEVICE_FAULT_STATUS)
     }
 
     pub fn set_standard_version(&mut self, ver: u8) -> bool {
