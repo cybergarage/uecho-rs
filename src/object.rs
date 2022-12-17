@@ -214,11 +214,7 @@ impl Object {
                             self.set_manufacturer_code(OBJECT_MANUFACTURER_EXPERIMENT);
                         }
                         NODE_PROFILE_CLASS_VERSION_INFORMATION => {
-                            let mut ver = vec![0 as u8; 4];
-                            ver[0] = ECHONET_MAJOR_VERSION;
-                            ver[1] = ECHONET_MINOR_VERSION;
-                            ver[2] = ECHONET_FRAME_FORMAT;
-                            prop.set_data(&ver);
+                            self.set_standard_version(ECHONET_RELEASE_VERSION);
                         }
                         NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER => {
                             prop.set_data(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());

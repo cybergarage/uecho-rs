@@ -17,6 +17,7 @@
 use crate::device::*;
 use crate::object::Object;
 use crate::property::*;
+use crate::version::*;
 
 pub const SUPER_OBJECT_CODE: u32 = 0x000000;
 pub const OBJECT_OPERATING_STATUS: u8 = 0x80;
@@ -66,5 +67,15 @@ impl Object {
 
     pub fn operating_status(&mut self) -> Option<u8> {
         self.property_data_as_byte(DEVICE_OPERATING_STATUS)
+    }
+
+    pub fn set_standard_version(&mut self, ver: u8) -> bool {
+        let mut vers: [u8; 4] = [0; 4];
+        vers[2] = ver;
+        self.set_property_bytes(DEVICE_STANDARD_VERSION, &vers)
+    }
+
+    pub fn standard_version(&mut self) -> Option<u8> {
+        self.property_data_as_byte(DEVICE_STANDARD_VERSION)
     }
 }
