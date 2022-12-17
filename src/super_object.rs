@@ -98,4 +98,8 @@ impl Object {
     pub fn standard_version(&mut self) -> Option<u8> {
         self.property_data_as_byte(DEVICE_STANDARD_VERSION)
     }
+
+    pub fn set_id(&mut self, id: &[u8]) -> bool {
+        self.set_property_bytes(DEVICE_IDENTIFICATION_NUMBER, &id)
+    }
 }
