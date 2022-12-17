@@ -15,3 +15,4 @@
 pub const ECHONET_MAJOR_VERSION: u8 = 1;
 pub const ECHONET_MINOR_VERSION: u8 = 13;
 pub const ECHONET_FRAME_FORMAT: u8 = 0x01;
+pub const ECHONET_RELEASE_VERSION: u8 = 'P' as u8;
