@@ -7,6 +7,10 @@
 - Improve controller search functions
 - Improve uechosearch example to output more detailed properties of searched devices using the standard database
 
+## v1.2.2 (2022-12-18)
+- Improve controller search functions
+- Improve uechosearch example to output more detailed properties of searched devices using the standard database
+
 ## v1.2.1 (2022-12-10)
 - Update standard device objects to add extra devices and definitions
 - Update standard manufactuer codes
