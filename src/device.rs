@@ -24,6 +24,7 @@ use crate::object::{Object, ObjectCode};
 use crate::property::PropertyCode;
 use crate::request_handler::*;
 use crate::super_object::*;
+use crate::util::Bytes;
 
 pub const DEVICE_OPERATING_STATUS: u8 = OBJECT_OPERATING_STATUS;
 pub const DEVICE_INSTALLATION_LOCATION: u8 = 0x81;
@@ -248,6 +249,12 @@ impl Device {
 }
 
 impl Device {
+    pub fn set_manufacturer_code(&mut self, code: u32) -> bool {
+        let mut buf = vec![0; OBJECT_MANUFACTURER_CODE_SIZE];
+        Bytes::from_u32(code, &mut buf);
+        self.set_property(OBJECT_MANUFACTURER_CODE, &buf)
+    }
+
     pub fn set_operating_status(&mut self, status: bool) -> bool {
         let status_byte: u8 = if status {
             OBJECT_OPERATING_STATUS_ON
