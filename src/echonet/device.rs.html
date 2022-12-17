@@ -294,34 +294,6 @@
 <span id="294">294</span>
 <span id="295">295</span>
 <span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -408,8 +380,9 @@
 <span class="kw">pub const </span>DEVICE_VERSION_APPENDIX_E: u8 = <span class="string">&#39;E&#39; </span><span class="kw">as </span>u8;
 <span class="kw">pub const </span>DEVICE_VERSION_APPENDIX_F: u8 = <span class="string">&#39;F&#39; </span><span class="kw">as </span>u8;
 <span class="kw">pub const </span>DEVICE_VERSION_APPENDIX_G: u8 = <span class="string">&#39;G&#39; </span><span class="kw">as </span>u8;
+<span class="kw">pub const </span>DEVICE_VERSION_APPENDIX_P: u8 = <span class="string">&#39;P&#39; </span><span class="kw">as </span>u8;
 <span class="kw">pub const </span>DEVICE_VERSION_UNKNOWN: u8 = <span class="number">0</span>;
-<span class="kw">pub const </span>DEVICE_DEFAULT_VERSION_APPENDIX: u8 = DEVICE_VERSION_APPENDIX_G;
+<span class="kw">pub const </span>DEVICE_DEFAULT_VERSION_APPENDIX: u8 = DEVICE_VERSION_APPENDIX_P;
 <span class="kw">pub const </span>DEVICE_FAULT_OCCURRED: u8 = <span class="number">0x41</span>;
 <span class="kw">pub const </span>DEVICE_NO_FAULT_OCCURRED: u8 = <span class="number">0x42</span>;
 <span class="kw">pub const </span>DEVICE_INSTALLATION_LOCATION_UNKNOWN: u8 = <span class="number">0x00</span>;
@@ -518,29 +491,6 @@
         }
         <span class="kw">let </span><span class="kw-2">mut </span>dev_node = <span class="self">self</span>.node.lock().unwrap();
         dev_node.add_object(obj);
-
-        <span class="comment">// Sets mandatory properties
-
-        </span><span class="kw">let </span>vers: [u8; <span class="number">4</span>] = [<span class="number">0</span>, <span class="number">0</span>, DEVICE_DEFAULT_VERSION_APPENDIX, <span class="number">0</span>];
-        dev_node.set_property(<span class="self">self</span>.code, DEVICE_STANDARD_VERSION, <span class="kw-2">&amp;</span>vers);
-        dev_node.set_property(
-            <span class="self">self</span>.code,
-            DEVICE_MANUFACTURER_FAULT_CODE,
-            <span class="kw-2">&amp;</span>[DEVICE_NO_FAULT_OCCURRED],
-        );
-        dev_node.set_property(
-            <span class="self">self</span>.code,
-            DEVICE_INSTALLATION_LOCATION,
-            <span class="kw-2">&amp;</span>[DEVICE_INSTALLATION_LOCATION_UNKNOWN],
-        );
-        dev_node.set_property(
-            <span class="self">self</span>.code,
-            DEVICE_OPERATING_STATUS,
-            <span class="kw-2">&amp;</span>[OBJECT_OPERATING_STATUS_OFF],
-        );
-        <span class="kw">let </span><span class="kw-2">mut </span>code: [u8; <span class="number">3</span>] = [<span class="number">0</span>; <span class="number">3</span>];
-        Bytes::from_u32(DEVICE_MANUFACTURER_EXPERIMENT, <span class="kw-2">&amp;mut </span>code);
-        dev_node.set_property(<span class="self">self</span>.code, DEVICE_MANUFACTURER_CODE, <span class="kw-2">&amp;</span>code);
     }
 
     <span class="doccomment">/// Returns the object code.
@@ -596,6 +546,12 @@
 }
 
 <span class="kw">impl </span>Device {
+    <span class="kw">pub fn </span>set_manufacturer_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>, code: u32) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>buf = <span class="macro">vec!</span>[<span class="number">0</span>; OBJECT_MANUFACTURER_CODE_SIZE];
+        Bytes::from_u32(code, <span class="kw-2">&amp;mut </span>buf);
+        <span class="self">self</span>.set_property(OBJECT_MANUFACTURER_CODE, <span class="kw-2">&amp;</span>buf)
+    }
+
     <span class="kw">pub fn </span>set_operating_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>, status: bool) -&gt; bool {
         <span class="kw">let </span>status_byte: u8 = <span class="kw">if </span>status {
             OBJECT_OPERATING_STATUS_ON
@@ -605,16 +561,8 @@
         <span class="self">self</span>.set_property(DEVICE_OPERATING_STATUS, <span class="kw-2">&amp;</span>[status_byte])
     }
 
-    <span class="kw">pub fn </span>operating_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt; {
-        <span class="self">self</span>.property(DEVICE_OPERATING_STATUS)
-    }
-
     <span class="kw">pub fn </span>set_installation_location(<span class="kw-2">&amp;mut </span><span class="self">self</span>, loc: u8) -&gt; bool {
         <span class="self">self</span>.set_property(DEVICE_INSTALLATION_LOCATION, <span class="kw-2">&amp;</span>[loc])
-    }
-
-    <span class="kw">pub fn </span>installation_location(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt; {
-        <span class="self">self</span>.property(DEVICE_INSTALLATION_LOCATION)
     }
 
     <span class="kw">pub fn </span>set_standard_version(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ver: u8) -&gt; bool {
@@ -634,10 +582,6 @@
             DEVICE_NO_FAULT_OCCURRED
         };
         <span class="self">self</span>.set_property(DEVICE_FAULT_STATUS, <span class="kw-2">&amp;</span>[status_byte])
-    }
-
-    <span class="kw">pub fn </span>fault_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt; {
-        <span class="self">self</span>.property(DEVICE_FAULT_STATUS)
     }
 }
 

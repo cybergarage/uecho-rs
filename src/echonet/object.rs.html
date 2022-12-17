@@ -395,14 +395,13 @@
 <span class="kw">use </span>std::hash::{Hash, Hasher};
 
 <span class="kw">use </span><span class="kw">crate</span>::database::StandardDatabase;
+<span class="kw">use </span><span class="kw">crate</span>::device::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::message::{ResponseErrorMessage, ResponseMessage};
-<span class="kw">use </span><span class="kw">crate</span>::node_profile::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::property::{Property, PropertyCode, PropertyData};
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ESV};
 <span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
 <span class="kw">use </span><span class="kw">crate</span>::util::UUID;
-<span class="kw">use </span><span class="kw">crate</span>::version::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// ObjectCode represents an ECHONET-Lite object code.
 </span><span class="kw">pub type </span>ObjectCode = u32;
@@ -584,28 +583,29 @@
             <span class="prelude-val">Some</span>(obj) =&gt; {
                 <span class="self">self</span>.set_class_name(obj.class_name().clone());
                 <span class="kw">for </span>(prop_code, std_prop) <span class="kw">in </span><span class="kw-2">&amp;</span>obj.properties {
-                    <span class="kw">let </span><span class="kw-2">mut </span>prop = std_prop.clone();
+                    <span class="self">self</span>.add_property(std_prop.clone());
                     <span class="comment">// Sets default standard property data
                     </span><span class="kw">match </span><span class="kw-2">*</span>prop_code {
                         OBJECT_MANUFACTURER_CODE =&gt; {
-                            prop.set_int_data(
-                                OBJECT_MANUFACTURER_EXPERIMENT,
-                                OBJECT_MANUFACTURER_CODE_SIZE,
-                            );
+                            <span class="self">self</span>.set_manufacturer_code(OBJECT_MANUFACTURER_EXPERIMENT);
                         }
-                        NODE_PROFILE_CLASS_VERSION_INFORMATION =&gt; {
-                            <span class="kw">let </span><span class="kw-2">mut </span>ver = <span class="macro">vec!</span>[<span class="number">0 </span><span class="kw">as </span>u8; <span class="number">4</span>];
-                            ver[<span class="number">0</span>] = ECHONET_MAJOR_VERSION;
-                            ver[<span class="number">1</span>] = ECHONET_MINOR_VERSION;
-                            ver[<span class="number">2</span>] = ECHONET_FRAME_FORMAT;
-                            prop.set_data(<span class="kw-2">&amp;</span>ver);
+                        DEVICE_OPERATING_STATUS =&gt; {
+                            <span class="self">self</span>.set_operating_status(<span class="bool-val">false</span>);
                         }
-                        NODE_PROFILE_CLASS_IDENTIFICATION_NUMBER =&gt; {
-                            prop.set_data(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
+                        DEVICE_INSTALLATION_LOCATION =&gt; {
+                            <span class="self">self</span>.set_installation_location(DEVICE_INSTALLATION_LOCATION_UNKNOWN);
+                        }
+                        DEVICE_FAULT_STATUS =&gt; {
+                            <span class="self">self</span>.set_fault_status(<span class="bool-val">false</span>);
+                        }
+                        DEVICE_STANDARD_VERSION =&gt; {
+                            <span class="self">self</span>.set_standard_version(DEVICE_DEFAULT_VERSION_APPENDIX);
+                        }
+                        DEVICE_IDENTIFICATION_NUMBER =&gt; {
+                            <span class="self">self</span>.set_id(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
                         }
                         <span class="kw">_ </span>=&gt; {}
                     }
-                    <span class="self">self</span>.add_property(prop);
                 }
                 <span class="bool-val">true
             </span>}

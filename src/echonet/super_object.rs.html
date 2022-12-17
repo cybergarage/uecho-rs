@@ -54,6 +54,58 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -70,7 +122,8 @@
 
 </span><span class="attribute">#![allow(dead_code)]
 
-</span><span class="kw">use </span><span class="kw">crate</span>::object::Object;
+</span><span class="kw">use </span><span class="kw">crate</span>::device::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::object::Object;
 <span class="kw">use </span><span class="kw">crate</span>::property::<span class="kw-2">*</span>;
 
 <span class="kw">pub const </span>SUPER_OBJECT_CODE: u32 = <span class="number">0x000000</span>;
@@ -108,6 +161,57 @@
 
     <span class="kw">pub fn </span>manufacturer_code(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Property {
         <span class="self">self</span>.find_property_mut(OBJECT_MANUFACTURER_CODE).unwrap()
+    }
+
+    <span class="kw">pub fn </span>set_operating_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>, status: bool) -&gt; bool {
+        <span class="kw">let </span>status_byte: u8 = <span class="kw">if </span>status {
+            OBJECT_OPERATING_STATUS_ON
+        } <span class="kw">else </span>{
+            OBJECT_OPERATING_STATUS_OFF
+        };
+        <span class="self">self</span>.set_property_byte(DEVICE_OPERATING_STATUS, status_byte)
+    }
+
+    <span class="kw">pub fn </span>operating_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u8&gt; {
+        <span class="self">self</span>.property_data_as_byte(DEVICE_OPERATING_STATUS)
+    }
+
+    <span class="kw">pub fn </span>set_fault_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>, status: bool) -&gt; bool {
+        <span class="kw">let </span>status_byte: u8 = <span class="kw">if </span>status {
+            DEVICE_FAULT_OCCURRED
+        } <span class="kw">else </span>{
+            DEVICE_NO_FAULT_OCCURRED
+        };
+        <span class="self">self</span>.set_property_byte(DEVICE_FAULT_STATUS, status_byte)
+    }
+
+    <span class="kw">pub fn </span>fault_status(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u8&gt; {
+        <span class="self">self</span>.property_data_as_byte(DEVICE_FAULT_STATUS)
+    }
+
+    <span class="kw">pub fn </span>set_installation_location(<span class="kw-2">&amp;mut </span><span class="self">self</span>, loc: u8) -&gt; bool {
+        <span class="self">self</span>.set_property_byte(DEVICE_INSTALLATION_LOCATION, loc)
+    }
+
+    <span class="kw">pub fn </span>installation_location(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u8&gt; {
+        <span class="self">self</span>.property_data_as_byte(DEVICE_INSTALLATION_LOCATION)
+    }
+
+    <span class="kw">pub fn </span>set_standard_version(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ver: u8) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>vers: [u8; <span class="number">4</span>] = [<span class="number">0</span>; <span class="number">4</span>];
+        vers[<span class="number">2</span>] = ver;
+        <span class="self">self</span>.set_property_bytes(DEVICE_STANDARD_VERSION, <span class="kw-2">&amp;</span>vers)
+    }
+
+    <span class="kw">pub fn </span>standard_version(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u8&gt; {
+        <span class="self">self</span>.property_data_as_byte(DEVICE_STANDARD_VERSION)
+    }
+
+    <span class="kw">pub fn </span>set_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>[u8]) -&gt; bool {
+        <span class="self">self</span>.set_property_bytes(DEVICE_IDENTIFICATION_NUMBER, <span class="kw-2">&amp;</span>id)
+    }
+    <span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
+        <span class="self">self</span>.property_data_as_bytes(DEVICE_IDENTIFICATION_NUMBER)
     }
 }
 </code></pre></div>
