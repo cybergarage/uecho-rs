@@ -104,7 +104,7 @@
         <span class="macro">assert_eq!</span>(prop_data.len(), <span class="number">4</span>);
         <span class="macro">assert_eq!</span>(prop_data[<span class="number">2</span>], DEVICE_DEFAULT_VERSION_APPENDIX);
 
-        <span class="kw">let </span>prop_data = dev.property(DEVICE_MANUFACTURER_FAULT_CODE);
+        <span class="kw">let </span>prop_data = dev.property(DEVICE_FAULT_STATUS);
         <span class="macro">assert!</span>(prop_data.is_some());
         <span class="kw">let </span>prop_data = prop_data.unwrap();
         <span class="macro">assert_eq!</span>(prop_data.len(), <span class="number">1</span>);
