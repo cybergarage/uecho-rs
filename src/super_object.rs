@@ -81,6 +81,14 @@ impl Object {
         self.property_data_as_byte(DEVICE_FAULT_STATUS)
     }
 
+    pub fn set_installation_location(&mut self, loc: u8) -> bool {
+        self.set_property_byte(DEVICE_INSTALLATION_LOCATION, loc)
+    }
+
+    pub fn installation_location(&mut self) -> Option<u8> {
+        self.property_data_as_byte(DEVICE_INSTALLATION_LOCATION)
+    }
+
     pub fn set_standard_version(&mut self, ver: u8) -> bool {
         let mut vers: [u8; 4] = [0; 4];
         vers[2] = ver;
