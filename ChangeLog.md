@@ -1,15 +1,16 @@
 # Changelog
 
 ## v1.3.x (2022-xx-xx)
+- Update transport layer
 - Enable IPv6 interfaces
 
 ## v1.2.x (2022-xx-xx)
 - Improve controller search functions
-- Improve uechosearch example to output more detailed properties of searched devices using the standard database
+- Improve uechosearch example to output object properties using the set property map
+- Improve uechosearch example to output more human readable properties using the standard database
 
 ## v1.2.2 (2022-12-18)
-- Improve controller search functions
-- Improve uechosearch example to output more detailed properties of searched devices using the standard database
+- Improve Device to set mandatory properties
 
 ## v1.2.1 (2022-12-10)
 - Update standard device objects to add extra devices and definitions
