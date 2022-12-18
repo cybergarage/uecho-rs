@@ -23,6 +23,9 @@ use nix::unistd::close;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::os::unix::io::AsRawFd;
+use std::{thread, time};
+
+const UDP_SOCKET_BIND_RETRY_MAX: u32 = 3;
 
 pub struct UdpSocket {
     sock: Option<std::net::UdpSocket>,
@@ -80,17 +83,21 @@ impl UdpSocket {
 
         let mut sock: Option<std::net::UdpSocket> = None;
 
-        // net2::UdpBuilder could enable SO_REUSEADDR and SO_REUSEPORT on macOS and Linux
-        if ifaddr.is_ipv4() {
-            let sock_v4 = create_socket_v4(ifaddr);
-            if sock_v4.is_ok() {
-                sock = Some(sock_v4.unwrap())
+        for _n in 0..UDP_SOCKET_BIND_RETRY_MAX {
+            if ifaddr.is_ipv4() {
+                let sock_v4 = create_socket_v4(ifaddr);
+                if sock_v4.is_ok() {
+                    sock = Some(sock_v4.unwrap());
+                    break;
+                }
+            } else if ifaddr.is_ipv6() {
+                let sock_v6 = create_socket_v6(ifaddr);
+                if sock_v6.is_ok() {
+                    sock = Some(sock_v6.unwrap());
+                    break;
+                }
             }
-        } else if ifaddr.is_ipv6() {
-            let sock_v6 = create_socket_v6(ifaddr);
-            if sock_v6.is_ok() {
-                sock = Some(sock_v6.unwrap())
-            }
+            thread::sleep(time::Duration::from_secs(1));
         }
 
         if sock.is_none() {
