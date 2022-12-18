@@ -26,6 +26,7 @@ use std::os::unix::io::AsRawFd;
 use std::{thread, time};
 
 const UDP_SOCKET_BIND_RETRY_MAX: u32 = 3;
+const UDP_SOCKET_BIND_SLEEP_MSEC: u64 = 500;
 
 pub struct UdpSocket {
     sock: Option<std::net::UdpSocket>,
@@ -97,7 +98,7 @@ impl UdpSocket {
                     break;
                 }
             }
-            thread::sleep(time::Duration::from_secs(1));
+            thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
         }
 
         if sock.is_none() {
@@ -122,6 +123,7 @@ impl UdpSocket {
         if res.is_err() {
             warn!("close {:?}", res.err());
         }
+        thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
     }
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
