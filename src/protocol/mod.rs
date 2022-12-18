@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub use self::error::*;
 pub use self::esv::ESV;
 pub use self::message::{Message, TID, TID_MAX, TID_MIN};
 pub use self::property::{Property, PropertyCode};
