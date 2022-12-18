@@ -162,6 +162,13 @@
 <span id="162">162</span>
 <span id="163">163</span>
 <span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -188,6 +195,9 @@
 <span class="kw">use </span>std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 <span class="kw">use </span>std::os::unix::io::AsRawFd;
 <span class="kw">use </span>std::{thread, time};
+
+<span class="kw">const </span>UDP_SOCKET_BIND_RETRY_MAX: u32 = <span class="number">3</span>;
+<span class="kw">const </span>UDP_SOCKET_BIND_SLEEP_MSEC: u64 = <span class="number">500</span>;
 
 <span class="kw">pub struct </span>UdpSocket {
     sock: <span class="prelude-ty">Option</span>&lt;std::net::UdpSocket&gt;,
@@ -245,17 +255,21 @@
 
         </span><span class="kw">let </span><span class="kw-2">mut </span>sock: <span class="prelude-ty">Option</span>&lt;std::net::UdpSocket&gt; = <span class="prelude-val">None</span>;
 
-        <span class="comment">// net2::UdpBuilder could enable SO_REUSEADDR and SO_REUSEPORT on macOS and Linux
-        </span><span class="kw">if </span>ifaddr.is_ipv4() {
-            <span class="kw">let </span>sock_v4 = create_socket_v4(ifaddr);
-            <span class="kw">if </span>sock_v4.is_ok() {
-                sock = <span class="prelude-val">Some</span>(sock_v4.unwrap())
+        <span class="kw">for </span>_n <span class="kw">in </span><span class="number">0</span>..UDP_SOCKET_BIND_RETRY_MAX {
+            <span class="kw">if </span>ifaddr.is_ipv4() {
+                <span class="kw">let </span>sock_v4 = create_socket_v4(ifaddr);
+                <span class="kw">if </span>sock_v4.is_ok() {
+                    sock = <span class="prelude-val">Some</span>(sock_v4.unwrap());
+                    <span class="kw">break</span>;
+                }
+            } <span class="kw">else if </span>ifaddr.is_ipv6() {
+                <span class="kw">let </span>sock_v6 = create_socket_v6(ifaddr);
+                <span class="kw">if </span>sock_v6.is_ok() {
+                    sock = <span class="prelude-val">Some</span>(sock_v6.unwrap());
+                    <span class="kw">break</span>;
+                }
             }
-        } <span class="kw">else if </span>ifaddr.is_ipv6() {
-            <span class="kw">let </span>sock_v6 = create_socket_v6(ifaddr);
-            <span class="kw">if </span>sock_v6.is_ok() {
-                sock = <span class="prelude-val">Some</span>(sock_v6.unwrap())
-            }
+            thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
         }
 
         <span class="kw">if </span>sock.is_none() {
@@ -280,7 +294,7 @@
         <span class="kw">if </span>res.is_err() {
             <span class="macro">warn!</span>(<span class="string">&quot;close {:?}&quot;</span>, res.err());
         }
-        thread::sleep(time::Duration::from_secs(<span class="number">1</span>));
+        thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
     }
 
     <span class="kw">pub fn </span>send_to(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8], to_addr: SocketAddr) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
