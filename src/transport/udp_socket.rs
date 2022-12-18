@@ -23,7 +23,6 @@ use nix::unistd::close;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::os::unix::io::AsRawFd;
-use std::{thread, time};
 
 pub struct UdpSocket {
     sock: Option<std::net::UdpSocket>,
@@ -116,7 +115,6 @@ impl UdpSocket {
         if res.is_err() {
             warn!("close {:?}", res.err());
         }
-        thread::sleep(time::Duration::from_secs(1));
     }
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
