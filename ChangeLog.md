@@ -9,9 +9,12 @@
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
-## v1.2.3 (2022-xx-xx)
-- Update UdpSocket::close() to disable sleep wait
-- Add sleep waits to prevent repeated binding errors for Github actions
+## v1.2.3 (2022-12-xx)
+- Update UdpSocket::bind() to retry for repeated binding errors
+- Update UdpSocket::close() to add sleep wait for epeated binding errors
+
+## v1.2.2 (2022-12-18)
+- Improve Device to set mandatory properties
 
 ## v1.2.1 (2022-12-10)
 - Update standard device objects to add extra devices and definitions
