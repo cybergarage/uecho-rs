@@ -197,7 +197,7 @@
 <span class="kw">use </span>std::{thread, time};
 
 <span class="kw">const </span>UDP_SOCKET_BIND_RETRY_MAX: u32 = <span class="number">3</span>;
-<span class="kw">const </span>UDP_SOCKET_BIND_SLEEP_MSEC: u64 = <span class="number">500</span>;
+<span class="kw">const </span>UDP_SOCKET_BIND_SLEEP_MSEC: u64 = <span class="number">100</span>;
 
 <span class="kw">pub struct </span>UdpSocket {
     sock: <span class="prelude-ty">Option</span>&lt;std::net::UdpSocket&gt;,
