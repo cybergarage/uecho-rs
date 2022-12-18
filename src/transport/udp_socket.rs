@@ -26,7 +26,7 @@ use std::os::unix::io::AsRawFd;
 use std::{thread, time};
 
 const UDP_SOCKET_BIND_RETRY_MAX: u32 = 3;
-const UDP_SOCKET_BIND_SLEEP_MSEC: u64 = 500;
+const UDP_SOCKET_BIND_SLEEP_MSEC: u64 = 100;
 
 pub struct UdpSocket {
     sock: Option<std::net::UdpSocket>,
