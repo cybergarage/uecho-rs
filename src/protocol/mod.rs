@@ -15,7 +15,7 @@
 pub use self::error::*;
 pub use self::esv::*;
 pub use self::message::{Message, TID, TID_MAX, TID_MIN};
-pub use self::property::*;
+pub use self::property::{Property, PropertyCode};
 pub use self::result::*;
 
 mod error;
