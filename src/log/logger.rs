@@ -12,13 +12,62 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use cybergarage;
+use std::sync::Once;
+
+use chrono::{Local, SecondsFormat};
+use log::{LevelFilter, Metadata, Record};
+
+static INIT: Once = Once::new();
 
 /// Logger represents a default logger instance.
-pub struct Logger {}
+pub struct Logger {
+    level: LevelFilter,
+}
+
+static LOGGER: Logger = Logger {
+    level: LevelFilter::Trace,
+};
 
 impl Logger {
-    pub fn init() {
-        cybergarage::log::Logger::init();
+    pub fn new() -> Logger {
+        Logger {
+            level: LevelFilter::Trace,
+        }
     }
+
+    pub fn shared() -> &'static Logger {
+        &LOGGER
+    }
+
+    pub fn set_level(&mut self, l: LevelFilter) {
+        self.level = l;
+    }
+
+    pub fn init() {
+        INIT.call_once(|| {
+            log::set_logger(&LOGGER)
+                .map(|()| log::set_max_level(LevelFilter::Trace))
+                .expect("Couldn't initialize logger");
+        });
+    }
+}
+
+impl log::Log for Logger {
+    fn enabled(&self, metadata: &Metadata) -> bool {
+        metadata.level() <= self.level
+    }
+
+    fn log(&self, record: &Record) {
+        if self.enabled(record.metadata()) {
+            let ts = Local::now();
+            println!(
+                "{} {} {}",
+                ts.to_rfc3339_opts(SecondsFormat::Secs, true),
+                record.level(),
+                record.args()
+            );
+        }
+    }
+
+    fn flush(&self) {}
 }
