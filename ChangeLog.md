@@ -9,7 +9,7 @@
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
-## v1.2.3 (2022-12-xx)
+## v1.2.3 (2022-12-23)
 - Update UdpSocket::bind() to retry for repeated binding errors
 - Update UdpSocket::close() to add sleep wait for epeated binding errors
 
