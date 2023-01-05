@@ -48,7 +48,7 @@ path = "examples/uechodump/uechodump.rs"
 
 [[bin]]
 name = "uechobench"
-path = "examples/uechosearch/uechobench.rs"
+path = "examples/uechobench/uechobench.rs"
 
 [[bin]]
 name = "monolight"
