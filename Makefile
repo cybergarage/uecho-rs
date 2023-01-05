@@ -20,7 +20,7 @@
 
 all: test
 
-.PHONY: format search mono
+.PHONY: format search mono bench
 
 format:
 	cargo fmt
