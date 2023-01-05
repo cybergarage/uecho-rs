@@ -41,4 +41,4 @@ mono:
 	cargo run --bin monolight -v
 
 bench:
-	cargo run --bin uechobench -v
+	cargo run --bin uechobench -v -n 100
