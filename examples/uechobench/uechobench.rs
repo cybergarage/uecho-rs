@@ -24,7 +24,7 @@ use echonet::Controller;
 
 fn usages() {
     println!(
-        "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
+        "Usage: uechobench"
     );
     println!(" -h : Print this message");
     println!(" -a : Request all properties");
