@@ -34,10 +34,19 @@ fn usages() {
 
 fn main() -> Result<(), Error> {
     let mut only_mandatory_properties = true;
-    for arg in env::args() {
+    let args: Vec<String> = env::args().collect();
+    let mut n = 0;
+    let mut repeat_cnt = 1;
+    while n < args.len() {
+        let arg = args[n].clone();
         match arg.as_str() {
             "-v" => {
                 Logger::init();
+            }
+            "-n" => {
+                n = n + 1;
+                let arg = args[n].clone();
+                repeat_cnt = arg.parse().unwrap();
             }
             "-a" => {
                 only_mandatory_properties = false;
@@ -48,6 +57,7 @@ fn main() -> Result<(), Error> {
             }
             &_ => {}
         }
+        n = n + 1;
     }
 
     let mut ctrl = Controller::new();
@@ -56,44 +66,46 @@ fn main() -> Result<(), Error> {
 
     thread::sleep(time::Duration::from_secs(2));
 
-    for (i, node) in ctrl.nodes().iter().enumerate() {
-        println!("[{}] {})", i, node.addr());
+    for _ in 0..repeat_cnt {
+        for (i, node) in ctrl.nodes().iter().enumerate() {
+            println!("[{}] {})", i, node.addr());
 
-        // Prints all mandatory properties in the object.
+            // Prints all mandatory properties in the object.
 
-        for (j, obj) in node.objects().iter().enumerate() {
-            println!("    [{}] {:06X} ({})", j, obj.code(), obj.class_name());
-            for obj_prop in obj.properties() {
-                if only_mandatory_properties && !obj_prop.is_read_required() {
-                    continue;
-                }
+            for (j, obj) in node.objects().iter().enumerate() {
+                println!("    [{}] {:06X} ({})", j, obj.code(), obj.class_name());
+                for obj_prop in obj.properties() {
+                    if only_mandatory_properties && !obj_prop.is_read_required() {
+                        continue;
+                    }
 
-                // Makes a property value read (ESV::ReadRequest) message.
-                let mut msg = Message::new();
-                msg.set_esv(ESV::ReadRequest);
-                msg.set_deoj(obj.code());
-                let mut prop = Property::new();
-                prop.set_code(obj_prop.code());
-                msg.add_property(prop);
+                    // Makes a property value read (ESV::ReadRequest) message.
+                    let mut msg = Message::new();
+                    msg.set_esv(ESV::ReadRequest);
+                    msg.set_deoj(obj.code());
+                    let mut prop = Property::new();
+                    prop.set_code(obj_prop.code());
+                    msg.add_property(prop);
 
-                let mut prop_data = String::from("");
-                let rx = ctrl.post_message(&node, &mut msg);
-                match rx.recv_timeout(Duration::from_secs(1)) {
-                    Ok(msg) => {
-                        if 0 < msg.opc() {
-                            prop_data = hex::encode(msg.property(0).data());
+                    let mut prop_data = String::from("");
+                    let rx = ctrl.post_message(&node, &mut msg);
+                    match rx.recv_timeout(Duration::from_secs(1)) {
+                        Ok(msg) => {
+                            if 0 < msg.opc() {
+                                prop_data = hex::encode(msg.property(0).data());
+                            }
                         }
-                    }
-                    Err(e) => {
-                        prop_data = format!("{}", e);
-                    }
-                };
-                println!(
-                    "        [{:02X}] {}: {}",
-                    obj_prop.code(),
-                    obj_prop.name(),
-                    prop_data
-                );
+                        Err(e) => {
+                            prop_data = format!("{}", e);
+                        }
+                    };
+                    println!(
+                        "        [{:02X}] {}: {}",
+                        obj_prop.code(),
+                        obj_prop.name(),
+                        prop_data
+                    );
+                }
             }
         }
     }
