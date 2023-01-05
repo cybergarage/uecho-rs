@@ -102,6 +102,18 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -128,7 +140,7 @@
 
 <span class="kw">fn </span>usages() {
     <span class="macro">println!</span>(
-        <span class="string">&quot;Usage: uechopost &lt;IP address&gt; &lt;Object code (hex)&gt; &lt;ESV (hex)&gt; (&lt;EPC (hex)&gt; (&lt;EDT (hex)&gt;)*)?&quot;
+        <span class="string">&quot;Usage: uechobench&quot;
     </span>);
     <span class="macro">println!</span>(<span class="string">&quot; -h : Print this message&quot;</span>);
     <span class="macro">println!</span>(<span class="string">&quot; -a : Request all properties&quot;</span>);
@@ -138,10 +150,19 @@
 
 <span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>only_mandatory_properties = <span class="bool-val">true</span>;
-    <span class="kw">for </span>arg <span class="kw">in </span>env::args() {
+    <span class="kw">let </span>args: Vec&lt;String&gt; = env::args().collect();
+    <span class="kw">let </span><span class="kw-2">mut </span>n = <span class="number">0</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>repeat_cnt = <span class="number">1</span>;
+    <span class="kw">while </span>n &lt; args.len() {
+        <span class="kw">let </span>arg = args[n].clone();
         <span class="kw">match </span>arg.as_str() {
             <span class="string">&quot;-v&quot; </span>=&gt; {
                 Logger::init();
+            }
+            <span class="string">&quot;-n&quot; </span>=&gt; {
+                n = n + <span class="number">1</span>;
+                <span class="kw">let </span>arg = args[n].clone();
+                repeat_cnt = arg.parse().unwrap();
             }
             <span class="string">&quot;-a&quot; </span>=&gt; {
                 only_mandatory_properties = <span class="bool-val">false</span>;
@@ -152,6 +173,7 @@
             }
             <span class="kw-2">&amp;</span><span class="kw">_ </span>=&gt; {}
         }
+        n = n + <span class="number">1</span>;
     }
 
     <span class="kw">let </span><span class="kw-2">mut </span>ctrl = Controller::new();
@@ -160,44 +182,46 @@
 
     thread::sleep(time::Duration::from_secs(<span class="number">2</span>));
 
-    <span class="kw">for </span>(i, node) <span class="kw">in </span>ctrl.nodes().iter().enumerate() {
-        <span class="macro">println!</span>(<span class="string">&quot;[{}] {})&quot;</span>, i, node.addr());
+    <span class="kw">for _ in </span><span class="number">0</span>..repeat_cnt {
+        <span class="kw">for </span>(i, node) <span class="kw">in </span>ctrl.nodes().iter().enumerate() {
+            <span class="macro">println!</span>(<span class="string">&quot;[{}] {})&quot;</span>, i, node.addr());
 
-        <span class="comment">// Prints all mandatory properties in the object.
+            <span class="comment">// Prints all mandatory properties in the object.
 
-        </span><span class="kw">for </span>(j, obj) <span class="kw">in </span>node.objects().iter().enumerate() {
-            <span class="macro">println!</span>(<span class="string">&quot;    [{}] {:06X} ({})&quot;</span>, j, obj.code(), obj.class_name());
-            <span class="kw">for </span>obj_prop <span class="kw">in </span>obj.properties() {
-                <span class="kw">if </span>only_mandatory_properties &amp;&amp; !obj_prop.is_read_required() {
-                    <span class="kw">continue</span>;
-                }
+            </span><span class="kw">for </span>(j, obj) <span class="kw">in </span>node.objects().iter().enumerate() {
+                <span class="macro">println!</span>(<span class="string">&quot;    [{}] {:06X} ({})&quot;</span>, j, obj.code(), obj.class_name());
+                <span class="kw">for </span>obj_prop <span class="kw">in </span>obj.properties() {
+                    <span class="kw">if </span>only_mandatory_properties &amp;&amp; !obj_prop.is_read_required() {
+                        <span class="kw">continue</span>;
+                    }
 
-                <span class="comment">// Makes a property value read (ESV::ReadRequest) message.
-                </span><span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
-                msg.set_esv(ESV::ReadRequest);
-                msg.set_deoj(obj.code());
-                <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
-                prop.set_code(obj_prop.code());
-                msg.add_property(prop);
+                    <span class="comment">// Makes a property value read (ESV::ReadRequest) message.
+                    </span><span class="kw">let </span><span class="kw-2">mut </span>msg = Message::new();
+                    msg.set_esv(ESV::ReadRequest);
+                    msg.set_deoj(obj.code());
+                    <span class="kw">let </span><span class="kw-2">mut </span>prop = Property::new();
+                    prop.set_code(obj_prop.code());
+                    msg.add_property(prop);
 
-                <span class="kw">let </span><span class="kw-2">mut </span>prop_data = String::from(<span class="string">&quot;&quot;</span>);
-                <span class="kw">let </span>rx = ctrl.post_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>msg);
-                <span class="kw">match </span>rx.recv_timeout(Duration::from_secs(<span class="number">1</span>)) {
-                    <span class="prelude-val">Ok</span>(msg) =&gt; {
-                        <span class="kw">if </span><span class="number">0 </span>&lt; msg.opc() {
-                            prop_data = hex::encode(msg.property(<span class="number">0</span>).data());
+                    <span class="kw">let </span><span class="kw-2">mut </span>prop_data = String::from(<span class="string">&quot;&quot;</span>);
+                    <span class="kw">let </span>rx = ctrl.post_message(<span class="kw-2">&amp;</span>node, <span class="kw-2">&amp;mut </span>msg);
+                    <span class="kw">match </span>rx.recv_timeout(Duration::from_secs(<span class="number">1</span>)) {
+                        <span class="prelude-val">Ok</span>(msg) =&gt; {
+                            <span class="kw">if </span><span class="number">0 </span>&lt; msg.opc() {
+                                prop_data = hex::encode(msg.property(<span class="number">0</span>).data());
+                            }
                         }
-                    }
-                    <span class="prelude-val">Err</span>(e) =&gt; {
-                        prop_data = <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, e);
-                    }
-                };
-                <span class="macro">println!</span>(
-                    <span class="string">&quot;        [{:02X}] {}: {}&quot;</span>,
-                    obj_prop.code(),
-                    obj_prop.name(),
-                    prop_data
-                );
+                        <span class="prelude-val">Err</span>(e) =&gt; {
+                            prop_data = <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, e);
+                        }
+                    };
+                    <span class="macro">println!</span>(
+                        <span class="string">&quot;        [{:02X}] {}: {}&quot;</span>,
+                        obj_prop.code(),
+                        obj_prop.name(),
+                        prop_data
+                    );
+                }
             }
         }
     }
