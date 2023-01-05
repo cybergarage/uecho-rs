@@ -43,10 +43,6 @@ name = "uechopost"
 path = "examples/uechopost/uechopost.rs"
 
 [[bin]]
-name = "uechodump"
-path = "examples/uechodump/uechodump.rs"
-
-[[bin]]
 name = "uechobench"
 path = "examples/uechobench/uechobench.rs"
 
