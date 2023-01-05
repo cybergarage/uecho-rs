@@ -25,7 +25,7 @@ use echonet::{Controller, ManufactureCode, StandardDatabase};
 
 fn usages() {
     println!(
-        "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
+        "Usage: uechosearch"
     );
     println!(" -h : Print this message");
     println!(" -a : Request all properties");
