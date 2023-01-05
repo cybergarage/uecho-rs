@@ -5,10 +5,17 @@
 - Enable IPv6 interfaces
 
 ## v1.2.x (2022-xx-xx)
+- Update Node::post_message() to try lock
 - Improve controller search functions
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
+<<<<<<< HEAD
+=======
+## v1.2.4 (2023-01-xx)
+- Add uechobench for benchmarking
+
+>>>>>>> e8e78e8 (Update ChangeLog.md)
 ## v1.2.3 (2022-12-23)
 - Update UdpSocket::bind() to retry for repeated binding errors
 - Update UdpSocket::close() to add sleep wait for epeated binding errors
