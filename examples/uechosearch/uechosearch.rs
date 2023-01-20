@@ -24,9 +24,7 @@ use echonet::util::Bytes;
 use echonet::{Controller, ManufactureCode, StandardDatabase};
 
 fn usages() {
-    println!(
-        "Usage: uechosearch"
-    );
+    println!("Usage: uechosearch");
     println!(" -h : Print this message");
     println!(" -a : Request all properties");
     println!(" -v : Enable debug output");
