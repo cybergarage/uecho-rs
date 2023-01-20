@@ -1,6 +1,6 @@
 [package]
 name = "echonet"
-version = "1.2.4"
+version = "1.2.5"
 authors = ["The uecho-rs Authors <skonno@cybergarage.org>"]
 edition = "2021"
 readme = "README.md"
