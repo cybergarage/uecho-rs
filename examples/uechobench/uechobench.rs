@@ -23,9 +23,7 @@ use echonet::protocol::{Message, Property, ESV};
 use echonet::Controller;
 
 fn usages() {
-    println!(
-        "Usage: uechobench"
-    );
+    println!("Usage: uechobench");
     println!(" -h : Print this message");
     println!(" -a : Request all properties");
     println!(" -v : Enable debug output");
