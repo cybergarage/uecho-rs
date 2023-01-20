@@ -4,14 +4,16 @@
 - Update transport layer
 - Enable IPv6 interfaces
 
-## v1.3.x (2022-xx-xx)
-- Update Node::post_message() to try lock
+## v1.3.0 (2023-xx-xx)
+- Support features
+
+## v1.2.x (2022-xx-xx)
 - Improve controller search functions
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
-## v1.3.0 (2023-xx-xx)
-- Support features
+## v1.2.5 (2022-01-20)
+- Update Controller::send_message() to try lock
 
 ## v1.2.4 (2023-01-05)
 - Add uechobench for benchmarking
