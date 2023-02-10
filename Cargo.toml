@@ -11,7 +11,6 @@ license = "Apache-2.0"
 description = "ECHONET Lite framework for Rust"
 categories = ["network-programming"]
 keywords = ["echonet", "echonet-lite"]
-default-run = "uechosearch"
 
 [dependencies]
 log = "0.4"
@@ -22,9 +21,10 @@ strum_macros = "0.21"
 once_cell = "1.14.0"
 nix = "0.25.0" 
 net2 = "0.2"
-signal-hook = "0.3.14"
-# cybergarage = "1.1.1"
 chrono = "0.4"
+
+[dev-dependencies]
+signal-hook = "0.3.14"
 
 [dependencies.uuid]
 version = "1.2.2"
@@ -34,18 +34,18 @@ features = [
     "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
 ]
 
-[[bin]]
+[[example]]
 name = "uechosearch"
 path = "examples/uechosearch/uechosearch.rs"
 
-[[bin]]
+[[example]]
 name = "uechopost"
 path = "examples/uechopost/uechopost.rs"
 
-[[bin]]
+[[example]]
 name = "uechobench"
 path = "examples/uechobench/uechobench.rs"
 
-[[bin]]
+[[example]]
 name = "monolight"
 path = "examples/monolight/monolight.rs"
