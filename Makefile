@@ -35,10 +35,14 @@ test: build
 	cargo test -- --test-threads=1
 
 search:
-	cargo run --bin uechosearch -v
+	cargo run --example uechosearch -v
+
+post:
+	cargo run --example uechopost -v
 
 mono:
-	cargo run --bin monolight -v
+	cargo run --example monolight -v
 
 bench:
-	cargo run --bin uechobench -v -- -n 10000
+	cargo run --example uechobench -v -- -n 10000
+
