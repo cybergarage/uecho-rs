@@ -12,6 +12,9 @@
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
+## v1.2.6 (2022-xx-xx)
+- Remove dev-dependencies packages
+
 ## v1.2.5 (2022-01-20)
 - Update Controller::send_message() to try lock
 
