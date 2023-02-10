@@ -3,6 +3,7 @@
 ## v1.4.x (2023-xx-xx)
 - Update transport layer
 - Enable IPv6 interfaces
+- Support Supports multi-network interfaces
 
 ## v1.3.0 (2023-xx-xx)
 - Support features
@@ -12,7 +13,7 @@
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
-## v1.2.6 (2022-xx-xx)
+## v1.2.6 (2022-02-11)
 - Remove dev-dependency packages
 
 ## v1.2.5 (2022-01-20)
