@@ -36,6 +36,10 @@ features = [
     "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
 ]
 
+[features]
+default = ["unix"]
+unix = []
+
 [[example]]
 name = "uechosearch"
 path = "examples/uechosearch/uechosearch.rs"
