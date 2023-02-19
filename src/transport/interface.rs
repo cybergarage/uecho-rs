@@ -13,67 +13,13 @@
 // limitations under the License.
 
 #![allow(dead_code)]
+#![allow(unused_imports)]
 
-use pnet::datalink;
-use pnet::ipnetwork;
-use std::net::IpAddr;
+use std::net::{IpAddr, Ipv4Addr};
 
-type EnableInterface = fn(ipnetwork::IpNetwork) -> bool;
-
-fn is_ignore_interface(ipnet: ipnetwork::IpNetwork) -> bool {
-    let binding = ipnet.to_string();
-    let ifaddr = binding.as_str();
-    match ifaddr {
-        "172.17.0.1/16" => return true, // Docker default gateway
-        _ => return false,
-    }
-}
-
-fn is_all_interface(_ipnet: ipnetwork::IpNetwork) -> bool {
-    true
-}
-
-fn is_v4_interface(ipnet: ipnetwork::IpNetwork) -> bool {
-    ipnet.is_ipv4()
-}
-
-fn is_v6_interface(ipnet: ipnetwork::IpNetwork) -> bool {
-    ipnet.is_ipv6()
-}
-
-fn get_interfaces(enable_interface: EnableInterface) -> Vec<IpAddr> {
-    let mut ifaddrs = Vec::new();
-    for iface in datalink::interfaces() {
-        if !iface.is_up() {
-            continue;
-        }
-        if iface.is_loopback() || iface.is_point_to_point() {
-            continue;
-        }
-        if iface.ips.is_empty() {
-            continue;
-        }
-        for ifaddr in iface.ips {
-            if is_ignore_interface(ifaddr) {
-                continue;
-            }
-            if !enable_interface(ifaddr) {
-                continue;
-            }
-            ifaddrs.push(ifaddr.ip());
-        }
-    }
-    ifaddrs
-}
-
+#[cfg(not(feature = "unix"))]
 pub fn get_all_interfaces() -> Vec<IpAddr> {
-    get_interfaces(is_v4_interface)
-}
-
-pub fn get_v4_interfaces() -> Vec<IpAddr> {
-    get_interfaces(is_v4_interface)
-}
-
-pub fn get_v6_interfaces() -> Vec<IpAddr> {
-    get_interfaces(is_v6_interface)
+    let mut ifaddrs = Vec::new();
+    ifaddrs.push(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)));
+    ifaddrs
 }

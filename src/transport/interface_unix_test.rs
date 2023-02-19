@@ -12,30 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub use self::default::PORT;
-pub use self::manager::Manager;
-pub use self::notify_manager::NotifytManager;
-pub use self::observer::{Observer, ObserverObject};
+#[cfg(feature = "unix")]
+#[cfg(test)]
+mod tests {
 
-mod default;
-mod error;
-mod interface;
-mod interface_unix;
-mod manager;
-mod multicast_manager;
-mod multicast_server;
-mod notifier;
-mod notify_manager;
-mod observer;
-mod result;
-mod udp_socket;
-mod unicast_manager;
-mod unicast_server;
+    use crate::transport::interface::*;
 
-mod interface_unix_test;
-mod manager_test;
-mod multicast_manager_test;
-mod multicast_server_test;
-mod notify_manager_test;
-mod unicast_manager_test;
-mod unicast_server_test;
+    #[test]
+    fn v4_interface() {
+        let ifaddrs = get_all_interfaces();
+        for ifaddr in ifaddrs {
+            assert!(ifaddr.is_ipv4())
+        }
+    }
+
+    #[test]
+    fn v6_interface() {
+        let ifaddrs = get_v6_interfaces();
+        for ifaddr in ifaddrs {
+            assert!(ifaddr.is_ipv6())
+        }
+    }
+
+    #[test]
+    fn all_interface() {
+        let ifaddrs = get_all_interfaces();
+        for ifaddr in ifaddrs {
+            assert!(ifaddr.is_ipv6() || ifaddr.is_ipv4())
+        }
+    }
+}
