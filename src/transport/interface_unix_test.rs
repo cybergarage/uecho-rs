@@ -12,14 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#![allow(dead_code)]
-#![allow(unused_imports)]
+#[cfg(feature = "unix")]
+#[cfg(test)]
+mod tests {
 
-use std::net::{IpAddr, Ipv4Addr};
+    use crate::transport::interface::*;
 
-#[cfg(not(feature = "unix"))]
-pub fn get_all_interfaces() -> Vec<IpAddr> {
-    let mut ifaddrs = Vec::new();
-    ifaddrs.push(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)));
-    ifaddrs
+    #[test]
+    fn v4_interface() {
+        let ifaddrs = get_all_interfaces();
+        for ifaddr in ifaddrs {
+            assert!(ifaddr.is_ipv4())
+        }
+    }
+
+    #[test]
+    fn v6_interface() {
+        let ifaddrs = get_v6_interfaces();
+        for ifaddr in ifaddrs {
+            assert!(ifaddr.is_ipv6())
+        }
+    }
+
+    #[test]
+    fn all_interface() {
+        let ifaddrs = get_all_interfaces();
+        for ifaddr in ifaddrs {
+            assert!(ifaddr.is_ipv6() || ifaddr.is_ipv4())
+        }
+    }
 }

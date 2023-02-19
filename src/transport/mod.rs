@@ -20,6 +20,7 @@ pub use self::observer::{Observer, ObserverObject};
 mod default;
 mod error;
 mod interface;
+mod interface_unix;
 mod manager;
 mod multicast_manager;
 mod multicast_server;
@@ -31,7 +32,7 @@ mod udp_socket;
 mod unicast_manager;
 mod unicast_server;
 
-mod interface_test;
+mod interface_unix_test;
 mod manager_test;
 mod multicast_manager_test;
 mod multicast_server_test;
