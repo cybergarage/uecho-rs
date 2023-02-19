@@ -20,9 +20,14 @@ mod tests {
     use std::thread;
     use std::time;
 
+    #[cfg(feature = "unix")]
+    use crate::transport::interface_unix::*;
+
+    #[cfg(not(feature = "unix"))]
+    use crate::transport::interface::*;
+
     use crate::protocol::Message;
     use crate::protocol::ESV;
-    use crate::transport::interface::*;
     use crate::transport::unicast_server::*;
 
     use crate::log::Logger;
