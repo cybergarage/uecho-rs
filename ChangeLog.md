@@ -11,8 +11,7 @@
 - Improve uechosearch example to output more human readable properties using the standard database
 
 ## v1.3.0 (2023-xx-xx)
-- Disable platform-dependent packeges
-- Support features
+- Add unix features to disable platform-dependent packeges
 
 ## v1.2.6 (2023-02-11)
 - Remove dev-dependency packages
