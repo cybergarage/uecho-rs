@@ -12,10 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(unused_imports)]
+
 use std::net::{IpAddr, SocketAddr};
 
-use crate::protocol::Message;
+#[cfg(feature = "unix")]
+use crate::transport::interface_unix::*;
+
+#[cfg(not(feature = "unix"))]
 use crate::transport::interface::*;
+
+use crate::protocol::Message;
 use crate::transport::observer::ObserverObject;
 use crate::transport::unicast_server::UnicastServer;
 

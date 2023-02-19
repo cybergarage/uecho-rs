@@ -17,7 +17,9 @@
 
 #[cfg(feature = "unix")]
 use pnet::datalink;
+#[cfg(feature = "unix")]
 use pnet::ipnetwork;
+
 use std::net::IpAddr;
 
 #[cfg(feature = "unix")]
