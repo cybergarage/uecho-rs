@@ -13,6 +13,10 @@
 ## v1.3.0 (2023-xx-xx)
 - Add unix features to disable platform-dependent packeges
 
+## 1.0.3 - 2023/05/xx
+- Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium
+- Updated the standard object database based on the latest MRA (Machine Readable Appendix) version 1.2.0 from the ECHONET Consortium
+
 ## v1.2.6 (2023-02-11)
 - Remove dev-dependency packages
 
