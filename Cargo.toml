@@ -12,6 +12,11 @@ description = "ECHONET Lite framework for Rust"
 categories = ["network-programming"]
 keywords = ["echonet", "echonet-lite"]
 
+[features]
+default = ["unix"]
+unix = []
+esp = []
+
 [dependencies]
 log = "0.4"
 hex = "0.4"
@@ -25,6 +30,9 @@ chrono = "0.4"
 [target.'cfg(unix)'.dependencies]
 pnet = "0.28.0"
 
+[target.'cfg(esp)'.dependencies]
+esp-idf-sys = { version = "0.31.11", features = ["binstart"] }
+
 [dev-dependencies]
 signal-hook = "0.3.14"
 
@@ -35,10 +43,6 @@ features = [
     "fast-rng",          # Use a faster (but still sufficiently random) RNG
     "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
 ]
-
-[features]
-default = ["unix"]
-unix = []
 
 [[example]]
 name = "uechosearch"
