@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Bytes","Bytes offers encoding and decoding utility functions between byte array and integers."],["UUID","UUID generates a unique identification number wit the specified manufacture code."]]};
+window.SIDEBAR_ITEMS = {"struct":["Bytes","UUID"]};
