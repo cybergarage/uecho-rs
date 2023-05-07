@@ -73,6 +73,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x0000F2, String::from("Energy Solutions Inc."));
         self.add_standard_manufacture(0x000072, String::from("Eneres Co.,Ltd."));
         self.add_standard_manufacture(0x0000DD, String::from("EneStone Corporation"));
+        self.add_standard_manufacture(0x000132, String::from("EX4Energy, Inc."));
         self.add_standard_manufacture(0x000055, String::from("FAMILYNET JAPAN CORPORATION"));
         self.add_standard_manufacture(0x0000F6, String::from("Field Logic Inc."));
         self.add_standard_manufacture(0x00012F, String::from("FORMOSA BIO AND ENERGY CORP JAPAN"));
@@ -128,7 +129,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x00004D, String::from("INABA DENKI SANGYO CO.,LTD."));
         self.add_standard_manufacture(0x000056, String::from("iND Co.,Ltd"));
         self.add_standard_manufacture(0x0000ED, String::from("INFINI Co. LTD"));
-        self.add_standard_manufacture(0x0000F2, String::from("INTEC Inc."));
+        self.add_standard_manufacture(0x000124, String::from("INTEC Inc."));
         self.add_standard_manufacture(0x0000B1, String::from("Internet Initiative Japan Inc."));
         self.add_standard_manufacture(0x000087, String::from("I-O DATA DEVICE,INC."));
         self.add_standard_manufacture(0x00006B, String::from("ISB Corporation"));
@@ -241,6 +242,10 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x000107, String::from("SEIKO ELECTRIC CO.,LTD."));
         self.add_standard_manufacture(0x00003A, String::from("SEKISUI HOUSE, LTD."));
         self.add_standard_manufacture(0x000005, String::from("Sharp Corp"));
+        self.add_standard_manufacture(
+            0x000131,
+            String::from("Shenzhen Eternalplanet Energy Pingshan Ltd."),
+        );
         self.add_standard_manufacture(0x0000AE, String::from("SHIKOKU ELECTRIC POWER CO.,INC."));
         self.add_standard_manufacture(0x00002E, String::from("SHIKOKU INSTRUMENTATION CO.,LTD"));
         self.add_standard_manufacture(
@@ -328,7 +333,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x0000EF, String::from("TOYOTA INDUSTRIES CORPORATION"));
         self.add_standard_manufacture(0x000121, String::from("TOYOTA MOTOR CORPORATION"));
         self.add_standard_manufacture(0x00011F, String::from("TOYOTA TSUSHO CORPORATION"));
-        self.add_standard_manufacture(0x00005D, String::from("Tranceboot Co.,Ltd."));
+        self.add_standard_manufacture(0x00005C, String::from("Tranceboot Co.,Ltd."));
         self.add_standard_manufacture(0x000076, String::from("TSP CO.,Ltd"));
         self.add_standard_manufacture(0x0000D0, String::from("TSUBAKIMOTO CHAIN CO."));
         self.add_standard_manufacture(0x0000C1, String::from("Tsuken Electric Ind Co., Ltd."));
