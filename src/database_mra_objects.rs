@@ -162,7 +162,7 @@ impl StandardDatabase {
         );
         obj.add_standard_property(
             0x85,
-            "Measured cumulative power consumption".to_string(),
+            "Measured cumulative electric energy consumption".to_string(),
             "number".to_string(),
             0,
             property_string_to_attribute("optional"),
@@ -302,7 +302,7 @@ impl StandardDatabase {
         );
         obj.add_standard_property(
             0x93,
-            "Remote controll setting".to_string(),
+            "Remote control setting".to_string(),
             "state".to_string(),
             1,
             property_string_to_attribute("optional"),
@@ -1850,6 +1850,16 @@ impl StandardDatabase {
             property_string_to_attribute("optional"),
             property_string_to_attribute("optional"),
             property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xE1,
+            "Working operation status".to_string(),
+            "state".to_string(),
+            1,
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("required"),
             &mut prop_enums,
         );
         obj.add_standard_property(
@@ -5525,6 +5535,16 @@ impl StandardDatabase {
             property_string_to_attribute("optional"),
             &mut prop_enums,
         );
+        obj.add_standard_property(
+            0xE7,
+            "Historical data 2 of measured cumulative amount of flowing water".to_string(),
+            "array".to_string(),
+            0,
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
         self.add_object(obj);
 
         // Home air conditioner (0x0130)
@@ -7611,20 +7631,6 @@ impl StandardDatabase {
         );
         self.add_object(obj);
 
-        // Air pressure sensor (0x002D)
-        let mut obj = self.create_standard_object("Air pressure sensor".to_string(), 0x00, 0x2D);
-        obj.add_standard_property(
-            0xE0,
-            "Air pressure measurement".to_string(),
-            "number".to_string(),
-            2,
-            property_string_to_attribute("required"),
-            property_string_to_attribute("notApplicable"),
-            property_string_to_attribute("optional"),
-            &mut prop_enums,
-        );
-        self.add_object(obj);
-
         // Bath heating status sensor (0x0016)
         let mut obj =
             self.create_standard_object("Bath heating status sensor".to_string(), 0x00, 0x16);
@@ -8115,6 +8121,191 @@ impl StandardDatabase {
             1,
             property_string_to_attribute("optional"),
             property_string_to_attribute("optional"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        self.add_object(obj);
+
+        // distributed generator's electric energy meter (0x028E)
+        let mut obj = self.create_standard_object(
+            "distributed generator's electric energy meter".to_string(),
+            0x02,
+            0x8E,
+        );
+        obj.add_standard_property(
+            0x98,
+            "Current date setting".to_string(),
+            "date".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xD0,
+            "Device type".to_string(),
+            "raw".to_string(),
+            0,
+            property_string_to_attribute("required"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xD1,
+            "Device ID".to_string(),
+            "raw".to_string(),
+            0,
+            property_string_to_attribute("required"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xD2,
+            "Tolerance class".to_string(),
+            "state".to_string(),
+            1,
+            property_string_to_attribute("required"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(0xD3, "Number of days to retain historical data of measured cumulative amounts of electric energy".to_string(), "".to_string(), 0, property_string_to_attribute("required"), property_string_to_attribute("notApplicable"), property_string_to_attribute("optional"), &mut prop_enums);
+        obj.add_standard_property(
+            0xD4,
+            "Unit for cumulative amounts of electric energy".to_string(),
+            "numericValue".to_string(),
+            1,
+            property_string_to_attribute("required"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(0xD5, "Day on which the historical data of measured cumulative amounts of electric energy is to be retrieved".to_string(), "".to_string(), 0, property_string_to_attribute("required_c"), property_string_to_attribute("required"), property_string_to_attribute("optional"), &mut prop_enums);
+        obj.add_standard_property(
+            0xD6,
+            "Identification number of device to be metered".to_string(),
+            "raw".to_string(),
+            0,
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xDA,
+            "Current hour, minute, and second setting".to_string(),
+            "time".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xDB,
+            "Time synchronization status".to_string(),
+            "state".to_string(),
+            1,
+            property_string_to_attribute("required"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xE0,
+            "Measured cumulative amounts of electric energy (AC input)".to_string(),
+            "number".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xE1,
+            "Historical data of measured cumulative amounts of electric energy (AC input)"
+                .to_string(),
+            "object".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xE2,
+            "Measured cumulative amounts of electric energy (AC output)".to_string(),
+            "number".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xE3,
+            "Historical data of measured cumulative amounts of electric energy (AC output)"
+                .to_string(),
+            "object".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xE4,
+            "Measured cumulative amounts of electric energy (output during a power outage)"
+                .to_string(),
+            "".to_string(),
+            0,
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(0xE5, "Historical data of measured cumulative amounts of electric energy (output during a power outage )".to_string(), "object".to_string(), 0, property_string_to_attribute("optional"), property_string_to_attribute("notApplicable"), property_string_to_attribute("optional"), &mut prop_enums);
+        obj.add_standard_property(
+            0xE6,
+            "Cumulative amounts of electric energy measured at fixed time (AC input)".to_string(),
+            "object".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xE7,
+            "Cumulative amounts of electric energy measured at fixed time (AC output)".to_string(),
+            "object".to_string(),
+            0,
+            property_string_to_attribute("required_c"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(0xE8, "Cumulative amounts of electric energy measured at fixed time (output during a power outage)".to_string(), "object".to_string(), 0, property_string_to_attribute("optional"), property_string_to_attribute("notApplicable"), property_string_to_attribute("optional"), &mut prop_enums);
+        obj.add_standard_property(
+            0xE9,
+            "Measured instantaneous electric power (AC input/output)".to_string(),
+            "".to_string(),
+            0,
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("notApplicable"),
+            property_string_to_attribute("optional"),
+            &mut prop_enums,
+        );
+        obj.add_standard_property(
+            0xEA,
+            "Measured instantaneous electric power (output during a power outage)".to_string(),
+            "".to_string(),
+            0,
+            property_string_to_attribute("optional"),
+            property_string_to_attribute("notApplicable"),
             property_string_to_attribute("optional"),
             &mut prop_enums,
         );
@@ -8667,7 +8858,7 @@ impl StandardDatabase {
         );
         obj.add_standard_property(
             0xCA,
-            "Registerd information renewal date of the device to be controlled".to_string(),
+            "Registered information renewal date of the device to be controlled".to_string(),
             "date".to_string(),
             0,
             property_string_to_attribute("optional"),
@@ -8677,7 +8868,7 @@ impl StandardDatabase {
         );
         obj.add_standard_property(
             0xCA,
-            "Registerd information renewal date of the device to be controlled".to_string(),
+            "Registered information renewal date of the device to be controlled".to_string(),
             "date".to_string(),
             0,
             property_string_to_attribute("optional"),
@@ -8687,7 +8878,7 @@ impl StandardDatabase {
         );
         obj.add_standard_property(
             0xCB,
-            "Registerd information renewal version information of the device to be controlled"
+            "Registered information renewal version information of the device to be controlled"
                 .to_string(),
             "number".to_string(),
             0,
@@ -8698,7 +8889,7 @@ impl StandardDatabase {
         );
         obj.add_standard_property(
             0xCB,
-            "Registerd information renewal version information of the device to be controlled"
+            "Registered information renewal version information of the device to be controlled"
                 .to_string(),
             "number".to_string(),
             0,
