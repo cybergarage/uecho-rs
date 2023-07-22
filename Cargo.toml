@@ -14,6 +14,7 @@ keywords = ["echonet", "echonet-lite"]
 
 [features]
 default = ["unix"]
+no_std = []
 unix = []
 esp = []
 
