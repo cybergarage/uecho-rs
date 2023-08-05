@@ -25,6 +25,7 @@ use std::net::IpAddr;
 #[cfg(feature = "unix")]
 type EnableInterface = fn(ipnetwork::IpNetwork) -> bool;
 
+#[cfg(feature = "unix")]
 fn is_ignore_interface(ipnet: ipnetwork::IpNetwork) -> bool {
     let binding = ipnet.to_string();
     let ifaddr = binding.as_str();
