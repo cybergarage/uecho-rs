@@ -13,7 +13,7 @@ categories = ["network-programming"]
 keywords = ["echonet", "echonet-lite"]
 
 [features]
-default = ["std"]
+default = ["no_std"]
 std = ["unix"]
 no_std = []
 unix = []
