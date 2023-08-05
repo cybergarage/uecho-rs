@@ -33,6 +33,7 @@ pub struct UdpSocket {
     ifaddr: Option<SocketAddr>,
 }
 
+#[cfg(feature = "unix")]
 fn create_socket_v4(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v4()?
         .reuse_address(true)?
@@ -40,11 +41,24 @@ fn create_socket_v4(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
         .bind(ifaddr)
 }
 
+#[cfg(not(feature = "unix"))]
+fn create_socket_v4(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
+    let sock = std::net::UdpSocket::bind(ifaddr.to_string());
+    sock
+}
+
+#[cfg(feature = "unix")]
 fn create_socket_v6(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
     net2::UdpBuilder::new_v6()?
         .reuse_address(true)?
         // .reuse_port(true)?
         .bind(ifaddr)
+}
+
+#[cfg(not(feature = "unix"))]
+fn create_socket_v6(ifaddr: SocketAddr) -> io::Result<std::net::UdpSocket> {
+    let sock = std::net::UdpSocket::bind(ifaddr.to_string());
+    sock
 }
 
 impl UdpSocket {
@@ -68,19 +82,6 @@ impl UdpSocket {
         if self.sock.is_some() {
             self.close();
         }
-
-        // NOTE: Standard UdpSocket could not enable SO_REUSEADDR
-        // let sock = std::net::UdpSocket::bind(ifaddr.to_string());
-        // let fd = sock.as_ref().unwrap().as_raw_fd();
-        // if setsockopt(fd, ReuseAddr, &true).is_err() {
-        //     warn!("SO_REUSEADDR is not supported");
-        // }
-        // if setsockopt(fd, ReusePort, &true).is_err() {
-        //     warn!("SO_REUSEPORT is not supported");
-        // }
-        // if setsockopt(fd, IpMulticastLoop, &true).is_err() {
-        //     warn!("IP_MULTICAST_LOOP is not supported");
-        // }
 
         let mut sock: Option<std::net::UdpSocket> = None;
 
