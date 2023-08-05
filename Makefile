@@ -46,3 +46,5 @@ mono:
 bench:
 	cargo run --example uechobench -v -- -n 10000
 
+watchtest:
+	fswatch -o . -e ".*" -i "\\.rs$$" | xargs -n1 -I{} make test
