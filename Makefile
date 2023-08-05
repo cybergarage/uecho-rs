@@ -28,6 +28,9 @@ format:
 build: format
 	cargo build
 
+clean: 
+	cargo clean
+
 doc: format
 	cargo doc --open
 
