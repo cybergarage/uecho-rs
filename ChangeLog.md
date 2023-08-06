@@ -1,9 +1,13 @@
 # Changelog
 
-## v1.4.x (2023-xx-xx)
+## v1.5.x (2023-xx-xx)
+- Support ESP32 platforms
 - Update transport layer
 - Enable IPv6 interfaces
 - Support Supports multi-network interfaces
+
+## v1.4.x (2023-xx-xx)
+- Support ESP32 platforms
 
 ## v1.3.x (2023-xx-xx)
 - Improve controller search functions
@@ -11,9 +15,10 @@
 - Improve uechosearch example to output more human readable properties using the standard database
 
 ## v1.3.0 (2023-xx-xx)
-- Add unix features to disable platform-dependent packeges
-
-## 1.2.7 - 2023/05/07
+- Add no_std feature 
+- Change uuid package from uuid to nuuid
+ 
+## 1.2.7 (2023-05-07)
 - Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium
 - Updated the standard object database based on the latest MRA (Machine Readable Appendix) version 1.2.0 from the ECHONET Consortium
 
