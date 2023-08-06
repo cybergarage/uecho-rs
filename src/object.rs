@@ -24,7 +24,7 @@ use crate::property::{Property, PropertyCode, PropertyData};
 use crate::protocol::{Message, ESV};
 use crate::super_object::*;
 use crate::util::Bytes;
-use crate::util::UUID;
+use crate::util::OID;
 
 /// ObjectCode represents an ECHONET-Lite object code.
 pub type ObjectCode = u32;
@@ -225,7 +225,7 @@ impl Object {
                             self.set_standard_version(DEVICE_DEFAULT_VERSION_APPENDIX);
                         }
                         DEVICE_IDENTIFICATION_NUMBER => {
-                            self.set_id(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
+                            self.set_id(OID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
                         }
                         _ => {}
                     }
