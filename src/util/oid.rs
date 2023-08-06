@@ -14,6 +14,7 @@
 
 use crate::object::ObjectCode;
 use crate::util::Bytes;
+#[cfg(feature = "unix")]
 use uuid::Uuid;
 
 /// OID generates a unique identification number wit the specified manufacture code.
@@ -31,9 +32,16 @@ impl OID {
         oid[1] = man[0];
         oid[2] = man[1];
         oid[3] = man[2];
-        let v4_bytes = Uuid::new_v4().into_bytes();
-        for n in 0..=12 {
-            oid[4 + n] = v4_bytes[v4_bytes.len() - n - 1];
+        #[cfg(not(feature = "unix"))]
+        {
+            oid[16] = 0x01;
+        }
+        #[cfg(feature = "unix")]
+        {
+            let v4_bytes = Uuid::new_v4().into_bytes();
+            for n in 0..=12 {
+                oid[4 + n] = v4_bytes[v4_bytes.len() - n - 1];
+            }
         }
         OID { data: oid }
     }
