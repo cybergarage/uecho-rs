@@ -401,7 +401,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{Message, ESV};
 <span class="kw">use </span><span class="kw">crate</span>::super_object::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::util::Bytes;
-<span class="kw">use </span><span class="kw">crate</span>::util::UUID;
+<span class="kw">use </span><span class="kw">crate</span>::util::OID;
 
 <span class="doccomment">/// ObjectCode represents an ECHONET-Lite object code.
 </span><span class="kw">pub type </span>ObjectCode = u32;
@@ -602,7 +602,7 @@
                             <span class="self">self</span>.set_standard_version(DEVICE_DEFAULT_VERSION_APPENDIX);
                         }
                         DEVICE_IDENTIFICATION_NUMBER =&gt; {
-                            <span class="self">self</span>.set_id(UUID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
+                            <span class="self">self</span>.set_id(OID::new(OBJECT_MANUFACTURER_EXPERIMENT).bytes());
                         }
                         <span class="kw">_ </span>=&gt; {}
                     }

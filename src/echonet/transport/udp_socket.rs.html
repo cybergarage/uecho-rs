@@ -170,6 +170,13 @@
 <a href="#170" id="170">170</a>
 <a href="#171" id="171">171</a>
 <a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022 The uecho-rs Authors All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -189,12 +196,16 @@
 </span><span class="kw">use </span><span class="kw">crate</span>::transport::error::{BindError, ScoketError};
 <span class="kw">use </span><span class="kw">crate</span>::transport::result::Result;
 <span class="kw">use </span><span class="kw">crate</span>::transport::PORT;
-<span class="kw">use </span>log::warn;
-<span class="kw">use </span>nix::sys::socket::{shutdown, Shutdown};
-<span class="kw">use </span>nix::unistd::close;
+<span class="attr">#[cfg(feature = <span class="string">&quot;unix&quot;</span>)]
+</span><span class="kw">use </span>log::warn;
+<span class="attr">#[cfg(feature = <span class="string">&quot;unix&quot;</span>)]
+</span><span class="kw">use </span>nix::sys::socket::{shutdown, Shutdown};
+<span class="attr">#[cfg(feature = <span class="string">&quot;unix&quot;</span>)]
+</span><span class="kw">use </span>nix::unistd::close;
 <span class="kw">use </span>std::io;
 <span class="kw">use </span>std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
-<span class="kw">use </span>std::os::unix::io::AsRawFd;
+<span class="attr">#[cfg(feature = <span class="string">&quot;unix&quot;</span>)]
+</span><span class="kw">use </span>std::os::unix::io::AsRawFd;
 <span class="kw">use </span>std::{thread, time};
 
 <span class="kw">const </span>UDP_SOCKET_BIND_RETRY_MAX: u32 = <span class="number">3</span>;
@@ -287,14 +298,17 @@
         <span class="kw">if </span><span class="self">self</span>.sock.is_none() {
             <span class="kw">return</span>;
         }
-        <span class="kw">let </span>fd = <span class="self">self</span>.sock.as_ref().unwrap().as_raw_fd();
-        <span class="kw">let </span>res = shutdown(fd, Shutdown::Both);
-        <span class="kw">if </span>res.is_err() {
-            <span class="macro">warn!</span>(<span class="string">&quot;shutdown ({})&quot;</span>, res.err().unwrap().desc());
-        }
-        <span class="kw">let </span>res = close(fd);
-        <span class="kw">if </span>res.is_err() {
-            <span class="macro">warn!</span>(<span class="string">&quot;close {:?}&quot;</span>, res.err());
+        <span class="attr">#[cfg(feature = <span class="string">&quot;unix&quot;</span>)]
+        </span>{
+            <span class="kw">let </span>fd = <span class="self">self</span>.sock.as_ref().unwrap().as_raw_fd();
+            <span class="kw">let </span>res = shutdown(fd, Shutdown::Both);
+            <span class="kw">if </span>res.is_err() {
+                <span class="macro">warn!</span>(<span class="string">&quot;shutdown ({})&quot;</span>, res.err().unwrap().desc());
+            }
+            <span class="kw">let </span>res = close(fd);
+            <span class="kw">if </span>res.is_err() {
+                <span class="macro">warn!</span>(<span class="string">&quot;close {:?}&quot;</span>, res.err());
+            }
         }
         thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
     }
