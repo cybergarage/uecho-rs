@@ -15,8 +15,9 @@
 - Improve uechosearch example to output more human readable properties using the standard database
 
 ## v1.3.0 (2023-xx-xx)
-- Add std and no_std features 
-- Remote once_cell
+- Update for Rust 1.7
+- Add std and no_std features
+- Remove once_cell
  
 ## 1.2.7 (2023-05-07)
 - Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium
