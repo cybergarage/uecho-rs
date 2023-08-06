@@ -15,16 +15,16 @@
 use crate::manufacture::*;
 use crate::object::*;
 
-#[cfg(feature = "std")]
+#[cfg(feature = "once_cell")]
 use once_cell::sync::Lazy;
 
-#[cfg(not(feature = "std"))]
+#[cfg(not(feature = "once_cell"))]
 use std::sync::LazyLock;
 
-#[cfg(feature = "std")]
+#[cfg(feature = "once_cell")]
 static SHARED_STANDARD_DATABASE: Lazy<StandardDatabase> = Lazy::new(|| StandardDatabase::new());
 
-#[cfg(not(feature = "std"))]
+#[cfg(not(feature = "once_cell"))]
 static SHARED_STANDARD_DATABASE: LazyLock<StandardDatabase> =
     LazyLock::new(|| StandardDatabase::new());
 
@@ -58,12 +58,12 @@ impl StandardDatabase {
         db
     }
 
-    #[cfg(feature = "std")]
+    #[cfg(feature = "once_cell")]
     pub fn shared() -> &'static Lazy<StandardDatabase> {
         &SHARED_STANDARD_DATABASE
     }
 
-    #[cfg(not(feature = "std"))]
+    #[cfg(not(feature = "once_cell"))]
     pub fn shared() -> &'static LazyLock<StandardDatabase> {
         &SHARED_STANDARD_DATABASE
     }
