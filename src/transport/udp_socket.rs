@@ -17,11 +17,15 @@
 use crate::transport::error::{BindError, ScoketError};
 use crate::transport::result::Result;
 use crate::transport::PORT;
+#[cfg(feature = "unix")]
 use log::warn;
+#[cfg(feature = "unix")]
 use nix::sys::socket::{shutdown, Shutdown};
+#[cfg(feature = "unix")]
 use nix::unistd::close;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
+#[cfg(feature = "unix")]
 use std::os::unix::io::AsRawFd;
 use std::{thread, time};
 
@@ -115,14 +119,17 @@ impl UdpSocket {
         if self.sock.is_none() {
             return;
         }
-        let fd = self.sock.as_ref().unwrap().as_raw_fd();
-        let res = shutdown(fd, Shutdown::Both);
-        if res.is_err() {
-            warn!("shutdown ({})", res.err().unwrap().desc());
-        }
-        let res = close(fd);
-        if res.is_err() {
-            warn!("close {:?}", res.err());
+        #[cfg(feature = "unix")]
+        {
+            let fd = self.sock.as_ref().unwrap().as_raw_fd();
+            let res = shutdown(fd, Shutdown::Both);
+            if res.is_err() {
+                warn!("shutdown ({})", res.err().unwrap().desc());
+            }
+            let res = close(fd);
+            if res.is_err() {
+                warn!("close {:?}", res.err());
+            }
         }
         thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
     }
