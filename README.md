@@ -29,6 +29,13 @@ To add the `uecho-rs` to your project, add the following to your Cargo.toml file
 echonet = "1.x.x"
 ```
 
+`no_std` support:
+```
+[dependencies]
+echonet = { version = "1.x.x", features = ["no_std"] }
+```
+
+
 The examples are available for [ECHONET-Lite][enet] controller and device implementations using the `uecho-rs`, check out [the examples folder in GitHub](https://github.com/cybergarage/uecho-rs/tree/master/examples).
 
 ## Table of Contents
