@@ -16,11 +16,11 @@
 mod tests {
 
     use crate::super_object::*;
-    use crate::util::uuid::*;
+    use crate::util::oid::*;
 
     #[test]
-    fn uuid() {
-        let uuid = UUID::new(OBJECT_MANUFACTURER_EXPERIMENT);
+    fn oid() {
+        let uuid = OID::new(OBJECT_MANUFACTURER_EXPERIMENT);
         assert_eq!(uuid.bytes().len(), 17)
     }
 }
