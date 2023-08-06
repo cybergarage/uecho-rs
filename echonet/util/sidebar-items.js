@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["Bytes","UUID"]};
+window.SIDEBAR_ITEMS = {"struct":["Bytes","OID"]};
