@@ -13,7 +13,7 @@ categories = ["network-programming"]
 keywords = ["echonet", "echonet-lite"]
 
 [features]
-default = ["no_std"]
+default = ["std"]
 std = ["once_cell", "unix", "dep:uuid"]
 no_std = ["once_cell"]
 unix = ["dep:pnet", "dep:ipnetwork", "dep:nix", "dep:net2"]
