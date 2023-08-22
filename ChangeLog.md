@@ -14,10 +14,12 @@
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
-## v1.3.0 (2023-xx-xx)
+## v1.3.1 (2023-xx-xx)
+- Remove once_cell
+
+## v1.3.0 (2023-08-23)
 - Update for Rust 1.7
 - Add std and no_std features
-- Remove once_cell
  
 ## 1.2.7 (2023-05-07)
 - Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium
