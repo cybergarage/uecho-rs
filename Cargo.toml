@@ -14,7 +14,7 @@ keywords = ["echonet", "echonet-lite", "std", "no_std"]
 
 [features]
 default = ["std"]
-std = ["std_deps", "unix", ]
+std = ["std_deps", "unix"]
 std_win = ["std_deps", "win"]
 no_std = ["no_std_deps"]
 std_deps = ["dep:log", "dep:uuid", "no_std_deps"]
