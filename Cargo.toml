@@ -1,6 +1,6 @@
 [package]
 name = "echonet"
-version = "1.3.1"
+version = "1.3.2"
 authors = ["The uecho-rs Authors <skonno@cybergarage.org>"]
 edition = "2021"
 readme = "README.md"
@@ -13,24 +13,21 @@ categories = ["network-programming"]
 keywords = ["echonet", "echonet-lite", "std", "no_std"]
 
 [features]
-default = ["std"]
-std = ["std_deps", "unix"]
-std_win = ["std_deps", "win"]
-no_std = ["no_std_deps"]
-std_deps = ["dep:log", "dep:uuid", "no_std_deps"]
-no_std_deps = ["once_cell", "dep:strum", "dep:strum_macros"]
-unix = ["dep:pnet", "dep:ipnetwork", "dep:nix", "dep:net2"]
-win = ["dep:pnet", "dep:ipnetwork", "dep:net2"]
+default = ["unix"]
+std = ["once_cell", "dep:uuid"]
+no_std = ["once_cell"]
+unix = ["std", "dep:pnet", "dep:ipnetwork", "dep:nix", "dep:net2"]
+win = ["std", "dep:pnet", "dep:ipnetwork", "dep:net2"]
 esp = ["no_std", "dep:esp-idf-sys"]
-once_cell=["dep:once_cell"]
+once_cell = ["dep:once_cell"]
 
 [dependencies]
 hex = "0.4"
 chrono = "0.4"
-log = {version = "0.4.20", default-features = false, optional = true}
-strum =  {version = "0.25", default-features = false, optional = true}
-strum_macros =  {version = "0.25", default-features = false, optional = true}
-once_cell = {version = "1.17.0", default-features = false, optional = true}
+log = {version = "0.4.20", default-features = false}
+strum =  {version = "0.25", default-features = false}
+strum_macros =  {version = "0.25", default-features = false}
+once_cell = {version = "1.17.0", default-features = false, features = ["std"], optional = true}
 pnet = { version = "0.28.0", optional = true }
 ipnetwork = { version = "0.16.0", optional = true }
 nix = { version = "0.25.0", optional = true }
