@@ -38,16 +38,16 @@ test: build
 	cargo test -- --test-threads=1
 
 search:
-	cargo run --example uechosearch -v
+	cargo run --bin uechosearch -v
 
 post:
-	cargo run --example uechopost -v
+	cargo run --bin uechopost -v
 
 mono:
 	cargo run --example monolight -v
 
 bench:
-	cargo run --example uechobench -v -- -n 10000
+	cargo run --bin uechobench -v -- -n 10000
 
 watchtest:
 	fswatch -o . -e ".*" -i "\\.rs$$" | xargs -n1 -I{} make test
