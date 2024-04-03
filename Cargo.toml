@@ -38,17 +38,17 @@ esp-idf-sys = { version = "0.33.2", features = ["binstart"], optional = true  }
 [dev-dependencies]
 signal-hook = "0.3.14"
 
-[[example]]
+[[bin]]
 name = "uechosearch"
-path = "examples/uechosearch/uechosearch.rs"
+path = "bin/uechosearch/uechosearch.rs"
 
-[[example]]
+[[bin]]
 name = "uechopost"
-path = "examples/uechopost/uechopost.rs"
+path = "bin/uechopost/uechopost.rs"
 
-[[example]]
+[[bin]]
 name = "uechobench"
-path = "examples/uechobench/uechobench.rs"
+path = "bin/uechobench/uechobench.rs"
 
 [[example]]
 name = "monolight"
