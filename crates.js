@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["echonet"];
+window.ALL_CRATES = ["echonet","uechobench","uechopost","uechosearch"];
