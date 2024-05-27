@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Build
       run: cargo build --verbose
     - name: Run tests
@@ -28,7 +28,7 @@ jobs:
     if:  github.event_name == 'push' || github.event.pull_request.merged == true
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Run doc
       run: cargo doc --no-deps
 
