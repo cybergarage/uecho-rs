@@ -24,6 +24,7 @@ impl StandardDatabase {
     }
 
     pub fn init_manufactures(&mut self) {
+        self.add_standard_manufacture(0x000133, String::from("afterFIT Co., Ltd."));
         self.add_standard_manufacture(0x00002F, String::from("AIPHONE CO., LTD."));
         self.add_standard_manufacture(0x00011A, String::from("ACCESS CO.,LTD."));
         self.add_standard_manufacture(0x00002C, String::from("AFT CO.,LTD"));
@@ -35,15 +36,18 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x0000FD, String::from("Bellnix Co.,LTD"));
         self.add_standard_manufacture(0x00006F, String::from("BUFFALO INC."));
         self.add_standard_manufacture(0x0000B6, String::from("Bunka Shutter Co., Ltd"));
+        self.add_standard_manufacture(0x000017, String::from("Carrier Japan Corporation"));
         self.add_standard_manufacture(0x0000D2, String::from("CHOFUKOSAN.Co.Ltd"));
         self.add_standard_manufacture(0x000088, String::from("CHOFU SEISAKUSHO CO.,LTD."));
         self.add_standard_manufacture(0x0000D5, String::from("Choshu Industry Co., Ltd."));
         self.add_standard_manufacture(0x0000A3, String::from("Chubu Electric Power Grid Co.,Inc."));
+        self.add_standard_manufacture(0x000136, String::from("Chuo Bussan Co.,Ltd."));
         self.add_standard_manufacture(0x0000FB, String::from("CICO CORPORATION"));
         self.add_standard_manufacture(0x0000F8, String::from("CIMX INITIATIVE INC."));
         self.add_standard_manufacture(0x000123, String::from("Contec Co., Ltd."));
         self.add_standard_manufacture(0x000130, String::from("COOLDESIGN Corporation"));
         self.add_standard_manufacture(0x000067, String::from("CORONA CORPORATION"));
+        self.add_standard_manufacture(0x00013B, String::from("Crossdoor Inc."));
         self.add_standard_manufacture(0x00009C, String::from("Diamond Electric Mfg.Co.,Ltd."));
         self.add_standard_manufacture(
             0x000080,
@@ -64,7 +68,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x00003C, String::from("DENSO Corporation"));
         self.add_standard_manufacture(0x000109, String::from("DENSO Co.,LTD."));
         self.add_standard_manufacture(0x00012B, String::from("DENSO WAVE INCORPORATED"));
-        self.add_standard_manufacture(0x000113, String::from("EBARA JITSUGYO POWER CO., LTD."));
+        self.add_standard_manufacture(0x000113, String::from("EBARA JITSUGYO CO., LTD"));
         self.add_standard_manufacture(0x000057, String::from("ELIIYPower Co.,ltd"));
         self.add_standard_manufacture(0x00012E, String::from("Eneres Co.,Ltd."));
         self.add_standard_manufacture(0x000041, String::from("ENEGATE CO.,LTD."));
@@ -94,7 +98,9 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x00009B, String::from("GASTAR Co.,Ltd"));
         self.add_standard_manufacture(0x00008F, String::from("Glamo Inc."));
         self.add_standard_manufacture(0x000129, String::from("GoodWe Japan K.K"));
+        self.add_standard_manufacture(0x000134, String::from("GoodWe Technologies Co.,Ltd."));
         self.add_standard_manufacture(0x00009F, String::from("GS Yuasa International Ltd"));
+        self.add_standard_manufacture(0x00013A, String::from("GUGEN,Inc."));
         self.add_standard_manufacture(0x000122, String::from("Hanwha Q CELLS Japan CO.,LTD."));
         self.add_standard_manufacture(0x000001, String::from("Hitachi, Ltd."));
         self.add_standard_manufacture(
@@ -126,6 +132,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x0000A1, String::from("Honda R&D Co., Ltd."));
         self.add_standard_manufacture(0x000115, String::from("HUAWEI TECHNOLOGIES JAPAN K.K."));
         self.add_standard_manufacture(0x0000AC, String::from("IDEC COROPRATION"));
+        self.add_standard_manufacture(0x00013E, String::from("i GRID SOLUTIONS Inc."));
         self.add_standard_manufacture(0x00004D, String::from("INABA DENKI SANGYO CO.,LTD."));
         self.add_standard_manufacture(0x000056, String::from("iND Co.,Ltd"));
         self.add_standard_manufacture(0x0000ED, String::from("INFINI Co. LTD"));
@@ -154,6 +161,7 @@ impl StandardDatabase {
             String::from("KYUSHU ELECTRIC POWER TRANSMISSION AND DISTRIBUTION CO.,INC."),
         );
         self.add_standard_manufacture(0x0000F1, String::from("Laplace Systems Co., Ltd."));
+        self.add_standard_manufacture(0x000135, String::from("LinkJapan Inc."));
         self.add_standard_manufacture(0x000125, String::from("LiveSmart KK"));
         self.add_standard_manufacture(0x000025, String::from("LIXIL Corporation"));
         self.add_standard_manufacture(0x0000E0, String::from("Looop Inc"));
@@ -190,6 +198,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x000112, String::from("NICHIEI INTEC CO., LTD"));
         self.add_standard_manufacture(0x000071, String::from("NIHON SANGYO CO.,LTD."));
         self.add_standard_manufacture(0x0000DC, String::from("NIHON TECHNO CO.,LTD."));
+        self.add_standard_manufacture(0x00013D, String::from("NIPPON GAS CO.,LTD."));
         self.add_standard_manufacture(
             0x00008D,
             String::from("NIPPON TELEGRAPH AND TELEPHONE CORPORATION"),
@@ -217,6 +226,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x000012, String::from("Oi Electric Co., Ltd"));
         self.add_standard_manufacture(0x00006A, String::from("OKAYA & CO., LTD."));
         self.add_standard_manufacture(0x000114, String::from("OkayaKiden Co.,Ltd."));
+        self.add_standard_manufacture(0x000137, String::from("OkayaKiden Co.,Ltd."));
         self.add_standard_manufacture(0x000048, String::from("Oki Electric Industry Co., Ltd."));
         self.add_standard_manufacture(0x000064, String::from("OMRON SOCIAL SOLUTIONS CO.,LTD."));
         self.add_standard_manufacture(0x00012C, String::from("Onamba Co., Ltd."));
@@ -231,6 +241,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x0000FE, String::from("Panasonic Ecology Systems Co.,Ltd."));
         self.add_standard_manufacture(0x0000FA, String::from("Plat'Home Co."));
         self.add_standard_manufacture(0x000082, String::from("PURPOSE CO.,LTD."));
+        self.add_standard_manufacture(0x000139, String::from("RATOC Systems, Inc."));
         self.add_standard_manufacture(0x000059, String::from("Rinnai Corporation"));
         self.add_standard_manufacture(0x000128, String::from("SAIKOH ENGINEERING Co.,Ltd."));
         self.add_standard_manufacture(0x00011E, String::from("SAKAIGAWA CO., LTD"));
@@ -273,6 +284,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x0000DB, String::from("Suntech Power Japan Corporation"));
         self.add_standard_manufacture(0x00003D, String::from("SUMITOMO ELECTRIC INDUSTRIES, LTD."));
         self.add_standard_manufacture(0x00003E, String::from("SUMITOMO ELECTRIC NETWORKS, INC."));
+        self.add_standard_manufacture(0x00012D, String::from("TACHIKAWA CORPORATION"));
         self.add_standard_manufacture(0x000085, String::from("TAKAOKA TOKO CO.,LTD"));
         self.add_standard_manufacture(0x0000AF, String::from("Takara Standard Co.,Ltd"));
         self.add_standard_manufacture(0x0000E4, String::from("technoeye Inc."));
@@ -303,7 +315,6 @@ impl StandardDatabase {
         );
         self.add_standard_manufacture(0x0000B3, String::from("TOPPERS Project, Inc."));
         self.add_standard_manufacture(0x000111, String::from("Topre Corporation"));
-        self.add_standard_manufacture(0x000017, String::from("TOSHIBA CARRIER CORPORATION"));
         self.add_standard_manufacture(0x000016, String::from("Toshiba Corp."));
         self.add_standard_manufacture(
             0x000043,
@@ -334,6 +345,7 @@ impl StandardDatabase {
         self.add_standard_manufacture(0x000121, String::from("TOYOTA MOTOR CORPORATION"));
         self.add_standard_manufacture(0x00011F, String::from("TOYOTA TSUSHO CORPORATION"));
         self.add_standard_manufacture(0x00005C, String::from("Tranceboot Co.,Ltd."));
+        self.add_standard_manufacture(0x000138, String::from("TRENDE Inc."));
         self.add_standard_manufacture(0x000076, String::from("TSP CO.,Ltd"));
         self.add_standard_manufacture(0x0000D0, String::from("TSUBAKIMOTO CHAIN CO."));
         self.add_standard_manufacture(0x0000C1, String::from("Tsuken Electric Ind Co., Ltd."));
