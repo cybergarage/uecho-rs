@@ -14,8 +14,12 @@
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
-## v1.3.2 (2023-xx-xx)
+## v1.3.3 (2023-xx-xx)
 - Remove once_cell
+
+## v1.3.2 (2024-08-xx)
+- Updated the standard object database based on the latest MRA (Machine Readable Appendix) version 1.3.0 from the ECHONET Consortium.
+- Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium.
 
 ## v1.3.1 (2023-09-02)
 - Add no_std keyword
