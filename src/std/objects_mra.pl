@@ -156,12 +156,15 @@ foreach my $device_json_file(@device_json_files){
           my $name = %{$enum}{'name'};
           my $descs = %{$enum}{'descriptions'};
           my $desc = %{$descs}{'en'};
-          if (0< length($edt)) {
-            printf("        prop_enums.push(self.create_standard_property_enum(%s, \"%s\".to_string(), \"%s\".to_string()));\n", 
-            $edt,
-            $name,
-            $desc,
-            );
+          if (0 < length($edt)) {
+            if ($edt =~ /([a-zA-Z0-9]*)(\.\.\.)([a-zA-Z0-9]*)/) {
+            } else {
+              printf("        prop_enums.push(self.create_standard_property_enum(%s, \"%s\".to_string(), \"%s\".to_string()));\n", 
+                $edt,
+                $name,
+                $desc,
+                );
+            }
           }
         }
       }
