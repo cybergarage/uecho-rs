@@ -157,7 +157,16 @@ foreach my $device_json_file(@device_json_files){
           my $descs = %{$enum}{'descriptions'};
           my $desc = %{$descs}{'en'};
           if (0 < length($edt)) {
-            if ($edt =~ /([a-zA-Z0-9]*)(\.\.\.)([a-zA-Z0-9]*)/) {
+            if ($edt =~ /(0x[a-zA-Z0-9]*)(\.\.\.)(0x[a-zA-Z0-9]*)/) {
+              my $edt_start = hex($1);
+              my $edt_end = hex($3);
+              for (my $edt_idx = $edt_start; $edt_idx <= $edt_end; $edt_idx++) {
+                printf("        prop_enums.push(self.create_standard_property_enum(0x%04X, \"%s\".to_string(), \"%s\".to_string()));\n",
+                  $edt_idx,
+                  $name,
+                  $desc,
+                  );
+              }
             } else {
               printf("        prop_enums.push(self.create_standard_property_enum(%s, \"%s\".to_string(), \"%s\".to_string()));\n", 
                 $edt,
