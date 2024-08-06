@@ -63,7 +63,8 @@ mod tests {
             // NOTE: GitHub Action is slow and may drop to send UDP packets.
             // assert_eq!(*counter.unwrap(), TEST_OBSERVER_COUNT);
             if counter.is_ok() {
-                assert!(0 < *counter.unwrap());
+                let recv_cnt = *counter.unwrap();
+                assert!(0 < recv_cnt);
             }
 
             assert!(server.stop());
