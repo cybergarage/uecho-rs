@@ -18,6 +18,7 @@
 - Remove once_cell
 
 ## v1.3.2 (2024-08-xx)
+- Enable std::sync::LazyLock instead of once_cell::sync::Lazy
 - Updated the standard object database based on the latest MRA (Machine Readable Appendix) version 1.3.0 from the ECHONET Consortium.
 - Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium.
 
