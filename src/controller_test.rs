@@ -21,10 +21,11 @@ mod tests {
     #[test]
     fn controller() {
         Logger::init();
-
-        let mut ctrl = Controller::new();
-        assert!(ctrl.start());
-        assert!(ctrl.search());
-        assert!(ctrl.stop());
+        {
+            let mut ctrl = Controller::new();
+            assert!(ctrl.start());
+            assert!(ctrl.search());
+            assert!(ctrl.stop());
+        }
     }
 }
