@@ -14,9 +14,6 @@
 - Improve uechosearch example to output object properties using the set property map
 - Improve uechosearch example to output more human readable properties using the standard database
 
-## v1.3.3 (2023-xx-xx)
-- Remove once_cell
-
 ## v1.3.2 (2024-08-xx)
 - Update for Rust 1.80
 - Enable std::sync::LazyLock instead of once_cell::sync::Lazy
