@@ -18,6 +18,7 @@
 - Remove once_cell
 
 ## v1.3.2 (2024-08-xx)
+- Update for Rust 1.80
 - Enable std::sync::LazyLock instead of once_cell::sync::Lazy
 - Updated the standard object database based on the latest MRA (Machine Readable Appendix) version 1.3.0 from the ECHONET Consortium.
 - Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium.
@@ -26,7 +27,7 @@
 - Add no_std keyword
 
 ## v1.3.0 (2023-08-23)
-- Update for Rust 1.7
+- Update for Rust 1.71
 - Add std and no_std features
  
 ## 1.2.7 (2023-05-07)
