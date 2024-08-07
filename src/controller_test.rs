@@ -15,6 +15,7 @@
 #[cfg(test)]
 mod tests {
 
+    use std::{thread, time};
     use crate::controller::*;
     use crate::log::Logger;
 
@@ -22,10 +23,14 @@ mod tests {
     fn controller() {
         Logger::init();
         {
+            let slp = time::Duration::from_secs(1);
             let mut ctrl = Controller::new();
             assert!(ctrl.start());
+            thread::sleep(slp);
             assert!(ctrl.search());
+            thread::sleep(slp);
             assert!(ctrl.stop());
+            thread::sleep(slp);
         }
     }
 }
