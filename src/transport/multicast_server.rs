@@ -125,7 +125,7 @@ impl MulticastServer {
     }
 
     pub fn close(&mut self) -> bool {
-        let sock = self.socket.try_write();
+        let sock = self.socket.try_read();
         if sock.is_err() {
             return false;
         }
@@ -180,11 +180,11 @@ impl MulticastServer {
 
     pub fn stop(&mut self) -> bool {
         self.stop_flag.store(true, Ordering::Relaxed);
-        if let Some(handle) = self.thread_handle.take() {
-            handle.join().unwrap();
-        }
         if !self.close() {
             return false;
+        }
+        if let Some(handle) = self.thread_handle.take() {
+            handle.join().unwrap();
         }
         true
     }

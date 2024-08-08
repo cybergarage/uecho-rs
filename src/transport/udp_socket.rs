@@ -116,7 +116,7 @@ impl UdpSocket {
         Ok(())
     }
 
-    pub fn close(&mut self) -> bool {
+    pub fn close(&self) -> bool {
         if self.sock.is_none() {
             return true;
         }
@@ -132,7 +132,6 @@ impl UdpSocket {
                 warn!("close {:?}", res.err());
                 return false;
             }
-            self.sock = None;
         }
         thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
         true
