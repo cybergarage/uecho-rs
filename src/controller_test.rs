@@ -15,9 +15,9 @@
 #[cfg(test)]
 mod tests {
 
-    use std::{thread, time};
     use crate::controller::*;
     use crate::log::Logger;
+    use std::{thread, time};
 
     #[test]
     fn controller() {
