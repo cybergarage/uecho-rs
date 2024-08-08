@@ -82,6 +82,7 @@ impl UdpSocket {
             "socket is not bound",
         ))
     }
+
     pub fn bind(&mut self, ifaddr: SocketAddr) -> Result<()> {
         if self.sock.is_some() {
             self.close();
@@ -115,9 +116,9 @@ impl UdpSocket {
         Ok(())
     }
 
-    pub fn close(&self) {
+    pub fn close(&mut self) -> bool {
         if self.sock.is_none() {
-            return;
+            return true;
         }
         #[cfg(feature = "unix")]
         {
@@ -129,9 +130,12 @@ impl UdpSocket {
             let res = close(fd);
             if res.is_err() {
                 warn!("close {:?}", res.err());
+                return false;
             }
+            self.sock = None;
         }
         thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
+        true
     }
 
     pub fn send_to(&self, buf: &[u8], to_addr: SocketAddr) -> Result<usize> {
