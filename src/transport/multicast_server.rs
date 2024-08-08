@@ -17,8 +17,9 @@
 use log::*;
 use std::io;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, RwLock};
-use std::thread;
+use std::thread::{self, JoinHandle};
 
 use crate::protocol::Message;
 use crate::transport::default::*;
@@ -29,6 +30,8 @@ use crate::transport::udp_socket::UdpSocket;
 pub struct MulticastServer {
     socket: Arc<RwLock<UdpSocket>>,
     notifier: Notifier,
+    stop_flag: Arc<AtomicBool>,
+    thread_handle: Option<JoinHandle<()>>,
 }
 
 impl MulticastServer {
@@ -36,6 +39,8 @@ impl MulticastServer {
         MulticastServer {
             socket: Arc::new(RwLock::new(UdpSocket::new())),
             notifier: notifier_new(),
+            stop_flag: Arc::new(AtomicBool::new(false)),
+            thread_handle: None,
         }
     }
 
@@ -119,17 +124,21 @@ impl MulticastServer {
         true
     }
 
-    pub fn close(&self) -> bool {
-        self.socket.read().unwrap().close();
-        true
+    pub fn close(&mut self) -> bool {
+        let sock = self.socket.try_write();
+        if sock.is_err() {
+            return false;
+        }
+        sock.unwrap().close()
     }
 
     pub fn start(&mut self) -> bool {
         let socket = self.socket.clone();
         let notifier = self.notifier.clone();
-        thread::spawn(move || {
+        let stop_flag = self.stop_flag.clone();
+        let handle = thread::spawn(move || {
             let mut buf = [0 as u8; MAX_PACKET_SIZE];
-            loop {
+            while !stop_flag.load(Ordering::Relaxed) {
                 let recv_res = socket.read().unwrap().recv_from(&mut buf);
                 match &recv_res {
                     Ok((n_bytes, remote_addr)) => {
@@ -164,10 +173,16 @@ impl MulticastServer {
                 }
             }
         });
+
+        self.thread_handle = Some(handle);
         true
     }
 
-    pub fn stop(&self) -> bool {
+    pub fn stop(&mut self) -> bool {
+        self.stop_flag.store(true, Ordering::Relaxed);
+        if let Some(handle) = self.thread_handle.take() {
+            handle.join().unwrap();
+        }
         if !self.close() {
             return false;
         }
