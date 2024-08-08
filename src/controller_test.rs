@@ -17,20 +17,15 @@ mod tests {
 
     use crate::controller::*;
     use crate::log::Logger;
-    use std::{thread, time};
 
     #[test]
     fn controller() {
         Logger::init();
         {
-            let slp = time::Duration::from_secs(1);
             let mut ctrl = Controller::new();
             assert!(ctrl.start());
-            thread::sleep(slp);
             assert!(ctrl.search());
-            thread::sleep(slp);
             assert!(ctrl.stop());
-            thread::sleep(slp);
         }
     }
 }
