@@ -95,7 +95,9 @@ impl UnicastServer {
         if sock.is_err() {
             return false;
         }
-        sock.unwrap().close()
+        // FIXME: fatal runtime error: IO Safety violation: owned file descriptor already closed
+        // sock.unwrap().close()
+        true
     }
 
     pub fn start(&mut self) -> bool {
