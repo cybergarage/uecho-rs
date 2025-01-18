@@ -20,7 +20,7 @@ no_std = []
 unix = ["std", "dep:pnet", "dep:ipnetwork", "dep:nix", "dep:net2"]
 win = ["std", "dep:pnet", "dep:ipnetwork", "dep:net2"]
 esp = ["no_std", "dep:esp-idf-sys"]
-# once_cell = ["dep:once_cell"]
+once_cell = ["dep:once_cell"]
 
 [dependencies]
 hex = "0.4"
@@ -28,7 +28,7 @@ chrono = "0.4"
 log = {version = "0.4.20", default-features = false}
 strum =  {version = "0.25", default-features = false}
 strum_macros =  {version = "0.25", default-features = false}
-# once_cell = {version = "1.17.0", default-features = false, features = ["std"], optional = true}
+once_cell = {version = "1.17.0", default-features = false, features = ["std"], optional = true}
 pnet = { version = "0.28.0", optional = true }
 ipnetwork = { version = "0.16.0", optional = true }
 nix = { version = "0.26.0", optional = true }
