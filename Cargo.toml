@@ -2,8 +2,8 @@
 name = "echonet"
 version = "1.3.3"
 authors = ["The uecho-rs Authors <skonno@cybergarage.org>"]
-rust-version = "1.80" 
-edition = "2021"
+rust-version = "1.90" 
+edition = "2024"
 readme = "README.md"
 homepage = "http://www.cybergarage.org/"
 repository = "https://github.com/cybergarage/uecho-rs"
