@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::object::Object;
-use crate::protocol::{Message, Property, ESV};
+use crate::protocol::{ESV, Message, Property};
 use std::sync::{Arc, Mutex};
 
 /// RequestHandler defines a request message handler interface.

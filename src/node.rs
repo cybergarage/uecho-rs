@@ -14,16 +14,16 @@
 
 use log::*;
 use std::net::{IpAddr, SocketAddr};
-use std::sync::mpsc;
-use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::sync::Mutex;
+use std::sync::mpsc;
+use std::sync::mpsc::{Receiver, Sender};
 
 use crate::message::ResponseErrorMessage;
 use crate::node_profile::*;
 use crate::object::*;
 use crate::property::{Property, PropertyCode};
-use crate::protocol::{Message, ESV, TID, TID_MAX, TID_MIN};
+use crate::protocol::{ESV, Message, TID, TID_MAX, TID_MIN};
 use crate::request_handler::*;
 use crate::super_object::*;
 use crate::transport::{Manager, NotifytManager, PORT};

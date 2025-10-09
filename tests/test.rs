@@ -18,7 +18,7 @@ use std::sync::Mutex;
 
 use echonet::{Controller, Device, Node, Object, ObjectCode, RequestHandler};
 
-use echonet::protocol::{Property, ESV};
+use echonet::protocol::{ESV, Property};
 use echonet::util::Bytes;
 
 pub struct TestController {}

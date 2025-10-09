@@ -17,10 +17,10 @@
 use std::time::Duration;
 use std::{thread, time};
 
-use echonet::log::Logger;
-use echonet::protocol::{Message, Property, ESV};
-use echonet::util::Bytes;
 use echonet::Node;
+use echonet::log::Logger;
+use echonet::protocol::{ESV, Message, Property};
+use echonet::util::Bytes;
 
 mod test;
 

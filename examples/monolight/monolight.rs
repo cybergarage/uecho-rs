@@ -19,7 +19,7 @@ use std::sync::{Arc, Mutex};
 use std::{thread, time};
 
 use echonet::log::Logger;
-use echonet::protocol::{Property, ESV};
+use echonet::protocol::{ESV, Property};
 use echonet::util::Bytes;
 use echonet::{Device, Object, RequestHandler};
 

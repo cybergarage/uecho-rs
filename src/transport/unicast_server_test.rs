@@ -26,8 +26,8 @@ mod tests {
     #[cfg(not(feature = "unix"))]
     use crate::transport::interface::*;
 
-    use crate::protocol::Message;
     use crate::protocol::ESV;
+    use crate::protocol::Message;
     use crate::transport::unicast_server::*;
 
     use crate::log::Logger;

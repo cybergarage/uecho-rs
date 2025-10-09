@@ -14,13 +14,13 @@
 
 use log::info;
 use std::net::SocketAddr;
-use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::Mutex;
+use std::sync::mpsc::Receiver;
 
 use crate::message::SearchMessage;
 use crate::node::Node;
-use crate::node_profile::{NodeProfile, NODE_PROFILE_OBJECT_CODE};
+use crate::node_profile::{NODE_PROFILE_OBJECT_CODE, NodeProfile};
 use crate::object::ObjectCode;
 use crate::protocol::Message;
 use crate::remote_node::RemoteNode;

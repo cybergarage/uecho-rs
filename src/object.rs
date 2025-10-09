@@ -13,15 +13,15 @@
 // limitations under the License.
 
 use std::cmp::PartialEq;
-use std::collections::hash_map::Values;
 use std::collections::HashMap;
+use std::collections::hash_map::Values;
 use std::hash::{Hash, Hasher};
 
 use crate::database::StandardDatabase;
 use crate::device::*;
 use crate::message::{ResponseErrorMessage, ResponseMessage};
 use crate::property::{Property, PropertyCode, PropertyData};
-use crate::protocol::{Message, ESV};
+use crate::protocol::{ESV, Message};
 use crate::super_object::*;
 use crate::util::Bytes;
 use crate::util::OID;

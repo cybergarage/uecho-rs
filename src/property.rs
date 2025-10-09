@@ -14,8 +14,8 @@
 
 #![allow(dead_code)]
 
-use std::collections::hash_map::Values;
 use std::collections::HashMap;
+use std::collections::hash_map::Values;
 use std::hash::{Hash, Hasher};
 
 use crate::protocol;

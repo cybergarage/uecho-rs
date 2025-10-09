@@ -18,7 +18,7 @@ mod tests {
     use crate::message::{
         NodeProfileMessage, ResponseErrorMessage, ResponseMessage, SearchMessage,
     };
-    use crate::protocol::{Message, ESV};
+    use crate::protocol::{ESV, Message};
     use hex;
 
     #[test]

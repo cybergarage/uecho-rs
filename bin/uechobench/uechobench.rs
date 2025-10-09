@@ -18,9 +18,9 @@ use std::string::String;
 use std::time::Duration;
 use std::{thread, time};
 
-use echonet::log::Logger;
-use echonet::protocol::{Message, Property, ESV};
 use echonet::Controller;
+use echonet::log::Logger;
+use echonet::protocol::{ESV, Message, Property};
 
 fn usages() {
     println!("Usage: uechobench");
