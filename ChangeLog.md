@@ -1,24 +1,12 @@
 # Changelog
 
-## v1.5.x (2023-xx-xx)
+## v1.4.x (2023-xx-xx)
 - Support ESP32 platforms
 - Update transport layer
 - Enable IPv6 interfaces
 - Support Supports multi-network interfaces
 
-## v1.4.x (2023-xx-xx)
-- Support ESP32 platforms
-
-## v1.3.x (2023-xx-xx)
-- Improve controller search functions
-- Improve uechosearch example to output object properties using the set property map
-- Improve uechosearch example to output more human readable properties using the standard database
-
-## v1.3.2 (2024-08-xx)
-- Update for Rust 1.80
-- Enable std::sync::LazyLock instead of once_cell::sync::Lazy
-- Updated the standard object database based on the latest MRA (Machine Readable Appendix) version 1.3.0 from the ECHONET Consortium.
-- Updated the standard manufacturer code database based on the latest MCA (Manufacturer Code List) from the ECHONET Consortium.
+## v1.3.2 (2026-03-15)
 
 ## v1.3.1 (2023-09-02)
 - Add no_std keyword
