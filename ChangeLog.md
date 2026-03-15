@@ -1,12 +1,18 @@
 # Changelog
 
-## v1.4.x (2023-xx-xx)
+## v1.4.x (2026-xx-xx)
 - Support ESP32 platforms
 - Update transport layer
 - Enable IPv6 interfaces
 - Support Supports multi-network interfaces
 
 ## v1.3.2 (2026-03-15)
+- Fix transport hang caused by uninterruptible recv loops in controller
+- Prevent `UnicastServer` and `MulticastServer` from closing an already-closed socket (IO safety violation)
+- Replace `once_cell::sync::Lazy` with `std::sync::LazyLock` from the standard library
+- Update the standard object database based on the latest MRA (Machine Readable Appendix) v1.3.0
+- Update the standard manufacturer code database based on the latest MCA (Manufacturer Code List)
+- Upgrade dependencies to latest compatible versions
 
 ## v1.3.1 (2023-09-02)
 - Add no_std keyword
