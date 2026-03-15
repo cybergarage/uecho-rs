@@ -448,7 +448,9 @@ impl Node {
 
 impl Observer for Arc<Mutex<Node>> {
     fn message_received(&mut self, req_msg: &Message) {
-        let mut node = self.lock().unwrap();
+        let Ok(mut node) = self.try_lock() else {
+            return;
+        };
         if node.is_last_message_response(req_msg) {
             node.send_post_reopnse(req_msg.clone());
         }

@@ -128,7 +128,9 @@ impl ControllerNode {
 
 impl Observer for Arc<Mutex<ControllerNode>> {
     fn message_received(&mut self, msg: &Message) {
-        let mut ctrl = self.lock().unwrap();
+        let Ok(mut ctrl) = self.try_lock() else {
+            return;
+        };
 
         if !msg.is_node_profile_message() {
             return;

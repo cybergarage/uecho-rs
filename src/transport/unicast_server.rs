@@ -95,8 +95,7 @@ impl UnicastServer {
         if sock.is_err() {
             return false;
         }
-        // FIXME: fatal runtime error: IO Safety violation: owned file descriptor already closed
-        // sock.unwrap().close()
+        drop(sock);
         true
     }
 
@@ -131,6 +130,11 @@ impl UnicastServer {
                         notifier.lock().unwrap().notify(&msg);
                     }
                     Err(e) => {
+                        if e.kind() == io::ErrorKind::WouldBlock
+                            || e.kind() == io::ErrorKind::TimedOut
+                        {
+                            continue;
+                        }
                         warn!(
                             "RECV {} ({})",
                             socket.read().unwrap().local_addr().ok().unwrap(),

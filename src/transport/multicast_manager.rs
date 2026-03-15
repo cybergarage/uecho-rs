@@ -82,16 +82,14 @@ impl MulticastManager {
         for ifaddr in get_all_interfaces() {
             let mut mcast_server = MulticastServer::new();
             if !mcast_server.bind(ifaddr) {
-                self.stop();
-                return false;
+                continue;
             }
             if !mcast_server.start() {
-                self.stop();
-                return false;
+                continue;
             }
             self.mcast_servers.push(mcast_server);
         }
-        true
+        !self.mcast_servers.is_empty()
     }
 
     pub fn stop(&mut self) -> bool {

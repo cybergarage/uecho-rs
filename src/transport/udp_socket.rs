@@ -21,8 +21,6 @@ use crate::transport::result::Result;
 use log::warn;
 #[cfg(feature = "unix")]
 use nix::sys::socket::{Shutdown, shutdown};
-#[cfg(feature = "unix")]
-use nix::unistd::close;
 use std::io;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
 #[cfg(feature = "unix")]
@@ -111,6 +109,10 @@ impl UdpSocket {
             return Err(ScoketError::new(&format!("could not bind to {}", ifaddr)));
         }
 
+        let _ = sock
+            .as_ref()
+            .unwrap()
+            .set_read_timeout(Some(time::Duration::from_millis(500)));
         self.sock = sock;
         self.ifaddr = Some(ifaddr);
         Ok(())
@@ -127,13 +129,7 @@ impl UdpSocket {
             if res.is_err() {
                 warn!("shutdown ({})", res.err().unwrap().desc());
             }
-            let res = close(fd);
-            if res.is_err() {
-                warn!("close {:?}", res.err());
-                return false;
-            }
         }
-        thread::sleep(time::Duration::from_millis(UDP_SOCKET_BIND_SLEEP_MSEC));
         true
     }
 
