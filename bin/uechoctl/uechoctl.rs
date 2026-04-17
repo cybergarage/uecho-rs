@@ -12,137 +12,96 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::env;
 use std::net::IpAddr;
-use std::net::Ipv4Addr;
 use std::time::Duration;
 use std::{thread, time};
 
+use clap::{Parser, Subcommand};
 use echonet::Controller;
 use echonet::log::Logger;
 use echonet::protocol::{ESV, Message, Property};
 use echonet::util::Bytes;
-use hex;
 
-fn usages() {
-    println!(
-        "Usage: uechoctl <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
-    );
-    println!(" -h : Print this message");
-    println!(" -v : Enable debug output");
+#[derive(Parser)]
+#[command(author, version, about = "ECHONET Lite controller utility")]
+struct Cli {
+    #[arg(short, long, global = true, help = "Enable debug output")]
+    verbose: bool,
+
+    #[command(subcommand)]
+    command: Commands,
 }
 
-fn main() {
-    let mut program_name = String::new();
-    let ipaddr_none = IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0));
-    let mut node_addr = ipaddr_none.clone();
-    let mut esv = ESV::Unknown;
-    let mut obj_code = 0;
+#[derive(Subcommand)]
+enum Commands {
+    #[command(about = "Send a message to a remote node")]
+    Set {
+        #[arg(value_name = "IP address")]
+        node_addr: IpAddr,
+
+        #[arg(value_name = "Object code (hex)")]
+        object_code: String,
+
+        #[arg(value_name = "ESV (hex)")]
+        esv: String,
+
+        #[arg(value_name = "EPC/EDT (hex)", required = true, num_args = 1..)]
+        properties: Vec<String>,
+    },
+}
+
+fn parse_hex(name: &str, value: &str) -> Result<Vec<u8>, String> {
+    let bytes = hex::decode(value).map_err(|_| format!("{} error: {}", name, value))?;
+    if bytes.is_empty() {
+        return Err(format!("{} error: {}", name, value));
+    }
+    Ok(bytes)
+}
+
+fn parse_esv(value: &str) -> Result<ESV, String> {
+    let bytes = parse_hex("ESV", value)?;
+    let esv = ESV::from_u8(bytes[0]);
+    if esv == ESV::Unknown {
+        return Err(format!("ESV error: {}", value));
+    }
+    Ok(esv)
+}
+
+fn parse_properties(values: &[String]) -> Result<(Vec<u8>, Vec<Vec<u8>>), String> {
     let mut epcs = Vec::new();
     let mut edts = Vec::new();
 
-    // Parses specified command line arguments.
-
-    for arg in env::args() {
-        match arg.as_str() {
-            "-v" => {
-                Logger::init();
-            }
-            "-h" => {
-                usages();
-                return;
-            }
-            &_ => {
-                if program_name.len() == 0 {
-                    program_name = arg.clone();
-                    continue;
-                }
-                if node_addr == ipaddr_none {
-                    let arg_addr = arg.parse();
-                    if arg_addr.is_err() {
-                        usages();
-                        eprintln!("IP address error: {}", arg);
-                        return;
-                    }
-                    node_addr = arg_addr.unwrap();
-                    continue;
-                }
-                if obj_code == 0 {
-                    let arg_obj = hex::decode(arg.clone());
-                    if arg_obj.is_err() {
-                        usages();
-                        eprintln!("Object code error: {}", arg);
-                        return;
-                    }
-                    obj_code = Bytes::to_u32(&arg_obj.unwrap());
-                    continue;
-                }
-                if esv == ESV::Unknown {
-                    let arg_esv = hex::decode(arg.clone());
-                    if arg_esv.is_err() {
-                        usages();
-                        eprintln!("ESV error: {}", arg);
-                        return;
-                    }
-                    let arg_esv = arg_esv.unwrap();
-                    esv = ESV::from_u8(arg_esv[0]);
-                    if esv == ESV::Unknown {
-                        usages();
-                        eprintln!("ESV error: {}", arg);
-                        return;
-                    }
-                    continue;
-                }
-                if epcs.len() == edts.len() {
-                    let arg_epc = hex::decode(arg.clone());
-                    if arg_epc.is_err() {
-                        usages();
-                        eprintln!("EPC error: {}", arg);
-                        return;
-                    }
-                    let arg_epc = arg_epc.unwrap();
-                    epcs.push(arg_epc[0] as u8);
-                    continue;
-                }
-                if edts.len() < epcs.len() {
-                    let arg_edt = hex::decode(arg.clone());
-                    if arg_edt.is_err() {
-                        usages();
-                        eprintln!("EDT error: {}", arg);
-                        return;
-                    }
-                    let arg_edt = arg_edt.unwrap();
-                    edts.push(arg_edt);
-                }
-            }
+    for value in values {
+        if epcs.len() == edts.len() {
+            let epc = parse_hex("EPC", value)?;
+            epcs.push(epc[0]);
+            continue;
         }
+
+        let edt = parse_hex("EDT", value)?;
+        edts.push(edt);
     }
 
-    // Checks specified command line rguments.
-
-    if node_addr == ipaddr_none {
-        usages();
-        eprintln!("IP address is missing");
-        return;
+    if epcs.is_empty() {
+        return Err("EPC is missing".to_string());
     }
 
-    if esv == ESV::Unknown {
-        usages();
-        eprintln!("ESV is missing");
-        return;
-    }
+    Ok((epcs, edts))
+}
 
+fn run_set(
+    node_addr: IpAddr,
+    object_code: String,
+    esv: String,
+    properties: Vec<String>,
+) -> Result<(), String> {
+    let obj_code = Bytes::to_u32(&parse_hex("Object code", &object_code)?);
     if obj_code == 0 {
-        usages();
-        eprintln!("Object code is missing");
-        return;
+        return Err("Object code is missing".to_string());
     }
 
-    if epcs.len() == 0 {
-        usages();
-        eprintln!("EPC is missing");
-        return;
-    }
+    let esv = parse_esv(&esv)?;
+    let (epcs, edts) = parse_properties(&properties)?;
 
     // Starts a new controller.
 
@@ -194,10 +153,28 @@ fn main() {
         }
 
         ctrl.stop();
-        return;
+        return Ok(());
     }
 
     eprintln!("Remote node ({}) is not found", node_addr);
 
     ctrl.stop();
+    Ok(())
+}
+
+fn main() -> Result<(), String> {
+    let cli = Cli::parse();
+
+    if cli.verbose {
+        Logger::init();
+    }
+
+    match cli.command {
+        Commands::Set {
+            node_addr,
+            object_code,
+            esv,
+            properties,
+        } => run_set(node_addr, object_code, esv, properties),
+    }
 }
