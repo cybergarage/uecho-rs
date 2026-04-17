@@ -26,7 +26,7 @@ use hex;
 
 fn usages() {
     println!(
-        "Usage: uechopost <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
+        "Usage: uechoctl <IP address> <Object code (hex)> <ESV (hex)> (<EPC (hex)> (<EDT (hex)>)*)?"
     );
     println!(" -h : Print this message");
     println!(" -v : Enable debug output");

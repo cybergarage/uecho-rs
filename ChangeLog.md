@@ -5,6 +5,7 @@
 - Update transport layer
 - Enable IPv6 interfaces
 - Support Supports multi-network interfaces
+- Rename uechopost to uechoctl
 
 ## v1.3.2 (2026-03-15)
 - Fix transport hang caused by uninterruptible recv loops in controller

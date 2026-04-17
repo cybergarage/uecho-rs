@@ -41,7 +41,7 @@ search:
 	cargo run --bin uechosearch -v
 
 post:
-	cargo run --bin uechopost -v
+	cargo run --bin uechoctl -v
 
 mono:
 	cargo run --example monolight -v

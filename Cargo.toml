@@ -44,8 +44,8 @@ name = "uechosearch"
 path = "bin/uechosearch/uechosearch.rs"
 
 [[bin]]
-name = "uechopost"
-path = "bin/uechopost/uechopost.rs"
+name = "uechoctl"
+path = "bin/uechoctl/uechoctl.rs"
 
 [[bin]]
 name = "uechobench"
