@@ -41,10 +41,6 @@ esp-idf-sys = { version = "0.33.2", features = ["binstart"], optional = true  }
 signal-hook = "0.4"
 
 [[bin]]
-name = "uechosearch"
-path = "bin/uechosearch/uechosearch.rs"
-
-[[bin]]
 name = "uechoctl"
 path = "bin/uechoctl/uechoctl.rs"
 

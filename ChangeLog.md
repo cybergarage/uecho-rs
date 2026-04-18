@@ -7,6 +7,7 @@
 - Support Supports multi-network interfaces
 - Rename uechopost to uechoctl
 - Refactor uechoctl command parsing with clap and add set subcommand
+- Move uechosearch action into uechoctl scan command
 
 ## v1.3.2 (2026-03-15)
 - Fix transport hang caused by uninterruptible recv loops in controller

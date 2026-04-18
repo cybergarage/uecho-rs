@@ -38,7 +38,7 @@ test: build
 	cargo test -- --test-threads=1
 
 search:
-	cargo run --bin uechosearch -v
+	cargo run --bin uechoctl -- scan -v
 
 post:
 	cargo run --bin uechoctl -v
