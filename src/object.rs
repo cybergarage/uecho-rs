@@ -254,7 +254,7 @@ impl Object {
                     let prop_map_row = ((*prop_code - 0x80) & 0x0F) + 1;
                     // 0 <= prop_map_bit <= 7
                     let prop_map_bit = (((*prop_code - 0x80) & 0xF0) >> 4) & 0x0F;
-                    map_bytes[prop_map_row as usize] |= (0x01 << prop_map_bit) & 0x0F;
+                    map_bytes[prop_map_row as usize] |= 0x01 << prop_map_bit;
                 }
             }
             map_bytes
