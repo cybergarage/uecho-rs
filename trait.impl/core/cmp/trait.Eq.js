@@ -1,5 +1,5 @@
 (function() {
-    const implementors = Object.fromEntries([["echonet",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.94.1/core/cmp/trait.Eq.html\" title=\"trait core::cmp::Eq\">Eq</a> for <a class=\"struct\" href=\"echonet/struct.Object.html\" title=\"struct echonet::Object\">Object</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.94.1/core/cmp/trait.Eq.html\" title=\"trait core::cmp::Eq\">Eq</a> for <a class=\"struct\" href=\"echonet/struct.RemoteNode.html\" title=\"struct echonet::RemoteNode\">RemoteNode</a>",0]]]]);
+    const implementors = Object.fromEntries([["echonet",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.99.0/core/cmp/trait.Eq.html\" title=\"trait core::cmp::Eq\">Eq</a> for <a class=\"struct\" href=\"echonet/struct.Object.html\" title=\"struct echonet::Object\">Object</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.99.0/core/cmp/trait.Eq.html\" title=\"trait core::cmp::Eq\">Eq</a> for <a class=\"struct\" href=\"echonet/struct.RemoteNode.html\" title=\"struct echonet::RemoteNode\">RemoteNode</a>",0]]]]);
     if (window.register_implementors) {
         window.register_implementors(implementors);
     } else {
