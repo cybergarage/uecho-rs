@@ -29,14 +29,43 @@ To use `uecho-rs`, add the `echonet` crate to your `Cargo.toml`:
 echonet = "1"
 ```
 
-`no_std` feature configuration:
-```toml
-[dependencies]
-echonet = { version = "1", features = ["no_std"] }
+The current source requires Rust 1.90 or later (edition 2024). The default feature is `unix`, which enables the standard-library networking implementation. Feature flags also include `win`, `no_std`, and `esp`; these are platform configuration options, not a guarantee that every target or dependency works without the standard library. In particular, adding `no_std` alone does not disable the default `unix` feature. Inspect [`Cargo.toml`](Cargo.toml) and [`src/transport/`](src/transport/) when targeting another platform.
+
+### Try the tools and example
+
+```sh
+git clone https://github.com/cybergarage/uecho-rs.git
+cd uecho-rs
+cargo build
+cargo run --bin uechoctl -- --help
+cargo run --bin uechoctl -- scan
 ```
 
+`scan` discovers nodes and reads properties. Discovery requires a network interface that can exchange ECHONET Lite UDP multicast traffic with the target devices. An empty scan can mean there are no reachable devices on that network.
 
-For controller and device examples, see the [examples directory](https://github.com/cybergarage/uecho-rs/tree/master/examples).
+To run a sample mono-functional lighting device:
+
+```sh
+cargo run --example monolight
+```
+
+The [example source](examples/monolight/monolight.rs) shows how a `Device` and a `RequestHandler` implement application-specific property handling. Stop it with Ctrl-C.
+
+## Architecture and scope
+
+The [`protocol`](src/protocol/) module encodes and decodes messages, while [`transport`](src/transport/) handles network communication. Controllers discover remote nodes and send requests; device applications expose objects and properties and implement request handlers. The standard database supplies object and manufacturer metadata.
+
+Applications remain responsible for device behavior and property validation. Included metadata and example profiles do not establish certification or interoperability with every ECHONET Lite device. Test against your target devices and network.
+
+## Development and testing
+
+```sh
+cargo build --examples
+cargo test -- --test-threads=1
+cargo doc --no-deps
+```
+
+Tests are serialized as in the repository Makefile. Network-dependent tests need suitable local interfaces and multicast access. Use direct Cargo commands if you want to avoid the automatic formatting performed by `make build` and `make test`.
 
 ## Table of Contents
 
